@@ -121,3 +121,92 @@
 * **Non-functional requirements** → shape **architecture patterns** (microservices, event-driven, monolith).
 * Reliability is a **cross-cutting concern** — every decision must consider resilience, scaling, and security.
 
+
+
+###########################
+
+
+MVP Feature Set – System Design Learning
+1. Core Fundamentals
+
+Understand client–server model
+
+Learn latency vs throughput
+
+Grasp vertical vs horizontal scaling
+
+Basics of load balancing (Round Robin, Least Connections)
+
+Basics of databases (SQL vs NoSQL, primary keys, indexes)
+
+Understand DNS & CDN role
+
+2. Foundational Design Patterns
+
+CRUD service design
+
+Read-heavy vs write-heavy architecture choices
+
+Cache-aside pattern (Redis/Memcached)
+
+Message queue basics (SQS/Kafka high-level)
+
+3. AWS Core Services for MVP
+
+S3 – File/object storage
+
+RDS (MySQL/Postgres) – Relational DB
+
+DynamoDB – NoSQL key-value store
+
+Elastic Load Balancer – Distribute traffic
+
+CloudFront – CDN for faster delivery
+
+EC2 / Lambda – Compute basics
+
+4. Hands-On MVP Projects
+
+URL Shortener
+
+DynamoDB or RDS
+
+API Gateway + Lambda
+
+Image Upload Service
+
+S3 storage + signed URLs
+
+CloudFront for delivery
+
+Basic Notification Service
+
+SQS for queue
+
+Lambda to process messages
+
+5. Minimal Tooling Knowledge
+
+AWS CLI basics
+
+Postman for API testing
+
+Basic Terraform/CloudFormation for infra setup
+
+GitHub for version control
+
+6. MVP Learning Resources
+
+Free:
+
+System Design Primer GitHub
+
+AWS Free Tier Labs
+
+ByteByteGo YouTube
+
+Paid (optional):
+
+Alex Xu’s System Design Interview Vol 1 (Beginner-friendly)
+
+A Cloud Guru AWS Certified Solutions Architect – Associate
