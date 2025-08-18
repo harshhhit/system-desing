@@ -2,6 +2,9 @@
 ## 2) HOW FILE STORED AND IMAGES
 
 
+![alt text](image.png)
+
+
 1. File Storage
 
 File storage is the most traditional and widely used storage paradigm.
