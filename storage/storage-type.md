@@ -387,4 +387,79 @@ Recommended: File or Object Storage (depends on scale)
 
     Use file storage for smaller-scale internal CMS with shared folders
 
-    Use object storage for scalable web apps handling lots of media and documents
+    Use object storage for scalable web apps handling lots of media and documents 
+
+USE THE FILE STORAGE TYPE 
+
+
+Got it 👍 The image you shared shows **different access protocols** used in storage systems. Let me elaborate on each one in detail from a **system design / DevOps perspective**:
+
+---
+
+### 1. **NFS & SMB (File-level access protocols)**
+
+* **NFS (Network File System)**
+
+  * Developed by Sun Microsystems, commonly used in Unix/Linux environments.
+  * Provides **shared file system access** over the network.
+  * Applications see files and directories as if they are on a local disk.
+  * Used in **NAS (Network Attached Storage)** systems.
+
+* **SMB (Server Message Block)**
+
+  * Developed by Microsoft, mostly used in Windows environments.
+  * Also provides **file-level access** over the network.
+  * Allows sharing of files, printers, and serial ports.
+  * Modern versions are SMB 2.0/3.0 (used in Azure Files).
+
+✅ **Use case:** File sharing, user home directories, collaboration, content management systems.
+⚠️ **Limitations:** Performance overhead for metadata operations (file lookups, permissions).
+
+---
+
+### 2. **RESTful APIs (HTTP/S) (Object-level access protocols)**
+
+* Object storage systems (e.g., Amazon S3, Azure Blob, Google Cloud Storage) are accessed via **REST APIs** over HTTP/HTTPS.
+* Data is stored as **objects** (metadata + binary blob), not files or blocks.
+* Each object is addressed via a **unique identifier/URL**.
+* CRUD operations: PUT, GET, POST, DELETE.
+
+✅ **Use case:** Cloud-native apps, backups, big data analytics, logs, media streaming.
+⚠️ **Limitations:** Higher latency compared to block/file; not suitable for low-latency databases or boot volumes.
+
+---
+
+### 3. **iSCSI, Fibre Channel, NVMe-oF (Block-level access protocols)**
+
+* **iSCSI (Internet Small Computer Systems Interface)**
+
+  * Encapsulates SCSI commands over TCP/IP.
+  * Provides block-level storage to servers.
+  * Common in data centers for SAN (Storage Area Networks).
+
+* **Fibre Channel (FC)**
+
+  * High-speed network (16/32/64 Gbps) dedicated for storage.
+  * Provides **low-latency, high-throughput** block storage.
+  * Used in enterprise SAN environments.
+
+* **NVMe-oF (NVMe over Fabrics)**
+
+  * Extends NVMe protocol across network fabrics (Ethernet, InfiniBand, Fibre Channel).
+  * Designed for **ultra-low-latency and high-performance workloads**.
+  * Popular in modern **AI/ML, HPC, database workloads**.
+
+✅ **Use case:** Databases, VMs, transactional systems, high-performance apps.
+⚠️ **Limitations:** More complex to manage, costlier (esp. Fibre Channel).
+
+---
+
+### 🔑 Summary by Protocol Type:
+
+* **File-level (NFS, SMB):** Shared files, collaboration, general-purpose storage.
+* **Object-level (RESTful APIs):** Cloud-native, scalable, metadata-rich storage.
+* **Block-level (iSCSI, FC, NVMe-oF):** High-performance apps, databases, SANs.
+
+---
+
+👉 Would you like me to create a **comparison table** (File vs Object vs Block storage protocols) with **advantages, disadvantages, and real-world examples (AWS, Azure, GCP services)**?
