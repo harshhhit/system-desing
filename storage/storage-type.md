@@ -1,6 +1,8 @@
 ## 1) READ HOW FILES ARE READ
 ## 2) HOW FILE STORED AND IMAGES
 
+Resource https://blog.algomaster.io/p/file-vs-object-vs-block-storage
+
 
 ![alt text](image.png)
 
