@@ -1,0 +1,78 @@
+
+version: "3.9"
+services:
+  zookeeper:
+    image: bitnami/zookeeper:3.9
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: bitnami/kafka:3.7
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    ports:
+      - "29092:29092"
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    depends_on:
+      - kafka
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+    ports:
+      - "8080:8080"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
+  django_api:
+    build: ./django_api
+    environment:
+      - DJANGO_DEBUG=1
+      - KAFKA_BOOTSTRAP=kafka:9092
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/%2F
+      - USE_KAFKA=1
+      - USE_RABBIT=1
+    ports:
+      - "8000:8000"
+    depends_on:
+      - kafka
+      - rabbitmq
+
+  kafka_worker:
+    build: ./kafka_worker
+    environment:
+      - KAFKA_BOOTSTRAP=kafka:9092
+      - ORDERS_TOPIC=orders
+      - RETRY_TOPIC=orders.retry
+      - DLQ_TOPIC=orders.dlq
+      - MAX_RETRIES=3
+    depends_on:
+      - kafka
+
+  rabbit_worker:
+    build: ./rabbit_worker
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/%2F
+      - ORDERS_QUEUE=orders
+      - RETRY_QUEUE=orders.retry
+      - DLQ_QUEUE=orders.dlq
+      - MAX_RETRIES=3
+    depends_on:
+      - rabbitmq
