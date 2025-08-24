@@ -1,0 +1,1 @@
+Producer → SQS API → Storage Layer → Message replicated to AZ1 + AZ2 + AZ3 → Consumer retrieves message from healthy AZ.
