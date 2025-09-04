@@ -74,3 +74,19 @@ provide me notes for what is it i dont know anything
 
 
 what is it give me detailed study on the partitioning
+
+
+
+#####
+
+Provide clear, structured explanations covering the what, why, when, and how of each concept.
+
+Be written in a logical flow that builds understanding step by step, so even beginners can follow.
+
+Use examples, analogies, and diagrams (if needed) to simplify complex topics.
+
+Highlight key definitions, formulas, and principles in a concise way.
+
+A deep, thought-provoking question that challenges assumptions and connects to scalability, cost, reliability, and security
+
+End with a section of interview-style questions (basic, intermediate, and advanced) related to the topic for practice.
