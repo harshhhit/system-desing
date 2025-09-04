@@ -1,356 +1,374 @@
 ![alt text](image.png)
 
 
-Great question 👍
-You’ve shared an infographic showing **Tools and Technologies used by Instagram**, covering **Frontend, Backend, Big Data, Machine Learning/AI, and DevOps**. Let’s break it down in detail — what each tool does, how it is used, and when it fits into Instagram’s ecosystem (or any large-scale app).
+# Instagram-style Stack — The Clear Guide (What • Why • When • How)
+
+Below is a step-by-step, beginner-friendly guide to every tool in the diagram. We’ll go layer by layer.
+For each tool you’ll see: **What it is**, **Why it’s used**, **When to choose it**, and **How it typically works** (with quick examples/analogies).
+Where helpful, I’ll tie it to familiar Instagram features (feed, stories, reels, search, etc.).
 
 ---
 
-## 🟦 Frontend (User Interface Layer)
+## Big picture: how a request flows
 
-1. **GraphQL**
+```
+[Mobile/Web UI]
+   │ GraphQL
+   ▼
+[Backend services: Django + Gunicorn]
+   │  (cache hits in Memcached)
+   │  (messages to RabbitMQ/Kafka)
+   ▼
+[Databases: PostgreSQL, Cassandra]    [Object/Blob storage: photos/videos]
+   │                                   │
+   └──► Events/Logs ► Kafka ► Flink/Spark ► Presto/Scuba (analytics)
+                           │
+                           └► Train/serve ML (PyTorch/TensorFlow via TorchServe)
+                                     │
+                            Personalised Feed/Explore/Search
+```
 
-   * **What**: A query language for APIs that allows clients to request only the data they need.
-   * **Use**: Efficiently fetch data for Instagram’s feed, stories, and profiles without over-fetching or under-fetching.
-   * **When**: Used instead of REST APIs for performance and flexibility.
+---
 
-2. **Swift**
+## 🟦 Frontend
 
-   * **What**: Apple’s programming language for iOS development.
-   * **Use**: Instagram’s iPhone app is written in Swift for speed and smooth UI.
-   * **When**: Used when building iOS apps natively.
+### 1) GraphQL
 
-3. **React Native**
+* **What**: API query language + server runtime. Clients ask exactly for the fields they need.
+* **Why**: Prevents *over-fetching* (downloading too much) and *under-fetching* (too little), ideal for complex screens (e.g., feed cards with author, caption, like state).
+* **When**: Many UI variants; mobile and web share the same data graph; evolution without breaking clients.
+* **How**: Define a **schema** (`types`, `queries`, `mutations`). Client sends a query; server resolves fields by calling backend services/DB.
+* **Example**: Feed screen fetches `{ posts { id, imageUrl, likedByMe, author { name, avatar } } }` instead of multiple REST calls.
+* **Key principles**: Strongly typed schema; resolvers; *N+1* query pitfalls handled with data-loader/batching.
 
-   * **What**: Cross-platform mobile framework built on React.
-   * **Use**: Instagram uses it for certain screens/features that run on both iOS & Android with shared code.
-   * **When**: Best for hybrid features that don’t need full native performance.
+### 2) React (Web)
 
-4. **Kotlin**
+* **What**: Component library for building UIs.
+* **Why**: Reusable components (PostCard, CommentList), virtual DOM for efficient updates.
+* **When**: Large interactive web apps (instagram.com).
+* **How**: State/props drive rendering; effects for async work.
+* **Analogy**: Lego blocks: small pieces combine into complex UIs.
 
-   * **What**: Official language for Android development.
-   * **Use**: Instagram’s Android app uses Kotlin for concise, modern, and efficient code.
-   * **When**: For Android-specific functionality.
+### 3) Redux (Web state management)
 
-5. **Redux**
+* **What**: Predictable global state container.
+* **Why**: Multiple components need the same state (auth, notifications, toasts).
+* **When**: App-wide state shared across distant components.
+* **How**: Single **store**; dispatch **actions**; pure **reducers** update state; components **select** slices.
+* **Principle**: Single source of truth; immutable updates; time-travel debugging.
 
-   * **What**: State management library for JavaScript apps.
-   * **Use**: Manages global UI states (e.g., feed loading, notifications).
-   * **When**: Useful when multiple components need to share synchronized data.
+### 4) Swift (iOS) & 5) Kotlin (Android)
 
-6. **React**
+* **What**: Native languages for iOS/Android apps.
+* **Why**: Top performance, access to device APIs (camera, video, GPU), smooth scrolling for feeds/reels.
+* **When**: Performance-critical views (camera, reels player).
+* **How**: MVVM/MVI patterns, coroutines (Kotlin) or async/await (Swift).
+* **Example**: Recording & uploading a Story with background upload and UI progress.
 
-   * **What**: JavaScript library for building UIs.
-   * **Use**: Instagram’s web app frontend.
-   * **When**: For scalable, component-based web development.
+### 6) React Native (cross-platform)
+
+* **What**: Use React to build native mobile UIs.
+* **Why**: Share code across iOS/Android for non-critical screens (settings, profile edit).
+* **When**: Faster iteration where full native isn’t required.
+* **How**: JavaScript talks to native UI primitives via a bridge / new architectures (Fabric, TurboModules).
 
 ---
 
 ## 🟩 Backend (Core Services)
 
-1. **Django**
+### 7) Django (Python web framework)
 
-   * **What**: High-level Python web framework.
-   * **Use**: Instagram was originally built on Django; still powers many APIs.
-   * **When**: Rapid development and robust backend services.
+* **What**: Batteries-included framework (ORM, auth, routing).
+* **Why**: Rapid development, clean architecture, strong ecosystem.
+* **When**: API services, admin panels, business logic.
+* **How**: Views/DRF endpoints call ORM; serialize to GraphQL/JSON; enforce auth/permissions.
+* **Example**: Endpoints for posting photos, comments, likes.
 
-2. **Gunicorn**
+### 8) Gunicorn (WSGI server)
 
-   * **What**: Python WSGI HTTP server.
-   * **Use**: Runs Django apps in production.
-   * **When**: Needed to handle multiple requests efficiently.
+* **What**: Production HTTP server for Python web apps.
+* **Why**: Concurrency & process management in front of Django.
+* **When**: Serving Python apps behind Nginx/Load Balancer.
+* **How**: Pre-fork workers; `workers ≈ 2–4 × CPU cores` (tune with load tests).
 
-3. **PostgreSQL**
+### 9) PostgreSQL (relational DB)
 
-   * **What**: Relational database (SQL).
-   * **Use**: Stores structured Instagram data (users, posts, comments).
-   * **When**: For ACID-compliant, relational data needs.
+* **What**: ACID SQL database.
+* **Why**: Strong consistency, joins, transactions (users, posts, comments).
+* **When**: Structured relationships; integrity constraints.
+* **How**: Normalized schemas, indexes, read replicas for scale.
+* **Example**: “Insert a comment; increment post’s comment\_count in a transaction.”
+* **Principles**: Transactions, indexes (B-tree, GiST), query plans.
 
-4. **Cassandra**
+### 10) Cassandra (NoSQL, wide-column)
 
-   * **What**: NoSQL distributed database.
-   * **Use**: Stores large-scale, high-volume data (likes, follows, analytics).
-   * **When**: Needed for high availability and scalability.
+* **What**: Distributed, partitioned, highly available store.
+* **Why**: Massive write throughput and horizontal scale (likes, follows, activity).
+* **When**: Availability > strong consistency; time-series/high-volume patterns.
+* **How**: Data model around **partition keys**; tune **replication factor** and **consistency level**.
+  **QUORUM = floor(RF/2) + 1**.
+* **Analogy**: Many mailboxes (partitions); each holds rows ordered by time.
 
-5. **Memcached**
+### 11) Memcached (in-memory cache)
 
-   * **What**: In-memory key-value store.
-   * **Use**: Caches frequently accessed data (feeds, sessions).
-   * **When**: To reduce database load and speed up responses.
+* **What**: Key–value cache in RAM.
+* **Why**: Sub-millisecond reads to offload databases (feed prefetch, session lookups).
+* **When**: Hot data, expensive queries, rate-limited resources.
+* **How**: Cache-aside pattern: check cache → compute/fetch on miss → set with TTL.
+  Track **hit ratio**.
 
-6. **RabbitMQ**
+### 12) RabbitMQ (message broker)
 
-   * **What**: Message broker for queuing.
-   * **Use**: Handles tasks asynchronously (notifications, emails).
-   * **When**: For reliable background job processing.
+* **What**: Broker with **exchanges** and **queues**.
+* **Why**: Decouple background work (email, push, thumbnailing).
+* **When**: Reliable task queues; routing by topic.
+* **How**: Producer → **exchange** (direct/topic/fanout) → **queue** → consumer acknowledges.
+* **Example**: “New like” -> queue → async push notification.
 
-7. **Apache Kafka**
+### 13) Apache Kafka (event streaming)
 
-   * **What**: Distributed event-streaming platform.
-   * **Use**: Manages real-time data streams (user activity feeds, live video).
-   * **When**: For scalable event-driven architectures.
+* **What**: Distributed commit log for high-throughput streams.
+* **Why**: Real-time pipelines (activity events, live metrics), replayable history.
+* **When**: Many producers/consumers; large sustained throughput.
+* **How**: Topics split into **partitions**; consumers in a **group** read in parallel; offsets track progress.
+* **Principle**: Throughput scales with **#partitions** × broker I/O.
 
 ---
 
 ## 🟪 Big Data (Storage & Processing)
 
-1. **Haystack**
+### 14) Haystack (Meta’s photo/object store)
 
-   * **What**: Distributed search system.
-   * **Use**: Helps Instagram handle text/image/video search efficiently.
-   * **When**: For indexing and searching billions of posts.
+* **What**: Large-scale object store optimized for media (used at Meta).
+* **Why**: Efficient storage & retrieval for billions of images/videos.
+* **When**: Media-heavy platforms with CDN integration.
+* **How**: Sharded storage; metadata lookup → blob fetch; write-once objects.
 
-2. **Blob Storage**
+### 15) Blob/Object Storage (e.g., S3-like)
 
-   * **What**: Object storage for unstructured data.
-   * **Use**: Stores media files (photos, videos, stories).
-   * **When**: For large-scale content storage.
+* **What**: Durable, cheap storage for unstructured objects.
+* **Why**: Store photos, videos, thumbnails, stories.
+* **When**: Any static media or large files.
+* **How**: PUT/GET by key; lifecycle rules (tiering, deletion); presigned upload URLs from mobile.
 
-3. **Apache Spark**
+### 16) Apache Spark (batch processing)
 
-   * **What**: Big data processing engine.
-   * **Use**: For large-scale analytics, ML model training.
-   * **When**: When batch processing massive datasets.
+* **What**: Distributed compute engine for batch analytics & ML.
+* **Why**: Process TB–PB of data (engagement, ad metrics, training sets).
+* **When**: Nightly jobs, feature generation, ETL.
+* **How**: Build a DAG; lazy **DataFrame** transformations; actions trigger computation.
+* **Principles**: In-memory processing; partitioning; shuffle costs.
 
-4. **Apache Flink**
+### 17) Apache Flink (stream processing)
 
-   * **What**: Real-time stream processing framework.
-   * **Use**: For real-time analytics (trending hashtags, live engagement).
-   * **When**: For continuous data streams.
+* **What**: Stateful, low-latency stream processor.
+* **Why**: Real-time counters (trending reels), fraud/spam detection, online features.
+* **When**: Millisecond–second latency needs on continuous data.
+* **How**: Event-time windows (tumbling/sliding), exactly-once semantics with checkpoints.
 
-5. **Scuba**
+### 18) Scuba (Meta internal analytics)
 
-   * **What**: Internal Facebook (Meta) real-time analysis tool.
-   * **Use**: Used by Instagram engineers for internal data exploration.
-   * **When**: For quick internal insights.
+* **What**: Interactive, near-real-time analysis tool for engineers.
+* **Why**: Quick slice-and-dice of operational metrics (“upload failures last 10 min?”).
+* **When**: On-call, debugging, product analytics.
+* **How**: Pulls from event streams/logs; fast aggregations.
 
-6. **Presto**
+### 19) Presto/Trino (distributed SQL)
 
-   * **What**: Distributed SQL query engine.
-   * **Use**: Querying data across different storage systems (logs, databases).
-   * **When**: For interactive analytics on big datasets.
+* **What**: MPP query engine for interactive SQL over data lakes.
+* **Why**: Query across Hive/S3/Kafka/… without moving data.
+* **When**: Ad-hoc analyses, dashboards, product questions.
+* **How**: **Coordinator** plans query; **workers** process splits in parallel; results streamed back.
 
 ---
 
 ## 🟥 Machine Learning & AI
 
-1. **AutoML**
+### 20) AutoML (automation of model selection/tuning)
 
-   * **What**: Automates ML model selection & training.
-   * **Use**: Helps non-experts build ML models.
-   * **When**: To accelerate ML experimentation.
+* **What**: Tools that search pipelines/hyperparameters automatically.
+* **Why**: Faster iteration for teams without deep ML specialization.
+* **When**: Baselines, rapid A/B ideas, tabular problems.
+* **How**: Try algorithms → evaluate → pick best; export deployable model.
 
-2. **Facebook AI Research (FAIR)**
+### 21) FAIR research & ecosystem (Meta)
 
-   * **What**: Meta’s AI research framework.
-   * **Use**: Instagram leverages it for cutting-edge ML.
-   * **When**: For advancing recommendation algorithms.
+* **What**: Research driving recsys, vision, language; many libraries feed into PyTorch stack.
+* **Why**: State-of-the-art ranking/retrieval for Feed/Explore/Reels.
+* **When**: You need cutting-edge performance at scale.
+* **How**: Advanced losses, architectures, distillation, large-scale training.
 
-3. **TensorFlow**
+### 22) TensorFlow
 
-   * **What**: Google’s ML framework.
-   * **Use**: Used for image recognition, spam detection.
-   * **When**: For training deep learning models.
+* **What**: Deep learning framework.
+* **Why**: Mature tooling; often used for CV/NLP and mobile (TF-Lite).
+* **When**: Image moderation, spam detection, on-device inference.
+* **How**: Define graphs/keras models; train on GPUs/TPUs; export SavedModel.
 
-4. **PyTorch**
+### 23) PyTorch
 
-   * **What**: ML framework from Meta.
-   * **Use**: Instagram’s main ML library (recommendations, content ranking).
-   * **When**: For flexible, production-ready ML.
+* **What**: Dynamic deep learning framework (Meta-origin).
+* **Why**: Research-friendly and production-ready; Instagram/Meta widely use it.
+* **When**: Ranking models, embeddings, multi-task learning.
+* **How**: `nn.Module` models; Autograd; distributed training (DDP/FSDP).
 
-5. **TorchServe**
+### 24) TorchServe (serving)
 
-   * **What**: Model serving tool for PyTorch.
-   * **Use**: Deploys ML models at scale.
-   * **When**: For production ML serving.
+* **What**: Model server for PyTorch.
+* **Why**: Easy, scalable inference endpoints with batching & versioning.
+* **When**: Deploying models behind APIs.
+* **How**: Package model as **.mar**; define handlers; autoscale workers.
 
-6. **LLaMA 3**
+### 25) LLaMA 3 (large language model)
 
-   * **What**: Meta’s large language model.
-   * **Use**: Possibly for moderation, recommendations, and AI assistants.
-   * **When**: For NLP tasks.
+* **What**: Meta’s generative LLM for NLP.
+* **Why**: Moderation, safety filtering, creator tools, support assistants.
+* **When**: Text understanding/generation tasks.
+* **How**: Prompt → tokens → decoder output; fine-tune/adapt with LoRA/RLHF.
 
-7. **FAISS**
+### 26) FAISS (vector search)
 
-   * **What**: Library for fast similarity search.
-   * **Use**: Finds similar images, recommends content.
-   * **When**: For nearest-neighbor searches in ML.
+* **What**: Library for fast nearest-neighbor search in high-dim spaces.
+* **Why**: “Find similar” reels/images/users at scale.
+* **When**: Retrieval for recommendations and search.
+* **How**: Build vector embeddings; index with IVF/HNSW/Flat; query by **cosine/L2**.
+  **Cosine similarity**: `cos(θ) = (A·B) / (||A|| · ||B||)`.
 
 ---
 
 ## 🟨 DevOps & CI/CD
 
-1. **Kubernetes**
+### 27) Docker (containers)
 
-   * **What**: Container orchestration system.
-   * **Use**: Runs Instagram’s services across clusters.
-   * **When**: For scaling apps in production.
+* **What**: Package app + deps into portable images.
+* **Why**: Same environment across dev/stage/prod.
+* **When**: Microservices; reproducible builds.
+* **How**: Layered images; copy-on-write; run as isolated containers.
 
-2. **Docker**
+### 28) Kubernetes (orchestration)
 
-   * **What**: Containerization platform.
-   * **Use**: Packages Instagram services into portable containers.
-   * **When**: For consistent deployments.
+* **What**: Schedules and manages containers across clusters.
+* **Why**: Self-healing, scaling, service discovery, rollouts.
+* **When**: Many services, high availability needs.
+* **How**: **Deployments** (desired state) → **ReplicaSets/Pods**; **Services/Ingress** expose; **HPA** autoscaling based on CPU/QPS.
 
-3. **Jenkins**
+### 29) Jenkins (CI/CD)
 
-   * **What**: CI/CD automation tool.
-   * **Use**: Automates builds, testing, deployments.
-   * **When**: For continuous integration.
+* **What**: Automation server for build/test/deploy.
+* **Why**: Consistent pipelines; gated releases.
+* **When**: Frequent merges, multi-stage delivery.
+* **How**: Pipeline-as-code (`Jenkinsfile`), agents run jobs, promote artifacts.
 
-4. **Prometheus**
+### 30) Prometheus (monitoring)
 
-   * **What**: Monitoring & alerting system.
-   * **Use**: Tracks metrics like server health, latency.
-   * **When**: For performance monitoring.
+* **What**: Time-series metrics & alerting.
+* **Why**: Catch latency/error spikes quickly.
+* **When**: You need numeric telemetry with labels.
+* **How**: Services **expose /metrics**; Prometheus **scrapes**; Alertmanager sends pages.
+  **Metric types**: Counter, Gauge, Histogram, Summary.
 
-5. **Grafana**
+### 31) Grafana (dashboards)
 
-   * **What**: Visualization dashboard.
-   * **Use**: Displays metrics from Prometheus.
-   * **When**: For dashboards and analytics.
+* **What**: Visualization for metrics & logs.
+* **Why**: Insightful dashboards for SRE/product teams.
+* **When**: Build NOC boards, SLO views.
+* **How**: Query Prometheus/Elastic; alerts & annotations.
 
-6. **Elasticsearch**
+### 32) Elasticsearch (search & logs)
 
-   * **What**: Full-text search & analytics engine.
-   * **Use**: For logs and search queries.
-   * **When**: For indexing/searching massive data.
+* **What**: Distributed search/analytics engine using an **inverted index**.
+* **Why**: Fast log search, text queries.
+* **When**: Centralized logging, operational search.
+* **How**: Ship JSON docs → index; query with DSL; aggregate with facets.
 
-7. **Logstash**
+### 33) Logstash (ingest) & 34) Kibana (visualize) — the ELK stack
 
-   * **What**: Log processing pipeline.
-   * **Use**: Collects and processes Instagram’s logs.
-   * **When**: To prepare logs for analysis.
-
-8. **Kibana**
-
-   * **What**: Data visualization for Elasticsearch.
-   * **Use**: Provides dashboards for log data.
-   * **When**: For log monitoring & analysis.
-
----
-
-✅ In summary:
-
-* **Frontend** → Smooth user experience (React, GraphQL, Swift, Kotlin).
-* **Backend** → Robust scalable systems (Django, PostgreSQL, Kafka).
-* **Big Data** → Handles billions of media & interactions.
-* **ML/AI** → Powers recommendations, moderation, personalization.
-* **DevOps** → Ensures reliability, monitoring, and continuous delivery.
+* **What**: Logstash parses/ships logs; Kibana explores/visualizes.
+* **Why**: Full pipeline from app logs → searchable visuals.
+* **When**: Troubleshooting, security auditing.
+* **How**: **Beats/Logstash** → Elasticsearch → **Kibana** dashboards & saved searches.
 
 ---
 
-👉 Do you want me to also **map each tool to a real Instagram feature** (e.g., Stories, Explore, Reels) so it’s even more practical?
+## Practical tie-ins (feature examples)
 
-Perfect 👍 Let’s **map Instagram’s features** to the tools/technologies in the diagram. This will make it crystal clear how each piece fits into what you actually see in the Instagram app.
-
----
-
-# 🟦 Frontend (User Experience Layer)
-
-* **GraphQL** → Powers the **feed, profile, and Explore page** data fetching. Instead of loading too much or too little data, GraphQL fetches only what the screen needs.
-* **Swift (iOS)** → Used in **iPhone app UI** like Stories carousel, Reels video player, DMs.
-* **Kotlin (Android)** → Same as Swift but for **Android app** features like notifications, IGTV.
-* **React Native** → Certain hybrid parts like **profile edit page or settings** for both iOS & Android.
-* **React + Redux (Web)** → **Instagram web app** (explore feed, login, comments) uses React for UI and Redux to manage states like notifications, feed updates.
+* **Feed/Reels ranking**: PyTorch models served by TorchServe; candidate retrieval via FAISS; events via Kafka; features computed in Flink/Spark; results fetched through GraphQL → React/Swift/Kotlin UIs.
+* **Search/Explore**: Vector search (FAISS) + text search (Haystack/Elastic); analytics via Presto; stream updates via Flink.
+* **Notifications**: Django emits events → RabbitMQ/Kafka → workers send pushes/emails; Cassandra stores high-volume activity rows.
+* **Uploads**: Mobile app uploads to object storage (presigned URL) → backend writes metadata to PostgreSQL/Cassandra → background jobs make thumbnails.
 
 ---
 
-# 🟩 Backend (Core Engine)
+## Two tiny mental models
 
-* **Django + Gunicorn** → Core API services:
+**Caching (Memcached)**
 
-  * Uploading posts
-  * Handling likes/comments
-  * User authentication
-* **PostgreSQL** → Structured data like:
+```
+Client → Cache → (hit) return
+              ↘ (miss) DB → set TTL → return
+```
 
-  * Users, followers, comments, hashtags.
-* **Cassandra** → High-volume, distributed data like:
+**Streams (Kafka → Flink)**
 
-  * Billions of likes & relationships (who follows whom).
-* **Memcached** → Caches **user sessions and feed previews** for faster loading.
-* **RabbitMQ** → Background jobs like:
-
-  * Sending push notifications
-  * Sending emails (password reset).
-* **Apache Kafka** → Real-time streams like:
-
-  * Live video chat
-  * Real-time activity feed ("User X liked your photo").
+```
+Producers → Kafka Topic(partitions) → Flink job (windowing/state) → sinks (DB/Cache/Features)
+```
 
 ---
 
-# 🟪 Big Data (Analytics & Storage)
+## Key definitions & principles (cheat sheet)
 
-* **Haystack** → Search system for:
-
-  * Searching usernames, hashtags, captions.
-* **Blob Storage** → Stores **all photos, videos, reels, and stories**.
-* **Apache Spark** → Batch analytics:
-
-  * Which posts got the most likes today?
-  * Which hashtags are trending?
-* **Apache Flink** → Real-time analytics:
-
-  * Showing trending reels **instantly**
-  * Detecting spam accounts in real time.
-* **Scuba (Meta internal tool)** → Used by Instagram engineers for internal analysis like:
-
-  * "How many uploads failed in the last 10 minutes?"
-* **Presto** → Ad-hoc querying:
-
-  * "Show me engagement for Reels in Asia last week."
+* **ACID vs. Eventually Consistent**: PostgreSQL gives strong ACID; Cassandra favors availability and scale with tunable consistency.
+* **Replication factor (Cassandra)**: `QUORUM = floor(RF/2) + 1` for balanced reads/writes.
+* **Cosine similarity (FAISS)**: `cos(θ) = (A·B) / (||A|| · ||B||)` to measure content/user embedding similarity.
+* **Kafka scaling**: More **partitions** ⇒ more consumer parallelism.
+* **Prometheus**: Counters only go up; use **Histograms** for latency SLAs (e.g., p95).
+* **Kubernetes**: Controllers reconcile actual state to desired state (declarative).
 
 ---
 
-# 🟥 Machine Learning & AI (Smart Features)
+# Interview-style Questions
 
-* **AutoML** → Helps non-ML engineers quickly build models for experiments (e.g., A/B testing explore recommendations).
-* **Facebook AI Research (FAIR)** → Research powering Instagram’s recommendation engine (e.g., **Reels ranking**).
-* **TensorFlow** → Image recognition:
+### Basic
 
-  * Detects nudity, violence, spam content.
-* **PyTorch** → Recommendation system & personalization:
+1. GraphQL vs REST — pros/cons and a use case from a social feed.
+2. Why use Django with Gunicorn instead of running Django’s dev server in production?
+3. When would you choose PostgreSQL over Cassandra (and vice versa)?
+4. What is cache-aside? When would you invalidate vs. set short TTLs?
+5. What is a Kafka topic and a partition? Why do partitions matter?
+6. Difference between Spark (batch) and Flink (stream).
+7. What is object storage and why use it for media?
+8. What is Redux used for in a React app?
+9. What does “exactly-once” mean in stream processing?
+10. What are Prometheus Counters vs Gauges?
 
-  * "Which reels should you see next?"
-  * "Which ads are relevant to you?"
-* **TorchServe** → Serves ML models in production for moderation, feed ranking.
-* **LLaMA 3** → NLP models for:
+### Intermediate
 
-  * **Content moderation (toxic comments)**
-  * Auto-caption suggestions.
-* **FAISS** → Finds similar media:
+1. Design an Instagram “like” system: schema choices in PostgreSQL vs Cassandra.
+2. Prevent N+1 queries in GraphQL resolvers — strategies?
+3. Tune Gunicorn worker/thread counts for a CPU-bound vs I/O-bound service.
+4. How would you compute and serve a personalized Explore page end-to-end?
+5. Explain Cassandra’s partition key and clustering columns with an example table.
+6. Describe a zero-downtime deployment on Kubernetes (readiness, liveness, rollouts).
+7. How to avoid cache stampede/thundering herd?
+8. Compare RabbitMQ (queues) with Kafka (streams) for notifications.
+9. Build a p95 latency dashboard for the upload API (Prometheus + Grafana design).
+10. How Presto executes a SQL query over S3-stored parquet data.
 
-  * "Similar Reels"
-  * "Suggested accounts to follow."
+### Advanced
 
----
-
-# 🟨 DevOps & CI/CD (Reliability & Scaling)
-
-* **Kubernetes** → Runs Instagram services at scale across data centers.
-* **Docker** → Containers for microservices (API, search, recommendations).
-* **Jenkins** → Automates deployments (rolling out a new feature like **Reels Ads**).
-* **Prometheus + Grafana** → Monitoring:
-
-  * Detecting latency spikes when millions join a live stream.
-* **Elasticsearch + Logstash + Kibana (ELK stack)** → Log monitoring:
-
-  * Detecting bugs, login failures, suspicious activity.
-
----
-
-✅ **Instagram Feature-to-Tech Mapping Summary**:
-
-* **Stories, Reels, Feed** → React, Swift, Kotlin + Kafka (real-time) + PyTorch (ranking).
-* **Explore page** → GraphQL + FAISS (similarity search) + Spark/Flink (trends).
-* **Search (hashtags, users)** → Haystack + Elasticsearch.
-* **Notifications (likes, comments, follows)** → RabbitMQ + Cassandra.
-* **Content moderation** → TensorFlow + PyTorch + LLaMA 3.
-* **Performance & scaling** → Kubernetes, Docker, Prometheus, ELK.
+1. You must support 1M likes/minute: partitioning strategy (Kafka, Cassandra), idempotency, backpressure.
+2. Design vector search for “Similar Reels”: embedding generation, FAISS index choice (Flat vs IVF/HNSW), refresh cadence, cold-start handling.
+3. Event-time vs processing-time in Flink — why window skew happens and how to fix with watermarks.
+4. Training/serving skew for ranking models: how to detect and mitigate.
+5. Multi-region architecture: data placement, GraphQL gateway, consistency trade-offs.
+6. Cache consistency: write-through vs write-behind vs cache-aside — failure scenarios.
+7. Capacity planning: estimate Kafka topic partitions given producer rate, message size, and consumer parallelism.
+8. Observability for ML serving: features/outputs logging, shadow deployments, canary analysis.
+9. Handling GDPR “right to be forgotten” across object storage, indices, caches, embeddings.
+10. Designing SLOs & alerts for the reels playback pipeline (what signals, thresholds, burn-rate alerts).
 
 ---
 
-👉 Do you want me to also create a **visual feature-to-tool mapping chart** (like “Stories → Kafka + Cassandra + PyTorch”) for quick reference?
+If you want, I can turn this into a one-page printable **cheat sheet** (with the ASCII diagrams cleaned up) or a **slide deck** for interviews.
 
