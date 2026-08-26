@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Planning · System Design Notes</title>
+<style>
+:root {
+  --bg: #ffffff; --bg-alt: #f6f8fa; --fg: #1f2328; --muted: #57606a; --border: #d0d7de;
+  --code-bg: #f6f8fa; --link: #0969da; --accent: #6639ba; --accent-bg: #f5f0ff;
+  --note-bg:#ddf4ff; --note-border:#54aeff; --tip-bg:#dafbe1; --tip-border:#4ac26b;
+  --important-bg:#fbefff; --important-border:#a475f9; --warning-bg:#fff8c5; --warning-border:#d4a72c;
+  --caution-bg:#ffebe9; --caution-border:#ff8182; --table-stripe:#f6f8fa;
+  --sidebar-bg: #f6f8fa; --card-bg: #ffffff; --shadow: 0 1px 3px rgba(31,35,40,0.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#0d1117; --bg-alt:#161b22; --fg:#e6edf3; --muted:#8d96a0; --border:#30363d;
+    --code-bg:#161b22; --link:#4493f8; --accent:#b794f6; --accent-bg:#1f1633;
+    --note-bg:#0d2740; --note-border:#1f6feb; --tip-bg:#0f2b1d; --tip-border:#238636;
+    --important-bg:#271052; --important-border:#8957e5; --warning-bg:#341a00; --warning-border:#9e6a03;
+    --caution-bg:#3c0d0d; --caution-border:#da3633; --table-stripe:#161b22;
+    --sidebar-bg:#0d1117; --card-bg:#161b22; --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--fg); }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6; margin: 0; font-size: 16px;
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  background: var(--code-bg); padding: 0.15em 0.4em; border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-size: 0.88em;
+}
+pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1em; overflow-x: auto; margin: 1em 0; }
+pre code { background: none; padding: 0; font-size: 0.85em; line-height: 1.5; }
+blockquote { margin: 1em 0; padding: 0 1em; color: var(--muted); border-left: 0.25em solid var(--border); }
+blockquote p { margin: 0.5em 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid var(--border); padding: 0.5em 0.9em; text-align: left; }
+th { font-weight: 600; background: var(--table-stripe); }
+tr:nth-child(even) { background: var(--table-stripe); }
+hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
+img { max-width: 100%; border-radius: 6px; }
+input[type="checkbox"] { margin-right: 0.5em; }
+ul, ol { padding-left: 1.7em; }
+li { margin: 0.3em 0; }
+.alert { border-left: 0.25em solid var(--border); border-radius: 6px; padding: 0.8em 1em; margin: 1em 0; }
+.alert-title { font-weight: 700; margin: 0 0 0.4em 0 !important; text-transform: capitalize; letter-spacing: 0.02em; }
+.alert p:last-child { margin-bottom: 0; }
+.alert-note { background: var(--note-bg); border-left-color: var(--note-border); }
+.alert-tip { background: var(--tip-bg); border-left-color: var(--tip-border); }
+.alert-important { background: var(--important-bg); border-left-color: var(--important-border); }
+.alert-warning { background: var(--warning-bg); border-left-color: var(--warning-border); }
+.alert-caution { background: var(--caution-bg); border-left-color: var(--caution-border); }
+.mermaid { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1em; margin: 1.2em 0; overflow-x: auto; }
+
+/* ---- site chrome ---- */
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 280px; flex-shrink: 0; background: var(--sidebar-bg); border-right: 1px solid var(--border);
+  padding: 1.2rem 1rem 3rem; overflow-y: auto; position: sticky; top: 0; height: 100vh;
+}
+.sidebar .brand { display: block; font-weight: 700; font-size: 1.15rem; margin-bottom: 1.2rem; color: var(--fg); }
+.sidebar .brand span { color: var(--accent); }
+.sidebar nav h3 {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);
+  margin: 1.3em 0 0.4em; padding-top: 0.6em; border-top: 1px solid var(--border);
+}
+.sidebar nav h3:first-of-type { border-top: none; padding-top: 0; margin-top: 0.4em; }
+.sidebar nav ul { list-style: none; padding-left: 0; margin: 0; }
+.sidebar nav li { margin: 0; }
+.sidebar nav a {
+  display: block; padding: 0.32em 0.5em; border-radius: 6px; color: var(--fg); font-size: 0.89rem;
+}
+.sidebar nav a:hover { background: var(--accent-bg); text-decoration: none; }
+.sidebar nav a.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+.sidebar nav a.resource { color: var(--muted); font-size: 0.83rem; }
+.sidebar .menu-toggle { display: none; }
+
+.content-wrap { flex: 1; min-width: 0; }
+.topbar {
+  display: none; position: sticky; top: 0; z-index: 5; background: var(--bg);
+  border-bottom: 1px solid var(--border); padding: 0.8rem 1rem; align-items: center; gap: 0.8rem;
+}
+.topbar .brand { font-weight: 700; color: var(--fg); }
+main { max-width: 880px; margin: 0 auto; padding: 2.5rem 2.5rem 5rem; }
+.breadcrumb { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.6rem; }
+.breadcrumb a { color: var(--muted); }
+.breadcrumb a:hover { color: var(--link); }
+h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.25; margin-top: 1.8em; margin-bottom: 0.6em; }
+h1 { font-size: 2em; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; margin-top: 0; }
+h2 { font-size: 1.5em; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+h3 { font-size: 1.25em; }
+p { margin: 0.8em 0; }
+.page-footer { color: var(--muted); font-size: 0.82em; margin-top: 3em; padding-top: 1em; border-top: 1px solid var(--border); display: flex; justify-content: space-between; gap: 1em; flex-wrap: wrap; }
+.empty-note { color: var(--muted); }
+
+/* ---- homepage ---- */
+.hero { padding: 4rem 2.5rem 2.5rem; max-width: 1100px; margin: 0 auto; }
+.hero h1 { border: none; font-size: 2.6rem; margin-bottom: 0.3em; }
+.hero p.lede { color: var(--muted); font-size: 1.15rem; max-width: 640px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 3rem; }
+.card {
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem;
+  box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 0.6rem;
+}
+.card .icon { font-size: 1.8rem; }
+.card h2 { margin: 0; font-size: 1.15rem; border: none; padding: 0; }
+.card p { margin: 0; color: var(--muted); font-size: 0.88rem; }
+.card ul { margin: 0.4em 0 0; padding-left: 1.1em; font-size: 0.87rem; }
+.card ul a { color: var(--fg); }
+.card ul a:hover { color: var(--link); }
+.section-title { max-width: 1100px; margin: 0 auto; padding: 0.5rem 2.5rem 0.8rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.resource-list { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 1rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.resource-list a {
+  display: inline-flex; align-items: center; gap: 0.4em; background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 999px; padding: 0.4em 0.9em; font-size: 0.85rem; color: var(--fg); box-shadow: var(--shadow);
+}
+.resource-list a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+.soon-list { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 4rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.soon-list span {
+  display: inline-flex; align-items: center; gap: 0.4em; background: var(--bg-alt); border: 1px dashed var(--border);
+  border-radius: 999px; padding: 0.4em 0.9em; font-size: 0.83rem; color: var(--muted);
+}
+
+@media (max-width: 860px) {
+  .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; box-shadow: 4px 0 16px rgba(0,0,0,0.25); transition: left 0.2s ease; }
+  .sidebar.open { left: 0; }
+  .topbar { display: flex; }
+  main, .hero, .grid, .resource-list, .soon-list, .section-title { padding-left: 1.2rem; padding-right: 1.2rem; }
+  .menu-toggle {
+    display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px;
+    border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); cursor: pointer; font-size: 1.1rem;
+  }
+}
+</style>
+
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><a class="brand" href="../index.html">System <span>Design</span> Notes</a><nav><h3>🖥️ Front-End</h3><ul><li><a class="" href="../01-Front-end/graphql/graphql-vs-rest.html">GraphQL vs REST</a></li><li><a class="" href="../01-Front-end/graphql/http/ssr-vs-csr.html">SSR vs CSR</a></li><li><a class="" href="../01-Front-end/graphql/http/ssr-vs-csr-v2.html">SSR vs CSR (v2)</a></li></ul><h3>🗄️ Database</h3><ul><li><a class="" href="../05-database/Data-Base/00-index.html">Database Index</a></li><li><a class="" href="../05-database/Data-Base/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li><li><a class="" href="../05-database/Data-Base/01A-Database-basic.html">PostgreSQL Views Explained</a></li><li><a class="" href="../05-database/Data-Base/02-partiontion.html">Partitioning</a></li><li><a class="" href="../05-database/Data-Base/03-horizintal-scaling.html">Horizontal Scaling</a></li><li><a class="" href="../05-database/Data-Base/04-cap theorem-questions.html">CAP Theorem Questions</a></li><li><a class="" href="../05-database/Data-Base/08-indxing.html">Indexing</a></li><li><a class="" href="../05-database/Data-Base/lecture-2.html">Lecture 2</a></li><li><a class="" href="../05-database/Data-Base/mislanious-terms.html">Miscellaneous Database Terms</a></li><li><a class="" href="../05-database/Data-Base/rendom save.can be deleted.html">Scratch Note: Polyglot Persistence</a></li><li><a class="" href="../05-database/types-of-database/factors.html">Database Performance Factors</a></li><li><a class="" href="../05-database/types-of-database/how to chose the database.html">How to Choose the Database</a></li><li><a class="resource" href="../05-database/replications/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides (PDF)</a></li><li><a class="resource" href="../05-database/replications/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.3 (PDF)</a></li><li><a class="resource" href="../05-database/replications/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.4 (PDF)</a></li><li><a class="resource" href="../05-database/replications/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.5 (PDF)</a></li><li><a class="resource" href="../05-database/replications/replication-2.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive (PDF)</a></li></ul><h3>🔐 Authentication</h3><ul><li><a class="" href="../06-authentication/README.html">Authentication Master Guide</a></li><li><a class="" href="../06-authentication/antigravity-filename.html">Authentication Master Guide (copy)</a></li><li><a class="" href="../06-authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a class="" href="../06-authentication/01-authentication/00-index.html">Authentication Engineering Roadmap</a></li><li><a class="" href="../06-authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li><li><a class="" href="../06-authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li><li><a class="" href="../06-authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li><li><a class="" href="../06-authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a class="" href="../06-authentication/02-social-login/google-login-plantuml.html">Google Sign-In PlantUML Diagram</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a class="" href="../distributed-system/distributed system.html">Distributed Systems</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a class="" href="../sqs/01-sqs.html">SQS Overview</a></li><li><a class="" href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a class="" href="../sqs/use-case.html">SQS Use Cases</a></li><li><a class="" href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../sqs/Message Retries and Dead-Lettering_ Theory and Comparison.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering (PDF)</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a class="" href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a class="" href="../web-servers/server.html">Web Servers</a></li><li><a class="" href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a class="" href="../software-developmentprincipal.md/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a class="" href="00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a class="" href=" 01Requirements & Planning.html">Requirements &amp; Planning</a></li><li><a class="" href="01-b-MVP.html">MVP Planning</a></li><li><a class="active" href="02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a class="" href="../project-explaintion/imge-share system/200images.html">Image Share System (200 Images)</a></li><li><a class="" href="../project-explaintion/instagram/major tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a class="" href="../mislanious/01-pubsub and pubnub.html">Pub/Sub and PubNub</a></li><li><a class="" href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a class="" href="../mislanious/query-string.html">Query Strings</a></li></ul><h3>📄 Overview</h3><ul><li><a class="" href="../readme.html">Notes Overview</a></li><li><a class="resource" href="../00--the-ultimate-guide/SystemDesignInterview.pdf" target="_blank" rel="noopener">📎 System Design Interview Guide (PDF)</a></li></ul></nav></aside>
+  <div class="content-wrap">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <span class="brand">System Design Notes</span>
+    </div>
+    <main>
+      <p class="breadcrumb"><a href="../index.html">Home</a> / Planning &amp; Roadmap / API Planning</p>
+      <h1>API Planning</h1>
+      <p>Here’s a refined system-design-oriented overview to help you deeply grasp the trade-offs between <strong>REST</strong>, <strong>GraphQL</strong>, and <strong>gRPC</strong>, along with key aspects like schemas, auth requirements, and error handling:</p>
+<hr>
+<h2 id="1-choosing-rest-graphql-or-grpc-fit-for-purpose">1. Choosing REST, GraphQL, or gRPC: Fit-for-Purpose</h2>
+<h3 id="rest"><strong>REST</strong></h3>
+<ul>
+<li><strong>Best for</strong>: Simple CRUD interfaces, public or widely accessible APIs, and services benefiting from HTTP caching and broad client support.
+(<a href="https://www.designgurus.io/blog/rest-graphql-grpc-system-design?utm_source=chatgpt.com" title="REST vs GraphQL vs gRPC - Design Gurus">Design Gurus</a>, <a href="https://konghq.com/blog/engineering/rest-vs-grpc-vs-graphql?utm_source=chatgpt.com" title="When to Use REST vs. gRPC vs. GraphQL - Kong Inc.">Kong Inc.</a>, <a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design?utm_source=chatgpt.com" title="Best practices for RESTful web API design - Azure - Microsoft Learn">Microsoft Learn</a>)</li>
+<li><strong>Advantages</strong>: Easy to adopt, universally supported, stateless, and cache-friendly.
+(<a href="https://www.designgurus.io/blog/rest-graphql-grpc-system-design?utm_source=chatgpt.com" title="REST vs GraphQL vs gRPC - Design Gurus">Design Gurus</a>, <a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design?utm_source=chatgpt.com" title="Best practices for RESTful web API design - Azure - Microsoft Learn">Microsoft Learn</a>)</li>
+<li><strong>Drawbacks</strong>: Risk of over-fetching or under-fetching, versioning can get messy, not optimized for real-time.
+(<a href="https://systemdesignschool.io/blog/rest-grpc-graphql?utm_source=chatgpt.com" title="Comparing REST, gRPC, and GraphQL - System Design School">systemdesignschool.io</a>, <a href="https://konghq.com/blog/engineering/rest-vs-grpc-vs-graphql?utm_source=chatgpt.com" title="When to Use REST vs. gRPC vs. GraphQL - Kong Inc.">Kong Inc.</a>, <a href="https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/?utm_source=chatgpt.com" title="Best practices for REST API design - The Stack Overflow Blog">Stack Overflow Blog</a>)</li>
+</ul>
+<h3 id="graphql"><strong>GraphQL</strong></h3>
+<ul>
+<li><strong>Best for</strong>: Complex schemas, front-end–driven data needs, and scenarios demanding single-query fetching (e.g., SPAs or mobile apps).
+(<a href="https://systemdesignschool.io/blog/rest-grpc-graphql?utm_source=chatgpt.com" title="Comparing REST, gRPC, and GraphQL - System Design School">systemdesignschool.io</a>, <a href="https://en.wikipedia.org/wiki/GraphQL?utm_source=chatgpt.com" title="GraphQL">Wikipedia</a>, <a href="https://pradeepl.com/blog/api/rest-vs-graphql-vs-grpc/?utm_source=chatgpt.com" title="API architecture showdown - Rest vs graphQL vs gRPC">Pradeep Loganathan&#39;s Blog</a>)</li>
+<li><strong>Advantages</strong>: Highly flexible queries, avoids over-fetching, supports real-time via subscriptions, and facilitates schema evolution without versioning.
+(<a href="https://en.wikipedia.org/wiki/GraphQL?utm_source=chatgpt.com" title="GraphQL">Wikipedia</a>, <a href="https://pradeepl.com/blog/api/rest-vs-graphql-vs-grpc/?utm_source=chatgpt.com" title="API architecture showdown - Rest vs graphQL vs gRPC">Pradeep Loganathan&#39;s Blog</a>)</li>
+<li><strong>Drawbacks</strong>: More complex to set up, steeper learning curve, can be less performant (some benchmarks show it slower than alternatives)
+(<a href="https://www.designgurus.io/blog/rest-graphql-grpc-system-design?utm_source=chatgpt.com" title="REST vs GraphQL vs gRPC - Design Gurus">Design Gurus</a>, <a href="https://arxiv.org/abs/2212.07475?utm_source=chatgpt.com" title="Comparative review of selected Internet communication protocols">arXiv</a>)</li>
+</ul>
+<h3 id="grpc"><strong>gRPC</strong></h3>
+<ul>
+<li><strong>Best for</strong>: High-performance microservices, low-latency or streaming interactions, internal backend communication.
+(<a href="https://www.designgurus.io/blog/rest-graphql-grpc-system-design?utm_source=chatgpt.com" title="REST vs GraphQL vs gRPC - Design Gurus">Design Gurus</a>, <a href="https://en.wikipedia.org/wiki/GRPC?utm_source=chatgpt.com" title="GRPC">Wikipedia</a>, <a href="https://pradeepl.com/blog/api/rest-vs-graphql-vs-grpc/?utm_source=chatgpt.com" title="API architecture showdown - Rest vs graphQL vs gRPC">Pradeep Loganathan&#39;s Blog</a>, <a href="https://arxiv.org/abs/2212.07475?utm_source=chatgpt.com" title="Comparative review of selected Internet communication protocols">arXiv</a>)</li>
+<li><strong>Advantages</strong>: Efficient binary payloads, HTTP/2 benefits (multiplexing, streaming), strong typing via Protobuf, multi-language support.
+(<a href="https://www.designgurus.io/blog/rest-graphql-grpc-system-design?utm_source=chatgpt.com" title="REST vs GraphQL vs gRPC - Design Gurus">Design Gurus</a>, <a href="https://en.wikipedia.org/wiki/GRPC?utm_source=chatgpt.com" title="GRPC">Wikipedia</a>)</li>
+<li><strong>Drawbacks</strong>: Steeper entry cost, limited browser support, and somewhat smaller ecosystem versus REST.
+(<a href="https://en.wikipedia.org/wiki/GRPC?utm_source=chatgpt.com" title="GRPC">Wikipedia</a>, <a href="https://pradeepl.com/blog/api/rest-vs-graphql-vs-grpc/?utm_source=chatgpt.com" title="API architecture showdown - Rest vs graphQL vs gRPC">Pradeep Loganathan&#39;s Blog</a>)</li>
+</ul>
+<p><strong>In summary</strong>:</p>
+<ul>
+<li>Use <strong>REST</strong> for simplicity, broad compatibility, and stable resource operations.</li>
+<li>Use <strong>GraphQL</strong> when clients need tailored data shapes and dynamic queries.</li>
+<li>Opt for <strong>gRPC</strong> when performance, streaming, and typed contracts are paramount, especially in internal systems.</li>
+</ul>
+<hr>
+<h2 id="2-designing-inputoutput-schemas">2. Designing Input/Output Schemas</h2>
+<ul>
+<li><strong>REST</strong>: Define request/response formats using standards like JSON Schema or OpenAPI—lightweight and resource-centric.
+(<a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design?utm_source=chatgpt.com" title="Best practices for RESTful web API design - Azure - Microsoft Learn">Microsoft Learn</a>, <a href="https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/?utm_source=chatgpt.com" title="Best practices for REST API design - The Stack Overflow Blog">Stack Overflow Blog</a>)</li>
+<li><strong>GraphQL</strong>: Define a strongly-typed schema with <code>Query</code>, <code>Mutation</code>, and optionally <code>Subscription</code> types using GraphQL SDL. Enables introspection and client-driven queries.
+(<a href="https://en.wikipedia.org/wiki/GraphQL?utm_source=chatgpt.com" title="GraphQL">Wikipedia</a>)</li>
+<li><strong>gRPC</strong>: Use <code>.proto</code> files (Protocol Buffers) to define services, messages, and RPC contracts—auto-generates models across languages.
+(<a href="https://en.wikipedia.org/wiki/GRPC?utm_source=chatgpt.com" title="GRPC">Wikipedia</a>)</li>
+</ul>
+<hr>
+<h2 id="3-authentication--authorization-requirements">3. Authentication &amp; Authorization Requirements</h2>
+<ul>
+<li><strong>REST</strong>: Commonly uses JWTs, OAuth 2.0, API keys, or basic auth. Security practices enforced at API gateway or middleware.</li>
+<li><strong>GraphQL</strong>: Often layered atop HTTP; uses similar mechanisms but with resolvers checking access or embedding auth logic per field.</li>
+<li><strong>gRPC</strong>: Supports TLS and token-based auth via interceptors (server/client)—allowing granular control.
+(<a href="https://en.wikipedia.org/wiki/GRPC?utm_source=chatgpt.com" title="GRPC">Wikipedia</a>)</li>
+</ul>
+<hr>
+<h2 id="4-error-handling-and-schemas">4. Error Handling and Schemas</h2>
+<h3 id="rest-http-style">REST (HTTP-style)</h3>
+<ul>
+<li><p>Use standard HTTP status codes (e.g., 400 Bad Request, 401 Unauthorized, 404 Not Found, 500 Internal Error).
+(<a href="https://www.baeldung.com/rest-api-error-handling-best-practices?utm_source=chatgpt.com" title="Best Practices for REST API Error Handling - Baeldung">Baeldung on Kotlin</a>, <a href="https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/?utm_source=chatgpt.com" title="Best practices for REST API design - The Stack Overflow Blog">Stack Overflow Blog</a>)</p>
+</li>
+<li><p>Embrace structured error responses (JSON) with:</p>
+<ul>
+<li>Machine-readable codes</li>
+<li>Human-readable messages</li>
+<li>Optional links to docs or error types</li>
+<li>Correlation IDs for debugging
+(<a href="https://zuplo.com/learning-center/best-practices-for-api-error-handling?utm_source=chatgpt.com" title="Best Practices for Consistent API Error Handling - Zuplo">Zuplo</a>, <a href="https://swagger.io/blog/problem-details-rfc9457-api-error-handling/?utm_source=chatgpt.com" title="Problem Details (RFC 9457): Getting Hands-On with API Error ...">Swagger</a>)</li>
+</ul>
+</li>
+<li><p><strong>RFC 9457 (Problem Details)</strong> offers a standard envelope for errors, with structure, extensibility, and IANA registry compatibility.
+(<a href="https://swagger.io/blog/problem-details-rfc9457-api-error-handling/?utm_source=chatgpt.com" title="Problem Details (RFC 9457): Getting Hands-On with API Error ...">Swagger</a>)</p>
+</li>
+<li><p>Ensure compliance with security best practices: don’t leak internal details, avoid overly specific auth errors, use middleware and gateways for consistency.
+(<a href="https://dev.to/stripe/designing-apis-for-humans-error-messages-94p?utm_source=chatgpt.com" title="Designing APIs for humans: Error messages - DEV Community">DEV Community</a>, <a href="https://zuplo.com/learning-center/best-practices-for-api-error-handling?utm_source=chatgpt.com" title="Best Practices for Consistent API Error Handling - Zuplo">Zuplo</a>, <a href="https://treblle.com/blog/rest-api-error-handling?utm_source=chatgpt.com" title="How to Handle and Return Errors in a REST API - Treblle">Treblle</a>)</p>
+</li>
+</ul>
+<h3 id="graphql-1">GraphQL</h3>
+<ul>
+<li>Responses include an <code>errors</code> array—partial data may be returned alongside errors.</li>
+<li>Encourage consistent structure in error payloads; can wrap per-field errors clearly.</li>
+</ul>
+<h3 id="grpc-1">gRPC</h3>
+<ul>
+<li>Leverages structured status codes and rich error details—more consistent and typed than REST responses.</li>
+</ul>
+<hr>
+<h2 id="5-system-design-implications-for-apis">5. System-Design Implications for APIs</h2>
+<ul>
+<li><p><strong>Client complexity</strong>:</p>
+<ul>
+<li>REST: simple endpoints and https tools.</li>
+<li>GraphQL: more front-end logic due to flexible queries.</li>
+<li>gRPC: strong client libraries, but less browser compatibility.</li>
+</ul>
+</li>
+<li><p><strong>Caching</strong>:</p>
+<ul>
+<li>REST benefits from HTTP caching.</li>
+<li>GraphQL is harder to cache, but techniques like persisted queries help.</li>
+<li>gRPC has less conventional caching patterns.</li>
+</ul>
+</li>
+<li><p><strong>API Gateway</strong>: central for auth, validation, caching, routing, and metrics across all API styles.</p>
+</li>
+<li><p><strong>Schema governance</strong>:</p>
+<ul>
+<li>OpenAPI for REST.</li>
+<li>GraphQL introspection and SDL.</li>
+<li>Protobuf for gRPC.</li>
+</ul>
+</li>
+<li><p><strong>Evolving APIs</strong>:</p>
+<ul>
+<li>REST: versioning or via badged paths.</li>
+<li>GraphQL: versionless APIs using deprecation directives.
+(<a href="https://en.wikipedia.org/wiki/GraphQL?utm_source=chatgpt.com" title="GraphQL">Wikipedia</a>)</li>
+<li>gRPC: add new methods or messages; maintain backward compatibility.</li>
+</ul>
+</li>
+<li><p><strong>Monitoring &amp; observability</strong>:</p>
+<ul>
+<li>Track error patterns, latencies, and throughput.</li>
+<li>Unified logging and correlation IDs aid debugging in production.
+(<a href="https://zuplo.com/learning-center/best-practices-for-api-error-handling?utm_source=chatgpt.com" title="Best Practices for Consistent API Error Handling - Zuplo">Zuplo</a>)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="6-quick-comparison-table">6. Quick Comparison Table</h2>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>REST</th>
+<th>GraphQL</th>
+<th>gRPC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Best Use Case</td>
+<td>CRUD + public APIs</td>
+<td>Flexible queries, evolving needs</td>
+<td>High-performance microservices, streaming</td>
+</tr>
+<tr>
+<td>Schema Definition</td>
+<td>JSON Schema / OpenAPI</td>
+<td>GraphQL SDL</td>
+<td>Protocol Buffers (<code>.proto</code> files)</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>JWT, OAuth, API Key</td>
+<td>Same as REST + field-level control</td>
+<td>TLS + token interceptors</td>
+</tr>
+<tr>
+<td>Error Handling</td>
+<td>HTTP codes + Problem Details</td>
+<td><code>errors</code> array; partial data</td>
+<td>Typed errors, structured status codes</td>
+</tr>
+<tr>
+<td>Versioning Strategy</td>
+<td>Path/versioning</td>
+<td><code>@deprecated</code> schema evolution</td>
+<td>Add new RPCs/messages, avoid breaking changes</td>
+</tr>
+<tr>
+<td>Caching Support</td>
+<td>Strong via HTTP</td>
+<td>Complex (partial techniques)</td>
+<td>Poor fit for HTTP caching</td>
+</tr>
+<tr>
+<td>Client Tooling</td>
+<td>Universal HTTP clients</td>
+<td>Needs GraphQL tooling</td>
+<td>Auto-generated clients across languages</td>
+</tr>
+<tr>
+<td>Real-time Support</td>
+<td>Limited (long polling, websockets)</td>
+<td>Subscriptions built-in</td>
+<td>Native streaming with bidirectional support</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="summary-for-system-designers">Summary for System Designers</h2>
+<ul>
+<li><p><strong>Start with REST</strong> for standard use cases—well-supported and easy to scale.</p>
+</li>
+<li><p><strong>Choose GraphQL</strong> for dynamic, client-driven data retrieval, especially in modern SPAs or mobile contexts.</p>
+</li>
+<li><p><strong>Use gRPC</strong> when communication performance and strict contracts matter, particularly in microservices ecosystems.</p>
+</li>
+<li><p>For <strong>APIs</strong>, define:</p>
+<ul>
+<li>Clear schemas (OpenAPI, SDL, or <code>.proto</code>)</li>
+<li>Authentication layers (gateway, interceptors)</li>
+<li>Structured input/output validation</li>
+<li>Consistent error handling using standards like RFC 9457</li>
+<li>Monitoring, observability, and versioning strategies upfront</li>
+</ul>
+</li>
+</ul>
+<p>Let me know if you&#39;d like sample schema definitions, OpenAPI specs, <code>.proto</code> files, or tailored guidance for your specific system design scenario—I’d be happy to walk through examples!</p>
+
+      <div class="page-footer">
+        <span>Section: Planning &amp; Roadmap</span>
+        <span>Source: <code>02-apis</code></span>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+  const t = document.getElementById('menuToggle');
+  const s = document.getElementById('sidebar');
+  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+</script>
+
+</body>
+</html>
