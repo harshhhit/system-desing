@@ -8,19 +8,33 @@
 :root {
   --bg: #ffffff; --bg-alt: #f6f8fa; --fg: #1f2328; --muted: #57606a; --border: #d0d7de;
   --code-bg: #f6f8fa; --link: #0969da; --accent: #6639ba; --accent-bg: #f5f0ff;
-  --note-bg:#ddf4ff; --note-border:#54aeff; --tip-bg:#dafbe1; --tip-border:#4ac26b;
-  --important-bg:#fbefff; --important-border:#a475f9; --warning-bg:#fff8c5; --warning-border:#d4a72c;
-  --caution-bg:#ffebe9; --caution-border:#ff8182; --table-stripe:#f6f8fa;
-  --sidebar-bg: #f6f8fa; --card-bg: #ffffff; --shadow: 0 1px 3px rgba(31,35,40,0.08);
+  --sidebar-bg: #f6f8fa; --card-bg: #ffffff; --shadow: 0 2px 10px rgba(31,35,40,0.08);
+  --shadow-hover: 0 10px 24px rgba(31,35,40,0.14);
+
+  /* per-topic accent colors */
+  --c-frontend: #2563eb;   --c-frontend-bg: #eaf1ff;
+  --c-database: #16a34a;   --c-database-bg: #e9f9ef;
+  --c-auth:     #a855f7;   --c-auth-bg:     #f6ecff;
+  --c-dist:     #0891b2;   --c-dist-bg:     #e6f8fb;
+  --c-msg:      #ea580c;   --c-msg-bg:      #fff1e6;
+  --c-storage:  #db2777;   --c-storage-bg:  #ffe9f4;
+  --c-web:      #4f46e5;   --c-web-bg:      #edecff;
+  --c-dev:      #0d9488;   --c-dev-bg:      #e2fbf7;
+  --c-plan:     #dc2626;   --c-plan-bg:     #ffecec;
+  --c-proj:     #b45309;   --c-proj-bg:     #fff3e0;
+  --c-misc:     #7c3aed;   --c-misc-bg:     #f2ebff;
+  --c-overview: #475569;   --c-overview-bg: #eef1f5;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg:#0d1117; --bg-alt:#161b22; --fg:#e6edf3; --muted:#8d96a0; --border:#30363d;
     --code-bg:#161b22; --link:#4493f8; --accent:#b794f6; --accent-bg:#1f1633;
-    --note-bg:#0d2740; --note-border:#1f6feb; --tip-bg:#0f2b1d; --tip-border:#238636;
-    --important-bg:#271052; --important-border:#8957e5; --warning-bg:#341a00; --warning-border:#9e6a03;
-    --caution-bg:#3c0d0d; --caution-border:#da3633; --table-stripe:#161b22;
-    --sidebar-bg:#0d1117; --card-bg:#161b22; --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    --sidebar-bg:#0d1117; --card-bg:#161b22; --shadow: 0 2px 10px rgba(0,0,0,0.45);
+    --shadow-hover: 0 10px 24px rgba(0,0,0,0.55);
+    --frontend-bg:#0d1117;
+    --c-frontend-bg:#0e1f3d; --c-database-bg:#0d2417; --c-auth-bg:#26123d; --c-dist-bg:#062a31;
+    --c-msg-bg:#33190a; --c-storage-bg:#33081d; --c-web-bg:#181240; --c-dev-bg:#052e28;
+    --c-plan-bg:#320a0a; --c-proj-bg:#301c05; --c-misc-bg:#1e1140; --c-overview-bg:#1b2027;
   }
 }
 * { box-sizing: border-box; }
@@ -31,34 +45,8 @@ body {
 }
 a { color: var(--link); text-decoration: none; }
 a:hover { text-decoration: underline; }
-code {
-  background: var(--code-bg); padding: 0.15em 0.4em; border-radius: 6px;
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-size: 0.88em;
-}
-pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1em; overflow-x: auto; margin: 1em 0; }
-pre code { background: none; padding: 0; font-size: 0.85em; line-height: 1.5; }
-blockquote { margin: 1em 0; padding: 0 1em; color: var(--muted); border-left: 0.25em solid var(--border); }
-blockquote p { margin: 0.5em 0; }
-table { border-collapse: collapse; width: 100%; margin: 1em 0; }
-th, td { border: 1px solid var(--border); padding: 0.5em 0.9em; text-align: left; }
-th { font-weight: 600; background: var(--table-stripe); }
-tr:nth-child(even) { background: var(--table-stripe); }
-hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
-img { max-width: 100%; border-radius: 6px; }
-input[type="checkbox"] { margin-right: 0.5em; }
-ul, ol { padding-left: 1.7em; }
-li { margin: 0.3em 0; }
-.alert { border-left: 0.25em solid var(--border); border-radius: 6px; padding: 0.8em 1em; margin: 1em 0; }
-.alert-title { font-weight: 700; margin: 0 0 0.4em 0 !important; text-transform: capitalize; letter-spacing: 0.02em; }
-.alert p:last-child { margin-bottom: 0; }
-.alert-note { background: var(--note-bg); border-left-color: var(--note-border); }
-.alert-tip { background: var(--tip-bg); border-left-color: var(--tip-border); }
-.alert-important { background: var(--important-bg); border-left-color: var(--important-border); }
-.alert-warning { background: var(--warning-bg); border-left-color: var(--warning-border); }
-.alert-caution { background: var(--caution-bg); border-left-color: var(--caution-border); }
-.mermaid { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1em; margin: 1.2em 0; overflow-x: auto; }
 
-/* ---- site chrome ---- */
+/* ---- layout: sidebar + content, same chrome as inner pages ---- */
 .layout { display: flex; min-height: 100vh; }
 .sidebar {
   width: 280px; flex-shrink: 0; background: var(--sidebar-bg); border-right: 1px solid var(--border);
@@ -72,53 +60,74 @@ li { margin: 0.3em 0; }
 }
 .sidebar nav h3:first-of-type { border-top: none; padding-top: 0; margin-top: 0.4em; }
 .sidebar nav ul { list-style: none; padding-left: 0; margin: 0; }
-.sidebar nav li { margin: 0; }
 .sidebar nav a {
   display: block; padding: 0.32em 0.5em; border-radius: 6px; color: var(--fg); font-size: 0.89rem;
 }
 .sidebar nav a:hover { background: var(--accent-bg); text-decoration: none; }
 .sidebar nav a.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
 .sidebar nav a.resource { color: var(--muted); font-size: 0.83rem; }
-.sidebar .menu-toggle { display: none; }
-
 .content-wrap { flex: 1; min-width: 0; }
 .topbar {
   display: none; position: sticky; top: 0; z-index: 5; background: var(--bg);
   border-bottom: 1px solid var(--border); padding: 0.8rem 1rem; align-items: center; gap: 0.8rem;
 }
 .topbar .brand { font-weight: 700; color: var(--fg); }
-main { max-width: 880px; margin: 0 auto; padding: 2.5rem 2.5rem 5rem; }
-.breadcrumb { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.6rem; }
-.breadcrumb a { color: var(--muted); }
-.breadcrumb a:hover { color: var(--link); }
-h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.25; margin-top: 1.8em; margin-bottom: 0.6em; }
-h1 { font-size: 2em; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; margin-top: 0; }
-h2 { font-size: 1.5em; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
-h3 { font-size: 1.25em; }
-p { margin: 0.8em 0; }
-.page-footer { color: var(--muted); font-size: 0.82em; margin-top: 3em; padding-top: 1em; border-top: 1px solid var(--border); display: flex; justify-content: space-between; gap: 1em; flex-wrap: wrap; }
-.empty-note { color: var(--muted); }
+.menu-toggle {
+  display: none; align-items: center; justify-content: center; width: 34px; height: 34px;
+  border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); cursor: pointer; font-size: 1.1rem;
+}
+
+/* ---- revision banner ---- */
+.revision-banner {
+  display: none; align-items: center; gap: 0.8rem; margin: 1.2rem 2.5rem 0; padding: 0.9rem 1.2rem;
+  background: linear-gradient(135deg, var(--accent-bg), var(--card-bg)); border: 1px solid var(--accent);
+  border-radius: 12px; box-shadow: var(--shadow); max-width: 1100px; margin-left: auto; margin-right: auto;
+}
+.revision-banner.show { display: flex; }
+.revision-banner .rb-icon { font-size: 1.6rem; }
+.revision-banner .rb-text { flex: 1; font-size: 0.92rem; }
+.revision-banner .rb-text strong { color: var(--accent); }
+.revision-banner a.rb-link {
+  background: var(--accent); color: #fff; padding: 0.4em 0.9em; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+  white-space: nowrap;
+}
+.revision-banner a.rb-link:hover { opacity: 0.88; text-decoration: none; }
+.revision-banner .rb-close {
+  cursor: pointer; color: var(--muted); border: none; background: none; font-size: 1.1rem; padding: 0 0.2em;
+}
 
 /* ---- homepage ---- */
-.hero { padding: 4rem 2.5rem 2.5rem; max-width: 1100px; margin: 0 auto; }
+.hero { padding: 3rem 2.5rem 1.5rem; max-width: 1100px; margin: 0 auto; }
 .hero h1 { border: none; font-size: 2.6rem; margin-bottom: 0.3em; }
 .hero p.lede { color: var(--muted); font-size: 1.15rem; max-width: 640px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 3rem; }
+.stats { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.2rem; }
+.stat { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 0.7rem 1.1rem; box-shadow: var(--shadow); }
+.stat b { display: block; font-size: 1.3rem; color: var(--accent); }
+.stat span { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+.section-title { max-width: 1100px; margin: 0 auto; padding: 1.4rem 2.5rem 0.8rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.2rem; max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 1rem; }
 .card {
-  background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem;
-  box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 0.6rem;
+  background: var(--card-bg); border: 1px solid var(--border); border-top: 4px solid var(--card-accent, var(--accent));
+  border-radius: 12px; padding: 1.4rem; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 0.6rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.card .icon { font-size: 1.8rem; }
-.card h2 { margin: 0; font-size: 1.15rem; border: none; padding: 0; }
-.card p { margin: 0; color: var(--muted); font-size: 0.88rem; }
-.card ul { margin: 0.4em 0 0; padding-left: 1.1em; font-size: 0.87rem; }
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.card .icon-wrap {
+  width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  background: var(--card-accent-bg, var(--accent-bg)); font-size: 1.4rem;
+}
+.card h2 { margin: 0; font-size: 1.12rem; border: none; padding: 0; }
+.card p.count { margin: 0; color: var(--card-accent, var(--accent)); font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+.card ul { margin: 0.3em 0 0; padding-left: 1.1em; font-size: 0.87rem; max-height: 220px; overflow-y: auto; }
 .card ul a { color: var(--fg); }
-.card ul a:hover { color: var(--link); }
-.section-title { max-width: 1100px; margin: 0 auto; padding: 0.5rem 2.5rem 0.8rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.card ul a:hover { color: var(--card-accent, var(--link)); }
+.card li { margin: 0.3em 0; }
+
 .resource-list { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 1rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
 .resource-list a {
   display: inline-flex; align-items: center; gap: 0.4em; background: var(--card-bg); border: 1px solid var(--border);
-  border-radius: 999px; padding: 0.4em 0.9em; font-size: 0.85rem; color: var(--fg); box-shadow: var(--shadow);
+  border-radius: 999px; padding: 0.45em 0.95em; font-size: 0.85rem; color: var(--fg); box-shadow: var(--shadow);
 }
 .resource-list a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
 .soon-list { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 4rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
@@ -130,25 +139,308 @@ p { margin: 0.8em 0; }
 @media (max-width: 860px) {
   .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; box-shadow: 4px 0 16px rgba(0,0,0,0.25); transition: left 0.2s ease; }
   .sidebar.open { left: 0; }
-  .topbar { display: flex; }
-  main, .hero, .grid, .resource-list, .soon-list, .section-title { padding-left: 1.2rem; padding-right: 1.2rem; }
-  .menu-toggle {
-    display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px;
-    border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); cursor: pointer; font-size: 1.1rem;
-  }
+  .topbar, .menu-toggle { display: flex; }
+  .hero, .grid, .resource-list, .soon-list, .section-title { padding-left: 1.2rem; padding-right: 1.2rem; }
+  .revision-banner { margin-left: 1.2rem; margin-right: 1.2rem; flex-wrap: wrap; }
 }
 </style>
 </head>
 <body>
-<div class="hero">
-  <h1>📚 System Design Notes</h1>
-  <p class="lede">A personal knowledge base covering authentication, databases, distributed systems, messaging, storage, and more — converted from raw notes into a browsable reference site.</p>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="index.html">System <span>Design</span> Notes</a>
+    <nav>
+      <h3>🖥️ Front-End</h3>
+      <ul>
+        <li><a href="01-Front-end/graphql/graphql-vs-rest.html">GraphQL vs REST</a></li>
+        <li><a href="01-Front-end/graphql/http/ssr-vs-csr.html">SSR vs CSR</a></li>
+        <li><a href="01-Front-end/graphql/http/ssr-vs-csr-v2.html">SSR vs CSR (v2)</a></li>
+      </ul>
+      <h3>🗄️ Database</h3>
+      <ul>
+        <li><a href="05-database/Data-Base/00-index.html">Database Index</a></li>
+        <li><a href="05-database/Data-Base/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li>
+        <li><a href="05-database/Data-Base/01A-Database-basic.html">PostgreSQL Views Explained</a></li>
+        <li><a href="05-database/Data-Base/02-partiontion.html">Partitioning</a></li>
+        <li><a href="05-database/Data-Base/03-horizintal-scaling.html">Horizontal Scaling</a></li>
+        <li><a href="05-database/Data-Base/04-cap theorem-questions.html">CAP Theorem Questions</a></li>
+        <li><a href="05-database/Data-Base/08-indxing.html">Indexing</a></li>
+        <li><a href="05-database/Data-Base/lecture-2.html">Lecture 2</a></li>
+        <li><a href="05-database/Data-Base/mislanious-terms.html">Miscellaneous Database Terms</a></li>
+        <li><a href="05-database/Data-Base/rendom save.can be deleted.html">Scratch Note: Polyglot Persistence</a></li>
+        <li><a href="05-database/types-of-database/factors.html">Database Performance Factors</a></li>
+        <li><a href="05-database/types-of-database/how to chose the database.html">How to Choose the Database</a></li>
+        <li><a class="resource" href="05-database/replications/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides (PDF)</a></li>
+        <li><a class="resource" href="05-database/replications/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.3 (PDF)</a></li>
+        <li><a class="resource" href="05-database/replications/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.4 (PDF)</a></li>
+        <li><a class="resource" href="05-database/replications/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.5 (PDF)</a></li>
+        <li><a class="resource" href="05-database/replications/replication-2.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive (PDF)</a></li>
+      </ul>
+      <h3>🔐 Authentication</h3>
+      <ul>
+        <li><a href="06-authentication/README.html">Authentication Master Guide</a></li>
+        <li><a href="06-authentication/antigravity-filename.html">Authentication Master Guide (copy)</a></li>
+        <li><a href="06-authentication/00-login-steps.html">Secure Login Implementation Steps</a></li>
+        <li><a href="06-authentication/01-authentication/00-index.html">Authentication Engineering Roadmap</a></li>
+        <li><a href="06-authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li>
+        <li><a href="06-authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li>
+        <li><a href="06-authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li>
+        <li><a href="06-authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li>
+        <li><a href="06-authentication/02-social-login/google-login-plantuml.html">Google Sign-In PlantUML Diagram</a></li>
+      </ul>
+      <h3>🌐 Distributed Systems</h3>
+      <ul><li><a href="distributed-system/distributed system.html">Distributed Systems</a></li></ul>
+      <h3>📨 Messaging &amp; Queues</h3>
+      <ul>
+        <li><a href="sqs/01-sqs.html">SQS Overview</a></li>
+        <li><a href="sqs/02-queus-methord.html">Queue Methods</a></li>
+        <li><a href="sqs/use-case.html">SQS Use Cases</a></li>
+        <li><a href="sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li>
+        <li><a class="resource" href="sqs/Message Retries and Dead-Lettering_ Theory and Comparison.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering (PDF)</a></li>
+        <li><a class="resource" href="sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li>
+      </ul>
+      <h3>💾 Storage</h3>
+      <ul><li><a href="storage/storage-type.html">Storage Types</a></li></ul>
+      <h3>🖧 Web Servers</h3>
+      <ul>
+        <li><a href="web-servers/server.html">Web Servers</a></li>
+        <li><a href="web-servers/wsgi.html">WSGI Explained</a></li>
+      </ul>
+      <h3>🧭 Dev Principles</h3>
+      <ul><li><a href="software-developmentprincipal.md/01-sdp.html">Software Development Principles</a></li></ul>
+      <h3>🗺️ Planning &amp; Roadmap</h3>
+      <ul>
+        <li><a href="path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li>
+        <li><a href="path/ 01Requirements & Planning.html">Requirements &amp; Planning</a></li>
+        <li><a href="path/01-b-MVP.html">MVP Planning</a></li>
+        <li><a href="path/02-apis.html">API Planning</a></li>
+      </ul>
+      <h3>🏗️ Project Walkthroughs</h3>
+      <ul>
+        <li><a href="project-explaintion/imge-share system/200images.html">Image Share System (200 Images)</a></li>
+        <li><a href="project-explaintion/instagram/major tools.html">Instagram: Major Tools</a></li>
+      </ul>
+      <h3>🧩 Miscellaneous</h3>
+      <ul>
+        <li><a href="mislanious/01-pubsub and pubnub.html">Pub/Sub and PubNub</a></li>
+        <li><a href="mislanious/Memory-Profiling.html">Memory Profiling</a></li>
+        <li><a href="mislanious/query-string.html">Query Strings</a></li>
+      </ul>
+      <h3>📄 Overview</h3>
+      <ul>
+        <li><a class="active" href="readme.html">Notes Overview</a></li>
+        <li><a class="resource" href="00--the-ultimate-guide/SystemDesignInterview.pdf" target="_blank" rel="noopener">📎 System Design Interview Guide (PDF)</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="content-wrap">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <span class="brand">System Design Notes</span>
+    </div>
+
+    <!-- Daily revision banner -->
+    <div class="revision-banner" id="revisionBanner">
+      <span class="rb-icon">🔁</span>
+      <span class="rb-text">Today's revision: <strong id="revisionTitle"></strong></span>
+      <a class="rb-link" id="revisionLink" href="#">Revise now</a>
+      <button class="rb-close" id="revisionClose" aria-label="Dismiss">✕</button>
+    </div>
+
+    <div class="hero">
+      <h1>📚 System Design Notes</h1>
+      <p class="lede">A personal knowledge base covering authentication, databases, distributed systems, messaging, storage, and more — converted from raw notes into a browsable reference site.</p>
+      <div class="stats">
+        <div class="stat"><b>43</b><span>Pages</span></div>
+        <div class="stat"><b>12</b><span>Topics</span></div>
+        <div class="stat"><b>8</b><span>Downloads</span></div>
+      </div>
+    </div>
+
+    <div class="section-title">Browse by topic</div>
+    <div class="grid">
+      <div class="card" style="--card-accent: var(--c-frontend); --card-accent-bg: var(--c-frontend-bg);">
+        <div class="icon-wrap">🖥️</div><h2>Front-End</h2><p class="count">3 pages</p>
+        <ul>
+          <li><a href="01-Front-end/graphql/graphql-vs-rest.html">GraphQL vs REST</a></li>
+          <li><a href="01-Front-end/graphql/http/ssr-vs-csr.html">SSR vs CSR</a></li>
+          <li><a href="01-Front-end/graphql/http/ssr-vs-csr-v2.html">SSR vs CSR (v2)</a></li>
+        </ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-database); --card-accent-bg: var(--c-database-bg);">
+        <div class="icon-wrap">🗄️</div><h2>Database</h2><p class="count">12 pages</p>
+        <ul>
+          <li><a href="05-database/Data-Base/00-index.html">Database Index</a></li>
+          <li><a href="05-database/Data-Base/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li>
+          <li><a href="05-database/Data-Base/01A-Database-basic.html">PostgreSQL Views Explained</a></li>
+          <li><a href="05-database/Data-Base/02-partiontion.html">Partitioning</a></li>
+          <li><a href="05-database/Data-Base/03-horizintal-scaling.html">Horizontal Scaling</a></li>
+          <li><a href="05-database/Data-Base/04-cap theorem-questions.html">CAP Theorem Questions</a></li>
+          <li><a href="05-database/Data-Base/08-indxing.html">Indexing</a></li>
+          <li><a href="05-database/Data-Base/lecture-2.html">Lecture 2</a></li>
+          <li><a href="05-database/Data-Base/mislanious-terms.html">Miscellaneous Database Terms</a></li>
+          <li><a href="05-database/Data-Base/rendom save.can be deleted.html">Scratch Note: Polyglot Persistence</a></li>
+          <li><a href="05-database/types-of-database/factors.html">Database Performance Factors</a></li>
+          <li><a href="05-database/types-of-database/how to chose the database.html">How to Choose the Database</a></li>
+        </ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-auth); --card-accent-bg: var(--c-auth-bg);">
+        <div class="icon-wrap">🔐</div><h2>Authentication</h2><p class="count">9 pages</p>
+        <ul>
+          <li><a href="06-authentication/README.html">Authentication Master Guide</a></li>
+          <li><a href="06-authentication/antigravity-filename.html">Authentication Master Guide (copy)</a></li>
+          <li><a href="06-authentication/00-login-steps.html">Secure Login Implementation Steps</a></li>
+          <li><a href="06-authentication/01-authentication/00-index.html">Authentication Engineering Roadmap</a></li>
+          <li><a href="06-authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li>
+          <li><a href="06-authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li>
+          <li><a href="06-authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li>
+          <li><a href="06-authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li>
+          <li><a href="06-authentication/02-social-login/google-login-plantuml.html">Google Sign-In PlantUML Diagram</a></li>
+        </ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
+        <div class="icon-wrap">🌐</div><h2>Distributed Systems</h2><p class="count">1 page</p>
+        <ul><li><a href="distributed-system/distributed system.html">Distributed Systems</a></li></ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-msg); --card-accent-bg: var(--c-msg-bg);">
+        <div class="icon-wrap">📨</div><h2>Messaging &amp; Queues</h2><p class="count">4 pages</p>
+        <ul>
+          <li><a href="sqs/01-sqs.html">SQS Overview</a></li>
+          <li><a href="sqs/02-queus-methord.html">Queue Methods</a></li>
+          <li><a href="sqs/use-case.html">SQS Use Cases</a></li>
+          <li><a href="sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li>
+        </ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-storage); --card-accent-bg: var(--c-storage-bg);">
+        <div class="icon-wrap">💾</div><h2>Storage</h2><p class="count">1 page</p>
+        <ul><li><a href="storage/storage-type.html">Storage Types</a></li></ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-web); --card-accent-bg: var(--c-web-bg);">
+        <div class="icon-wrap">🖧</div><h2>Web Servers</h2><p class="count">2 pages</p>
+        <ul>
+          <li><a href="web-servers/server.html">Web Servers</a></li>
+          <li><a href="web-servers/wsgi.html">WSGI Explained</a></li>
+        </ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-dev); --card-accent-bg: var(--c-dev-bg);">
+        <div class="icon-wrap">🧭</div><h2>Dev Principles</h2><p class="count">1 page</p>
+        <ul><li><a href="software-developmentprincipal.md/01-sdp.html">Software Development Principles</a></li></ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-plan); --card-accent-bg: var(--c-plan-bg);">
+        <div class="icon-wrap">🗺️</div><h2>Planning &amp; Roadmap</h2><p class="count">4 pages</p>
+        <ul>
+          <li><a href="path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li>
+          <li><a href="path/ 01Requirements & Planning.html">Requirements &amp; Planning</a></li>
+          <li><a href="path/01-b-MVP.html">MVP Planning</a></li>
+          <li><a href="path/02-apis.html">API Planning</a></li>
+        </ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-proj); --card-accent-bg: var(--c-proj-bg);">
+        <div class="icon-wrap">🏗️</div><h2>Project Walkthroughs</h2><p class="count">2 pages</p>
+        <ul>
+          <li><a href="project-explaintion/imge-share system/200images.html">Image Share System (200 Images)</a></li>
+          <li><a href="project-explaintion/instagram/major tools.html">Instagram: Major Tools</a></li>
+        </ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-misc); --card-accent-bg: var(--c-misc-bg);">
+        <div class="icon-wrap">🧩</div><h2>Miscellaneous</h2><p class="count">3 pages</p>
+        <ul>
+          <li><a href="mislanious/01-pubsub and pubnub.html">Pub/Sub and PubNub</a></li>
+          <li><a href="mislanious/Memory-Profiling.html">Memory Profiling</a></li>
+          <li><a href="mislanious/query-string.html">Query Strings</a></li>
+        </ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-overview); --card-accent-bg: var(--c-overview-bg);">
+        <div class="icon-wrap">📄</div><h2>Overview</h2><p class="count">1 page</p>
+        <ul><li><a href="readme.html">Notes Overview</a></li></ul>
+      </div>
+    </div>
+
+    <div class="section-title">Downloadable resources</div>
+    <div class="resource-list">
+      <a href="05-database/replications/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides (PDF)</a>
+      <a href="05-database/replications/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.3 (PDF)</a>
+      <a href="05-database/replications/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.4 (PDF)</a>
+      <a href="05-database/replications/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.5 (PDF)</a>
+      <a href="05-database/replications/replication-2.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive (PDF)</a>
+      <a href="sqs/Message Retries and Dead-Lettering_ Theory and Comparison.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering (PDF)</a>
+      <a href="sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a>
+      <a href="00--the-ultimate-guide/SystemDesignInterview.pdf" target="_blank" rel="noopener">📎 System Design Interview Guide (PDF)</a>
+    </div>
+
+    <div class="section-title">Coming soon</div>
+    <div class="soon-list">
+      <span>🚧 Networking</span><span>🚧 Backend</span><span>🚧 Storage Fundamentals</span><span>🚧 API Design</span>
+    </div>
+  </div>
 </div>
-<div class="section-title">Browse by topic</div>
-<div class="grid"><div class="card"><div class="icon">🖥️</div><h2>Front-End</h2><p>3 pages</p><ul><li><a href="01-Front-end/graphql/graphql-vs-rest.html">GraphQL vs REST</a></li><li><a href="01-Front-end/graphql/http/ssr-vs-csr.html">SSR vs CSR</a></li><li><a href="01-Front-end/graphql/http/ssr-vs-csr-v2.html">SSR vs CSR (v2)</a></li></ul></div><div class="card"><div class="icon">🗄️</div><h2>Database</h2><p>12 pages</p><ul><li><a href="05-database/Data-Base/00-index.html">Database Index</a></li><li><a href="05-database/Data-Base/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li><li><a href="05-database/Data-Base/01A-Database-basic.html">PostgreSQL Views Explained</a></li><li><a href="05-database/Data-Base/02-partiontion.html">Partitioning</a></li><li><a href="05-database/Data-Base/03-horizintal-scaling.html">Horizontal Scaling</a></li><li><a href="05-database/Data-Base/04-cap theorem-questions.html">CAP Theorem Questions</a></li><li><a href="05-database/Data-Base/08-indxing.html">Indexing</a></li><li><a href="05-database/Data-Base/lecture-2.html">Lecture 2</a></li><li><a href="05-database/Data-Base/mislanious-terms.html">Miscellaneous Database Terms</a></li><li><a href="05-database/Data-Base/rendom save.can be deleted.html">Scratch Note: Polyglot Persistence</a></li><li><a href="05-database/types-of-database/factors.html">Database Performance Factors</a></li><li><a href="05-database/types-of-database/how to chose the database.html">How to Choose the Database</a></li></ul></div><div class="card"><div class="icon">🔐</div><h2>Authentication</h2><p>9 pages</p><ul><li><a href="06-authentication/README.html">Authentication Master Guide</a></li><li><a href="06-authentication/antigravity-filename.html">Authentication Master Guide (copy)</a></li><li><a href="06-authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="06-authentication/01-authentication/00-index.html">Authentication Engineering Roadmap</a></li><li><a href="06-authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li><li><a href="06-authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li><li><a href="06-authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li><li><a href="06-authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="06-authentication/02-social-login/google-login-plantuml.html">Google Sign-In PlantUML Diagram</a></li></ul></div><div class="card"><div class="icon">🌐</div><h2>Distributed Systems</h2><p>1 page</p><ul><li><a href="distributed-system/distributed system.html">Distributed Systems</a></li></ul></div><div class="card"><div class="icon">📨</div><h2>Messaging &amp; Queues</h2><p>4 pages</p><ul><li><a href="sqs/01-sqs.html">SQS Overview</a></li><li><a href="sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="sqs/use-case.html">SQS Use Cases</a></li><li><a href="sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></div><div class="card"><div class="icon">💾</div><h2>Storage</h2><p>1 page</p><ul><li><a href="storage/storage-type.html">Storage Types</a></li></ul></div><div class="card"><div class="icon">🖧</div><h2>Web Servers</h2><p>2 pages</p><ul><li><a href="web-servers/server.html">Web Servers</a></li><li><a href="web-servers/wsgi.html">WSGI Explained</a></li></ul></div><div class="card"><div class="icon">🧭</div><h2>Dev Principles</h2><p>1 page</p><ul><li><a href="software-developmentprincipal.md/01-sdp.html">Software Development Principles</a></li></ul></div><div class="card"><div class="icon">🗺️</div><h2>Planning &amp; Roadmap</h2><p>4 pages</p><ul><li><a href="path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="path/ 01Requirements & Planning.html">Requirements &amp; Planning</a></li><li><a href="path/01-b-MVP.html">MVP Planning</a></li><li><a href="path/02-apis.html">API Planning</a></li></ul></div><div class="card"><div class="icon">🏗️</div><h2>Project Walkthroughs</h2><p>2 pages</p><ul><li><a href="project-explaintion/imge-share system/200images.html">Image Share System (200 Images)</a></li><li><a href="project-explaintion/instagram/major tools.html">Instagram: Major Tools</a></li></ul></div><div class="card"><div class="icon">🧩</div><h2>Miscellaneous</h2><p>3 pages</p><ul><li><a href="mislanious/01-pubsub and pubnub.html">Pub/Sub and PubNub</a></li><li><a href="mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="mislanious/query-string.html">Query Strings</a></li></ul></div><div class="card"><div class="icon">📄</div><h2>Overview</h2><p>1 page</p><ul><li><a href="readme.html">Notes Overview</a></li></ul></div></div>
-<div class="section-title">Downloadable resources</div>
-<div class="resource-list"><a href="05-database/replications/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides (PDF)</a><a href="05-database/replications/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.3 (PDF)</a><a href="05-database/replications/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.4 (PDF)</a><a href="05-database/replications/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.5 (PDF)</a><a href="05-database/replications/replication-2.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive (PDF)</a><a href="sqs/Message Retries and Dead-Lettering_ Theory and Comparison.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering (PDF)</a><a href="sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a><a href="00--the-ultimate-guide/SystemDesignInterview.pdf" target="_blank" rel="noopener">📎 System Design Interview Guide (PDF)</a></div>
-<div class="section-title">Coming soon</div>
-<div class="soon-list"><span>🚧 Networking</span><span>🚧 Backend</span><span>🚧 Storage Fundamentals</span><span>🚧 API Design</span></div>
+
+<script>
+  // mobile sidebar toggle
+  const t = document.getElementById('menuToggle');
+  const s = document.getElementById('sidebar');
+  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+
+  // ---- Daily revision picker ----
+  const REVISION_PAGES = [
+    { title: "GraphQL vs REST", url: "01-Front-end/graphql/graphql-vs-rest.html" },
+    { title: "SSR vs CSR", url: "01-Front-end/graphql/http/ssr-vs-csr.html" },
+    { title: "Database Basics: Partitioning & Data Distribution", url: "05-database/Data-Base/01-Database-Basic.html" },
+    { title: "PostgreSQL Views Explained", url: "05-database/Data-Base/01A-Database-basic.html" },
+    { title: "Horizontal Scaling", url: "05-database/Data-Base/03-horizintal-scaling.html" },
+    { title: "CAP Theorem Questions", url: "05-database/Data-Base/04-cap theorem-questions.html" },
+    { title: "Indexing", url: "05-database/Data-Base/08-indxing.html" },
+    { title: "How to Choose the Database", url: "05-database/types-of-database/how to chose the database.html" },
+    { title: "Authentication Schemes: An Introduction", url: "06-authentication/01-authentication/01-introduction.html" },
+    { title: "Secure Password Hashing Process", url: "06-authentication/01-authentication/03-hashing-process.html" },
+    { title: "Google Sign-In with Credential Manager", url: "06-authentication/02-social-login/google-login.html" },
+    { title: "Distributed Systems", url: "distributed-system/distributed system.html" },
+    { title: "SQS Overview", url: "sqs/01-sqs.html" },
+    { title: "Queue Methods", url: "sqs/02-queus-methord.html" },
+    { title: "Storage Types", url: "storage/storage-type.html" },
+    { title: "Web Servers", url: "web-servers/server.html" },
+    { title: "WSGI Explained", url: "web-servers/wsgi.html" },
+    { title: "Software Development Principles", url: "software-developmentprincipal.md/01-sdp.html" },
+    { title: "System Design: EC2 Hosting Checklist", url: "path/00-system-desing.html" },
+    { title: "MVP Planning", url: "path/01-b-MVP.html" },
+    { title: "Pub/Sub and PubNub", url: "mislanious/01-pubsub and pubnub.html" },
+    { title: "Memory Profiling", url: "mislanious/Memory-Profiling.html" }
+  ];
+
+  (function initRevision() {
+    const today = new Date().toISOString().slice(0, 10);
+    const stored = JSON.parse(localStorage.getItem('sdRevision') || '{}');
+
+    // dismissed today? don't show again
+    if (stored.date === today && stored.dismissed) return;
+
+    let pick;
+    if (stored.date === today && stored.pageUrl) {
+      pick = REVISION_PAGES.find(p => p.url === stored.pageUrl);
+    }
+    if (!pick) {
+      const seen = new Set(stored.recent || []);
+      let pool = REVISION_PAGES.filter(p => !seen.has(p.url));
+      if (pool.length === 0) pool = REVISION_PAGES; // reset once everything's been shown
+      pick = pool[Math.floor(Math.random() * pool.length)];
+
+      const recent = (stored.recent || []).concat(pick.url).slice(-Math.min(10, REVISION_PAGES.length - 1));
+      localStorage.setItem('sdRevision', JSON.stringify({ date: today, pageUrl: pick.url, recent, dismissed: false }));
+    }
+
+    const banner = document.getElementById('revisionBanner');
+    document.getElementById('revisionTitle').textContent = pick.title;
+    document.getElementById('revisionLink').href = pick.url;
+    banner.classList.add('show');
+
+    document.getElementById('revisionClose').addEventListener('click', () => {
+      const cur = JSON.parse(localStorage.getItem('sdRevision') || '{}');
+      cur.dismissed = true;
+      localStorage.setItem('sdRevision', JSON.stringify(cur));
+      banner.classList.remove('show');
+    });
+  })();
+</script>
 </body>
 </html>

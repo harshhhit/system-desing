@@ -1,0 +1,128 @@
+/* Shared design system: top banner (revision + brand) and homepage card grid.
+   Self-contained per directory on purpose — eat-that-elephant-1/ and
+   eat-that-elephant-2/ each carry their own copy so either can become its
+   own repo later without broken references. */
+
+:root {
+  --sd-c1: #3b82f6; /* front-end */
+  --sd-c2: #8b5cf6; /* database */
+  --sd-c3: #06b6d4; /* distributed systems */
+  --sd-c4: #f97316; /* messaging & queues */
+  --sd-c5: #14b8a6; /* storage */
+  --sd-c6: #6366f1; /* web servers */
+  --sd-c7: #f43f5e; /* dev principles */
+  --sd-c8: #eab308; /* planning & roadmap */
+  --sd-c9: #10b981; /* project walkthroughs */
+  --sd-c10: #64748b; /* misc */
+  --sd-auth: #ec4899; /* authentication */
+  --sd-band-bg: #ffffff;
+  --sd-band-border: #d0d7de;
+  --sd-band-shadow: 0 1px 3px rgba(31,35,40,0.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sd-band-bg: #161b22;
+    --sd-band-border: #30363d;
+    --sd-band-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+}
+
+/* ---- top band: brand + daily revision banner ---- */
+#site-header-root { position: relative; z-index: 30; }
+.sd-topband {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  padding: 0.6rem 1.2rem; background: var(--sd-band-bg); border-bottom: 1px solid var(--sd-band-border);
+  box-shadow: var(--sd-band-shadow); position: sticky; top: 0;
+}
+.sd-brand {
+  font-weight: 800; font-size: 1rem; white-space: nowrap; text-decoration: none !important;
+  background: linear-gradient(135deg, var(--sd-c1), var(--sd-c2) 50%, var(--sd-auth));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.sd-revision {
+  display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; flex: 1; min-width: 0;
+  background: linear-gradient(90deg, rgba(236,72,153,0.10), rgba(139,92,246,0.10));
+  border: 1px dashed var(--sd-auth); border-radius: 999px; padding: 0.35rem 0.9rem;
+  font-size: 0.85rem; animation: sd-fade-in 0.4s ease;
+}
+.sd-revision-label { font-weight: 700; color: var(--sd-auth); white-space: nowrap; }
+.sd-revision-link { font-weight: 600; text-decoration: underline; text-underline-offset: 2px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sd-revision-dismiss {
+  margin-left: auto; border: none; background: transparent; color: inherit; opacity: 0.55; cursor: pointer;
+  font-size: 0.95rem; line-height: 1; padding: 0.1rem 0.3rem; border-radius: 4px;
+}
+.sd-revision-dismiss:hover { opacity: 1; background: rgba(0,0,0,0.06); }
+@keyframes sd-fade-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 640px) {
+  .sd-topband { padding: 0.55rem 0.9rem; }
+  .sd-revision { font-size: 0.8rem; }
+}
+
+/* ---- homepage hero ---- */
+.sd-hero {
+  padding: 3.2rem 2.5rem 2rem; max-width: 1180px; margin: 0 auto; text-align: left;
+}
+.sd-hero h1 {
+  border: none; font-size: clamp(2rem, 4vw, 2.8rem); margin: 0 0 0.35em;
+  background: linear-gradient(135deg, var(--sd-c1), var(--sd-c2), var(--sd-auth));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.sd-hero p.lede { color: var(--muted); font-size: 1.1rem; max-width: 680px; margin: 0; }
+.sd-hero .sd-stats { display: flex; gap: 1.5rem; margin-top: 1.4rem; flex-wrap: wrap; }
+.sd-stats .stat { display: flex; flex-direction: column; }
+.sd-stats .stat b { font-size: 1.5rem; line-height: 1.1; }
+.sd-stats .stat span { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+.sd-section-title {
+  max-width: 1180px; margin: 0 auto; padding: 0.5rem 2.5rem 1rem; font-size: 1rem; font-weight: 700;
+}
+
+/* ---- topic card grid ---- */
+.sd-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.1rem;
+  max-width: 1180px; margin: 0 auto; padding: 0 2.5rem 3rem;
+}
+.sd-card {
+  --accent: #64748b;
+  position: relative; background: var(--card-bg, #fff); border: 1px solid var(--border, #d0d7de);
+  border-radius: 14px; padding: 1.3rem 1.3rem 1.1rem; box-shadow: var(--shadow, 0 1px 3px rgba(0,0,0,0.08));
+  display: flex; flex-direction: column; gap: 0.5rem; overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  border-top: 3px solid var(--accent);
+}
+.sd-card::before {
+  content: ""; position: absolute; inset: 0; background: var(--accent); opacity: 0;
+  transition: opacity 0.18s ease; pointer-events: none;
+}
+.sd-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px -8px var(--accent); border-color: var(--accent); }
+.sd-card:hover::before { opacity: 0.045; }
+.sd-card .sd-icon {
+  font-size: 1.5rem; width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center;
+  border-radius: 10px; background: var(--accent); background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+.sd-card h2 { margin: 0; font-size: 1.1rem; border: none; padding: 0; }
+.sd-card .sd-count {
+  display: inline-block; font-size: 0.72rem; font-weight: 700; color: var(--accent); text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.sd-card ul { margin: 0.35em 0 0; padding-left: 1.05em; font-size: 0.86rem; }
+.sd-card ul a { color: var(--fg); }
+.sd-card ul a:hover { color: var(--accent); }
+.sd-card ul li { margin: 0.28em 0; }
+.sd-card .sd-more { font-size: 0.8rem; color: var(--muted); margin-top: 0.2em; }
+
+.sd-resource-list { max-width: 1180px; margin: 0 auto; padding: 0 2.5rem 1rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.sd-resource-list a {
+  display: inline-flex; align-items: center; gap: 0.4em; background: var(--card-bg, #fff); border: 1px solid var(--border, #d0d7de);
+  border-radius: 999px; padding: 0.4em 0.9em; font-size: 0.85rem; color: var(--fg); box-shadow: var(--shadow, 0 1px 3px rgba(0,0,0,0.08));
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.sd-resource-list a:hover { border-color: var(--sd-c2); color: var(--sd-c2); text-decoration: none; transform: translateY(-2px); }
+
+.sd-footer-note { max-width: 1180px; margin: 0 auto; padding: 1rem 2.5rem 3rem; color: var(--muted); font-size: 0.85rem; }
+.sd-footer-note a { color: var(--muted); text-decoration: underline; }
+
+@media (max-width: 860px) {
+  .sd-hero, .sd-grid, .sd-section-title, .sd-resource-list, .sd-footer-note { padding-left: 1.2rem; padding-right: 1.2rem; }
+}

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indexing · System Design Notes</title>
+<style>
+:root {
+  --bg: #ffffff; --bg-alt: #f6f8fa; --fg: #1f2328; --muted: #57606a; --border: #d0d7de;
+  --code-bg: #f6f8fa; --link: #0969da; --accent: #6639ba; --accent-bg: #f5f0ff;
+  --note-bg:#ddf4ff; --note-border:#54aeff; --tip-bg:#dafbe1; --tip-border:#4ac26b;
+  --important-bg:#fbefff; --important-border:#a475f9; --warning-bg:#fff8c5; --warning-border:#d4a72c;
+  --caution-bg:#ffebe9; --caution-border:#ff8182; --table-stripe:#f6f8fa;
+  --sidebar-bg: #f6f8fa; --card-bg: #ffffff; --shadow: 0 1px 3px rgba(31,35,40,0.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#0d1117; --bg-alt:#161b22; --fg:#e6edf3; --muted:#8d96a0; --border:#30363d;
+    --code-bg:#161b22; --link:#4493f8; --accent:#b794f6; --accent-bg:#1f1633;
+    --note-bg:#0d2740; --note-border:#1f6feb; --tip-bg:#0f2b1d; --tip-border:#238636;
+    --important-bg:#271052; --important-border:#8957e5; --warning-bg:#341a00; --warning-border:#9e6a03;
+    --caution-bg:#3c0d0d; --caution-border:#da3633; --table-stripe:#161b22;
+    --sidebar-bg:#0d1117; --card-bg:#161b22; --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--fg); }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6; margin: 0; font-size: 16px;
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  background: var(--code-bg); padding: 0.15em 0.4em; border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-size: 0.88em;
+}
+pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1em; overflow-x: auto; margin: 1em 0; }
+pre code { background: none; padding: 0; font-size: 0.85em; line-height: 1.5; }
+blockquote { margin: 1em 0; padding: 0 1em; color: var(--muted); border-left: 0.25em solid var(--border); }
+blockquote p { margin: 0.5em 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid var(--border); padding: 0.5em 0.9em; text-align: left; }
+th { font-weight: 600; background: var(--table-stripe); }
+tr:nth-child(even) { background: var(--table-stripe); }
+hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
+img { max-width: 100%; border-radius: 6px; }
+input[type="checkbox"] { margin-right: 0.5em; }
+ul, ol { padding-left: 1.7em; }
+li { margin: 0.3em 0; }
+.alert { border-left: 0.25em solid var(--border); border-radius: 6px; padding: 0.8em 1em; margin: 1em 0; }
+.alert-title { font-weight: 700; margin: 0 0 0.4em 0 !important; text-transform: capitalize; letter-spacing: 0.02em; }
+.alert p:last-child { margin-bottom: 0; }
+.alert-note { background: var(--note-bg); border-left-color: var(--note-border); }
+.alert-tip { background: var(--tip-bg); border-left-color: var(--tip-border); }
+.alert-important { background: var(--important-bg); border-left-color: var(--important-border); }
+.alert-warning { background: var(--warning-bg); border-left-color: var(--warning-border); }
+.alert-caution { background: var(--caution-bg); border-left-color: var(--caution-border); }
+.mermaid { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1em; margin: 1.2em 0; overflow-x: auto; }
+
+/* ---- site chrome ---- */
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 280px; flex-shrink: 0; background: var(--sidebar-bg); border-right: 1px solid var(--border);
+  padding: 1.2rem 1rem 3rem; overflow-y: auto; position: sticky; top: 0; height: 100vh;
+}
+.sidebar .brand { display: block; font-weight: 700; font-size: 1.15rem; margin-bottom: 1.2rem; color: var(--fg); }
+.sidebar .brand span { color: var(--accent); }
+.sidebar nav h3 {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);
+  margin: 1.3em 0 0.4em; padding-top: 0.6em; border-top: 1px solid var(--border);
+}
+.sidebar nav h3:first-of-type { border-top: none; padding-top: 0; margin-top: 0.4em; }
+.sidebar nav ul { list-style: none; padding-left: 0; margin: 0; }
+.sidebar nav li { margin: 0; }
+.sidebar nav a {
+  display: block; padding: 0.32em 0.5em; border-radius: 6px; color: var(--fg); font-size: 0.89rem;
+}
+.sidebar nav a:hover { background: var(--accent-bg); text-decoration: none; }
+.sidebar nav a.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+.sidebar nav a.resource { color: var(--muted); font-size: 0.83rem; }
+.sidebar .menu-toggle { display: none; }
+
+.content-wrap { flex: 1; min-width: 0; }
+.topbar {
+  display: none; position: sticky; top: 0; z-index: 5; background: var(--bg);
+  border-bottom: 1px solid var(--border); padding: 0.8rem 1rem; align-items: center; gap: 0.8rem;
+}
+.topbar .brand { font-weight: 700; color: var(--fg); }
+main { max-width: 880px; margin: 0 auto; padding: 2.5rem 2.5rem 5rem; }
+.breadcrumb { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.6rem; }
+.breadcrumb a { color: var(--muted); }
+.breadcrumb a:hover { color: var(--link); }
+h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.25; margin-top: 1.8em; margin-bottom: 0.6em; }
+h1 { font-size: 2em; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; margin-top: 0; }
+h2 { font-size: 1.5em; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+h3 { font-size: 1.25em; }
+p { margin: 0.8em 0; }
+.page-footer { color: var(--muted); font-size: 0.82em; margin-top: 3em; padding-top: 1em; border-top: 1px solid var(--border); display: flex; justify-content: space-between; gap: 1em; flex-wrap: wrap; }
+.empty-note { color: var(--muted); }
+
+/* ---- homepage ---- */
+.hero { padding: 4rem 2.5rem 2.5rem; max-width: 1100px; margin: 0 auto; }
+.hero h1 { border: none; font-size: 2.6rem; margin-bottom: 0.3em; }
+.hero p.lede { color: var(--muted); font-size: 1.15rem; max-width: 640px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 3rem; }
+.card {
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem;
+  box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 0.6rem;
+}
+.card .icon { font-size: 1.8rem; }
+.card h2 { margin: 0; font-size: 1.15rem; border: none; padding: 0; }
+.card p { margin: 0; color: var(--muted); font-size: 0.88rem; }
+.card ul { margin: 0.4em 0 0; padding-left: 1.1em; font-size: 0.87rem; }
+.card ul a { color: var(--fg); }
+.card ul a:hover { color: var(--link); }
+.section-title { max-width: 1100px; margin: 0 auto; padding: 0.5rem 2.5rem 0.8rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.resource-list { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 1rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.resource-list a {
+  display: inline-flex; align-items: center; gap: 0.4em; background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 999px; padding: 0.4em 0.9em; font-size: 0.85rem; color: var(--fg); box-shadow: var(--shadow);
+}
+.resource-list a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+.soon-list { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 4rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.soon-list span {
+  display: inline-flex; align-items: center; gap: 0.4em; background: var(--bg-alt); border: 1px dashed var(--border);
+  border-radius: 999px; padding: 0.4em 0.9em; font-size: 0.83rem; color: var(--muted);
+}
+
+@media (max-width: 860px) {
+  .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; box-shadow: 4px 0 16px rgba(0,0,0,0.25); transition: left 0.2s ease; }
+  .sidebar.open { left: 0; }
+  .topbar { display: flex; }
+  main, .hero, .grid, .resource-list, .soon-list, .section-title { padding-left: 1.2rem; padding-right: 1.2rem; }
+  .menu-toggle {
+    display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px;
+    border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); cursor: pointer; font-size: 1.1rem;
+  }
+}
+</style>
+
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/site-header.js" data-root="../../"></script>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav><h3>🖥️ Front-End</h3><ul><li><a class="" href="../../01-front-end/graphql/graphql-vs-rest.html">GraphQL vs REST</a></li><li><a class="" href="../../01-front-end/graphql/http/ssr-vs-csr.html">SSR vs CSR</a></li><li><a class="" href="../../01-front-end/graphql/http/ssr-vs-csr-v2.html">SSR vs CSR (v2)</a></li></ul><h3>🗄️ Database</h3><ul><li><a class="" href="../../05-database/data-base/00-index.html">Database Index</a></li><li><a class="" href="../../05-database/data-base/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li><li><a class="" href="../../05-database/data-base/01A-Database-basic.html">PostgreSQL Views Explained</a></li><li><a class="" href="../../05-database/data-base/02-partiontion.html">Partitioning</a></li><li><a class="" href="../../05-database/data-base/03-horizintal-scaling.html">Horizontal Scaling</a></li><li><a class="" href="../../05-database/data-base/04-cap-theorem-questions.html">CAP Theorem Questions</a></li><li><a class="active" href="../../05-database/data-base/08-indxing.html">Indexing</a></li><li><a class="" href="../../05-database/data-base/lecture-2.html">Lecture 2</a></li><li><a class="" href="../../05-database/data-base/mislanious-terms.html">Miscellaneous Database Terms</a></li><li><a class="" href="../../05-database/data-base/scratch-note-polyglot-persistence.html">Scratch Note: Polyglot Persistence</a></li><li><a class="" href="../../05-database/types-of-database/factors.html">Database Performance Factors</a></li><li><a class="" href="../../05-database/types-of-database/how-to-choose-the-database.html">How to Choose the Database</a></li><li><a class="resource" href="../../05-database/replications/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides (PDF)</a></li><li><a class="resource" href="../../05-database/replications/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.3 (PDF)</a></li><li><a class="resource" href="../../05-database/replications/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.4 (PDF)</a></li><li><a class="resource" href="../../05-database/replications/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.5 (PDF)</a></li><li><a class="resource" href="../../05-database/replications/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive (PDF)</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a class="" href="../../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a class="" href="../../sqs/01-sqs.html">SQS Overview</a></li><li><a class="" href="../../sqs/02-queus-methord.html">Queue Methods</a></li><li><a class="" href="../../sqs/use-case.html">SQS Use Cases</a></li><li><a class="" href="../../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering (PDF)</a></li><li><a class="resource" href="../../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a class="" href="../../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a class="" href="../../web-servers/server.html">Web Servers</a></li><li><a class="" href="../../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a class="" href="../../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a class="" href="../../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a class="" href="../../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a class="" href="../../path/01-b-MVP.html">MVP Planning</a></li><li><a class="" href="../../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a class="" href="../../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a class="" href="../../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a class="" href="../../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a class="" href="../../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a class="" href="../../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+  <div class="content-wrap">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <span class="brand">System Design Notes</span>
+    </div>
+    <main>
+      <p class="breadcrumb"><a href="../../index.html">Home</a> / Database / Indexing</p>
+      <h1>Indexing</h1>
+      <p>Great — let’s unpack those three techniques (<strong>indexing, denormalization, and in-memory caches</strong>) since they’re fundamental to meeting <strong>latency and throughput SLAs</strong> in system design:</p>
+<hr>
+<h2 id="1-indexing">1. <strong>Indexing</strong></h2>
+<ul>
+<li><strong>What it is</strong>:
+An index is a data structure (e.g., B-Tree, Hash Table) that speeds up queries by avoiding full table scans.</li>
+</ul>
+<p>{Think of an index in a book. Instead of flipping through every page to find &quot;Chapter 7&quot;, you just look at the index and jump directly there.In databases, an index is the same — it helps the computer quickly find the row you want instead of scanning everything.</p>
+<ul>
+<li>Good for: speeding up lookups..}</li>
+</ul>
+<ul>
+<li><p><strong>Example</strong>:
+Without an index:</p>
+<pre><code class="language-sql">SELECT * FROM users WHERE email = &#39;alice@example.com&#39;;
+</code></pre>
+<p>→ The DB might scan millions of rows.
+With an index on <code>email</code>:
+→ Lookup becomes <code>O(log n)</code> instead of <code>O(n)</code>.</p>
+</li>
+<li><p><strong>System design implication</strong>:</p>
+<ul>
+<li>For low-latency APIs (e.g., user login), indexes ensure quick lookups.</li>
+<li>Too many indexes can hurt <strong>write performance</strong> (every insert/update must update indexes).</li>
+<li>Rule of thumb: <strong>Index read-heavy fields</strong>, but carefully balance with write overhead.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-denormalization">2. <strong>Denormalization</strong></h2>
+<ul>
+<li><strong>What it is</strong>:
+Instead of normalizing data (splitting into multiple tables to avoid redundancy), denormalization <strong>duplicates data</strong> in strategic places to reduce joins and speed up reads.</li>
+</ul>
+<p>{Think of writing someone’s phone number on multiple sticky notes instead of keeping it only in your phone.
+It’s duplicated, but now you can find it faster (no need to open your phone every time).
+In databases, denormalization means copying some data into multiple places so you don’t have to “join” tables every time.</p>
+<ul>
+<li>Good for: faster reads, especially when joins are slow.}</li>
+</ul>
+<ul>
+<li><p><strong>Example</strong>:</p>
+<ul>
+<li><p>Normalized (good for storage, bad for read performance):</p>
+<pre><code>orders(order_id, user_id, product_id, date)
+users(user_id, name, email)
+</code></pre>
+<p>→ To show an order with user name, you need a JOIN.</p>
+</li>
+<li><p>Denormalized:</p>
+<pre><code>orders(order_id, user_id, user_name, product_id, product_name, date)
+</code></pre>
+<p>→ Query is faster since you avoid joins.</p>
+</li>
+</ul>
+</li>
+<li><p><strong>System design implication</strong>:</p>
+<ul>
+<li>Helps achieve <strong>low latency on reads</strong> (important for 95% &lt;200ms goals).</li>
+<li>Increases <strong>write complexity</strong> (must update multiple places if user name changes).</li>
+<li>Common in <strong>NoSQL</strong> databases (MongoDB, Cassandra) where joins aren’t supported.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-in-memory-caches">3. <strong>In-Memory Caches</strong></h2>
+<ul>
+<li><strong>What it is</strong>:
+A high-speed storage layer (Redis, Memcached) that keeps hot data in RAM for microsecond access.</li>
+</ul>
+<p>{Think of keeping your most-used apps on your phone’s home screen instead of searching through the whole phone every time.
+A cache is just a fast memory box (like Redis) that stores the most-used data so you don’t have to ask the database every time.</p>
+<ul>
+<li>Good for: super fast responses and handling lots of traffic.}</li>
+</ul>
+<ul>
+<li><p><strong>Types of caching</strong>:</p>
+<ul>
+<li><strong>Read-through</strong>: If data isn’t in cache, fetch from DB and store it.</li>
+<li><strong>Write-through</strong>: Write to cache and DB at the same time.</li>
+<li><strong>Write-back (lazy)</strong>: Write to cache first, DB later (riskier but faster).</li>
+</ul>
+</li>
+<li><p><strong>Example</strong>:</p>
+<ul>
+<li>User profile service: Store <code>user_id → profile</code> in Redis.</li>
+<li>95% of requests can return in &lt;1ms instead of ~100ms DB query.</li>
+</ul>
+</li>
+<li><p><strong>System design implication</strong>:</p>
+<ul>
+<li><p>Critical for meeting <strong>high throughput (10k RPS)</strong> while keeping DB load manageable.</p>
+</li>
+<li><p>Requires <strong>cache invalidation strategy</strong>:</p>
+<ul>
+<li>TTL (time-to-live) for freshness.</li>
+<li>Explicit invalidation on updates.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="🔑-putting-it-all-together">🔑 Putting it all together:</h3>
+<ul>
+<li><strong>Indexing</strong>: Great for <strong>structured queries</strong> on relational DBs where strong consistency is needed.</li>
+<li><strong>Denormalization</strong>: Reduces query complexity and latency, especially in distributed or NoSQL environments.</li>
+<li><strong>Caching</strong>: Handles <strong>scale and speed</strong>, offloading DBs for high throughput.</li>
+</ul>
+<p>✅ Typically, <strong>all three are used together</strong>:</p>
+<ul>
+<li>Use <strong>indexes</strong> for critical DB queries.</li>
+<li><strong>Denormalize</strong> where joins are too expensive.</li>
+<li>Add a <strong>caching layer</strong> (Redis, CDN, application cache) for the hottest paths.</li>
+</ul>
+<hr>
+<p>Do you want me to <strong>illustrate with a concrete flow</strong> (e.g., a user profile service showing how indexing, denormalization, and caching work together to hit 200ms latency at 10k RPS)?</p>
+<p>Perfect 👍 let’s walk through a <strong>concrete flow</strong> with a simple but realistic example:</p>
+<hr>
+<h1 id="🎯-example-user-profile-service">🎯 Example: <strong>User Profile Service</strong></h1>
+<p>Requirements:</p>
+<ul>
+<li>Latency: 95% of requests &lt;200ms</li>
+<li>Throughput: 10k requests/sec sustained</li>
+</ul>
+<hr>
+<h2 id="📍-step-1-base-setup-relational-db-only">📍 Step 1: <strong>Base Setup (Relational DB Only)</strong></h2>
+<p>We start with a relational DB (say <strong>PostgreSQL</strong>) storing user profiles:</p>
+<pre><code class="language-sql">users(
+   user_id BIGINT PRIMARY KEY,
+   email VARCHAR UNIQUE,
+   name VARCHAR,
+   bio TEXT,
+   profile_pic_url TEXT
+)
+</code></pre>
+<p>Flow:</p>
+<ol>
+<li><p>A client requests <strong>GET /users/12345</strong>.</p>
+</li>
+<li><p>API server queries DB:</p>
+<pre><code class="language-sql">SELECT * FROM users WHERE user_id = 12345;
+</code></pre>
+</li>
+<li><p>DB scans/uses primary key → returns result.</p>
+</li>
+</ol>
+<p>⚠️ Problem: If <strong>10k RPS</strong> hit the DB, it will struggle. Some queries may take &gt;200ms.</p>
+<hr>
+<h2 id="📍-step-2-indexing">📍 Step 2: <strong>Indexing</strong></h2>
+<p>We add indexes to speed up lookups (besides PK, maybe by email too).</p>
+<pre><code class="language-sql">CREATE INDEX idx_users_email ON users(email);
+</code></pre>
+<p>Flow:</p>
+<ul>
+<li><p>Now login requests like:</p>
+<pre><code class="language-sql">SELECT * FROM users WHERE email = &#39;alice@example.com&#39;;
+</code></pre>
+<p>→ Fast lookup due to index.</p>
+</li>
+</ul>
+<p>✅ Helps latency (&lt;50ms per query).
+⚠️ But DB still bottleneck at <strong>high throughput (10k RPS)</strong>.</p>
+<hr>
+<h2 id="📍-step-3-denormalization">📍 Step 3: <strong>Denormalization</strong></h2>
+<p>Suppose we also need to show <strong>user profile with last 3 posts</strong>.</p>
+<ul>
+<li><p><strong>Normalized design</strong>:</p>
+<pre><code>users(user_id, name, bio, pic)
+posts(post_id, user_id, content, created_at)
+</code></pre>
+<p>→ Needs a JOIN:</p>
+<pre><code class="language-sql">SELECT u.name, u.bio, p.content
+FROM users u
+JOIN posts p ON u.user_id = p.user_id
+WHERE u.user_id = 12345
+ORDER BY p.created_at DESC LIMIT 3;
+</code></pre>
+</li>
+<li><p><strong>Denormalized design</strong>:</p>
+<pre><code>user_profiles(
+   user_id, name, bio, pic,
+   recent_posts JSON
+)
+</code></pre>
+<p>→ No join needed. Just fetch one row.</p>
+</li>
+</ul>
+<p>✅ Query much faster (1 table, no join).
+⚠️ Slightly harder writes (when a user posts, update <code>recent_posts</code>).</p>
+<hr>
+<h2 id="📍-step-4-caching-redis">📍 Step 4: <strong>Caching (Redis)</strong></h2>
+<p>Now we add Redis in front of the DB.</p>
+<p>Flow:</p>
+<ol>
+<li><p>Client requests <strong>GET /users/12345</strong>.</p>
+</li>
+<li><p>API checks Redis cache first:</p>
+<ul>
+<li>If found (cache hit): return in <strong>&lt;5ms</strong>.</li>
+<li>If not (cache miss): fetch from DB (50–100ms), store result in Redis for next time.</li>
+</ul>
+</li>
+</ol>
+<p>Cache strategies:</p>
+<ul>
+<li><strong>TTL (e.g., 5 min)</strong> → refreshes periodically.</li>
+<li><strong>Write-through</strong> → whenever user updates profile, update Redis immediately.</li>
+</ul>
+<p>✅ DB now handles only cache misses.
+✅ Redis easily handles <strong>&gt;100k RPS</strong> at microsecond latency.
+🚀 Now system easily supports 10k RPS with p95 &lt;200ms.</p>
+<hr>
+<h2 id="📍-final-flow-diagram-simplified">📍 Final Flow Diagram (Simplified)</h2>
+<pre><code>Client → API → [Redis Cache] → (DB if cache miss)
+</code></pre>
+<ul>
+<li><strong>Indexing</strong> → DB queries fast.</li>
+<li><strong>Denormalization</strong> → avoid joins, fewer queries.</li>
+<li><strong>Caching</strong> → absorb heavy traffic and ensure sub-ms latency for hot data.</li>
+</ul>
+<hr>
+<p>✅ Result:</p>
+<ul>
+<li><strong>Latency SLA (95% &lt;200ms)</strong>: met because Redis returns in &lt;5ms for most requests.</li>
+<li><strong>Throughput SLA (10k RPS)</strong>: met because DB load is reduced (Redis handles most).</li>
+</ul>
+<hr>
+<p>Would you like me to <strong>draw this architecture flow in a diagram</strong> (showing API → Cache → DB → Denormalized tables)? That could make it visually easier to follow.</p>
+<p><img src="image.png" alt="alt text"></p>
+<p>Redis Cache: Handles ~90–95% of requests (the cache hit rate).</p>
+<p>Latency: ~5ms.</p>
+<p>This is where the bulk of the 10k requests/sec go, so Redis absorbs ~9,000–9,500 RPS.</p>
+<p>Database (with indexing + denormalization): Handles only ~5–10% of requests (cache misses).</p>
+<p>Latency: ~50–100ms per query.</p>
+<p>That means the DB only processes ~500–1,000 RPS instead of 10k RPS, which is manageable.</p>
+<p>API Server: Orchestrates between cache and DB.</p>
+<p>Most requests return quickly via Redis.</p>
+<p>Only a small fraction go to the DB, and those results are written back to Redis for next time.</p>
+<p>👉 This way, the system meets both:</p>
+<p>Throughput SLA (10k RPS) → because Redis offloads the DB.</p>
+<p>Latency SLA (95% &lt;200ms) → because 95%+ requests come back from cache in ~5ms.</p>
+<p>Yes 👍 — which technique you prefer (indexing, denormalization, or caching) <strong>depends on the type of database</strong> you’re using and the use case.
+Here’s a simple comparison table:</p>
+<hr>
+<h3 id="📊-which-technique-fits-which-database">📊 Which technique fits which database?</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Database Type</strong></th>
+<th><strong>Indexing</strong></th>
+<th><strong>Denormalization</strong></th>
+<th><strong>Caching</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Relational DB (MySQL, PostgreSQL, Oracle, SQL Server)</strong></td>
+<td>✅ Very useful (B-Tree, Hash, GIN indexes). Speeds up SELECT queries.</td>
+<td>⚠️ Less common (normalization is preferred), but sometimes used for performance (e.g., store user name inside <code>orders</code> to avoid joins).</td>
+<td>✅ Often needed to offload heavy queries (Redis + DB combo is common).</td>
+</tr>
+<tr>
+<td><strong>Document DB (MongoDB, CouchDB)</strong></td>
+<td>✅ Supports indexes (on fields, compound indexes). Needed for fast lookups.</td>
+<td>✅ Very common → documents are naturally denormalized (embed user + address info directly in order doc).</td>
+<td>✅ MongoDB + Redis is common for very hot data.</td>
+</tr>
+<tr>
+<td><strong>Key-Value Store (Redis, DynamoDB, Memcached)</strong></td>
+<td>❌ Not much needed → direct key lookups are already fast.</td>
+<td>✅ Sometimes (duplicate data across keys for faster access).</td>
+<td>🚫 Already a cache (Redis/Memcached itself <em>is</em> the cache).</td>
+</tr>
+<tr>
+<td><strong>Columnar DB (Cassandra, HBase, ScyllaDB)</strong></td>
+<td>✅ Supports partition keys + clustering columns (acts like indexing).</td>
+<td>✅ Very common → design tables around query patterns (duplicate data for fast reads).</td>
+<td>✅ Can still use Redis/CDN on top if traffic is very high.</td>
+</tr>
+<tr>
+<td><strong>Search DB (Elasticsearch, Solr, OpenSearch)</strong></td>
+<td>✅ Built around indexing (inverted index for text search).</td>
+<td>❌ Not usually needed (search engine already optimized).</td>
+<td>✅ Can still cache search queries for popular keywords.</td>
+</tr>
+<tr>
+<td><strong>Time-Series DB (InfluxDB, TimescaleDB, Prometheus)</strong></td>
+<td>✅ Index on time + tags for fast queries.</td>
+<td>❌ Rarely used (data is append-only).</td>
+<td>✅ Good for dashboards → cache most recent data.</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="🔑-key-takeaways">🔑 Key Takeaways</h3>
+<ul>
+<li><strong>Relational DBs</strong> → rely heavily on <strong>indexing</strong>, sometimes use denormalization, and almost always benefit from caching.</li>
+<li><strong>NoSQL DBs (Document/Columnar)</strong> → rely heavily on <strong>denormalization</strong> (store data in query-friendly shapes), plus caching for speed.</li>
+<li><strong>Key-Value Stores</strong> → already fast, act as caches themselves.</li>
+<li><strong>Search &amp; Time-Series DBs</strong> → rely on specialized indexing, with optional caching for popular queries.</li>
+</ul>
+<hr>
+<p>👉 Would you like me to also make a <strong>real-world mapping</strong> (e.g., “if you’re using MySQL → prefer indexing + cache, if MongoDB → prefer denormalization + cache”) so you have a quick decision guide?</p>
+
+      <div class="page-footer">
+        <span>Section: Database</span>
+        <span>Source: <code>08-indxing</code></span>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+  const t = document.getElementById('menuToggle');
+  const s = document.getElementById('sidebar');
+  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+</script>
+
+</body>
+</html>

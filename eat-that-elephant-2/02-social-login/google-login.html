@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Sign-In with Credential Manager · System Design Notes</title>
+<style>
+:root {
+  --bg: #ffffff; --bg-alt: #f6f8fa; --fg: #1f2328; --muted: #57606a; --border: #d0d7de;
+  --code-bg: #f6f8fa; --link: #0969da; --accent: #6639ba; --accent-bg: #f5f0ff;
+  --note-bg:#ddf4ff; --note-border:#54aeff; --tip-bg:#dafbe1; --tip-border:#4ac26b;
+  --important-bg:#fbefff; --important-border:#a475f9; --warning-bg:#fff8c5; --warning-border:#d4a72c;
+  --caution-bg:#ffebe9; --caution-border:#ff8182; --table-stripe:#f6f8fa;
+  --sidebar-bg: #f6f8fa; --card-bg: #ffffff; --shadow: 0 1px 3px rgba(31,35,40,0.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#0d1117; --bg-alt:#161b22; --fg:#e6edf3; --muted:#8d96a0; --border:#30363d;
+    --code-bg:#161b22; --link:#4493f8; --accent:#b794f6; --accent-bg:#1f1633;
+    --note-bg:#0d2740; --note-border:#1f6feb; --tip-bg:#0f2b1d; --tip-border:#238636;
+    --important-bg:#271052; --important-border:#8957e5; --warning-bg:#341a00; --warning-border:#9e6a03;
+    --caution-bg:#3c0d0d; --caution-border:#da3633; --table-stripe:#161b22;
+    --sidebar-bg:#0d1117; --card-bg:#161b22; --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--fg); }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  line-height: 1.6; margin: 0; font-size: 16px;
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  background: var(--code-bg); padding: 0.15em 0.4em; border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-size: 0.88em;
+}
+pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1em; overflow-x: auto; margin: 1em 0; }
+pre code { background: none; padding: 0; font-size: 0.85em; line-height: 1.5; }
+blockquote { margin: 1em 0; padding: 0 1em; color: var(--muted); border-left: 0.25em solid var(--border); }
+blockquote p { margin: 0.5em 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid var(--border); padding: 0.5em 0.9em; text-align: left; }
+th { font-weight: 600; background: var(--table-stripe); }
+tr:nth-child(even) { background: var(--table-stripe); }
+hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
+img { max-width: 100%; border-radius: 6px; }
+input[type="checkbox"] { margin-right: 0.5em; }
+ul, ol { padding-left: 1.7em; }
+li { margin: 0.3em 0; }
+.alert { border-left: 0.25em solid var(--border); border-radius: 6px; padding: 0.8em 1em; margin: 1em 0; }
+.alert-title { font-weight: 700; margin: 0 0 0.4em 0 !important; text-transform: capitalize; letter-spacing: 0.02em; }
+.alert p:last-child { margin-bottom: 0; }
+.alert-note { background: var(--note-bg); border-left-color: var(--note-border); }
+.alert-tip { background: var(--tip-bg); border-left-color: var(--tip-border); }
+.alert-important { background: var(--important-bg); border-left-color: var(--important-border); }
+.alert-warning { background: var(--warning-bg); border-left-color: var(--warning-border); }
+.alert-caution { background: var(--caution-bg); border-left-color: var(--caution-border); }
+.mermaid { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1em; margin: 1.2em 0; overflow-x: auto; }
+
+/* ---- site chrome ---- */
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 280px; flex-shrink: 0; background: var(--sidebar-bg); border-right: 1px solid var(--border);
+  padding: 1.2rem 1rem 3rem; overflow-y: auto; position: sticky; top: 0; height: 100vh;
+}
+.sidebar .brand { display: block; font-weight: 700; font-size: 1.15rem; margin-bottom: 1.2rem; color: var(--fg); }
+.sidebar .brand span { color: var(--accent); }
+.sidebar nav h3 {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);
+  margin: 1.3em 0 0.4em; padding-top: 0.6em; border-top: 1px solid var(--border);
+}
+.sidebar nav h3:first-of-type { border-top: none; padding-top: 0; margin-top: 0.4em; }
+.sidebar nav ul { list-style: none; padding-left: 0; margin: 0; }
+.sidebar nav li { margin: 0; }
+.sidebar nav a {
+  display: block; padding: 0.32em 0.5em; border-radius: 6px; color: var(--fg); font-size: 0.89rem;
+}
+.sidebar nav a:hover { background: var(--accent-bg); text-decoration: none; }
+.sidebar nav a.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+.sidebar nav a.resource { color: var(--muted); font-size: 0.83rem; }
+.sidebar .menu-toggle { display: none; }
+
+.content-wrap { flex: 1; min-width: 0; }
+.topbar {
+  display: none; position: sticky; top: 0; z-index: 5; background: var(--bg);
+  border-bottom: 1px solid var(--border); padding: 0.8rem 1rem; align-items: center; gap: 0.8rem;
+}
+.topbar .brand { font-weight: 700; color: var(--fg); }
+main { max-width: 880px; margin: 0 auto; padding: 2.5rem 2.5rem 5rem; }
+.breadcrumb { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.6rem; }
+.breadcrumb a { color: var(--muted); }
+.breadcrumb a:hover { color: var(--link); }
+h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.25; margin-top: 1.8em; margin-bottom: 0.6em; }
+h1 { font-size: 2em; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; margin-top: 0; }
+h2 { font-size: 1.5em; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+h3 { font-size: 1.25em; }
+p { margin: 0.8em 0; }
+.page-footer { color: var(--muted); font-size: 0.82em; margin-top: 3em; padding-top: 1em; border-top: 1px solid var(--border); display: flex; justify-content: space-between; gap: 1em; flex-wrap: wrap; }
+.empty-note { color: var(--muted); }
+
+/* ---- homepage ---- */
+.hero { padding: 4rem 2.5rem 2.5rem; max-width: 1100px; margin: 0 auto; }
+.hero h1 { border: none; font-size: 2.6rem; margin-bottom: 0.3em; }
+.hero p.lede { color: var(--muted); font-size: 1.15rem; max-width: 640px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 3rem; }
+.card {
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem;
+  box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 0.6rem;
+}
+.card .icon { font-size: 1.8rem; }
+.card h2 { margin: 0; font-size: 1.15rem; border: none; padding: 0; }
+.card p { margin: 0; color: var(--muted); font-size: 0.88rem; }
+.card ul { margin: 0.4em 0 0; padding-left: 1.1em; font-size: 0.87rem; }
+.card ul a { color: var(--fg); }
+.card ul a:hover { color: var(--link); }
+.section-title { max-width: 1100px; margin: 0 auto; padding: 0.5rem 2.5rem 0.8rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.resource-list { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 1rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.resource-list a {
+  display: inline-flex; align-items: center; gap: 0.4em; background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 999px; padding: 0.4em 0.9em; font-size: 0.85rem; color: var(--fg); box-shadow: var(--shadow);
+}
+.resource-list a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+.soon-list { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 4rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.soon-list span {
+  display: inline-flex; align-items: center; gap: 0.4em; background: var(--bg-alt); border: 1px dashed var(--border);
+  border-radius: 999px; padding: 0.4em 0.9em; font-size: 0.83rem; color: var(--muted);
+}
+
+@media (max-width: 860px) {
+  .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; box-shadow: 4px 0 16px rgba(0,0,0,0.25); transition: left 0.2s ease; }
+  .sidebar.open { left: 0; }
+  .topbar { display: flex; }
+  main, .hero, .grid, .resource-list, .soon-list, .section-title { padding-left: 1.2rem; padding-right: 1.2rem; }
+  .menu-toggle {
+    display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px;
+    border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); cursor: pointer; font-size: 1.1rem;
+  }
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/site-header.js" data-root="../"></script>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><a class="brand" href="../index.html">Authentication Notes</a><nav><h3>🔐 Authentication</h3><ul><li><a class="" href="../README.html">Authentication Master Guide</a></li><li><a class="" href="../antigravity-filename.html">Authentication Master Guide (copy)</a></li><li><a class="" href="../00-login-steps.html">Secure Login Implementation Steps</a></li><li><a class="" href="../01-authentication/00-index.html">Authentication Engineering Roadmap</a></li><li><a class="" href="../01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li><li><a class="" href="../01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li><li><a class="active" href="../02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li><li><a class="" href="../02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a class="" href="../02-social-login/google-login-plantuml.html">Google Sign-In PlantUML Diagram</a></li></ul></nav></aside>
+  <div class="content-wrap">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <span class="brand">System Design Notes</span>
+    </div>
+    <main>
+      <p class="breadcrumb"><a href="../index.html">Home</a> / Authentication / Google Sign-In with Credential Manager</p>
+      <h1>Google Sign-In with Credential Manager</h1>
+      <h1 id="🌐-google-sign-in-with-credential-manager">🌐 Google Sign-In with Credential Manager</h1>
+<p>This guide explains how <strong>Google Sign-In</strong> works in an Android app backed by a Node.js API.</p>
+<div class="alert alert-tip"><p class="alert-title">TIP</p><p><strong>Quick Summary</strong>: The Android app gets an ID Token from Google, sends it to your Backend, and your Backend verifies it with Google before issuing its own session tokens.</p>
+</div>
+
+<hr>
+<h2 id="⚡-quick-implementation-checklist">⚡ Quick Implementation Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Android</strong>: Integrate Credential Manager API.</li>
+<li><input disabled="" type="checkbox"> <strong>Android</strong>: Obtain <code>ID Token</code> from Google.</li>
+<li><input disabled="" type="checkbox"> <strong>Backend</strong>: Create endpoint <code>POST /socialAuth/social-register</code>.</li>
+<li><input disabled="" type="checkbox"> <strong>Backend</strong>: Verify token using <code>google-auth-library</code>.</li>
+<li><input disabled="" type="checkbox"> <strong>Backend</strong>: Check if user exists (Login) or create new (Register).</li>
+<li><input disabled="" type="checkbox"> <strong>Backend</strong>: Return your own <code>accessToken</code> &amp; <code>refreshToken</code>.</li>
+</ul>
+<hr>
+<h2 id="🖼️-sequence-diagram-mermaid">🖼️ Sequence Diagram (Mermaid)</h2>
+<p>This diagram visualizes the trust handshake between the Android app, your backend, Google’s servers, and your database.</p>
+<div class="mermaid">sequenceDiagram
+    autonumber
+    actor User as 👤 User
+    participant App as 📱 Android App
+    participant API as 🛡️ Backend API
+    participant Google as ☁️ Google OAuth
+    participant DB as 🗄️ Database
+
+    User->>App: Clicks "Sign in with Google"
+    App->>Google: Request ID Token (via SDK)
+    Google-->>App: Returns ID Token (JWT)
+
+    Note right of App: Token contains email, name, picture
+
+    App->>API: POST /socialAuth/social-register<br/>(ID Token, Device Info)
+    
+    API->>Google: verifyIdToken(token)
+    Google-->>API: Valid Payload (email, sub, etc.)
+
+    alt User Already Exists
+        API->>DB: Find User by Email
+        DB-->>API: User Record Found
+        API->>API: Generate Auth Tokens
+        API-->>App: 200 OK {user, tokens}
+    else New User Registration
+        API->>DB: Find User by Email
+        DB-->>API: Not Found
+        API->>DB: INSERT New User
+        DB-->>API: User Created
+        API->>API: Generate Auth Tokens
+        API-->>App: 201 Created {user, tokens}
+    end
+
+    App-->>User: Show Logged-in Dashboard
+</div>
+
+<hr>
+<h2 id="🔍-step-by-step-explanation">🔍 Step-by-Step Explanation</h2>
+<h3 id="1-user-action">1. User Action</h3>
+<p>The user taps the Google sign-in button. The Android app starts the OAuth flow using the <strong>Credential Manager API</strong>.</p>
+<h3 id="2-app-requests-id-token">2. App Requests ID Token</h3>
+<p>Google handles the UI. After successful login, it returns an <strong>ID Token</strong> (a JWT) that proves identity.</p>
+<h3 id="3-app-sends-token-to-backend">3. App Sends Token to Backend</h3>
+<p>The app sends the ID token to your API:
+<code>POST /socialAuth/social-register</code></p>
+<h3 id="4-backend-verifies-token">4. Backend Verifies Token</h3>
+<p><strong>Crucial Step</strong>: Your backend must <strong>NOT</strong> trust the token blindly. It verifies it with Google to ensure:</p>
+<ul>
+<li>Valid signature?</li>
+<li>Not expired?</li>
+<li>Issued for <em>your</em> Client ID?</li>
+</ul>
+<h3 id="5-login-or-registration-logic">5. Login or Registration Logic</h3>
+<ul>
+<li><strong>Existing User</strong>: If the email exists in your DB, log them in.</li>
+<li><strong>New User</strong>: If not, create a new user record automatically (JIT Provisioning).</li>
+</ul>
+<h3 id="6-issue-app-tokens">6. Issue App Tokens</h3>
+<p>Finally, your backend issues its <strong>own</strong> access/refresh tokens. The app uses these for future requests, not the Google token.</p>
+
+      <div class="page-footer">
+        <span>Section: Authentication</span>
+        <span>Source: <code>google-login.md</code></span>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+  const t = document.getElementById('menuToggle');
+  const s = document.getElementById('sidebar');
+  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+</script>
+<script>
+  const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default' });
+</script>
+</body>
+</html>
