@@ -39,6 +39,13 @@
   background: linear-gradient(135deg, var(--sd-c1), var(--sd-c2) 50%, var(--sd-auth));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
+.sd-home-btn {
+  display: inline-flex; align-items: center; gap: 0.35em; white-space: nowrap; text-decoration: none !important;
+  font-size: 0.82rem; font-weight: 600; color: var(--fg, #1f2328); background: var(--bg-alt, #f6f8fa);
+  border: 1px solid var(--sd-band-border); border-radius: 999px; padding: 0.32rem 0.85rem;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.sd-home-btn:hover { border-color: var(--sd-auth); transform: translateY(-1px); }
 .sd-revision {
   display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; flex: 1; min-width: 0;
   background: linear-gradient(90deg, rgba(236,72,153,0.10), rgba(139,92,246,0.10));

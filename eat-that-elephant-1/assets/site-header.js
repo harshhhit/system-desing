@@ -73,6 +73,13 @@
   brand.textContent = (map.siteIcon || "📚") + " " + (map.siteName || "System Design Notes");
   band.appendChild(brand);
 
+  var home = document.createElement("a");
+  home.className = "sd-home-btn";
+  home.href = root + "../index.html";
+  home.title = "All notes (site home)";
+  home.textContent = "🏠 Home";
+  band.appendChild(home);
+
   if (pick && !isDismissedToday()) {
     var rev = document.createElement("div");
     rev.className = "sd-revision";
