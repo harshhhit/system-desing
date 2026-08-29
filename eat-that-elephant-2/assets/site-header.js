@@ -75,7 +75,7 @@
 
   var home = document.createElement("a");
   home.className = "sd-home-btn";
-  home.href = root + "../index.html";
+  home.href = root + (map.parentHome || "index.html");
   home.title = "All notes (site home)";
   home.textContent = "🏠 Home";
   band.appendChild(home);
@@ -110,4 +110,49 @@
   }
 
   mount.appendChild(band);
+
+  // Keep every lesson sidebar aligned with the shared sitemap.
+  function renderSidebar() {
+    var sidebar = document.querySelector(".sidebar");
+    if (!sidebar) return;
+
+    var sidebarBrand = sidebar.querySelector(".brand");
+    if (!sidebarBrand) {
+      sidebarBrand = document.createElement("a");
+      sidebarBrand.className = "brand";
+      sidebar.insertBefore(sidebarBrand, sidebar.firstChild);
+    }
+    sidebarBrand.href = root + (map.home || "index.html");
+    sidebarBrand.textContent = map.siteName || "System Design Notes";
+
+    var nav = sidebar.querySelector("nav");
+    if (!nav) {
+      nav = document.createElement("nav");
+      sidebar.appendChild(nav);
+    }
+    nav.replaceChildren();
+
+    map.sections.forEach(function (section) {
+      var heading = document.createElement("h3");
+      heading.textContent = (section.icon ? section.icon + " " : "") + section.name;
+      nav.appendChild(heading);
+
+      var list = document.createElement("ul");
+      section.pages.forEach(function (page) {
+        var item = document.createElement("li");
+        var link = document.createElement("a");
+        var target = root + page.href;
+        link.href = target;
+        link.textContent = page.title;
+        if (new URL(target, window.location.href).pathname === window.location.pathname) {
+          link.className = "active";
+        }
+        item.appendChild(link);
+        list.appendChild(item);
+      });
+      nav.appendChild(list);
+    });
+  }
+
+  renderSidebar();
 })();

@@ -133,3 +133,29 @@
 @media (max-width: 860px) {
   .sd-hero, .sd-grid, .sd-section-title, .sd-resource-list, .sd-footer-note { padding-left: 1.2rem; padding-right: 1.2rem; }
 }
+
+/* ---- learning-path lesson shell ---- */
+.sd-study-layout { display: flex; min-height: 100vh; }
+.sd-study-sidebar {
+  width: 280px; flex-shrink: 0; background: var(--bg-alt, #f6f8fa); border-right: 1px solid var(--border, #d0d7de);
+  padding: 1.2rem 1rem 3rem; overflow-y: auto; position: sticky; top: 0; height: 100vh;
+}
+.sd-study-sidebar .brand { display: block; margin-bottom: 1.2rem; color: var(--fg, #1f2328); font-size: 1.15rem; font-weight: 700; }
+.sd-study-sidebar nav h3 { margin: 1.3em 0 0.4em; padding-top: 0.6em; border-top: 1px solid var(--border, #d0d7de); color: var(--muted, #57606a); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.sd-study-sidebar nav h3:first-child { margin-top: 0.4em; padding-top: 0; border-top: 0; }
+.sd-study-sidebar nav ul { margin: 0; padding: 0; list-style: none; }
+.sd-study-sidebar nav a { display: block; padding: 0.32em 0.5em; border-radius: 6px; color: var(--fg, #1f2328); font-size: 0.89rem; }
+.sd-study-sidebar nav a:hover, .sd-study-sidebar nav a.active { background: rgba(139, 92, 246, 0.12); color: var(--sd-c2); text-decoration: none; }
+.sd-study-sidebar nav a.active { font-weight: 700; }
+.sd-study-sidebar nav a.resource { color: var(--muted, #57606a); font-size: 0.83rem; }
+.sd-study-content { flex: 1; min-width: 0; }
+.sd-study-main { max-width: 880px; margin: 0 auto; padding: 2.5rem 2.5rem 5rem; }
+.sd-study-main h1 { margin: 0; padding-bottom: 0.35em; border-bottom: 1px solid var(--border, #d0d7de); color: var(--fg, #1f2328); font-size: 2rem; }
+.sd-study-breadcrumb { margin: 0 0 0.6rem; color: var(--muted, #57606a); font-size: 0.85rem; }
+.sd-study-breadcrumb a { color: inherit; }
+.sd-study-prompt { margin-top: 1.5rem; padding: 1.1rem 1.2rem; border-left: 4px solid var(--sd-c2); border-radius: 8px; background: color-mix(in srgb, var(--sd-c2) 10%, transparent); color: var(--fg, #1f2328); }
+@media (max-width: 860px) {
+  .sd-study-sidebar { position: static; width: 100%; height: auto; border-right: 0; border-bottom: 1px solid var(--border, #d0d7de); }
+  .sd-study-layout { display: block; }
+  .sd-study-main { padding: 1.5rem 1.2rem 3rem; }
+}

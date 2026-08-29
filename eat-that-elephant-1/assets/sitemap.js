@@ -5,6 +5,7 @@ window.SITE_MAP = {
   "siteName": "System Design Notes",
   "siteIcon": "📚",
   "home": "index.html",
+  "parentHome": "index.html",
   "sections": [
     {
       "icon": "🖥️",
@@ -29,53 +30,92 @@ window.SITE_MAP = {
       "name": "Database",
       "pages": [
         {
-          "href": "05-database/data-base/00-index.html",
-          "title": "Database Index"
+          "href": "05-database/00-learning-path/00-index.html",
+          "title": "00. Database Learning Path"
         },
         {
-          "href": "05-database/data-base/01-Database-Basic.html",
-          "title": "Database Basics: Partitioning & Data Distribution"
+          "href": "05-database/01-foundations/mislanious-terms.html",
+          "title": "01. Database Foundations"
         },
         {
-          "href": "05-database/data-base/01A-Database-basic.html",
-          "title": "PostgreSQL Views Explained"
+          "href": "05-database/01a-sql-and-relational-fundamentals/index.html",
+          "title": "01a. SQL and Relational Fundamentals"
         },
         {
-          "href": "05-database/data-base/02-partiontion.html",
-          "title": "Partitioning"
+          "href": "05-database/02-data-modeling-and-selection/how-to-choose-the-database.html",
+          "title": "02. How to Choose the Database"
         },
         {
-          "href": "05-database/data-base/03-horizintal-scaling.html",
-          "title": "Horizontal Scaling"
+          "href": "05-database/02-data-modeling-and-selection/factors.html",
+          "title": "02. Database Performance Factors"
         },
         {
-          "href": "05-database/data-base/04-cap-theorem-questions.html",
-          "title": "CAP Theorem Questions"
+          "href": "05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html",
+          "title": "02. Polyglot Persistence"
         },
         {
-          "href": "05-database/data-base/08-indxing.html",
-          "title": "Indexing"
+          "href": "05-database/02a-schema-design-and-migrations/index.html",
+          "title": "02a. Schema Design and Migrations"
         },
         {
-          "href": "05-database/data-base/lecture-2.html",
-          "title": "Lecture 2"
+          "href": "05-database/03-querying-and-performance/01A-Database-basic.html",
+          "title": "03. PostgreSQL Views"
         },
         {
-          "href": "05-database/data-base/mislanious-terms.html",
-          "title": "Miscellaneous Database Terms"
+          "href": "05-database/03-querying-and-performance/08-indxing.html",
+          "title": "03. Indexing"
         },
         {
-          "href": "05-database/data-base/scratch-note-polyglot-persistence.html",
-          "title": "Scratch Note: Polyglot Persistence"
+          "href": "05-database/03a-transactions-and-concurrency/index.html",
+          "title": "03a. Transactions and Concurrency"
         },
         {
-          "href": "05-database/types-of-database/factors.html",
-          "title": "Database Performance Factors"
+          "href": "05-database/03b-query-plans-and-optimization/index.html",
+          "title": "03b. Query Plans and Optimization"
         },
         {
-          "href": "05-database/types-of-database/how-to-choose-the-database.html",
-          "title": "How to Choose the Database"
+          "href": "05-database/04-distributed-database-fundamentals/lecture-2.html",
+          "title": "04. Distributed Database Fundamentals"
+        },
+        {
+          "href": "05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html",
+          "title": "04. CAP Theorem Questions"
+        },
+        {
+          "href": "05-database/04a-database-security-and-access-control/index.html",
+          "title": "04a. Database Security and Access Control"
+        },
+        {
+          "href": "05-database/05-scaling-and-partitioning/01-Database-Basic.html",
+          "title": "05. Data Distribution"
+        },
+        {
+          "href": "05-database/05-scaling-and-partitioning/02-partiontion.html",
+          "title": "05. Partitioning"
+        },
+        {
+          "href": "05-database/05-scaling-and-partitioning/03-horizintal-scaling.html",
+          "title": "05. Horizontal Scaling"
+        },
+        {
+          "href": "05-database/05a-connection-management-and-database-proxies/index.html",
+          "title": "05a. Connection Management and Database Proxies"
+        },
+        {
+          "href": "05-database/06a-backup-recovery-and-disaster-recovery/index.html",
+          "title": "06a. Backup, Recovery, and Disaster Recovery"
+        },
+        {
+          "href": "05-database/07-observability-capacity-and-operations/index.html",
+          "title": "07. Observability, Capacity, and Operations"
         }
+      ],
+      "resources": [
+        { "href": "05-database/06-replication/system-desing.pdf", "title": "Replication Slides" },
+        { "href": "05-database/06-replication/system-desing-3.pdf", "title": "Replication Slides Pt. 3" },
+        { "href": "05-database/06-replication/system-desing-4.pdf", "title": "Replication Slides Pt. 4" },
+        { "href": "05-database/06-replication/system-desing-5.pdf", "title": "Replication Slides Pt. 5" },
+        { "href": "05-database/06-replication/replication-1.pdf", "title": "Replication Deep-Dive" }
       ]
     },
     {

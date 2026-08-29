@@ -4,28 +4,23 @@ window.SITE_MAP = {
   "siteId": "e2",
   "siteName": "Authentication Notes",
   "siteIcon": "🔐",
-  "home": "index.html",
+  "home": "Authentication Notes.html",
+  "parentHome": "../eat-that-elephant-1/index.html",
   "sections": [
     {
       "icon": "🔐",
-      "name": "Authentication",
+      "name": "Root",
       "pages": [
-        {
-          "href": "README.html",
-          "title": "Authentication Master Guide"
-        },
-        {
-          "href": "antigravity-filename.html",
-          "title": "Authentication Master Guide (copy)"
-        },
         {
           "href": "00-login-steps.html",
           "title": "Secure Login Implementation Steps"
-        },
-        {
-          "href": "01-authentication/00-index.html",
-          "title": "Authentication Engineering Roadmap"
-        },
+        }
+      ]
+    },
+    {
+      "icon": "🔐",
+      "name": "01-authentication",
+      "pages": [
         {
           "href": "01-authentication/01-introduction.html",
           "title": "Authentication Schemes: An Introduction"
@@ -34,17 +29,19 @@ window.SITE_MAP = {
           "href": "01-authentication/03-hashing-process.html",
           "title": "Secure Password Hashing Process"
         },
-        {
-          "href": "02-social-login/google-login.html",
-          "title": "Google Sign-In with Credential Manager"
-        },
+      ]
+    },
+    {
+      "icon": "🌐",
+      "name": "02-social-login",
+      "pages": [
         {
           "href": "02-social-login/google-key-task.html",
           "title": "Google Social Login Checklist"
         },
         {
-          "href": "02-social-login/google-login-plantuml.html",
-          "title": "Google Sign-In PlantUML Diagram"
+          "href": "02-social-login/google-login.html",
+          "title": "Google Sign-In with Credential Manager"
         }
       ]
     }
