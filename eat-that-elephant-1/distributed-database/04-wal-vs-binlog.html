@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAL vs Binlog — Storage Engine vs Server Log · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+  .sd-study-main .lead { font-weight: 700; }
+  .sd-study-main blockquote {
+    margin: 1em 0; padding: 0.6em 1.1em; border-left: 4px solid var(--sd-c11, #0891b2);
+    background: color-mix(in srgb, var(--sd-c11, #0891b2) 8%, transparent); border-radius: 8px;
+  }
+  .sd-study-main blockquote p { margin: 0.4em 0; }
+  .sd-study-main ol { padding-left: 1.5em; }
+  .sd-study-main ol li { margin: 0.5em 0; }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/site-header.js" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><a class="brand" href="../index.html">System Design Notes</a><nav></nav></aside>
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+      <p class="sd-study-breadcrumb"><a href="../index.html">Home</a> / Distributed Database / WAL vs Binlog</p>
+      <h1>WAL vs Binlog — Storage Engine vs Server Log</h1>
+      <p class="sd-study-prompt">A companion deep-dive to the <a href="index.html">Distributed Data Roadmap</a> (Phase 0). The junior answer — <em>"WAL is for crash recovery, binlog is for replication"</em> — passes. The principal-engineer answer explains the <strong>storage-engine level</strong> (physical vs logical), the <strong>timing of writes</strong>, and the <strong>replication topology</strong> implications.</p>
+
+      <h2>The 10-Second TL;DR (the interview hook)</h2>
+      <ul>
+        <li><strong>WAL (Write-Ahead Log):</strong> the database's <strong>"insurance policy"</strong> against crashes. Lives at the <em>storage-engine</em> level. Logs <strong>physical</strong> changes to disk pages.</li>
+        <li><strong>Binlog (Binary Log):</strong> the database's <strong>"tape recorder"</strong> for sharing data. Lives at the <em>server</em> level. Logs <strong>logical</strong> changes (SQL statements or row mutations) for replication and point-in-time recovery.</li>
+      </ul>
+
+      <h2>Part 1 — The Basic Differences</h2>
+      <table>
+        <tr><th>Feature</th><th>Write-Ahead Log (WAL)</th><th>Binary Log (Binlog)</th></tr>
+        <tr><td><strong>Primary purpose</strong></td><td><strong>Crash recovery</strong> (durability). Ensures committed data isn't lost if the power fails.</td><td><strong>Replication &amp; PITR</strong> (point-in-time recovery). Sends data to replicas or restores to a specific timestamp.</td></tr>
+        <tr><td><strong>Layer</strong></td><td><strong>Storage engine</strong> (e.g. InnoDB).</td><td><strong>Server layer</strong> (e.g. MySQL Server).</td></tr>
+        <tr><td><strong>What it logs</strong></td><td><strong>Physical / page-level</strong> changes (e.g. "changed byte 0x45 at offset 1024 on page 7").</td><td><strong>Logical</strong> changes (e.g. <code>INSERT INTO users VALUES ('Bob')</code>, or row image <code>{id:1, name:'Bob'}</code>).</td></tr>
+        <tr><td><strong>When it writes</strong></td><td><strong>BEFORE</strong> the data page is modified in memory (the write-ahead principle).</td><td><strong>AFTER</strong> the transaction commits (usually), or alongside the commit.</td></tr>
+        <tr><td><strong>Idempotency</strong></td><td><strong>Not idempotent.</strong> Replaying a physical page change twice corrupts data.</td><td><strong>Idempotent.</strong> Replaying <code>REPLACE INTO</code> or row-based changes multiple times yields the same final state.</td></tr>
+      </table>
+
+      <h2>Part 2 — Deep-Dive Mechanics: an <code>UPDATE</code> in MySQL/InnoDB</h2>
+      <p>Interviewers care about the <strong>order of operations</strong>. The exact choreography:</p>
+      <ol>
+        <li><strong>Buffer pool:</strong> the database reads the disk page into memory and modifies the row.</li>
+        <li><strong>WAL write (InnoDB redo log):</strong> before the page is flushed to disk, the physical change is <strong>forced to the WAL</strong> on disk (<code>fsync</code>). <em>This is the write-ahead guarantee.</em></li>
+        <li><strong>Binlog write:</strong> the logical change is written to the binlog on disk.</li>
+        <li><strong>Prepare / commit (XA protocol):</strong> MySQL uses a two-phase commit (2PC) between the WAL (storage engine) and binlog (server) to ensure they match.</li>
+        <li><strong>Data flush:</strong> eventually, the memory pages are asynchronously flushed to the actual data files (<code>.ibd</code> files).</li>
+      </ol>
+      <p><span class="lead">The senior insight:</span> the WAL is written <em>during</em> the transaction; the binlog is written <em>at commit time</em>. If the database crashes between step 2 and step 3, the WAL lets InnoDB roll forward committed changes, but the binlog doesn't have the change — so replicas stay safe (they never receive it).</p>
+
+      <h2>Part 3 — Physical vs Logical (the hidden gold)</h2>
+      <p>This is the distinction that puts you above 90% of candidates.</p>
+      <ul>
+        <li><strong>WAL (physical):</strong> because it logs physical page offsets, it is <strong>extremely compact and fast</strong>. No SQL parsing, no figuring out which rows changed — you literally overwrite the bytes on disk. That's why WALs are used for crash recovery: raw, fast byte-shifting.</li>
+        <li><strong>Binlog (logical):</strong> because it logs rows/SQL, it is <strong>independent of the storage engine</strong>. You can use a binlog to replicate from MySQL (InnoDB) to a completely different system — Kafka, Elasticsearch, a data warehouse.
+          <ul>
+            <li><strong>Row-based binlog:</strong> logs the "before" and "after" image of the row.</li>
+            <li><strong>Statement-based binlog:</strong> logs the exact SQL.</li>
+          </ul>
+        </li>
+      </ul>
+      <p><span class="lead">The catch:</span> because the binlog is logical, it is <strong>larger and slower</strong> than the WAL. A massive <code>UPDATE</code> touching 1 million rows produces a tiny WAL entry (a few page changes) but a <em>huge</em> binlog entry (1 million row images).</p>
+
+      <h2>Part 4 — The Advanced Twist: the MySQL 2PC trap</h2>
+      <p><em>Interviewer: "What happens if the server crashes right after writing the WAL but BEFORE writing the binlog?"</em></p>
+      <p><span class="lead">Junior answer:</span> "The data is lost."</p>
+      <blockquote>
+        <p><span class="lead">Senior answer:</span> "In MySQL/InnoDB, the WAL and binlog are synchronized using an internal distributed transaction (XA). If the WAL is written but the binlog isn't, the transaction remains in a <code>PREPARE</code> state on crash recovery. During recovery, InnoDB looks at the binlog. Since the binlog has no commit record, InnoDB <strong>rolls back</strong> the transaction — even though the WAL has the changes. This ensures the master and replicas never diverge."</p>
+      </blockquote>
+
+      <h2>Part 5 — Architectural Implications (why you care)</h2>
+      <table>
+        <tr><th>Aspect</th><th>WAL (InnoDB redo log)</th><th>Binlog (MySQL server)</th></tr>
+        <tr><td><strong>Disk space</strong></td><td><strong>Fixed size</strong> (circular buffer). Overwrites old logs automatically once dirty pages are flushed.</td><td><strong>Append-only</strong> — grows indefinitely until you <code>PURGE</code> or expire it.</td></tr>
+        <tr><td><strong>Group commit</strong></td><td>Can group multiple physical page changes into one disk write.</td><td>Can group multiple logical transactions into one disk <code>fsync</code> to improve throughput.</td></tr>
+        <tr><td><strong>Replication</strong></td><td>Cannot be used for replication between different versions or storage engines.</td><td><strong>Universal.</strong> Used for master–slave, master–master, and CDC to Kafka.</td></tr>
+        <tr><td><strong>Recovery speed</strong></td><td><strong>Extremely fast.</strong> Re-applies physical bytes at the page level.</td><td><strong>Extremely slow.</strong> Would require re-parsing SQL/rows and executing them through the query engine.</td></tr>
+      </table>
+
+      <h2>Part 6 — The PostgreSQL Curveball</h2>
+      <p>If the interviewer mentions PostgreSQL, pivot hard. PostgreSQL <strong>has no separate binlog</strong> — in Postgres, the WAL <strong>is</strong> the binlog. It is used for <strong>both</strong> crash recovery <strong>and</strong> replication (via streaming replication).</p>
+      <ul>
+        <li><strong>MySQL's philosophy:</strong> separate the storage engine (InnoDB WAL) from the server (binlog) for flexibility.</li>
+        <li><strong>PostgreSQL's philosophy:</strong> tightly couple the log to the storage engine, so you don't need the 2PC overhead — you just ship the physical WAL to replicas. (Logical decoding was added later to mimic a binlog for CDC.)</li>
+      </ul>
+
+      <h2>The Elevator Pitch</h2>
+      <blockquote>
+        <p>"They operate at entirely different layers and times. The WAL is a <strong>physical, fixed-size redo log</strong> at the storage-engine level, written <em>before</em> data pages are modified, purely to guarantee durability and fast crash recovery.</p>
+        <p>The binlog is a <strong>logical, append-only sequence of row changes</strong> at the MySQL server level, written <em>at commit time</em>, designed specifically for cross-cluster replication and point-in-time recovery.</p>
+        <p>The critical architectural consequence is the <strong>2PC dance</strong> between them — if the binlog isn't written, recovery rolls back the WAL changes to keep replication consistent. It also means the binlog grows forever until manually purged, while the WAL is a circular buffer that overwrites itself.</p>
+        <p>In PostgreSQL, though, I'd note that it combines both jobs into a single WAL to avoid that 2PC overhead entirely."</p>
+      </blockquote>
+      <p><span class="lead">Why it works:</span> you defined both, contrasted the technical layers, explained the order of operations, called out replication vs crash recovery, and dropped a cross-database comparison — signalling you understand database internals, not just frameworks.</p>
+    </main>
+  </div>
+</div>
+</body>
+</html>

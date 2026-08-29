@@ -3,6 +3,30 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Backup, Recovery, and Disaster Recovery</title><link rel="stylesheet" href="../../assets/site.css"></head>
 <body>
 <div id="site-header-root"></div><script src="../../assets/sitemap.js"></script><script src="../../assets/site-header.js" data-root="../../"></script>
-<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / Backup, Recovery, and Disaster Recovery</p><h1>Backup, Recovery, and Disaster Recovery</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn full, incremental, and logical backups; restore drills; point-in-time recovery; RPO and RTO; replication versus backup; regional failures; and how to document and test a disaster-recovery runbook.</p></main></div></div>
+<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / Backup, Recovery, and Disaster Recovery</p><h1>Backup, Recovery, and Disaster Recovery</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn full, incremental, and logical backups; restore drills; point-in-time recovery; RPO and RTO; replication versus backup; regional failures; and how to document and test a disaster-recovery runbook.</p>
+<h2>Backup Types</h2>
+<table>
+<tr><th>Type</th><th>What it captures</th></tr>
+<tr><td>Full</td><td>A complete copy of the database at one point in time — simplest to restore, largest and slowest to take.</td></tr>
+<tr><td>Incremental</td><td>Only what changed since the last backup (of any type) — smaller and faster, but restoring means replaying a chain of them.</td></tr>
+<tr><td>Logical</td><td>A dump of schema and data as SQL/exportable statements (e.g. <code>pg_dump</code>) — portable across versions, slower to restore on large datasets.</td></tr>
+<tr><td>Continuous / WAL archiving</td><td>Ships the write-ahead log continuously, enabling point-in-time recovery to any moment, not just backup checkpoints.</td></tr>
+</table>
+<h2>RPO and RTO</h2>
+<ul>
+<li><strong>RPO (Recovery Point Objective)</strong>: how much data you can afford to lose, measured in time — "RPO of 5 minutes" means at most 5 minutes of writes are lost in a disaster.</li>
+<li><strong>RTO (Recovery Time Objective)</strong>: how long you can afford to be down while recovering.</li>
+<li>Backup frequency and method are chosen to hit the RPO; restore tooling and automation are chosen to hit the RTO — they're separate numbers with separate costs.</li>
+</ul>
+<h2>Replication Is Not a Backup</h2>
+<p>A replica copies changes in near-real time, including bad ones: a mistaken <code>DELETE</code> or a corrupted write replicates to every replica within seconds. Replication protects against a node failing; only a backup (plus point-in-time recovery) protects against a mistake or corruption.</p>
+<div class="sd-study-note warning"><span class="sd-note-title">Untested backups aren't backups</span><p>A backup that has never been restored is unverified — encoding bugs, missing permissions, or silent truncation only surface at restore time, which is the worst possible moment to discover them. Schedule regular restore drills.</p></div>
+<h2>Disaster Recovery Runbook</h2>
+<ul>
+<li>Document exact restore steps, who owns the decision to fail over, and how to verify data integrity afterward.</li>
+<li>Plan for regional failures, not just single-node ones, if the business can't tolerate a full-region outage.</li>
+<li>Rehearse the runbook on a schedule — a plan nobody has executed is a guess.</li>
+</ul>
+</main></div></div>
 </body>
 </html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Replication Lag — Causes, Measurement, Mitigation · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+  .sd-study-main .lead { font-weight: 700; }
+  .sd-study-main blockquote {
+    margin: 1em 0; padding: 0.6em 1.1em; border-left: 4px solid var(--sd-c11, #0891b2);
+    background: color-mix(in srgb, var(--sd-c11, #0891b2) 8%, transparent); border-radius: 8px;
+  }
+  .sd-study-main blockquote p { margin: 0.4em 0; }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/site-header.js" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><a class="brand" href="../index.html">System Design Notes</a><nav></nav></aside>
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+      <p class="sd-study-breadcrumb"><a href="../index.html">Home</a> / Distributed Database / Replication Lag</p>
+      <h1>Replication Lag — Causes, Measurement, Mitigation</h1>
+      <p class="sd-study-prompt">A companion deep-dive to the <a href="index.html">Distributed Data Roadmap</a> (Phase 1). Lag is the time difference between when a write commits on the leader and when it becomes visible on a follower. It is <strong>never just about network speed</strong>.</p>
+
+      <h2>1. What actually causes replication lag? (The 4 culprits)</h2>
+
+      <h3>Network RTT — the red herring</h3>
+      <p>The least common cause. Modern datacenter networks have sub-millisecond latency. Inter-region (e.g. US → Europe) adds ~100ms, which is trivial next to the real culprits.</p>
+
+      <h3>The I/O bottleneck — the heavy lifter</h3>
+      <p>The leader writes to its disk <strong>sequentially</strong> (fast). The replica must apply the change to its existing B-Tree or LSM-Tree indexes — <strong>random</strong> disk I/O plus updating secondary indexes. If the replica's disk IOPS are lower than the leader's, lag spikes.</p>
+
+      <h3>The "thundering herd" of reads — the hidden killer</h3>
+      <p>Replicas usually serve analytical queries (heavy <code>SELECT</code> scans). While a replica is crunching a 5-minute report its CPU is maxed out, so it <strong>stops applying the replication stream</strong>. Lag grows for the duration of the read.</p>
+
+      <h3>Single-threaded apply — the architectural choke</h3>
+      <p>Most databases (MySQL, PostgreSQL) apply the replication stream on a <strong>single CPU core</strong> on the replica, to guarantee transactions land in the exact same order as the leader. If the leader handles 10,000 writes/sec across 20 cores, the replica is replaying 10,000 writes/sec on 1 core. It physically cannot keep up.</p>
+
+      <h2>2. How is replication lag actually measured?</h2>
+      <p>Databases don't use a "stopwatch" — they use transaction timestamps embedded in the replication log.</p>
+      <ul>
+        <li><strong>MySQL:</strong> <code>Seconds_Behind_Source</code> — the replica compares the Unix timestamp of the last event it applied against its own system clock.</li>
+        <li><strong>PostgreSQL:</strong> <code>pg_stat_replication</code> exposes <code>write_lag</code>, <code>flush_lag</code>, and <code>replay_lag</code>, comparing the leader's current LSN (Log Sequence Number) against the LSN the replica reports back.</li>
+      </ul>
+      <div class="sd-study-note warning"><span class="sd-note-title">Operational trap</span><p><code>Seconds_Behind_Source</code> is a lie if the replica is completely stalled (e.g. network partition). If it hasn't received an event in 5 minutes, it reports <strong>0 lag</strong> — because the last timestamp it applied is 5 minutes old, matching its clock. The real lag is infinite. Monitor <strong>heartbeat timestamps</strong> (periodic empty writes) to catch this.</p></div>
+
+      <h2>3. Why is lag the #1 operational headache?</h2>
+      <p>Because it breaks the mental model developers have about databases. Three catastrophic failure modes are caused solely by lag:</p>
+      <ul>
+        <li><strong>Read-your-writes:</strong> a user saves a new profile picture (leader write), refreshes, and their read hits a lagging replica showing the old picture. They think the system is broken.</li>
+        <li><strong>Monotonic reads:</strong> a user reads a comment thread on Replica A (up-to-date), refreshes, gets routed to Replica B (lagging), and the comment they just saw <strong>disappears</strong>. Data goes backward in time for them.</li>
+        <li><strong>The "zombie" backup:</strong> if the leader crashes and failover promotes a lagging replica, you either (a) lose all data that hadn't replicated yet, or (b) bring the old leader back as a replica, which then tries to revert the new leader's data — split-brain and corrupted primary keys.</li>
+      </ul>
+
+      <h2>4. Misconception: "just use physical replication to reduce lag"</h2>
+      <p>A common intuitive leap that is actually incorrect. It depends entirely on what "physical" means:</p>
+      <ul>
+        <li><strong>Physical (row-based) replication</strong> — shipping the exact changed rows: this <em>increases</em> bandwidth but <em>reduces</em> CPU overhead on the replica, because it doesn't have to re-parse complex SQL logic.</li>
+        <li><strong>Physical (disk-block) replication</strong> — shipping raw disk pages: this makes lag <strong>worse</strong>, not better. If you ship a raw page change and the replica is running a heavy analytical query that holds that same page in its cache, the apply process <strong>blocks and waits</strong>. Physical replication is brittle and stalls easily.</li>
+      </ul>
+
+      <h2>5. The real ways to mitigate lag (the Ops toolkit)</h2>
+      <p>You cannot eliminate lag — you manage it with these four proven mechanisms:</p>
+      <ul>
+        <li><strong>Synchronous replication (the nuclear option):</strong> make the client wait until the replica applies the change. Fixes lag by definition, but kills write throughput and availability. Only for critical financial data.</li>
+        <li><strong>Read-only routing with bounded staleness:</strong> configure the load balancer to route reads only to replicas whose lag is under a threshold (e.g. &lt; 1s). A replica that lags beyond it is pulled from the read pool until it catches up.</li>
+        <li><strong>Session stickiness:</strong> pin a single user's session to exactly one replica for its duration. Prevents the "disappearing data" problem (monotonic reads) even if that replica lags.</li>
+        <li><strong>Scale the replica's hardware:</strong> since apply is single-threaded, give replicas faster single-core CPU and higher-IOPS NVMe SSDs than the leader. <strong>Leaders scale out (more cores); replicas scale up (faster cores).</strong></li>
+      </ul>
+
+      <h2>The ultimate operational truth about lag</h2>
+      <p>Lag is not a bug — it is a <strong>thermometer for the health of your entire stack</strong>. When lag spikes, 90% of the time it is not a database problem, it is an application problem: someone pushed a schema migration (<code>ALTER TABLE ADD COLUMN</code>) that locks the table, or an analyst ran an unindexed <code>SELECT *</code> that maxed out the replica's CPU.</p>
+      <blockquote>
+        <p>Treat lag like a pressure gauge: you don't try to stop the pressure, you build alarms for when it exceeds ~10 seconds — and you architect the application to gracefully tolerate temporary staleness (Version Vectors or Hybrid Logical Clocks in the application code itself).</p>
+      </blockquote>
+    </main>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distributed Database Fundamentals · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/site-header.js" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><a class="brand" href="../index.html">System Design Notes</a><nav></nav></aside>
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+      <p class="sd-study-breadcrumb"><a href="../index.html">Home</a> / Distributed Database / Distributed Database Fundamentals</p>
+      <h1>Distributed Database Fundamentals</h1>
+      <p class="sd-study-prompt">Lecture notes — databases &amp; distributed systems. A companion to the <a href="index.html">Distributed Data Roadmap</a> covering CAP, ACID, replication methods, consistency models, and CDC.</p>
+
+      <h2>1. CAP Theorem</h2>
+      <p>In a distributed database you can only guarantee <strong>two of three</strong> at any given time:</p>
+      <ul>
+        <li><strong>C — Consistency:</strong> every read gets the latest write, or an error.</li>
+        <li><strong>A — Availability:</strong> every request gets a response, even if it's not the latest.</li>
+        <li><strong>P — Partition tolerance:</strong> the system keeps operating despite network partitions.</li>
+      </ul>
+      <p><strong>Trade-offs:</strong></p>
+      <ul>
+        <li><strong>CP system:</strong> prioritizes consistency + partition tolerance → sacrifices availability.</li>
+        <li><strong>AP system:</strong> prioritizes availability + partition tolerance → sacrifices strict consistency.</li>
+        <li><strong>CA system:</strong> possible only in a non-partitioned single-node system.</li>
+      </ul>
+
+      <h2>2. ACID Properties</h2>
+      <ul>
+        <li><strong>Atomicity:</strong> a transaction is all-or-nothing.</li>
+        <li><strong>Consistency:</strong> only valid data (meeting constraints) is stored.</li>
+        <li><strong>Isolation:</strong> transactions don't affect each other during execution.</li>
+        <li><strong>Durability:</strong> once committed, data is permanent.</li>
+      </ul>
+      <p>Relational DBs typically provide full ACID. Non-relational DBs often relax isolation for performance and scalability.</p>
+
+      <h2>3. Isolation in Non-Relational Databases</h2>
+      <ul>
+        <li>Many NoSQL DBs (MongoDB, Cassandra) provide weaker isolation such as read-committed or eventual consistency.</li>
+        <li>Isolation is often tuned via consistency levels:
+          <ul>
+            <li>Read Concern / Write Concern in MongoDB.</li>
+            <li>Quorum reads/writes in Cassandra.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>4. Distributed Systems Concepts</h2>
+      <ul>
+        <li><strong>Partitioning (sharding):</strong> splitting data across nodes for scalability.</li>
+        <li><strong>Replication:</strong> copying data to multiple nodes for availability and durability.</li>
+      </ul>
+
+      <h2>5. Database Replication Methods</h2>
+      <ul>
+        <li><strong>Synchronous:</strong> writes wait until all replicas confirm.</li>
+        <li><strong>Asynchronous:</strong> writes return immediately; replicas update later.</li>
+        <li><strong>Semi-synchronous:</strong> the leader waits for at least one replica to confirm.</li>
+        <li><strong>Multi-master:</strong> multiple nodes can accept writes.</li>
+        <li><strong>Log-based:</strong> replicas replay the leader's change logs.</li>
+      </ul>
+
+      <h2>6. Consistency Models</h2>
+      <ul>
+        <li><strong>Strong (real-time):</strong> all nodes always return the latest value.</li>
+        <li><strong>Near real-time:</strong> small replication delay (milliseconds–seconds).</li>
+        <li><strong>Eventual:</strong> updates propagate eventually; reads may be stale.</li>
+        <li><strong>Periodic:</strong> data syncs at fixed intervals.</li>
+      </ul>
+
+      <h2>7. Change Data Capture (CDC)</h2>
+      <ul>
+        <li>Captures changes in real time from DB logs or triggers.</li>
+        <li>Useful for replication, streaming, analytics, and sync with search engines.</li>
+      </ul>
+
+      <h2>8. Full Load</h2>
+      <p>Initial bulk load of all data into a new system before incremental updates begin.</p>
+
+      <h2>9. Search Optimization</h2>
+      <ul>
+        <li>Full-text search engines like OpenSearch and Elasticsearch index data for fast keyword queries.</li>
+        <li><strong>Confidence score:</strong> indicates relevance of results.</li>
+      </ul>
+
+      <h2>10. Keys in Databases</h2>
+      <ul>
+        <li><strong>Primary key:</strong> unique identifier for a row.</li>
+        <li><strong>Foreign key:</strong> enforces a link between tables and referential integrity.</li>
+      </ul>
+
+      <h2>11. Load Balancers in Multi-AZ / Multi-Region</h2>
+      <p>Load balancers (AWS ALB, GCP LB) can distribute traffic across:</p>
+      <ul>
+        <li>Multiple Availability Zones — fault tolerance within a region.</li>
+        <li>Multiple regions — disaster recovery and global latency reduction.</li>
+      </ul>
+
+      <h2>References</h2>
+      <ul>
+        <li>CAP theorem — <a href="https://www.geeksforgeeks.org/cap-theorem-in-distributed-systems/" target="_blank" rel="noopener">GeeksforGeeks</a>, <a href="https://aws.amazon.com/builders-library/cap-theorem-practical-approach/" target="_blank" rel="noopener">AWS Builders' Library</a></li>
+        <li>ACID vs BASE — <a href="https://www.mongodb.com/resources/basics/databases/acid-transactions" target="_blank" rel="noopener">MongoDB</a></li>
+        <li>Consistency models — <a href="https://jepsen.io/consistency" target="_blank" rel="noopener">Jepsen</a></li>
+        <li>Change Data Capture — <a href="https://debezium.io/" target="_blank" rel="noopener">Debezium</a></li>
+        <li>Search — <a href="https://opensearch.org/" target="_blank" rel="noopener">OpenSearch</a></li>
+        <li>AWS load balancing across AZs — <a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html" target="_blank" rel="noopener">AWS docs</a></li>
+      </ul>
+    </main>
+  </div>
+</div>
+</body>
+</html>

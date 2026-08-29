@@ -3,6 +3,42 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>SQL and Relational Fundamentals</title><link rel="stylesheet" href="../../assets/site.css"></head>
 <body>
 <div id="site-header-root"></div><script src="../../assets/sitemap.js"></script><script src="../../assets/site-header.js" data-root="../../"></script>
-<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / SQL and Relational Fundamentals</p><h1>SQL and Relational Fundamentals</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn tables, rows, columns, primary and foreign keys, normalization, CRUD, filtering, joins, aggregation, subqueries, and constraints. Practice by modeling a small order-management database and writing queries for it.</p></main></div></div>
+<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / SQL and Relational Fundamentals</p><h1>SQL and Relational Fundamentals</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn tables, rows, columns, primary and foreign keys, normalization, CRUD, filtering, joins, aggregation, subqueries, and constraints. Practice by modeling a small order-management database and writing queries for it.</p>
+<h2>Core Building Blocks</h2>
+<table>
+<tr><th>Concept</th><th>What it means</th></tr>
+<tr><td>Table / row / column</td><td>A table is a typed collection of rows; each row is one record, each column one attribute.</td></tr>
+<tr><td>Primary key</td><td>Column(s) that uniquely identify a row. Should be stable and rarely, if ever, updated.</td></tr>
+<tr><td>Foreign key</td><td>A column referencing another table's primary key, enforcing referential integrity.</td></tr>
+<tr><td>Composite key</td><td>A primary or unique key made of more than one column (e.g. <code>(order_id, product_id)</code>).</td></tr>
+<tr><td>Constraint</td><td><code>NOT NULL</code>, <code>UNIQUE</code>, <code>CHECK</code>, and foreign keys — rules the database enforces on every write.</td></tr>
+</table>
+<h2>Normalization</h2>
+<table>
+<tr><th>Form</th><th>Rule</th></tr>
+<tr><td>1NF</td><td>Every column holds a single, atomic value — no repeating groups or arrays crammed into one field.</td></tr>
+<tr><td>2NF</td><td>1NF, plus every non-key column depends on the <em>whole</em> primary key (matters once keys are composite).</td></tr>
+<tr><td>3NF</td><td>2NF, plus no non-key column depends on another non-key column (no transitive dependencies).</td></tr>
+<tr><td>BCNF</td><td>A stricter 3NF: every determinant must be a candidate key.</td></tr>
+</table>
+<p>Normalize to remove update anomalies; denormalize deliberately (with a documented reason) when read performance requires it — see <a href="../02a-schema-design-and-migrations/index.html">Schema Design and Migrations</a>.</p>
+<h2>Joins</h2>
+<table>
+<tr><th>Join</th><th>Returns</th></tr>
+<tr><td><code>INNER JOIN</code></td><td>Only rows with a match on both sides.</td></tr>
+<tr><td><code>LEFT JOIN</code></td><td>All rows from the left table, matched columns or <code>NULL</code> from the right.</td></tr>
+<tr><td><code>RIGHT JOIN</code></td><td>Mirror of <code>LEFT JOIN</code> — all rows from the right table.</td></tr>
+<tr><td><code>FULL OUTER JOIN</code></td><td>All rows from both sides, <code>NULL</code>-padded where there's no match.</td></tr>
+<tr><td><code>CROSS JOIN</code></td><td>Cartesian product — every row from the left paired with every row from the right.</td></tr>
+</table>
+<h2>Aggregation and Subqueries</h2>
+<ul>
+<li><strong>GROUP BY / HAVING</strong>: aggregate rows into groups, then filter groups (not raw rows) with <code>HAVING</code>.</li>
+<li><strong>Window functions</strong>: <code>ROW_NUMBER()</code>, <code>RANK()</code>, running totals — compute per-row values across a related set without collapsing rows.</li>
+<li><strong>Subqueries</strong>: uncorrelated subqueries run once; correlated subqueries re-run per outer row and can be slow at scale.</li>
+<li><strong>CTEs</strong> (<code>WITH</code>): name a subquery for readability and reuse within one statement.</li>
+</ul>
+<div class="sd-study-note warning"><span class="sd-note-title">Common pitfalls</span><p><code>SELECT *</code> in production code, missing indexes on foreign key columns, comparing to <code>NULL</code> with <code>=</code> instead of <code>IS NULL</code>, and accidental cartesian joins from a missing or wrong <code>ON</code> clause.</p></div>
+</main></div></div>
 </body>
 </html>

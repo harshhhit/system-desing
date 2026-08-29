@@ -3,6 +3,31 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Transactions and Concurrency</title><link rel="stylesheet" href="../../assets/site.css"></head>
 <body>
 <div id="site-header-root"></div><script src="../../assets/sitemap.js"></script><script src="../../assets/site-header.js" data-root="../../"></script>
-<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / Transactions and Concurrency</p><h1>Transactions and Concurrency</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn ACID, isolation levels, locks, MVCC, deadlocks, lost updates, optimistic versus pessimistic concurrency, and how to make payment or inventory updates correct under concurrent requests.</p></main></div></div>
+<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / Transactions and Concurrency</p><h1>Transactions and Concurrency</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn ACID, isolation levels, locks, MVCC, deadlocks, lost updates, optimistic versus pessimistic concurrency, and how to make payment or inventory updates correct under concurrent requests.</p>
+<h2>ACID</h2>
+<table>
+<tr><th>Property</th><th>Guarantee</th></tr>
+<tr><td>Atomicity</td><td>A transaction's writes all happen or none do.</td></tr>
+<tr><td>Consistency</td><td>A transaction moves the database from one valid state to another, respecting constraints.</td></tr>
+<tr><td>Isolation</td><td>Concurrent transactions don't see each other's uncommitted intermediate state.</td></tr>
+<tr><td>Durability</td><td>Once committed, a write survives a crash.</td></tr>
+</table>
+<h2>Isolation Levels and Anomalies</h2>
+<table>
+<tr><th>Level</th><th>Prevents</th><th>Still allows</th></tr>
+<tr><td>Read Uncommitted</td><td>Nothing extra</td><td>Dirty reads, non-repeatable reads, phantoms</td></tr>
+<tr><td>Read Committed</td><td>Dirty reads</td><td>Non-repeatable reads, phantoms</td></tr>
+<tr><td>Repeatable Read</td><td>Dirty + non-repeatable reads</td><td>Phantoms (varies by engine)</td></tr>
+<tr><td>Serializable</td><td>All of the above</td><td>Nothing — behaves as if transactions ran one at a time</td></tr>
+</table>
+<h2>Locking and MVCC</h2>
+<ul>
+<li><strong>Pessimistic locking</strong> (<code>SELECT ... FOR UPDATE</code>): take a lock before reading, block other writers — safe under high contention, costs throughput.</li>
+<li><strong>Optimistic concurrency</strong>: read without a lock, write with a version check (<code>WHERE version = ?</code>); retry on conflict — better throughput when contention is rare.</li>
+<li><strong>MVCC</strong> (Postgres, MySQL/InnoDB): readers see a consistent snapshot without blocking writers, by keeping multiple row versions.</li>
+<li><strong>Deadlocks</strong>: two transactions each hold a lock the other needs — the database detects the cycle and aborts one; always acquire locks in a consistent order to avoid them.</li>
+</ul>
+<div class="sd-study-note warning"><span class="sd-note-title">Lost update</span><p>Two transactions read the same row, both compute a new value from it, and the second write silently overwrites the first — e.g. two concurrent <code>UPDATE inventory SET qty = 9</code> from reads of <code>qty = 10</code>, both decrementing by 1, losing one decrement. Prevent it with row locks, optimistic version checks, or an atomic <code>UPDATE ... SET qty = qty - 1</code>.</p></div>
+</main></div></div>
 </body>
 </html>

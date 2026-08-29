@@ -4,26 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>System Design Notes</title>
+<meta name="description" content="A personal knowledge base covering front-end, databases, distributed systems, messaging, storage, and more.">
 <link rel="stylesheet" href="assets/site.css">
 <style>
-:root {
-  --bg: #ffffff; --bg-alt: #f6f8fa; --fg: #1f2328; --muted: #57606a; --border: #d0d7de;
-  --link: #0969da; --accent: #6639ba; --card-bg: #ffffff; --shadow: 0 1px 3px rgba(31,35,40,0.08);
-}
-@media (prefers-color-scheme: dark) {
   :root {
-    --bg:#0d1117; --bg-alt:#161b22; --fg:#e6edf3; --muted:#8d96a0; --border:#30363d;
-    --link:#4493f8; --accent:#b794f6; --card-bg:#161b22; --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    --bg: #ffffff; --bg-alt: #f6f8fa; --fg: #1f2328; --muted: #57606a; --border: #d0d7de;
+    --link: #0969da; --accent: #6639ba; --card-bg: #ffffff; --shadow: 0 1px 3px rgba(31,35,40,0.08);
   }
-}
-* { box-sizing: border-box; }
-html, body { background: var(--bg); color: var(--fg); }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
-  line-height: 1.6; margin: 0; font-size: 16px;
-}
-a { color: var(--link); text-decoration: none; }
-a:hover { text-decoration: underline; }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#0d1117; --bg-alt:#161b22; --fg:#e6edf3; --muted:#8d96a0; --border:#30363d;
+      --link:#4493f8; --accent:#b794f6; --card-bg:#161b22; --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--fg); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+    line-height: 1.6; margin: 0; font-size: 16px;
+  }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -31,80 +32,168 @@ a:hover { text-decoration: underline; }
 <script src="assets/sitemap.js"></script>
 <script src="assets/site-header.js" data-root=""></script>
 
-<div class="sd-hero">
-  <h1>📚 System Design Notes</h1>
-  <p class="lede">A personal knowledge base covering front-end, databases, distributed systems, messaging, storage, and more &mdash; converted from raw notes into a browsable reference site.</p>
-  <div class="sd-stats">
-    <div class="stat"><b>10</b><span>Topics</span></div>
-    <div class="stat"><b>41</b><span>Pages</span></div>
+<main>
+  <header class="sd-hero">
+    <h1>📚 System Design Notes</h1>
+    <p class="lede">A personal knowledge base covering front-end, databases, distributed systems, messaging, storage, and more &mdash; converted from raw notes into a browsable reference site.</p>
+    <div class="sd-stats">
+      <div class="stat"><b>11</b><span>Topics</span></div>
+      <div class="stat"><b>46</b><span>Pages</span></div>
+    </div>
+  </header>
+
+  <h2 class="sd-section-title">Browse by topic</h2>
+  <div class="sd-grid">
+
+    <article class="sd-card" style="--accent:var(--sd-c1)">
+      <div class="sd-icon">🖥️</div>
+      <h2>Front-End</h2>
+      <span class="sd-count">3 pages</span>
+      <ul>
+        <li><a href="01-front-end/graphql/graphql-vs-rest.html">GraphQL vs REST</a></li>
+        <li><a href="01-front-end/graphql/http/ssr-vs-csr.html">SSR vs CSR</a></li>
+        <li><a href="01-front-end/graphql/http/ssr-vs-csr-v2.html">SSR vs CSR (v2)</a></li>
+      </ul>
+    </article>
+
+    <article class="sd-card" style="--accent:var(--sd-c2)">
+      <div class="sd-icon">🗄️</div>
+      <h2>Database</h2>
+      <span class="sd-count">18 pages</span>
+      <ul>
+        <li><a href="05-database/00-learning-path/00-index.html">Database Learning Path</a></li>
+        <li><a href="05-database/01-foundations/mislanious-terms.html">Miscellaneous Database Terms</a></li>
+        <li><a href="05-database/01a-sql-and-relational-fundamentals/index.html">SQL and Relational Fundamentals</a></li>
+        <li><a href="05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">How to Choose the Database</a></li>
+        <li><a href="05-database/02-data-modeling-and-selection/factors.html">Database Performance Factors</a></li>
+        <li><a href="05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">Scratch Note: Polyglot Persistence</a></li>
+        <li><a href="05-database/02a-schema-design-and-migrations/index.html">Schema Design and Migrations</a></li>
+        <li><a href="05-database/03-querying-and-performance/01A-Database-basic.html">PostgreSQL Views Explained</a></li>
+        <li><a href="05-database/03-querying-and-performance/08-indxing.html">Indexing</a></li>
+        <li><a href="05-database/03a-transactions-and-concurrency/index.html">Transactions and Concurrency</a></li>
+        <li><a href="05-database/03b-query-plans-and-optimization/index.html">Query Plans and Optimization</a></li>
+        <li><a href="05-database/04a-database-security-and-access-control/index.html">Database Security and Access Control</a></li>
+        <li><a href="05-database/05-scaling-and-partitioning/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li>
+        <li><a href="05-database/05-scaling-and-partitioning/02-partiontion.html">Partitioning</a></li>
+        <li><a href="05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">Horizontal Scaling</a></li>
+        <li><a href="05-database/05a-connection-management-and-database-proxies/index.html">Connection Management and Database Proxies</a></li>
+        <li><a href="05-database/06a-backup-recovery-and-disaster-recovery/index.html">Backup, Recovery, and Disaster Recovery</a></li>
+        <li><a href="05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a></li>
+      </ul>
+    </article>
+
+    <article class="sd-card" style="--accent:var(--sd-c3)">
+      <div class="sd-icon">🌐</div>
+      <h2>Distributed Systems</h2>
+      <span class="sd-count">1 page</span>
+      <ul>
+        <li><a href="distributed-system/distributed-systems.html">Distributed Systems</a></li>
+      </ul>
+    </article>
+
+    <article class="sd-card" style="--accent:var(--sd-c11)">
+      <div class="sd-icon">🧬</div>
+      <h2>Distributed Database</h2>
+      <span class="sd-count">7 pages</span>
+      <ul>
+        <li><a href="distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li>
+        <li><a href="distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li>
+        <li><a href="distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li>
+        <li><a href="distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li>
+        <li><a href="distributed-database/05-replication-lag.html">Replication Lag: Causes &amp; Mitigation</a></li>
+        <li><a href="distributed-database/06-distributed-db-fundamentals.html">Distributed Database Fundamentals</a></li>
+        <li><a href="distributed-database/07-cap-theorem-questions.html">CAP Theorem: Interview Question Framework</a></li>
+      </ul>
+    </article>
+
+    <article class="sd-card" style="--accent:var(--sd-c4)">
+      <div class="sd-icon">📨</div>
+      <h2>Messaging &amp; Queues</h2>
+      <span class="sd-count">4 pages</span>
+      <ul>
+        <li><a href="sqs/01-sqs.html">SQS Overview</a></li>
+        <li><a href="sqs/02-queus-methord.html">Queue Methods</a></li>
+        <li><a href="sqs/use-case.html">SQS Use Cases</a></li>
+        <li><a href="sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li>
+      </ul>
+    </article>
+
+    <article class="sd-card" style="--accent:var(--sd-c5)">
+      <div class="sd-icon">💾</div>
+      <h2>Storage</h2>
+      <span class="sd-count">1 page</span>
+      <ul>
+        <li><a href="storage/storage-type.html">Storage Types</a></li>
+      </ul>
+    </article>
+
+    <article class="sd-card" style="--accent:var(--sd-c6)">
+      <div class="sd-icon">🖧</div>
+      <h2>Web Servers</h2>
+      <span class="sd-count">2 pages</span>
+      <ul>
+        <li><a href="web-servers/server.html">Web Servers</a></li>
+        <li><a href="web-servers/wsgi.html">WSGI Explained</a></li>
+      </ul>
+    </article>
+
+    <article class="sd-card" style="--accent:var(--sd-c7)">
+      <div class="sd-icon">🧭</div>
+      <h2>Dev Principles</h2>
+      <span class="sd-count">1 page</span>
+      <ul>
+        <li><a href="software-development-principles/01-sdp.html">Software Development Principles</a></li>
+      </ul>
+    </article>
+
+    <article class="sd-card" style="--accent:var(--sd-c8)">
+      <div class="sd-icon">🗺️</div>
+      <h2>Planning &amp; Roadmap</h2>
+      <span class="sd-count">4 pages</span>
+      <ul>
+        <li><a href="path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li>
+        <li><a href="path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li>
+        <li><a href="path/01-b-MVP.html">MVP Planning</a></li>
+        <li><a href="path/02-apis.html">API Planning</a></li>
+      </ul>
+    </article>
+
+    <article class="sd-card" style="--accent:var(--sd-c9)">
+      <div class="sd-icon">🏗️</div>
+      <h2>Project Walkthroughs</h2>
+      <span class="sd-count">2 pages</span>
+      <ul>
+        <li><a href="project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li>
+        <li><a href="project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li>
+      </ul>
+    </article>
+
+    <article class="sd-card" style="--accent:var(--sd-c10)">
+      <div class="sd-icon">🧩</div>
+      <h2>Miscellaneous</h2>
+      <span class="sd-count">3 pages</span>
+      <ul>
+        <li><a href="mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li>
+        <li><a href="mislanious/Memory-Profiling.html">Memory Profiling</a></li>
+        <li><a href="mislanious/query-string.html">Query Strings</a></li>
+      </ul>
+    </article>
+
   </div>
-</div>
-<div class="sd-section-title">Browse by topic</div>
-<div class="sd-grid">
-<div class="sd-card" style="--accent:var(--sd-c1)">
-  <div class="sd-icon">🖥️</div>
-  <h2>Front-End</h2>
-  <span class="sd-count">3 pages</span>
-  <ul><li><a href="01-front-end/graphql/graphql-vs-rest.html">GraphQL vs REST</a></li><li><a href="01-front-end/graphql/http/ssr-vs-csr.html">SSR vs CSR</a></li><li><a href="01-front-end/graphql/http/ssr-vs-csr-v2.html">SSR vs CSR (v2)</a></li></ul>
-</div>
-<div class="sd-card" style="--accent:var(--sd-c2)">
-  <div class="sd-icon">🗄️</div>
-  <h2>Database</h2>
-  <span class="sd-count">20 pages</span>
-  <ul><li><a href="05-database/00-learning-path/00-index.html">Database Learning Path</a></li><li><a href="05-database/01a-sql-and-relational-fundamentals/index.html">SQL and Relational Fundamentals</a></li><li><a href="05-database/02a-schema-design-and-migrations/index.html">Schema Design and Migrations</a></li><li><a href="05-database/03a-transactions-and-concurrency/index.html">Transactions and Concurrency</a></li><li><a href="05-database/03b-query-plans-and-optimization/index.html">Query Plans and Optimization</a></li><li><a href="05-database/04a-database-security-and-access-control/index.html">Database Security and Access Control</a></li><li><a href="05-database/05a-connection-management-and-database-proxies/index.html">Connection Management and Database Proxies</a></li><li><a href="05-database/06a-backup-recovery-and-disaster-recovery/index.html">Backup, Recovery, and Disaster Recovery</a></li><li><a href="05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a></li></ul>
-</div>
-<div class="sd-card" style="--accent:var(--sd-c3)">
-  <div class="sd-icon">🌐</div>
-  <h2>Distributed Systems</h2>
-  <span class="sd-count">1 page</span>
-  <ul><li><a href="distributed-system/distributed-systems.html">Distributed Systems</a></li></ul>
-</div>
-<div class="sd-card" style="--accent:var(--sd-c4)">
-  <div class="sd-icon">📨</div>
-  <h2>Messaging &amp; Queues</h2>
-  <span class="sd-count">4 pages</span>
-  <ul><li><a href="sqs/01-sqs.html">SQS Overview</a></li><li><a href="sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="sqs/use-case.html">SQS Use Cases</a></li><li><a href="sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul>
-</div>
-<div class="sd-card" style="--accent:var(--sd-c5)">
-  <div class="sd-icon">💾</div>
-  <h2>Storage</h2>
-  <span class="sd-count">1 page</span>
-  <ul><li><a href="storage/storage-type.html">Storage Types</a></li></ul>
-</div>
-<div class="sd-card" style="--accent:var(--sd-c6)">
-  <div class="sd-icon">🖧</div>
-  <h2>Web Servers</h2>
-  <span class="sd-count">2 pages</span>
-  <ul><li><a href="web-servers/server.html">Web Servers</a></li><li><a href="web-servers/wsgi.html">WSGI Explained</a></li></ul>
-</div>
-<div class="sd-card" style="--accent:var(--sd-c7)">
-  <div class="sd-icon">🧭</div>
-  <h2>Dev Principles</h2>
-  <span class="sd-count">1 page</span>
-  <ul><li><a href="software-development-principles/01-sdp.html">Software Development Principles</a></li></ul>
-</div>
-<div class="sd-card" style="--accent:var(--sd-c8)">
-  <div class="sd-icon">🗺️</div>
-  <h2>Planning &amp; Roadmap</h2>
-  <span class="sd-count">4 pages</span>
-  <ul><li><a href="path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="path/01-b-MVP.html">MVP Planning</a></li><li><a href="path/02-apis.html">API Planning</a></li></ul>
-</div>
-<div class="sd-card" style="--accent:var(--sd-c9)">
-  <div class="sd-icon">🏗️</div>
-  <h2>Project Walkthroughs</h2>
-  <span class="sd-count">2 pages</span>
-  <ul><li><a href="project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul>
-</div>
-<div class="sd-card" style="--accent:var(--sd-c10)">
-  <div class="sd-icon">🧩</div>
-  <h2>Miscellaneous</h2>
-  <span class="sd-count">3 pages</span>
-  <ul><li><a href="mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="mislanious/query-string.html">Query Strings</a></li></ul>
-</div>
-</div>
-<div class="sd-section-title">Downloadable resources</div>
-<div class="sd-resource-list"><a href="05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides (PDF)</a><a href="05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.3 (PDF)</a><a href="05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.4 (PDF)</a><a href="05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.5 (PDF)</a><a href="05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive (PDF)</a><a href="sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering (PDF)</a><a href="sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></div>
-<div class="sd-footer-note">Looking for authentication notes? They live in a separate section: <a href="../eat-that-elephant-2/Authentication%20Notes.html">🔐 Authentication Notes</a>.</div>
+
+  <h2 class="sd-section-title">Downloadable resources</h2>
+  <div class="sd-resource-list">
+    <a href="05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides (PDF)</a>
+    <a href="05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.3 (PDF)</a>
+    <a href="05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.4 (PDF)</a>
+    <a href="05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.5 (PDF)</a>
+    <a href="05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive (PDF)</a>
+    <a href="sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering (PDF)</a>
+    <a href="sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a>
+  </div>
+
+  <p class="sd-footer-note">Looking for authentication notes? They live in a separate section: <a href="../eat-that-elephant-2/Authentication%20Notes.html">🔐 Authentication Notes</a>.</p>
+</main>
 
 </body>
 </html>

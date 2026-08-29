@@ -3,6 +3,27 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Query Plans and Optimization</title><link rel="stylesheet" href="../../assets/site.css"></head>
 <body>
 <div id="site-header-root"></div><script src="../../assets/sitemap.js"></script><script src="../../assets/site-header.js" data-root="../../"></script>
-<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / Query Plans and Optimization</p><h1>Query Plans and Optimization</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn to read EXPLAIN and EXPLAIN ANALYZE output, identify sequential scans and expensive joins, choose useful indexes, update statistics, avoid N+1 queries, and measure before and after every optimization.</p></main></div></div>
+<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / Query Plans and Optimization</p><h1>Query Plans and Optimization</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn to read EXPLAIN and EXPLAIN ANALYZE output, identify sequential scans and expensive joins, choose useful indexes, update statistics, avoid N+1 queries, and measure before and after every optimization.</p>
+<h2>Reading a Query Plan</h2>
+<p><code>EXPLAIN</code> shows the planner's chosen steps and estimated cost; <code>EXPLAIN ANALYZE</code> actually runs the query and adds real timings and row counts — use the latter to see where estimate and reality diverge.</p>
+<table>
+<tr><th>Plan node</th><th>Meaning</th></tr>
+<tr><td>Seq Scan</td><td>Reads every row in the table. Fine for small tables; a red flag on a large one filtered by a selective condition.</td></tr>
+<tr><td>Index Scan</td><td>Uses an index to find matching rows directly, then fetches each from the table.</td></tr>
+<tr><td>Index Only Scan</td><td>Answers the query entirely from the index — no table fetch needed.</td></tr>
+<tr><td>Nested Loop</td><td>For each row on one side, scans the other side. Good with a small outer set and an index on the inner.</td></tr>
+<tr><td>Hash Join</td><td>Builds a hash table from the smaller side, probes it with the larger — good for large, unsorted, unindexed joins.</td></tr>
+<tr><td>Merge Join</td><td>Both sides pre-sorted (often via an index), then merged — efficient for large sorted joins.</td></tr>
+</table>
+<h2>Indexing for the Query, Not the Table</h2>
+<ul>
+<li>Index columns used in <code>WHERE</code>, <code>JOIN ... ON</code>, and <code>ORDER BY</code> — not every column that "looks important."</li>
+<li>A composite index's column order matters: it can serve a query that filters on its leading column(s), not one that only filters on a trailing column.</li>
+<li>Stale table statistics can make the planner pick a bad plan even with the right index in place — re-run <code>ANALYZE</code> after large data changes.</li>
+</ul>
+<h2>The N+1 Query Problem</h2>
+<p>An ORM loop that issues one query per row of an earlier result (fetch 50 orders, then 50 separate queries for each order's line items) turns one round trip into 51. Fix it with a join, a batched <code>WHERE id IN (...)</code>, or the ORM's eager-loading feature.</p>
+<div class="sd-study-note tip"><span class="sd-note-title">Practice</span><p>Take a slow endpoint, run <code>EXPLAIN ANALYZE</code> on its query, change one thing (add an index, rewrite a subquery as a join), and re-measure. Never trust an optimization you haven't measured before and after.</p></div>
+</main></div></div>
 </body>
 </html>

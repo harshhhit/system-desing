@@ -3,6 +3,29 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Observability, Capacity, and Operations</title><link rel="stylesheet" href="../../assets/site.css"></head>
 <body>
 <div id="site-header-root"></div><script src="../../assets/sitemap.js"></script><script src="../../assets/site-header.js" data-root="../../"></script>
-<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / Observability, Capacity, and Operations</p><h1>Observability, Capacity, and Operations</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn database metrics, slow-query logs, tracing, alerting, capacity planning, load testing, maintenance tasks, upgrades, incident response, and how to turn production symptoms into an investigation plan.</p></main></div></div>
+<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / Observability, Capacity, and Operations</p><h1>Observability, Capacity, and Operations</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn database metrics, slow-query logs, tracing, alerting, capacity planning, load testing, maintenance tasks, upgrades, incident response, and how to turn production symptoms into an investigation plan.</p>
+<h2>What to Watch</h2>
+<table>
+<tr><th>Signal</th><th>Why it matters</th></tr>
+<tr><td>Query latency (p50/p95/p99)</td><td>Averages hide the slow tail that users actually feel — track percentiles, not just the mean.</td></tr>
+<tr><td>Connection count / pool saturation</td><td>Rising toward the max is an early warning of exhaustion, before requests start failing.</td></tr>
+<tr><td>Replication lag</td><td>Tells you how stale a read replica's data might be, and how far behind a failover target would start.</td></tr>
+<tr><td>Lock waits / deadlocks</td><td>A rising rate signals growing contention before it becomes visible as timeouts.</td></tr>
+<tr><td>Disk usage and IOPS</td><td>Databases fail hard when they run out of disk — alert well before capacity, not at it.</td></tr>
+<tr><td>Slow query log</td><td>The direct list of what to optimize next — see <a href="../03b-query-plans-and-optimization/index.html">Query Plans and Optimization</a>.</td></tr>
+</table>
+<h2>Capacity Planning</h2>
+<ul>
+<li>Track growth trends (data size, QPS, connection count) over weeks/months, not just current load — plan for where the line is heading.</li>
+<li>Load-test before a known traffic event, not after the first one causes an incident.</li>
+<li>Know your scaling levers in advance: vertical (bigger instance), read replicas, partitioning/sharding — and which one actually addresses the bottleneck you're hitting (see <a href="../05-scaling-and-partitioning/01-Database-Basic.html">Scaling and Partitioning</a>).</li>
+</ul>
+<h2>Operations</h2>
+<ul>
+<li>Routine maintenance (vacuum/analyze, index rebuilds, statistics updates) needs a schedule — deferring it silently degrades query plans over time.</li>
+<li>Version upgrades need a tested rollback path and a maintenance window plan, not just "run the upgrade."</li>
+</ul>
+<div class="sd-study-note tip"><span class="sd-note-title">Turning a symptom into an investigation</span><p>Start from the user-visible symptom (timeouts, errors), correlate it against latency/connection/lock graphs at that exact time window, then confirm the suspected cause in the slow query log or <code>EXPLAIN ANALYZE</code> before changing anything in production.</p></div>
+</main></div></div>
 </body>
 </html>

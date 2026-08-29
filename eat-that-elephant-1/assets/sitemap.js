@@ -74,14 +74,6 @@ window.SITE_MAP = {
           "title": "03b. Query Plans and Optimization"
         },
         {
-          "href": "05-database/04-distributed-database-fundamentals/lecture-2.html",
-          "title": "04. Distributed Database Fundamentals"
-        },
-        {
-          "href": "05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html",
-          "title": "04. CAP Theorem Questions"
-        },
-        {
           "href": "05-database/04a-database-security-and-access-control/index.html",
           "title": "04a. Database Security and Access Control"
         },
@@ -125,6 +117,40 @@ window.SITE_MAP = {
         {
           "href": "distributed-system/distributed-systems.html",
           "title": "Distributed Systems"
+        }
+      ]
+    },
+    {
+      "icon": "🧬",
+      "name": "Distributed Database",
+      "pages": [
+        {
+          "href": "distributed-database/index.html",
+          "title": "Replication & Distributed Data Roadmap (Part 1)"
+        },
+        {
+          "href": "distributed-database/02-replication-mechanism.html",
+          "title": "Replication Mechanism — The 4 Dimensions (Part 2)"
+        },
+        {
+          "href": "distributed-database/03-pacelc-interview-masterclass.html",
+          "title": "PACELC — Senior Interview Masterclass"
+        },
+        {
+          "href": "distributed-database/04-wal-vs-binlog.html",
+          "title": "WAL vs Binlog"
+        },
+        {
+          "href": "distributed-database/05-replication-lag.html",
+          "title": "Replication Lag — Causes, Measurement, Mitigation"
+        },
+        {
+          "href": "distributed-database/06-distributed-db-fundamentals.html",
+          "title": "Distributed Database Fundamentals"
+        },
+        {
+          "href": "distributed-database/07-cap-theorem-questions.html",
+          "title": "CAP Theorem — Interview Question Framework"
         }
       ]
     },

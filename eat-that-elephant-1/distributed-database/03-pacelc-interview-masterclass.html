@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PACELC — Senior Interview Masterclass · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+  .sd-study-main .lead { font-weight: 700; }
+  .sd-study-main blockquote {
+    margin: 1em 0; padding: 0.6em 1.1em; border-left: 4px solid var(--sd-c11, #0891b2);
+    background: color-mix(in srgb, var(--sd-c11, #0891b2) 8%, transparent); border-radius: 8px;
+  }
+  .sd-study-main blockquote p { margin: 0.4em 0; }
+  .sd-study-main .formula {
+    text-align: center; font-weight: 700; font-size: 1.05rem; margin: 1.2rem 0;
+    padding: 0.9rem 1rem; border: 1px solid var(--border, #d0d7de); border-radius: 8px;
+    background: var(--bg-alt, #f6f8fa);
+  }
+  .sd-answer-phase { margin: 1.1rem 0; padding-left: 1rem; border-left: 3px solid var(--border, #d0d7de); }
+  .sd-answer-phase .sd-answer-label {
+    display: block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--muted, #57606a); margin-bottom: 0.3em;
+  }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/site-header.js" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><a class="brand" href="../index.html">System Design Notes</a><nav></nav></aside>
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+      <p class="sd-study-breadcrumb"><a href="../index.html">Home</a> / Distributed Database / PACELC — Senior Interview Masterclass</p>
+      <h1>PACELC — Senior Interview Masterclass</h1>
+      <p class="sd-study-prompt">A companion deep-dive to the <a href="index.html">Distributed Data Roadmap</a> (Phase 0). To nail a PACELC question at a senior level you cannot just recite the acronym — you have to understand the <strong>psychology</strong> of why interviewers ask it.</p>
+
+      <p><strong>The mindset:</strong> if CAP is the "Newton's Laws" of distributed systems (simple, foundational, but incomplete), then PACELC is the "Theory of Relativity" — nuanced, handles the edge cases, and actually reflects reality. What follows is a full syllabus, from basic definitions to architectural mastery.</p>
+
+      <h2>Part 1 — The Prerequisite: Why CAP Fails in Practice</h2>
+      <p><strong>CAP Theorem</strong> says: in a <em>Partition</em> (P), you must choose between <em>Availability</em> (A) and <em>Consistency</em> (C).</p>
+      <p><span class="lead">The interview trap:</span> junior devs think CAP solves everything. But <strong>99.9% of the time, your system is NOT partitioned.</strong> What do you choose <em>during normal operation</em>? CAP is silent on this.</p>
+      <p><span class="lead">Enter PACELC (2008),</span> coined by Daniel Abadi:</p>
+      <blockquote>
+        <p>If you have a <strong>P</strong>artition, you choose between <strong>A</strong>vailability and <strong>C</strong>onsistency.</p>
+        <p><strong>E</strong>lse (during normal operation), you choose between <strong>L</strong>atency and <strong>C</strong>onsistency.</p>
+      </blockquote>
+
+      <h2>Part 2 — The Core Formula</h2>
+      <p>Write this on the whiteboard immediately:</p>
+      <p class="formula">PACELC = (P / A vs C) + (E / L vs C)</p>
+      <ul>
+        <li><strong>P (Partition):</strong> network breaks. Nodes cannot talk.</li>
+        <li><strong>A vs C:</strong> do you respond with stale data (A) or refuse to respond (C)?</li>
+        <li><strong>E (Else):</strong> network is perfectly fine. All nodes can talk.</li>
+        <li><strong>L vs C:</strong> do you speed up reads/writes by relaxing consistency (L), or slow them down to ensure strong consistency (C)?</li>
+      </ul>
+
+      <h2>Part 3 — The Four Archetypes (the "Periodic Table" of Databases)</h2>
+      <p>Interviewers love to ask: <em>"Given this use case, which PACELC tradeoff do you make?"</em> Map these four combinations to real databases:</p>
+      <table>
+        <tr><th>Scenario</th><th>Partition (P)</th><th>Else (E)</th><th>Real-world example</th></tr>
+        <tr><td><strong>1. CP / EC</strong></td><td>Choose <strong>C</strong>onsistency</td><td>Choose <strong>C</strong>onsistency</td><td>HBase, MongoDB (w/ majority writes), ZooKeeper</td></tr>
+        <tr><td><strong>2. CA / EL</strong></td><td>Choose <strong>A</strong>vailability</td><td>Choose <strong>L</strong>ow latency</td><td>DynamoDB (default), Cassandra, Riak</td></tr>
+        <tr><td><strong>3. CP / EL</strong></td><td>Choose <strong>C</strong>onsistency</td><td>Choose <strong>L</strong>ow latency</td><td>Most RDBMS master–slave (async replication)</td></tr>
+        <tr><td><strong>4. CA / EC</strong></td><td>Choose <strong>A</strong>vailability</td><td>Choose <strong>C</strong>onsistency</td><td>Spanner, CockroachDB (synchronous replication)</td></tr>
+      </table>
+      <div class="sd-study-note"><span class="sd-note-title">Notation heads-up</span><p>Many texts write these as <strong>PC/EC</strong>, <strong>PA/EL</strong>, etc. (the letter after P/E names the choice). The pairs above are the same tradeoffs — just keep one convention consistent when you answer.</p></div>
+
+      <h2>Part 4 — The Deep Dive: the "E" Case Is the Hard Part</h2>
+      <p>Interviews pivot here: <em>"Forget partitions. Walk me through the 'Else' tradeoff."</em></p>
+      <p>In a normal network, to achieve strict consistency (linearizability), a write must be acknowledged by <em>all</em> replicas before returning to the client.</p>
+      <ul>
+        <li><strong>Distance = latency.</strong> If your replicas are in US-East and Europe, a write takes ~150ms (speed-of-light limit).</li>
+        <li><strong>If you choose low latency:</strong> you write to a single leader and replicate asynchronously in the background. The write returns in ~5ms.</li>
+        <li><strong>The tradeoff:</strong> if the leader dies 1ms after the write, you lose that data.</li>
+      </ul>
+      <p><span class="lead">The interview insight:</span> "Else" is not about network failures. It is about the <em>physics of light</em>. You cannot beat the speed of light. You are choosing to lose data (L) or wait for physics (C).</p>
+
+      <h2>Part 5 — The Secret Sauce: Read/Write Asymmetry</h2>
+      <p>This is what senior candidates say to impress: you do not have to choose PACELC globally. You can choose it <em>per operation</em>.</p>
+      <ul>
+        <li><strong>For writes:</strong> choose <strong>EL</strong> (low latency) using async replication to keep the UI snappy.</li>
+        <li><strong>For reads:</strong> choose <strong>EC</strong> (strong consistency) using "read-repair" or quorum reads so a user never sees stale data.</li>
+      </ul>
+      <blockquote>
+        <p><span class="lead">Interviewer pro-tip:</span> "PACELC is not a database property; it is a configuration property. I can tune Cassandra for EC by using <code>QUORUM</code> consistency, or EL by using <code>ONE</code> consistency. It depends on the criticality of the transaction."</p>
+      </blockquote>
+
+      <h2>Part 6 — Advanced Question: the Split-Brain / "Spanner" Scenario</h2>
+      <p><em>Question: "What happens if you choose Availability (A) during a partition, but Consistency (C) during the Else case?"</em></p>
+      <p>First, the Spanner clarification: Google Spanner chooses <strong>CP</strong> during a partition (it sacrifices availability) and <strong>EC</strong> during the Else case — it never gives up consistency; it uses TrueTime to keep the latency cost bearable.</p>
+      <p>Now the genuinely mixed system — <strong>A</strong> during partition, <strong>C</strong> during Else (DynamoDB-style):</p>
+      <ul>
+        <li>During a partition, it allows writes to both sides of the network (A).</li>
+        <li>When the network heals (Else), it uses <strong>version vectors / vector clocks</strong> to merge the conflicting writes.</li>
+        <li><strong>The catch:</strong> it does not achieve "C" in the Else case by locking the database. It achieves it by <em>resolving conflicts client-side</em>. The database stays available; the <em>application logic</em> reconciles the two divergent histories.</li>
+      </ul>
+      <p><span class="lead">The ultimate senior insight:</span> PACELC forces you to realize that <strong>consistency is a continuum</strong>, not "strong" vs "none":</p>
+      <ul>
+        <li><strong>Strict (EC):</strong> wait for all.</li>
+        <li><strong>Sequential (EL with quorum):</strong> order is preserved, but stale reads are allowed.</li>
+        <li><strong>Eventual (A + L):</strong> merging conflicts on the client.</li>
+      </ul>
+
+      <h2>Part 7 — How to Structure Your Answer</h2>
+      <p>If an interviewer asks <em>"Explain PACELC,"</em> don't blurt the definition. Structure it like a masterclass:</p>
+
+      <div class="sd-answer-phase">
+        <span class="sd-answer-label">Phase 1 — The setup (~15s)</span>
+        <p>"PACELC is an extension of CAP that addresses its blind spot: what happens when the network is healthy. CAP only tells us about partitions, but latency and user experience are daily concerns."</p>
+      </div>
+      <div class="sd-answer-phase">
+        <span class="sd-answer-label">Phase 2 — The definition (~30s)</span>
+        <p>"During a Partition, we choose between Availability and Consistency. Else, during normal operation, we choose between Latency and Consistency. Essentially you are trading data safety for speed — whether the network is broken or not."</p>
+      </div>
+      <div class="sd-answer-phase">
+        <span class="sd-answer-label">Phase 3 — The nuance (~45s)</span>
+        <p>"Crucially, this tradeoff is not binary. Cassandra defaults to <strong>PA/EL</strong> (high availability, low latency), but you can change consistency levels per request to <strong>PC/EC</strong> for critical financial transactions. And modern systems like Spanner cheat physics with TrueTime APIs to get <strong>PC/EC</strong> without horrific latency — proving PACELC is a guideline based on hardware limits, not an unbreakable law."</p>
+      </div>
+      <div class="sd-answer-phase">
+        <span class="sd-answer-label">Phase 4 — The killer close</span>
+        <p>"Ultimately, PACELC forces architects to acknowledge that <strong>the 'Else' case is harder than the 'Partition' case</strong>. Partitions are rare and resolved quickly; latency is constant and impacts every user, every millisecond. So I design systems to favor 'L' during the 'Else' for 95% of traffic, and only enforce 'C' for the critical 5%."</p>
+      </div>
+
+      <h2>Summary Cheat Sheet</h2>
+      <ul>
+        <li><strong>CAP</strong> = what to do when things break.</li>
+        <li><strong>PACELC</strong> = what to do <em>all the time</em>.</li>
+        <li><strong>The true enemy:</strong> not network splits — the speed of light.</li>
+        <li><strong>The golden rule:</strong> you can sacrifice Consistency for Latency, but you can <em>never</em> sacrifice Latency for Consistency without impacting user experience.</li>
+        <li><strong>The trick question:</strong> PACELC applies to <em>reads</em> and <em>writes</em> differently — you can have <strong>PA/EL</strong> for writes and <strong>PA/EC</strong> for reads in the same database using quorums.</li>
+      </ul>
+
+      <div class="sd-study-note tip"><span class="sd-note-title">Final advice</span><p>When the interviewer asks about PACELC, say: <em>"Great question — this is the most practical theorem in distributed systems, because it addresses daily performance tuning, not just disaster recovery."</em> That instantly signals staff-level thinking.</p></div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

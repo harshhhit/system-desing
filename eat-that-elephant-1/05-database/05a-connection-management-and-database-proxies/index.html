@@ -3,6 +3,25 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Connection Management and Database Proxies</title><link rel="stylesheet" href="../../assets/site.css"></head>
 <body>
 <div id="site-header-root"></div><script src="../../assets/sitemap.js"></script><script src="../../assets/site-header.js" data-root="../../"></script>
-<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / Connection Management and Database Proxies</p><h1>Connection Management and Database Proxies</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn connection pooling, pool sizing, timeouts, connection leaks, health checks, failover, and database proxies such as PgBouncer and ProxySQL. Understand when read/write routing is safe and how replication lag can return stale data.</p></main></div></div>
+<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / Connection Management and Database Proxies</p><h1>Connection Management and Database Proxies</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn connection pooling, pool sizing, timeouts, connection leaks, health checks, failover, and database proxies such as PgBouncer and ProxySQL. Understand when read/write routing is safe and how replication lag can return stale data.</p>
+<h2>Why Pooling Matters</h2>
+<p>Opening a database connection is expensive — TCP handshake, auth, TLS, session setup. Under real traffic, opening one per request exhausts the database's connection limit long before it exhausts CPU. A connection pool keeps a bounded set of live connections open and hands them out to requests as needed.</p>
+<h2>Sizing the Pool</h2>
+<ul>
+<li>More connections isn't always faster — each one costs the database memory and adds contention; an oversized pool can make throughput <em>worse</em>.</li>
+<li>A common starting point is small (e.g. <code>2 × CPU cores</code> per database instance) and tuned from measured saturation, not guessed.</li>
+<li>Every service instance has its own pool — with many instances, total connections across all of them must stay under the database's hard limit.</li>
+</ul>
+<h2>Common Failure Modes</h2>
+<table>
+<tr><th>Symptom</th><th>Likely cause</th></tr>
+<tr><td>Requests hang waiting for a connection</td><td>Pool exhausted — often a connection leak (a code path that never returns its connection) rather than genuine load.</td></tr>
+<tr><td>"Too many connections" errors from the database</td><td>Sum of all pools across all service instances exceeds the database's <code>max_connections</code>.</td></tr>
+<tr><td>Intermittent timeouts after failover</td><td>Pooled connections still pointing at the old primary — needs a health check that evicts dead connections.</td></tr>
+</table>
+<h2>Database Proxies</h2>
+<p>Tools like <strong>PgBouncer</strong> (Postgres) and <strong>ProxySQL</strong> (MySQL) sit between the application and the database and multiplex many client connections onto far fewer real database connections — useful when many service instances would otherwise each hold their own large pool.</p>
+<div class="sd-study-note warning"><span class="sd-note-title">Read/write routing</span><p>Routing reads to a replica is only safe if the application can tolerate replication lag — a write followed immediately by a read of the same row can return stale data on a lagging replica. Route "read your own write" paths to the primary, or read from the replica only where slightly stale data is acceptable.</p></div>
+</main></div></div>
 </body>
 </html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Replication Mechanism — The 4 Dimensions · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .sd-study-main img { max-width: 100%; height: auto; border-radius: 8px; }
+  .sd-study-main figure { margin: 1.4rem 0; }
+  .sd-study-main figure img { border: 1px solid var(--border, #d0d7de); display: block; }
+  .sd-study-main figcaption { margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted, #57606a); }
+  .sd-study-main h3 { margin-top: 1.6rem; }
+  .sd-study-main .lead { font-weight: 700; }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/site-header.js" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><a class="brand" href="../index.html">System Design Notes</a><nav></nav></aside>
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+      <p class="sd-study-breadcrumb"><a href="../index.html">Home</a> / Distributed Database / Replication Mechanism — The 4 Dimensions</p>
+      <h1>Replication Mechanism — The 4 Dimensions <small>(Part 2)</small></h1>
+      <p class="sd-study-prompt"><strong>Part 2 of the Distributed Database track.</strong> Part 1 is the <a href="index.html">Replication &amp; Distributed Data Roadmap</a>. This page breaks replication down as a pure mechanism, independent of any specific database:</p>
+      <p style="text-align:center; font-weight:700;">Replication = Topology <span style="font-weight:400;">(who)</span> + Timing <span style="font-weight:400;">(when)</span> + Payload <span style="font-weight:400;">(what)</span> + Delivery <span style="font-weight:400;">(how)</span></p>
+
+      <figure>
+        <img src="replication-4-dimensions.png" alt="Infographic: the 4 dimensions of a replication mechanism — topology (single-leader, multi-leader, leaderless), timing (synchronous, asynchronous, semi-synchronous), payload (statement-based, row-based, logical, physical), and delivery (log-shipping, change data capture), with a summary and golden rule.">
+        <figcaption>The 4 dimensions of a replication mechanism, at a glance — each is expanded in the sections below.</figcaption>
+      </figure>
+
+      <h2>1. The Topology: Who talks to whom?</h2>
+      <p>This defines the <strong>direction of the data flow</strong>.</p>
+
+      <h3>Single-Leader (Master–Slave / Active–Passive)</h3>
+      <p>One node is designated the primary writer. All writes go to the leader; it serializes the order of changes. Replicas pull or receive a stream of those changes in that exact order.</p>
+      <p><span class="lead">Mechanism:</span> Easy to reason about — conflicts never happen at the write level. Used when you prioritize consistency over write-availability.</p>
+
+      <h3>Multi-Leader (Master–Master / Active–Active)</h3>
+      <p>Two or more nodes accept writes simultaneously. Each leader broadcasts its changes to the other leaders.</p>
+      <p><span class="lead">Mechanism:</span> You must handle write conflicts (e.g. two leaders increment a counter or update the same field at the same time). Requires conflict-resolution strategies — Last Write Wins, CRDTs, or application-level merge logic.</p>
+
+      <h3>Leaderless (Dynamo-Style)</h3>
+      <p>No primary node. Any client can write to any replica. To ensure consistency, the client writes to a <strong>quorum</strong> of replicas (W nodes) and reads from a quorum (R nodes) so that <code>R + W &gt; N</code> (total nodes) — guaranteeing at least one overlapping node with the latest data.</p>
+      <p><span class="lead">Mechanism:</span> Relies heavily on version vectors and <em>read-repair</em> (fixing stale data during a read) or <em>anti-entropy</em> (background gossip protocols) to reconcile differences over time.</p>
+
+      <h2>2. The Timing: When does the change happen on the replica?</h2>
+      <p>This defines the <strong>durability and consistency trade-offs</strong>.</p>
+
+      <h3>Synchronous</h3>
+      <p>The leader applies the change locally, then sends it to the replica. The leader does <strong>not</strong> acknowledge the write to the client until the replica confirms it has persisted the change.</p>
+      <p><span class="lead">Mechanism:</span> Guarantees strong consistency and zero data loss (if the leader dies, the replica has the data). <span class="lead">Cost:</span> Higher latency (waiting for network round-trips) and reduced availability (if the replica is down, the write fails).</p>
+
+      <h3>Asynchronous</h3>
+      <p>The leader applies the change locally, acknowledges the write to the client immediately, and sends the change to the replica in the background.</p>
+      <p><span class="lead">Mechanism:</span> Maximizes availability and low latency. <span class="lead">Cost:</span> If the leader crashes before shipping the change, you lose data (durability violation) and replicas are temporarily stale (eventual consistency).</p>
+
+      <h3>Semi-Synchronous</h3>
+      <p>A pragmatic hybrid. Usually configured so that <strong>one</strong> replica is synchronous and the rest are asynchronous.</p>
+      <p><span class="lead">Mechanism:</span> The client waits for ack from the leader + that one synced replica. If that specific replica crashes, the system dynamically reverts to asynchronous for that node to keep the system available — sacrificing full durability temporarily until the node recovers.</p>
+
+      <h2>3. The Payload: What exact data is being replicated?</h2>
+      <p>This defines the <strong>format of the change</strong> shipped across the network. This is the most critical architectural choice.</p>
+
+      <h3>Statement-Based (Logical — SQL Text)</h3>
+      <p>The leader ships the exact raw query, e.g. <code>UPDATE users SET age = 30 WHERE id = 5</code>.</p>
+      <p><span class="lead">Mechanism:</span> Simple and compact. <span class="lead">Flaws:</span> Non-deterministic functions (<code>NOW()</code>, <code>RAND()</code>) generate different results on replicas. Also, if rows have moved (e.g. due to sharding), <code>UPDATE ... WHERE</code> might affect different rows.</p>
+
+      <h3>Row-Based (Physical — Changed Values)</h3>
+      <p>The leader ships the <strong>new state</strong> of the changed rows. For an <code>UPDATE</code>, it ships the entire new row image (or just the changed columns) for the primary keys involved.</p>
+      <p><span class="lead">Mechanism:</span> Deterministic and safe. Works flawlessly with non-deterministic functions because the value is calculated once on the leader. <span class="lead">Cost:</span> Huge network bandwidth — an <code>UPDATE</code> that modifies 10,000 rows sends 10,000 row-images across the wire.</p>
+
+      <h3>Logical (Decoupled Row-Based)</h3>
+      <p>A middle ground. Instead of shipping the raw binary row (which is storage-engine specific), the leader ships a <strong>logical change record</strong> — e.g. a JSON-like payload: <code>{ "op": "update", "table": "users", "pk": 5, "after": { "age": 30 } }</code>.</p>
+      <p><span class="lead">Mechanism:</span> The gold standard for <em>heterogeneous</em> replication (e.g. replicating from a MySQL leader to a PostgreSQL or Kafka consumer). Decoupled from the underlying storage format, but safer than raw SQL.</p>
+
+      <h3>Physical (Raw Disk Blocks)</h3>
+      <p>The leader ships the exact binary bytes of the disk pages or WAL (Write-Ahead Log) segments that changed.</p>
+      <p><span class="lead">Mechanism:</span> The absolute fastest and lowest overhead for the leader. <span class="lead">Massive constraint:</span> the replica must run the exact same operating system, file system, and database version, because the physical layout of data on disk is byte-for-byte identical. Used primarily for failover replicas in enterprise RDBMSs, not for general scaling.</p>
+
+      <h2>4. The Delivery Mechanism: How is the stream transported?</h2>
+      <p>Under the hood, these replication formats must be shipped. The underlying mechanism is usually one of two things:</p>
+
+      <h3>Log-Shipping</h3>
+      <p>The leader writes changes to a transaction log (WAL) on disk. A separate process reads this disk log and ships the file or stream to the replica, which replays it.</p>
+
+      <h3>Change Data Capture (CDC)</h3>
+      <p>The leader pushes the replication payload directly to a message bus (like Kafka) using an internal protocol. The replicas are consumers subscribing to that bus. This decouples the replicas from the leader entirely — the leader doesn't even know who is listening.</p>
+
+      <h2>The Ultimate Mechanism Summary</h2>
+      <p>If you design a replication system from scratch, the mechanism is a combination of these 4 layers:</p>
+      <table>
+        <tr><th>Layer</th><th>What it defines</th></tr>
+        <tr><td><strong>Topology</strong></td><td>Safety — single-leader is safe, multi-leader is risky but available, leaderless is robust but complex.</td></tr>
+        <tr><td><strong>Timing</strong></td><td>Durability — sync for zero-loss, async for speed.</td></tr>
+        <tr><td><strong>Payload</strong></td><td>Compatibility — use row-based / logical for heterogeneous systems; use physical for high-performance homogeneous failover.</td></tr>
+        <tr><td><strong>Conflict resolution</strong> <span style="color:var(--muted,#57606a);">(only in multi-leader / leaderless)</span></td><td>Correctness — do you resolve on write (e.g. LWW) or on read (e.g. merging version vectors)?</td></tr>
+      </table>
+
+      <div class="sd-study-note"><span class="sd-note-title">The golden rule of replication as a pure mechanism</span>
+        <p>The further you move the replication logic toward the <strong>application layer</strong> (logical/row-based, async, multi-leader), the more flexible and scalable you become — but the more you must code for eventual consistency and conflict resolution.</p>
+        <p>The further you move it toward the <strong>storage engine layer</strong> (physical, sync, single-leader), the more the database handles correctness for you — but you trade away network independence and global write scalability.</p>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

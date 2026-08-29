@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Replication &amp; Distributed Data Roadmap · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .sd-study-main ul.todo { list-style: none; padding-left: 0.2em; }
+  .sd-study-main ul.todo ul { list-style: disc; padding-left: 1.4em; margin: 0.3em 0; }
+  .sd-study-main ul.todo li { margin: 0.45em 0; }
+  .sd-study-main ul.todo input[type="checkbox"] { margin-right: 0.55em; transform: translateY(1px); }
+  .sd-phase-goal { margin: 0.4em 0; }
+  .sd-phase-goal + .sd-phase-goal { margin-top: 0.2em; }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/site-header.js" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><a class="brand" href="../index.html">System Design Notes</a><nav></nav></aside>
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+      <p class="sd-study-breadcrumb"><a href="../index.html">Home</a> / Distributed Database / Replication &amp; Distributed Data Roadmap</p>
+      <h1>Replication &amp; Distributed Data — Solution Architect Roadmap <small>(Part 1)</small></h1>
+      <p class="sd-study-prompt"><strong>How to use this:</strong> each phase has a <em>Goal</em>, <em>Concepts to master</em>, and a <em>Todo</em> checklist. Do the phases in order — later phases assume the earlier ones are solid. Treat every unchecked box as your backlog. <strong>Part 2:</strong> <a href="02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions</a>.</p>
+
+      <h2>Phase 0 — Prerequisites (Don't Skip)</h2>
+      <p class="sd-phase-goal"><strong>Goal:</strong> Have the vocabulary before the deep dives make sense.</p>
+      <p class="sd-phase-goal"><strong>Concepts:</strong> CAP theorem, ACID vs BASE, distributed systems basics (clocks, network partitions), what a WAL/binlog is, leader/follower terminology.</p>
+      <ul class="todo">
+        <li><label><input type="checkbox"> Explain CAP theorem in your own words with a real example (not the textbook one)</label></li>
+        <li><label><input type="checkbox"> Explain PACELC (extension of CAP for the non-partition case) — this is the one interviewers actually care about</label> <a href="03-pacelc-interview-masterclass.html">→ masterclass</a></li>
+        <li><label><input type="checkbox"> Write down the difference between a Write-Ahead Log (WAL) and a binlog</label> <a href="04-wal-vs-binlog.html">→ deep dive</a></li>
+        <li><label><input type="checkbox"> Understand logical clocks vs wall clocks vs vector clocks (just enough to reason about ordering)</label></li>
+        <li><label><input type="checkbox"> List 3 reasons a system replicates data (HA, read scaling, DR, locality) — you'll use these to justify design choices later</label></li>
+      </ul>
+
+      <h2>Phase 1 — Core Replication Theory</h2>
+      <p class="sd-phase-goal"><strong>Goal:</strong> Understand replication as a mechanism, independent of any specific database.</p>
+      <p class="sd-phase-goal"><strong>Concepts:</strong> Single-leader (master–slave), multi-leader (master–master), leaderless (Dynamo-style), synchronous vs asynchronous vs semi-synchronous, statement-based vs row-based vs logical vs physical replication.</p>
+      <ul class="todo">
+        <li><label><input type="checkbox"> Draw (on paper or a tool) single-leader, multi-leader, and leaderless topologies</label></li>
+        <li><label><input type="checkbox"> For each topology, list: who can accept writes, how conflicts are resolved, failover complexity</label></li>
+        <li><label><input type="checkbox"> Explain synchronous vs semi-synchronous vs async replication and the durability guarantee each gives</label></li>
+        <li><label><input type="checkbox"> Explain replication lag: what causes it, how it's measured, why it's the #1 operational headache</label> <a href="05-replication-lag.html">→ deep dive</a></li>
+        <li><label><input type="checkbox"> Understand statement-based replication failure modes (non-deterministic functions like <code>NOW()</code>, <code>RAND()</code>) — explain why row-based/logical replication mostly replaced it</label></li>
+      </ul>
+
+      <h2>Phase 2 — Consistency Models (The Architect-Level Filter)</h2>
+      <p class="sd-phase-goal"><strong>Goal:</strong> Be able to pick the right consistency model for a business requirement, not just the strongest one.</p>
+      <p class="sd-phase-goal"><strong>Concepts:</strong> Strong consistency, eventual consistency, read-your-writes, monotonic reads, causal consistency, linearizability, quorum reads/writes (N, R, W).</p>
+      <ul class="todo">
+        <li><label><input type="checkbox"> Rank these from strongest to weakest guarantee: linearizability, causal consistency, eventual consistency, read-your-writes</label></li>
+        <li><label><input type="checkbox"> Compute quorum math: for N=5, what R and W values guarantee strong consistency? What if you want fast reads and can tolerate slower writes?</label></li>
+        <li><label><input type="checkbox"> Write a 1-paragraph justification for choosing eventual consistency for a "likes counter" and strong consistency for a "bank balance"</label></li>
+        <li><label><input type="checkbox"> Explain "read-your-writes" and why it matters for UX (classic bug: user posts a comment, refreshes, comment is gone because they hit a lagging replica)</label></li>
+        <li><label><input type="checkbox"> Understand how sloppy quorums + hinted handoff work (Dynamo/Cassandra-style) and why they trade consistency for availability</label></li>
+      </ul>
+
+      <h2>Phase 3 — Replication in Real Databases (Hands-On)</h2>
+      <p class="sd-phase-goal"><strong>Goal:</strong> Know how the theory maps to the tools you'll actually specify in an architecture doc.</p>
+      <p class="sd-phase-goal"><strong>Todo — spin up each of these locally (Docker is fine) and break them on purpose:</strong></p>
+      <ul class="todo">
+        <li><label><input type="checkbox"> <strong>PostgreSQL:</strong> Set up streaming replication (physical) with a replica. Then set up logical replication for a single table. Kill the primary, promote the replica manually.</label></li>
+        <li><label><input type="checkbox"> <strong>MySQL:</strong> Set up binlog-based async replication. Switch to semi-sync. Cause replication lag deliberately (long-running transaction on replica) and watch <code>SHOW REPLICA STATUS</code>.</label></li>
+        <li><label><input type="checkbox"> <strong>MongoDB:</strong> Stand up a 3-node replica set. Kill the primary and watch an election happen. Read the oplog.</label></li>
+        <li><label><input type="checkbox"> <strong>Redis:</strong> Set up primary–replica replication, then Redis Sentinel for automatic failover. Understand why Redis replication is async-only and what that means for data loss on failover.</label></li>
+        <li><label><input type="checkbox"> <strong>Kafka:</strong> Understand ISR (in-sync replicas), leader election per partition, and <code>acks=0/1/all</code> — this is replication theory applied to a log, and it clarifies everything else.</label></li>
+        <li><label><input type="checkbox"> <strong>Cassandra:</strong> Understand tunable consistency (ONE, QUORUM, ALL) live — same N/R/W math from Phase 2, but real.</label></li>
+      </ul>
+
+      <h2>Phase 4 — Failover, Split-Brain, and Consensus</h2>
+      <p class="sd-phase-goal"><strong>Goal:</strong> Understand what happens when things go wrong — this is where architects earn their title.</p>
+      <p class="sd-phase-goal"><strong>Concepts:</strong> Automatic vs manual failover, split-brain, fencing, quorum-based leader election, Raft/Paxos at a conceptual level, STONITH.</p>
+      <ul class="todo">
+        <li><label><input type="checkbox"> Explain split-brain: how it happens, why it's dangerous (data divergence), and 2 ways to prevent it (quorum, fencing)</label></li>
+        <li><label><input type="checkbox"> Explain why odd-numbered node counts matter for quorum-based systems (3, 5, 7 — not 4)</label></li>
+        <li><label><input type="checkbox"> Learn Raft at a conceptual level: leader election, log replication, term numbers. You don't need to implement it — you need to explain it in 2 minutes on a whiteboard.</label></li>
+        <li><label><input type="checkbox"> Compare Raft vs Paxos vs ZAB (ZooKeeper) at a "when would I pick which" level, not implementation level</label></li>
+        <li><label><input type="checkbox"> Design a failover runbook for a Postgres primary going down: detection → decision → promotion → DNS/connection routing → old-primary re-join strategy</label></li>
+      </ul>
+
+      <h2>Phase 5 — Geo-Distribution &amp; Multi-Region Replication</h2>
+      <p class="sd-phase-goal"><strong>Goal:</strong> This is where most "advanced" interviews and real design reviews actually live.</p>
+      <p class="sd-phase-goal"><strong>Concepts:</strong> Cross-region replication latency, active-active vs active-passive, conflict resolution (LWW, CRDTs, application-level merge), data locality/residency (GDPR-type constraints), read replicas for latency reduction.</p>
+      <ul class="todo">
+        <li><label><input type="checkbox"> Calculate: if your primary is in <code>us-east-1</code> and a replica is in <code>ap-south-1</code>, estimate realistic replication lag from network RTT alone</label></li>
+        <li><label><input type="checkbox"> Design an active-passive multi-region setup for a system requiring RPO &lt; 5 min, RTO &lt; 15 min — specify replication mode, failover trigger, and DNS strategy</label></li>
+        <li><label><input type="checkbox"> Design an active-active multi-region setup and explain how you'd resolve write conflicts (Last-Write-Wins vs CRDT vs "route by user region" to avoid conflicts entirely)</label></li>
+        <li><label><input type="checkbox"> Explain why "just use active-active everywhere" is usually the wrong default answer, and what makes it justified</label></li>
+        <li><label><input type="checkbox"> Understand data residency requirements (e.g. EU data must stay in EU) and how that constrains replication topology</label></li>
+        <li><label><input type="checkbox"> Read about a CRDT (e.g. G-Counter or LWW-Register) end to end — know one well enough to explain merge semantics</label></li>
+      </ul>
+
+      <h2>Phase 6 — Monitoring, Observability &amp; Debugging Replication in Production</h2>
+      <p class="sd-phase-goal"><strong>Goal:</strong> Be the person who can diagnose a replication incident at 2am, not just design the diagram.</p>
+      <ul class="todo">
+        <li><label><input type="checkbox"> List the key metrics to alert on for replication health: replication lag (seconds + bytes), replica connection state, WAL/binlog growth on primary, oplog window (MongoDB)</label></li>
+        <li>
+          <label><input type="checkbox"> Write out symptoms → root cause → fix for these 4 scenarios:</label>
+          <ul>
+            <li>Replica lag spiking under normal load</li>
+            <li>Replica falls out of sync entirely / needs re-seeding</li>
+            <li>Primary disk filling up because a replica is disconnected (WAL/binlog retention)</li>
+            <li>Read-after-write inconsistency reported by users</li>
+          </ul>
+        </li>
+        <li><label><input type="checkbox"> Set up a dashboard (Grafana/Prometheus or cloud-native equivalent) for one of your Phase 3 database instances tracking lag and replica state</label></li>
+        <li><label><input type="checkbox"> Practice a "replica re-seed from scratch" procedure (base backup + WAL replay, or <code>mongorestore</code>, etc.) — know the RTO impact of this operation</label></li>
+      </ul>
+
+      <h2>Phase 7 — Security &amp; Compliance in Replicated Systems</h2>
+      <p class="sd-phase-goal"><strong>Goal:</strong> Don't let replication become the compliance hole in your architecture.</p>
+      <ul class="todo">
+        <li><label><input type="checkbox"> Explain how to encrypt replication traffic in transit (TLS between primary/replica) for at least one DB you set up in Phase 3</label></li>
+        <li><label><input type="checkbox"> Explain encryption-at-rest implications when data is replicated across regions with different compliance regimes</label></li>
+        <li><label><input type="checkbox"> Design access control for replicas: should replicas have the same credentials as primary? (No — explain why)</label></li>
+        <li><label><input type="checkbox"> Understand audit implications: replicated data means audit logs / PII exist in more than one place — what does that mean for "right to be forgotten" (GDPR)?</label></li>
+      </ul>
+
+      <h2>Phase 8 — Architecture-Level Synthesis (Put It All Together)</h2>
+      <p class="sd-phase-goal"><strong>Goal:</strong> The actual solution-architect skill — combining everything into a defensible design.</p>
+      <p class="sd-phase-goal"><strong>Todo — do these as real design docs, not mental exercises:</strong></p>
+      <ul class="todo">
+        <li><label><input type="checkbox"> Design a replication strategy for an e-commerce order system (needs strong consistency for inventory, can tolerate eventual consistency for recommendations)</label></li>
+        <li><label><input type="checkbox"> Design a replication strategy for a global chat application (needs low write latency everywhere, eventual consistency acceptable, ordering matters per-conversation)</label></li>
+        <li><label><input type="checkbox"> Design a DR strategy for a financial ledger system with RPO=0 requirement — explain why this forces synchronous replication and what the availability cost is</label></li>
+        <li><label><input type="checkbox"> Write a 1-page architecture decision record (ADR) for "why we chose async replication + eventual consistency over synchronous + strong consistency" for a hypothetical system, including the tradeoffs you rejected</label></li>
+        <li><label><input type="checkbox"> Take one of your designs and do a "pre-mortem": assume it failed in production 6 months from now — what's the most likely replication-related cause?</label></li>
+      </ul>
+
+      <h2>Phase 9 — Interview &amp; Design-Review Readiness</h2>
+      <p class="sd-phase-goal"><strong>Goal:</strong> Be able to defend your choices live, under questioning.</p>
+      <p class="sd-phase-goal"><strong>Common questions to prepare crisp answers for:</strong></p>
+      <ul class="todo">
+        <li><label><input type="checkbox"> "Walk me through what happens end-to-end when a write hits your primary and needs to reach 3 replicas across 2 regions."</label></li>
+        <li><label><input type="checkbox"> "Your replica lag just spiked to 10 minutes during a flash sale. Walk me through your diagnosis."</label></li>
+        <li><label><input type="checkbox"> "Why would you choose quorum-based replication over single-leader for this use case?"</label></li>
+        <li><label><input type="checkbox"> "How do you handle a split-brain scenario in your design?"</label></li>
+        <li><label><input type="checkbox"> "When would you choose eventual consistency over strong consistency, and how do you justify that to a non-technical stakeholder?"</label></li>
+        <li><label><input type="checkbox"> "What's your RPO/RTO for this design, and how does your replication choice directly determine it?"</label></li>
+        <li><label><input type="checkbox"> Practice explaining CAP/PACELC and quorum math on a whiteboard in under 3 minutes, no notes</label></li>
+      </ul>
+
+      <h2>Related Concepts to Learn Alongside This</h2>
+      <table>
+        <tr><th>Concept</th><th>Why it connects</th></tr>
+        <tr><td>Sharding / partitioning</td><td>Often combined with replication (shard + replicate each shard)</td></tr>
+        <tr><td>Consensus algorithms (Raft / Paxos)</td><td>Underpins leader election in replicated systems</td></tr>
+        <tr><td>Event sourcing / CDC (Change Data Capture)</td><td>Alternative / complementary way to propagate state changes</td></tr>
+        <tr><td>Load balancing &amp; connection routing</td><td>Determines how clients find the current primary after failover</td></tr>
+        <tr><td>Backup &amp; restore strategy</td><td>Replication is not a backup — you need to know why</td></tr>
+        <tr><td>Message queues (Kafka, etc.)</td><td>Log-based replication concepts transfer directly</td></tr>
+      </table>
+
+      <div class="sd-study-note tip"><span class="sd-note-title">Where this sits</span><p>Pair this roadmap with the Database section's replication slides and the CAP theorem notes, and with the Distributed Systems page for the network-partition fundamentals it assumes.</p></div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

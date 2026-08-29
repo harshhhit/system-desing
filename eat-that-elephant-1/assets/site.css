@@ -14,6 +14,7 @@
   --sd-c8: #eab308; /* planning & roadmap */
   --sd-c9: #10b981; /* project walkthroughs */
   --sd-c10: #64748b; /* misc */
+  --sd-c11: #0891b2; /* distributed database */
   --sd-auth: #ec4899; /* authentication */
   --sd-band-bg: #ffffff;
   --sd-band-border: #d0d7de;
@@ -154,6 +155,23 @@
 .sd-study-breadcrumb { margin: 0 0 0.6rem; color: var(--muted, #57606a); font-size: 0.85rem; }
 .sd-study-breadcrumb a { color: inherit; }
 .sd-study-prompt { margin-top: 1.5rem; padding: 1.1rem 1.2rem; border-left: 4px solid var(--sd-c2); border-radius: 8px; background: color-mix(in srgb, var(--sd-c2) 10%, transparent); color: var(--fg, #1f2328); }
+.sd-study-main h2 { margin: 2rem 0 0.6em; font-size: 1.35rem; color: var(--fg, #1f2328); }
+.sd-study-main h3 { margin: 1.5rem 0 0.5em; font-size: 1.08rem; color: var(--fg, #1f2328); }
+.sd-study-main p { color: var(--fg, #1f2328); }
+.sd-study-main ul, .sd-study-main ol { padding-left: 1.4em; }
+.sd-study-main li { margin: 0.35em 0; }
+.sd-study-main table { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: 0.92rem; }
+.sd-study-main th, .sd-study-main td { border: 1px solid var(--border, #d0d7de); padding: 0.5em 0.8em; text-align: left; vertical-align: top; }
+.sd-study-main th { background: var(--bg-alt, #f6f8fa); font-weight: 700; }
+.sd-study-main tr:nth-child(even) td { background: color-mix(in srgb, var(--bg-alt, #f6f8fa) 60%, transparent); }
+.sd-study-main code { background: var(--bg-alt, #f6f8fa); border-radius: 5px; padding: 0.15em 0.4em; font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-size: 0.86em; }
+.sd-study-main pre { background: var(--bg-alt, #f6f8fa); border: 1px solid var(--border, #d0d7de); border-radius: 8px; padding: 1em; overflow-x: auto; }
+.sd-study-main pre code { background: none; padding: 0; }
+.sd-study-note { margin: 1.2rem 0; padding: 0.9rem 1.1rem; border-left: 4px solid var(--sd-c2); border-radius: 8px; background: color-mix(in srgb, var(--sd-c2) 8%, transparent); }
+.sd-study-note.tip { border-left-color: #14b8a6; background: color-mix(in srgb, #14b8a6 8%, transparent); }
+.sd-study-note.warning { border-left-color: #eab308; background: color-mix(in srgb, #eab308 10%, transparent); }
+.sd-study-note p { margin: 0.2em 0; }
+.sd-study-note .sd-note-title { display: block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted, #57606a); margin-bottom: 0.3em; }
 @media (max-width: 860px) {
   .sd-study-sidebar { position: static; width: 100%; height: auto; border-right: 0; border-bottom: 1px solid var(--border, #d0d7de); }
   .sd-study-layout { display: block; }

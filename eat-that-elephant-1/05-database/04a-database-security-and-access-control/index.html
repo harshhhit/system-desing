@@ -3,6 +3,29 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Database Security and Access Control</title><link rel="stylesheet" href="../../assets/site.css"></head>
 <body>
 <div id="site-header-root"></div><script src="../../assets/sitemap.js"></script><script src="../../assets/site-header.js" data-root="../../"></script>
-<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / Database Security and Access Control</p><h1>Database Security and Access Control</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn authentication, roles, least-privilege permissions, secrets management, TLS, encryption at rest, parameterized queries, SQL-injection prevention, auditing, and data masking for sensitive fields.</p></main></div></div>
+<div class="sd-study-layout"><aside class="sidebar sd-study-sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav></nav></aside><div class="sd-study-content"><main class="sd-study-main"><p class="sd-study-breadcrumb"><a href="../../index.html">Home</a> / Database / Database Security and Access Control</p><h1>Database Security and Access Control</h1><p class="sd-study-prompt"><strong>Study prompt:</strong> Learn authentication, roles, least-privilege permissions, secrets management, TLS, encryption at rest, parameterized queries, SQL-injection prevention, auditing, and data masking for sensitive fields.</p>
+<h2>Access Control</h2>
+<ul>
+<li><strong>Least privilege</strong>: application service accounts get only the grants they need — a reporting job doesn't need <code>DELETE</code>, a write path doesn't need <code>DROP</code>.</li>
+<li><strong>Roles over per-user grants</strong>: assign permissions to roles (<code>read_only</code>, <code>app_writer</code>, <code>migrator</code>), attach users/services to roles, so access changes don't mean re-auditing every account.</li>
+<li><strong>Row-level security</strong>: restrict which rows a role can see (e.g. a tenant can only query its own rows) enforced by the database itself, not just application filters.</li>
+</ul>
+<h2>Protecting Data in Transit and at Rest</h2>
+<table>
+<tr><th>Layer</th><th>Control</th></tr>
+<tr><td>In transit</td><td>TLS between application and database, certificate verification enabled (not just "encrypted, don't care who").</td></tr>
+<tr><td>At rest</td><td>Disk/volume encryption plus, for the most sensitive fields (SSNs, tokens), application- or column-level encryption so a raw disk or backup leak isn't a full data leak.</td></tr>
+<tr><td>Secrets</td><td>Database credentials live in a vault/KMS with rotation, never in source control or plain environment files checked into git.</td></tr>
+</table>
+<h2>SQL Injection</h2>
+<p>Always use parameterized queries or an ORM's bound parameters — never string-concatenate user input into SQL. A parameterized query sends the SQL text and the values separately, so user input can never be interpreted as SQL syntax.</p>
+<div class="sd-study-note warning"><span class="sd-note-title">Vulnerable pattern</span><p><code>"SELECT * FROM users WHERE email = '" + userInput + "'"</code> lets an input like <code>' OR '1'='1</code> change the query's meaning. Use <code>db.query("SELECT * FROM users WHERE email = ?", [userInput])</code> instead.</p></div>
+<h2>Auditing and Masking</h2>
+<ul>
+<li>Log who ran what, when — at minimum for schema changes and access to sensitive tables.</li>
+<li>Mask or tokenize sensitive fields in non-production copies of data (staging, analytics, developer laptops).</li>
+<li>Review access grants periodically — accounts and permissions drift and outlive the people who requested them.</li>
+</ul>
+</main></div></div>
 </body>
 </html>
