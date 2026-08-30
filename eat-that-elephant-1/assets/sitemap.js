@@ -12,16 +12,24 @@ window.SITE_MAP = {
       "name": "Front-End",
       "pages": [
         {
-          "href": "01-front-end/graphql/graphql-vs-rest.html",
-          "title": "GraphQL vs REST"
+          "href": "01-front-end/graphql/http/01-front-end-path.html",
+          "title": "front-end-roadmap"
         },
         {
-          "href": "01-front-end/graphql/http/ssr-vs-csr.html",
+          "href": "01-front-end/graphql/http/02.1-ssr-vs-csr.html",
           "title": "SSR vs CSR"
         },
         {
-          "href": "01-front-end/graphql/http/ssr-vs-csr-v2.html",
+          "href": "01-front-end/graphql/http/02.1ssr-vs-csr-v.html",
           "title": "SSR vs CSR (v2)"
+        },
+        {
+          "href": "01-front-end/graphql/http/03.1graphql-vs-rest.html",
+          "title": "GraphQL vs REST"
+        },
+        {
+          "href": "01-front-end/graphql/http/Front%20end%20basics%20for%20system%20design%20.html",
+          "title": ""
         }
       ]
     },
@@ -72,6 +80,14 @@ window.SITE_MAP = {
         {
           "href": "05-database/03b-query-plans-and-optimization/index.html",
           "title": "03b. Query Plans and Optimization"
+        },
+        {
+          "href": "05-database/04-distributed-database-fundamentals/lecture-2.html",
+          "title": "04. Distributed Database Fundamentals"
+        },
+        {
+          "href": "05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html",
+          "title": "04. CAP Theorem Questions"
         },
         {
           "href": "05-database/04a-database-security-and-access-control/index.html",
@@ -143,14 +159,6 @@ window.SITE_MAP = {
         {
           "href": "distributed-database/05-replication-lag.html",
           "title": "Replication Lag — Causes, Measurement, Mitigation"
-        },
-        {
-          "href": "distributed-database/06-distributed-db-fundamentals.html",
-          "title": "Distributed Database Fundamentals"
-        },
-        {
-          "href": "distributed-database/07-cap-theorem-questions.html",
-          "title": "CAP Theorem — Interview Question Framework"
         }
       ]
     },

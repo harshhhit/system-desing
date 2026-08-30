@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Sign in</title>
+
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --bg:        #ffffff;
+  --panel:     #ffffff;
+  --panel-2:   #f6f8fa;
+  --field:     #ffffff;
+  --field-brd: #d0d7de;
+  --text:      #1f2328;
+  --muted:     #57606a;
+  --brand-1:   #6d5efc;
+  --brand-2:   #a24bff;
+  --ring:      rgba(124, 92, 255, 0.35);
+  --radius:    14px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+          Arial, "Noto Sans", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   LAYOUT — full viewport, no desktop scroll, two equal halves
+   ============================================================ */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ============================================================
+   LEFT — cinematic image background
+   Two stacked layers cross-fade; each has a slow Ken Burns zoom
+   + subtle horizontal drift. Falls back to a gradient if the
+   image files are missing.
+   ============================================================ */
+.stage {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(120% 120% at 20% 20%, #241d3f 0%, #0b0b12 60%);
+}
+
+.stage__slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: kenburns 28s ease-in-out infinite;
+}
+.stage__slide--a { background-image: url("image-1.png"); animation-delay: 0s; }
+.stage__slide--b { background-image: url("image2.jpg"); animation-delay: 14s; }
+
+@keyframes kenburns {
+  0%   { opacity: 0; transform: scale(1.06) translateX(0); }
+  7%   { opacity: 1; }
+  43%  { opacity: 1; }
+  50%  { opacity: 0; transform: scale(1.16) translateX(-2.5%); }
+  100% { opacity: 0; transform: scale(1.16) translateX(-2.5%); }
+}
+
+/* dark gradient overlay for text legibility */
+.stage__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(6,6,12,0.82) 0%, rgba(6,6,12,0.28) 45%, rgba(6,6,12,0.15) 100%),
+    linear-gradient(to right, rgba(6,6,12,0.35), rgba(6,6,12,0));
+}
+
+/* welcome copy, near bottom-left */
+.stage__copy {
+  position: absolute;
+  left: clamp(24px, 5vw, 56px);
+  bottom: clamp(28px, 6vh, 56px);
+  right: clamp(24px, 5vw, 56px);
+  text-shadow: 0 2px 18px rgba(0,0,0,0.65);
+}
+.stage__copy h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.stage__copy p {
+  margin: 0;
+  max-width: 42ch;
+  color: rgba(255,255,255,0.82);
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   RIGHT — login form
+   ============================================================ */
+.panel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background:
+    radial-gradient(90% 60% at 80% 0%, rgba(109,94,252,0.14), transparent 60%),
+    linear-gradient(180deg, var(--panel-2), var(--panel));
+  overflow-y: auto;               /* internal scroll if the viewport is very short */
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* logo placeholder */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+.brand__mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+  box-shadow: 0 8px 24px -8px var(--ring);
+}
+.brand__name {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-size: 1.05rem;
+}
+
+.card h1 {
+  margin: 0 0 8px;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.card .sub {
+  margin: 0 0 28px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* fields */
+.field { margin-bottom: 18px; }
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.field input {
+  width: 100%;
+  padding: 13px 15px;
+  font: inherit;
+  color: var(--text);
+  background: var(--field);
+  border: 1px solid var(--field-brd);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+.field input::placeholder { color: #8b8b9a; }
+.field input:focus {
+  border-color: var(--brand-1);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+/* row: remember me + forgot password */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 6px 0 24px;
+  font-size: 0.88rem;
+}
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+.remember input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--brand-1);
+  cursor: pointer;
+}
+.link {
+  color: #5a4bd8;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.link:hover { color: #3f2fc0; }
+
+/* primary button */
+.btn {
+  width: 100%;
+  padding: 14px 16px;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+  box-shadow: 0 10px 30px -10px var(--ring);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 16px 40px -12px var(--ring); }
+.btn:active { transform: translateY(0); filter: brightness(0.96); }
+.btn:disabled { opacity: 0.6; cursor: progress; transform: none; }
+
+/* error / status message */
+.msg {
+  min-height: 1.2em;
+  margin: 14px 2px 0;
+  font-size: 0.86rem;
+  color: #cf222e;
+}
+
+/* footer sign-up line */
+.foot {
+  margin-top: 26px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.foot a { color: #5a4bd8; text-decoration: none; }
+.foot a:hover { color: #3f2fc0; }
+
+.disclaimer {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #8b8b9a;
+}
+
+/* ============================================================
+   RESPONSIVE — under 800px: drop the image, form goes full screen
+   ============================================================ */
+@media (max-width: 800px) {
+  .split { grid-template-columns: 1fr; height: auto; min-height: 100vh; overflow: visible; }
+  .stage { display: none; }
+  .panel { padding: 32px 22px; align-items: flex-start; }
+  .card { margin: 24px auto; }
+  .brand { margin-bottom: 32px; }
+}
+
+/* respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .stage__slide { animation: none; opacity: 1; }
+  .stage__slide--b { opacity: 0; }
+  .btn:hover { transform: none; }
+}
+</style>
+</head>
+
+<body>
+<div class="split">
+
+  <!-- ===================== LEFT: image stage ===================== -->
+  <section class="stage" aria-hidden="true">
+    <div class="stage__slide stage__slide--a"></div>
+    <div class="stage__slide stage__slide--b"></div>
+    <div class="stage__overlay"></div>
+    <div class="stage__copy">
+      <h2>Welcome Back</h2>
+      <p>Sign in to continue to your account and access everything you need.</p>
+    </div>
+  </section>
+
+  <!-- ===================== RIGHT: login form ===================== -->
+  <main class="panel">
+    <div class="card">
+
+      <!-- logo placeholder -->
+      <div class="brand">
+        <div class="brand__mark"></div>
+        <span class="brand__name">Your&nbsp;Brand</span>
+      </div>
+
+      <h1>Welcome back</h1>
+      <p class="sub">Please enter your details to sign in.</p>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="username"
+                 autocomplete="username" autocapitalize="none" autocorrect="off"
+                 spellcheck="false" autofocus required>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••"
+                 autocomplete="current-password" required>
+        </div>
+
+        <div class="row">
+          <label class="remember">
+            <input type="checkbox" id="remember"> Remember me
+          </label>
+          <a class="link" href="#" id="forgot">Forgot password?</a>
+        </div>
+
+        <button class="btn" type="submit" id="submitBtn">Sign in</button>
+        <p class="msg" id="msg" role="alert" aria-live="polite"></p>
+      </form>
+
+      <p class="foot">Don't have an account? <a href="#" id="signup">Sign up</a></p>
+      <p class="disclaimer">Soft access barrier — not real security.</p>
+    </div>
+  </main>
+
+</div>
+
+<script>
+/* ============================================================
+   CONFIG
+   - USERNAME: the one accepted username (plain text, not secret).
+   - PASSWORD_HASH: lowercase SHA-256 hex of the password.
+     Generate it with hash-tool.html.
+   - DEFAULT_TARGET: where to go after a correct login, unless
+     the visitor was bounced here from a specific protected page.
+   ============================================================ */
+const USERNAME       = "harshhhit";
+const PASSWORD_HASH   = "7693637151c0ad50cce79f7f16a8977857444beda4567f55948392f5f1947d6f";
+const DEFAULT_TARGET = "index.html";
+const UNLOCK_KEY     = "unlocked";
+
+const form   = document.getElementById("loginForm");
+const userEl = document.getElementById("username");
+const pwEl   = document.getElementById("password");
+const remEl  = document.getElementById("remember");
+const msgEl  = document.getElementById("msg");
+const btnEl  = document.getElementById("submitBtn");
+
+/* SHA-256 -> hex, no trailing newline (matches hash-tool.html + `printf %s`).
+   Uses the native WebCrypto when available (HTTPS / localhost); falls back to a
+   pure-JS implementation so this also works when the page is opened as file://. */
+async function sha256Hex(str) {
+  if (window.crypto && crypto.subtle && crypto.subtle.digest) {
+    try {
+      const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, "0")).join("");
+    } catch (_) { /* fall through */ }
+  }
+  return sha256Fallback(unescape(encodeURIComponent(str)));   // UTF-8 bytes
+}
+
+/* Compact pure-JS SHA-256 (operates on a byte string). */
+function sha256Fallback(ascii) {
+  function rr(v, a) { return (v >>> a) | (v << (32 - a)); }
+  const mp = Math.pow, maxWord = mp(2, 32);
+  let result = "", words = [], bitLen = ascii.length * 8;
+  let hash = sha256Fallback.h = sha256Fallback.h || [];
+  let k = sha256Fallback.k = sha256Fallback.k || [];
+  let pc = k.length, comp = {};
+  for (let cand = 2; pc < 64; cand++) {
+    if (!comp[cand]) {
+      for (let i = 0; i < 313; i += cand) comp[i] = cand;
+      hash[pc] = (mp(cand, .5) * maxWord) | 0;
+      k[pc++] = (mp(cand, 1 / 3) * maxWord) | 0;
+    }
+  }
+  ascii += "\x80";
+  while (ascii.length % 64 - 56) ascii += "\x00";
+  for (let i = 0; i < ascii.length; i++) {
+    const j = ascii.charCodeAt(i);
+    if (j >> 8) return "";
+    words[i >> 2] |= j << ((3 - i) % 4) * 8;
+  }
+  words[words.length] = (bitLen / maxWord) | 0;
+  words[words.length] = bitLen;
+  for (let j = 0; j < words.length;) {
+    const w = words.slice(j, j += 16);
+    const oldHash = hash;
+    hash = hash.slice(0, 8);
+    for (let i = 0; i < 64; i++) {
+      const w15 = w[i - 15], w2 = w[i - 2];
+      const a = hash[0], e = hash[4];
+      const t1 = hash[7]
+        + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25))
+        + ((e & hash[5]) ^ (~e & hash[6]))
+        + k[i]
+        + (w[i] = i < 16 ? w[i] : (
+            w[i - 16]
+            + (rr(w15, 7) ^ rr(w15, 18) ^ (w15 >>> 3))
+            + w[i - 7]
+            + (rr(w2, 17) ^ rr(w2, 19) ^ (w2 >>> 10))
+          ) | 0);
+      const t2 = (rr(a, 2) ^ rr(a, 13) ^ rr(a, 22))
+        + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+      hash = [(t1 + t2) | 0].concat(hash);
+      hash[4] = (hash[4] + t1) | 0;
+    }
+    for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+  }
+  for (let i = 0; i < 8; i++)
+    for (let j = 3; j + 1; j--) {
+      const b = (hash[i] >> (j * 8)) & 255;
+      result += (b < 16 ? "0" : "") + b.toString(16);
+    }
+  return result;
+}
+
+/* only trust a same-origin absolute path like "/notes/secret.html" */
+function safeReturnTo() {
+  try {
+    const rt = sessionStorage.getItem("returnTo");
+    if (rt && rt.charAt(0) === "/" && rt.charAt(1) !== "/") return rt;
+  } catch (_) {}
+  return null;
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  msgEl.textContent = "";
+
+  btnEl.disabled = true;
+  const entered = await sha256Hex(pwEl.value);
+  btnEl.disabled = false;
+
+  const userOk = userEl.value.trim() === USERNAME;
+  if (userOk && entered === PASSWORD_HASH.toLowerCase()) {
+    /* Persist the unlock flag in BOTH stores so every page (and a browser
+       restart) sees it. "Remember me" only affects whether we also drop a
+       longer-lived hint; the gate on each page checks both stores. */
+    let stored = false;
+    try {
+      sessionStorage.setItem(UNLOCK_KEY, "1");
+      localStorage.setItem(UNLOCK_KEY, "1");
+      stored = sessionStorage.getItem(UNLOCK_KEY) === "1" ||
+               localStorage.getItem(UNLOCK_KEY) === "1";
+    } catch (_) {}
+
+    if (!stored) {
+      // Storage is blocked (private window, or some file:// setups) — the gate
+      // on the next page would just bounce back here. Tell the user instead of
+      // looping.
+      msgEl.textContent = "Login can't be saved — this browser is blocking site storage " +
+        "(private/incognito window, or opening the files directly). Use a normal window, " +
+        "or serve the folder over http (e.g. `python3 -m http.server`).";
+      return;
+    }
+
+    let dest = safeReturnTo() || DEFAULT_TARGET;
+    try { sessionStorage.removeItem("returnTo"); } catch (_) {}
+    location.replace(dest);
+  } else {
+    msgEl.textContent = "Wrong username or password.";
+    pwEl.value = "";
+    (userOk ? pwEl : userEl).focus();
+  }
+});
+
+/* placeholder links — this is a single shared-password gate */
+document.getElementById("forgot").addEventListener("click", (e) => {
+  e.preventDefault();
+  msgEl.textContent = "Ask the site owner for the password.";
+});
+document.getElementById("signup").addEventListener("click", (e) => e.preventDefault());
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>SHA-256 hash tool</title>
+<style>
+  :root {
+    --bg:#f6f8fa; --card:#ffffff; --fg:#1f2328; --muted:#57606a; --border:#d0d7de; --accent:#0969da;
+  }
+  @media (prefers-color-scheme: dark) and (min-width: 99999px) {
+    :root { --bg:#0d1117; --card:#161b22; --fg:#e6edf3; --muted:#8d96a0; --border:#30363d; --accent:#4493f8; }
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--bg); color:var(--fg); padding:2rem 1.5rem;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif;
+    line-height:1.6;
+  }
+  main { max-width:640px; margin:0 auto; }
+  .card {
+    background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.5rem;
+  }
+  h1 { margin:0 0 0.25rem; font-size:1.25rem; }
+  p { color:var(--muted); font-size:0.9rem; }
+  label { display:block; font-weight:600; font-size:0.85rem; margin:1rem 0 0.35rem; }
+  input {
+    font:inherit; width:100%; padding:0.6rem 0.75rem; border:1px solid var(--border); border-radius:8px;
+    background:var(--bg); color:var(--fg);
+  }
+  input:focus { outline:2px solid var(--accent); outline-offset:1px; }
+  .out {
+    margin-top:0.35rem; padding:0.7rem 0.75rem; border:1px dashed var(--border); border-radius:8px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:0.85rem;
+    word-break:break-all; background:var(--bg); min-height:2.5rem;
+  }
+  button {
+    font:inherit; margin-top:0.6rem; padding:0.45rem 0.9rem; border:1px solid var(--border);
+    border-radius:8px; background:transparent; color:var(--fg); cursor:pointer;
+  }
+  button:hover { border-color:var(--accent); color:var(--accent); }
+  pre {
+    background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:0.9rem;
+    overflow-x:auto; font-size:0.8rem;
+  }
+  .muted { color:var(--muted); font-size:0.82rem; }
+</style>
+</head>
+<body>
+<main>
+  <div class="card">
+    <h1>SHA-256 hash tool</h1>
+    <p>Type your chosen password below. Copy the hex string into
+       <code>PASSWORD_HASH</code> in <code>login.html</code>.</p>
+
+    <label for="pw">Password</label>
+    <input type="text" id="pw" placeholder="type here…" autocomplete="off" autofocus>
+
+    <label for="hash">SHA-256 (hex)</label>
+    <div class="out" id="hash">—</div>
+    <button id="copy" type="button">Copy hash</button>
+
+    <p class="muted">Hashing happens entirely in your browser. Nothing is sent anywhere.
+       No trailing newline is added, so it matches the login page exactly.</p>
+  </div>
+
+  <h2 style="font-size:1rem;margin:1.75rem 0 0.5rem;">Prefer a one-liner?</h2>
+
+  <p class="muted">Browser console (any page):</p>
+  <pre>crypto.subtle.digest('SHA-256', new TextEncoder().encode('YOUR_PASSWORD'))
+  .then(b =&gt; console.log([...new Uint8Array(b)].map(x =&gt; x.toString(16).padStart(2,'0')).join('')));</pre>
+
+  <p class="muted">Terminal (macOS / Linux) — note <code>-n</code> / <code>%s</code> to avoid a trailing newline:</p>
+  <pre>printf %s 'YOUR_PASSWORD' | shasum -a 256
+echo -n 'YOUR_PASSWORD' | sha256sum</pre>
+</main>
+
+<script>
+  const pw   = document.getElementById("pw");
+  const out  = document.getElementById("hash");
+  const copy = document.getElementById("copy");
+
+  async function sha256Hex(str) {
+    if (window.crypto && crypto.subtle && crypto.subtle.digest) {
+      try {
+        const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+        return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, "0")).join("");
+      } catch (_) { /* fall through to pure-JS */ }
+    }
+    return sha256Fallback(unescape(encodeURIComponent(str)));
+  }
+
+  /* Compact pure-JS SHA-256 (byte string in) — used when opened as file:// */
+  function sha256Fallback(ascii) {
+    function rr(v, a) { return (v >>> a) | (v << (32 - a)); }
+    const mp = Math.pow, maxWord = mp(2, 32);
+    let result = "", words = [], bitLen = ascii.length * 8;
+    let hash = sha256Fallback.h = sha256Fallback.h || [];
+    let k = sha256Fallback.k = sha256Fallback.k || [];
+    let pc = k.length, comp = {};
+    for (let cand = 2; pc < 64; cand++) {
+      if (!comp[cand]) {
+        for (let i = 0; i < 313; i += cand) comp[i] = cand;
+        hash[pc] = (mp(cand, .5) * maxWord) | 0;
+        k[pc++] = (mp(cand, 1 / 3) * maxWord) | 0;
+      }
+    }
+    ascii += "\x80";
+    while (ascii.length % 64 - 56) ascii += "\x00";
+    for (let i = 0; i < ascii.length; i++) {
+      const j = ascii.charCodeAt(i);
+      if (j >> 8) return "";
+      words[i >> 2] |= j << ((3 - i) % 4) * 8;
+    }
+    words[words.length] = (bitLen / maxWord) | 0;
+    words[words.length] = bitLen;
+    for (let j = 0; j < words.length;) {
+      const w = words.slice(j, j += 16);
+      const oldHash = hash;
+      hash = hash.slice(0, 8);
+      for (let i = 0; i < 64; i++) {
+        const w15 = w[i - 15], w2 = w[i - 2];
+        const a = hash[0], e = hash[4];
+        const t1 = hash[7]
+          + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25))
+          + ((e & hash[5]) ^ (~e & hash[6])) + k[i]
+          + (w[i] = i < 16 ? w[i] : (
+              w[i - 16]
+              + (rr(w15, 7) ^ rr(w15, 18) ^ (w15 >>> 3))
+              + w[i - 7]
+              + (rr(w2, 17) ^ rr(w2, 19) ^ (w2 >>> 10))
+            ) | 0);
+        const t2 = (rr(a, 2) ^ rr(a, 13) ^ rr(a, 22))
+          + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+        hash = [(t1 + t2) | 0].concat(hash);
+        hash[4] = (hash[4] + t1) | 0;
+      }
+      for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+    }
+    for (let i = 0; i < 8; i++)
+      for (let j = 3; j + 1; j--) {
+        const b = (hash[i] >> (j * 8)) & 255;
+        result += (b < 16 ? "0" : "") + b.toString(16);
+      }
+    return result;
+  }
+
+  async function update() {
+    out.textContent = pw.value === "" ? "—" : await sha256Hex(pw.value);
+  }
+
+  pw.addEventListener("input", update);
+
+  copy.addEventListener("click", async () => {
+    if (out.textContent === "—") return;
+    try {
+      await navigator.clipboard.writeText(out.textContent);
+      copy.textContent = "Copied!";
+      setTimeout(() => (copy.textContent = "Copy hash"), 1200);
+    } catch (_) {
+      copy.textContent = "Press Ctrl/Cmd+C";
+    }
+  });
+</script>
+</body>
+</html>

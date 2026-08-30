@@ -1,0 +1,13 @@
+# Static site on GitHub Pages — the entire site sits behind a soft
+# client-side password gate, and every page carries
+#   <meta name="robots" content="noindex, nofollow">
+# so nothing here should be crawled or indexed.
+#
+# NOTE: robots.txt is only read at the DOMAIN root
+#   (https://<user>.github.io/robots.txt).
+# If this repo is served as a PROJECT site (https://<user>.github.io/<repo>/),
+# this file may not be honoured — the per-page noindex meta tag is the
+# reliable control and is present on every page.
+
+User-agent: *
+Disallow: /

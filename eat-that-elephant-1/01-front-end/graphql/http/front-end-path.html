@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>front-end-roadmap · System Design Notes</title>
+
+<link rel="stylesheet" href="../../../assets/site.css">
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../../../assets/sitemap.js"></script>
+<script src="../../../assets/site-header.js" data-root="../../../"></script>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><a class="brand" href="../../../index.html">System Design Notes</a><nav><h3>🖥️ Front-End</h3><ul><li><a href="../../../01-front-end/graphql/http/01-front-end-path.html">front-end-roadmap</a></li><li><a href="../../../01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li><li><a href="../../../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li><li><a href="../../../01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li><li><a href="../../../01-front-end/graphql/http/Front%20end%20basics%20for%20system%20design%20.html"></a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../../../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../../../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../../../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../../../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../../../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../../../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../../../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../../../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../../../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../../../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../../../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../../../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../../../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../../../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../../../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../../../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../../../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../../../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../../../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../../../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../../../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../../../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../../../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../../../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../../../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../../../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../../../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../../../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../../../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../../../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../../../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../../../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../../../web-servers/server.html">Web Servers</a></li><li><a href="../../../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../../../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../../../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../../../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../../../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../../../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../../../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../../../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../../../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../../../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../../../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+  <div class="content-wrap">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <span class="brand">System Design Notes</span>
+    </div>
+    <main>
+      <p class="breadcrumb"><a href="../../../index.html">Home</a> / Front-End / front-end-roadmap</p>
+      <h1>front-end-roadmap</h1>
+      <h1 id="complete-guide-web-rendering--architecture">Complete Guide: Web Rendering &amp; Architecture</h1>
+
+<h1>Rendering Strategies</h1>
+<p class="subtitle">Core theory, production tradeoffs, failure scenarios, real-world usage, and interview perspective</p>
+
+<h2>1. Core Explanation</h2>
+<p>Rendering strategy answers one question: where does HTML get generated, and when? There are four points on this spectrum: build time, request time, client time, and a hybrid of these.</p>
+<ul>
+  <li><strong>CSR (Client-Side Rendering):</strong> Server sends a near-empty HTML shell + a JS bundle. Browser downloads JS, executes it, builds the DOM, fetches data, renders. This is the default for a plain React/Vue SPA (create-react-app, Vite).</li>
+  <li><strong>SSR (Server-Side Rendering):</strong> On every request, the server runs your component tree, produces full HTML, and sends that to the browser. The browser shows content immediately, then hydrates (React attaches event listeners to the existing DOM instead of rebuilding it).</li>
+  <li><strong>SSG (Static Site Generation):</strong> HTML is generated once, at build time, and pushed to a CDN. Every request just serves a static file — no server compute per request.</li>
+  <li><strong>ISR (Incremental Static Regeneration):</strong> Static like SSG, but pages can be regenerated in the background after a TTL or on-demand (via webhook), without a full rebuild.</li>
+  <li><strong>Streaming SSR / RSC (React Server Components):</strong> Instead of blocking until the entire page's HTML is ready, the server streams chunks as they resolve — so a slow data-dependent section doesn't block the whole page from painting.</li>
+</ul>
+<p>Internally, the mechanism that ties SSR/SSG back to interactivity is hydration: the server-rendered HTML is a visual imposter — it looks interactive but has zero JS behavior attached until React walks the DOM and binds handlers to already-existing nodes (as opposed to CSR, where React builds the DOM from scratch).</p>
+
+<h2>2. Production Tradeoffs</h2>
+<table>
+  <tr><th></th><th>CSR</th><th>SSR</th><th>SSG</th><th>ISR</th></tr>
+  <tr><td><strong>TTFB</strong></td><td>Fast (static shell)</td><td>Slower (compute per request)</td><td>Fastest (pure CDN file)</td><td>Fastest</td></tr>
+  <tr><td><strong>Time to Interactive</strong></td><td>Slow (wait for JS+data)</td><td>Medium (hydration cost)</td><td>Fast</td><td>Fast</td></tr>
+  <tr><td><strong>SEO</strong></td><td>Poor (crawlers may not execute JS)</td><td>Excellent</td><td>Excellent</td><td>Excellent</td></tr>
+  <tr><td><strong>Server cost at scale</strong></td><td>Low (no render compute)</td><td>High (compute every request)</td><td>Near-zero (CDN serves files)</td><td>Low (regenerate occasionally)</td></tr>
+  <tr><td><strong>Data freshness</strong></td><td>Real-time</td><td>Real-time</td><td>Stale until rebuild</td><td>Stale until TTL/revalidation</td></tr>
+  <tr><td><strong>Infra complexity</strong></td><td>Low</td><td>High (need Node runtime, autoscaling)</td><td>Low</td><td>Medium (needs regeneration pipeline)</td></tr>
+</table>
+
+<h3>Why companies choose what they choose</h3>
+<ul>
+  <li><strong>CSR:</strong> internal dashboards, admin panels, authenticated apps where SEO is irrelevant and you want to minimize server infra (e.g., a SaaS app behind a login).</li>
+  <li><strong>SSR:</strong> e-commerce product pages, news sites — content changes often, SEO matters, and you can't pre-build every URL (e.g., Amazon product pages, personalized feeds).</li>
+  <li><strong>SSG:</strong> marketing sites, docs, blogs — content changes rarely relative to traffic volume (e.g., Stripe docs, most landing pages).</li>
+  <li><strong>ISR:</strong> e-commerce catalogs with thousands of SKUs — too many pages to SSR on every request, but too dynamic (price/stock changes) for pure SSG (Next.js commerce sites use this heavily).</li>
+</ul>
+
+<p><strong>At low scale:</strong> the difference between SSR and CSR barely matters — a few hundred req/s is nothing for a Node server.</p>
+<p><strong>At high scale:</strong> SSR compute cost scales linearly with traffic (every request = server-side render = CPU cycles), which is why high-traffic sites push as much as possible to SSG/ISR + CDN, and reserve SSR only for genuinely personalized/real-time pages.</p>
+
+<h2>3. Failure Scenarios and Debugging</h2>
+
+<h3>Hydration mismatch — the most infamous SSR bug class</h3>
+<ul>
+  <li><strong>Symptom:</strong> Console warning "Text content does not match server-rendered HTML," UI flickers or breaks after load.</li>
+  <li><strong>Root cause:</strong> Server-rendered HTML differs from what client-side render produces — common causes: <code>Date.now()</code>/<code>Math.random()</code> used during render, <code>typeof window</code> branching, browser extensions mutating the DOM before hydration, or locale/timezone differences between server and client.</li>
+  <li><strong>Detection:</strong> React dev console warnings; in production, watch for a spike in client-side error tracking (Sentry) right after deploys touching SSR code.</li>
+  <li><strong>Fix:</strong> Move non-deterministic values to <code>useEffect</code> (client-only), or use <code>suppressHydrationWarning</code> sparingly for genuinely-expected mismatches (like timestamps).</li>
+</ul>
+
+<h3>SSR server overload</h3>
+<ul>
+  <li><strong>Symptom:</strong> p99 latency spikes, 502/504s from your Node SSR servers under load.</li>
+  <li><strong>Root cause:</strong> Render-per-request is CPU-bound; a traffic spike (e.g., marketing campaign) can exhaust Node's single-threaded event loop if renders are slow (heavy component trees, blocking data fetches in the render path).</li>
+  <li><strong>Detection:</strong> CPU utilization metrics on SSR pods, event loop lag metrics (perf_hooks or APM tools like Datadog's Node integration).</li>
+  <li><strong>Fix:</strong> Add a caching layer in front of SSR (cache rendered HTML for N seconds per URL), horizontal autoscaling on CPU, or move eligible pages to ISR.</li>
+</ul>
+
+<h3>Stale ISR content</h3>
+<ul>
+  <li><strong>Symptom:</strong> Users see outdated prices/inventory.</li>
+  <li><strong>Root cause:</strong> Revalidation window too long, or on-demand revalidation webhook failing silently.</li>
+  <li><strong>Detection:</strong> Compare CDN cache age header against expected TTL; alert on revalidation webhook failure rate.</li>
+  <li><strong>Fix:</strong> Shorten revalidate interval for volatile data, add on-demand revalidation triggered by your CMS/inventory system on writes.</li>
+</ul>
+
+<h2>4. Real-World Example</h2>
+<p><strong>Amazon-style product page:</strong> Uses SSR or ISR — because the page needs to be crawlable (SEO for product discovery) and reflect near-real-time stock/pricing, but pre-rendering millions of SKUs on every deploy is infeasible. ISR lets them regenerate a product page only when it's actually requested and stale, or push updates via webhook when inventory changes.</p>
+<p><strong>Stripe docs:</strong> Pure SSG — content changes maybe a few times a day via a CMS/git push, traffic is massive, and paying for server compute per doc-page-view would be wasteful when a CDN can serve a static file for fractions of a cent.</p>
+<p><strong>Gmail-style inbox:</strong> Pure CSR — no SEO need (behind auth), highly interactive, real-time updates via WebSocket — SSR would add hydration overhead with zero SEO benefit.</p>
+
+<h2>5. Related Concepts</h2>
+<ul>
+  <li><strong>Caching/CDN</strong> — directly determines how effective SSG/ISR are in practice.</li>
+  <li><strong>Core Web Vitals (LCP specifically)</strong> — the metric that rendering strategy most directly impacts.</li>
+  <li><strong>Edge rendering</strong> — running SSR logic at CDN edge nodes instead of a centralized origin server, to cut TTFB globally.</li>
+  <li><strong>Critical rendering path</strong> — the browser-side mechanics of turning HTML/CSS/JS into pixels, which hydration interacts with.</li>
+</ul>
+
+<h2>6. Interview Perspective</h2>
+<p><strong>Common question:</strong> "Design the frontend architecture for [e-commerce site / social feed / dashboard] — how would you handle rendering?" Expected answer shape: identify which pages need SEO + freshness (product pages → SSR/ISR) vs which don't (checkout flow, user dashboard → CSR), and justify the split with cost/latency tradeoffs — not just naming the technologies.</p>
+<p><strong>Common follow-up:</strong> "What's a hydration mismatch and how do you debug it?" — expects you to name the root causes (non-deterministic render output) and the fix, not just "clear cache and reload."</p>
+
+<h2>7. Best Practices</h2>
+<ul>
+  <li>Default to static/ISR wherever content allows it — reserve SSR for genuinely per-request-personalized content.</li>
+  <li>Never do heavy data fetching inside the render-blocking path of SSR — use streaming/Suspense boundaries so slow sections don't block the whole page.</li>
+  <li>Keep server and client render logic deterministic — no <code>Date.now()</code>, <code>Math.random()</code>, or <code>window</code>-dependent branching in shared render code.</li>
+  <li>Cache SSR output at the edge/CDN even for "dynamic" SSR pages, with short TTLs — most traffic doesn't need millisecond freshness.</li>
+</ul>
+
+</body>
+</html>
+
+      <div class="page-footer">
+        <span>Section: Front-End</span>
+        <span>Source: <code>ssr-vs-csr.md</code></span>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+  const t = document.getElementById('menuToggle');
+  const s = document.getElementById('sidebar');
+  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+</script>
+
+</body>
+</html>

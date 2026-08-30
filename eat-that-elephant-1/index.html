@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>System Design Notes</title>
 <meta name="description" content="A personal knowledge base covering front-end, databases, distributed systems, messaging, storage, and more.">
@@ -11,7 +17,7 @@
     --bg: #ffffff; --bg-alt: #f6f8fa; --fg: #1f2328; --muted: #57606a; --border: #d0d7de;
     --link: #0969da; --accent: #6639ba; --card-bg: #ffffff; --shadow: 0 1px 3px rgba(31,35,40,0.08);
   }
-  @media (prefers-color-scheme: dark) {
+  @media (prefers-color-scheme: dark) and (min-width: 99999px) {
     :root {
       --bg:#0d1117; --bg-alt:#161b22; --fg:#e6edf3; --muted:#8d96a0; --border:#30363d;
       --link:#4493f8; --accent:#b794f6; --card-bg:#161b22; --shadow: 0 1px 3px rgba(0,0,0,0.4);
@@ -38,7 +44,7 @@
     <p class="lede">A personal knowledge base covering front-end, databases, distributed systems, messaging, storage, and more &mdash; converted from raw notes into a browsable reference site.</p>
     <div class="sd-stats">
       <div class="stat"><b>11</b><span>Topics</span></div>
-      <div class="stat"><b>46</b><span>Pages</span></div>
+      <div class="stat"><b>48</b><span>Pages</span></div>
     </div>
   </header>
 
@@ -48,18 +54,20 @@
     <article class="sd-card" style="--accent:var(--sd-c1)">
       <div class="sd-icon">🖥️</div>
       <h2>Front-End</h2>
-      <span class="sd-count">3 pages</span>
+      <span class="sd-count">5 pages</span>
       <ul>
-        <li><a href="01-front-end/graphql/graphql-vs-rest.html">GraphQL vs REST</a></li>
-        <li><a href="01-front-end/graphql/http/ssr-vs-csr.html">SSR vs CSR</a></li>
-        <li><a href="01-front-end/graphql/http/ssr-vs-csr-v2.html">SSR vs CSR (v2)</a></li>
+        <li><a href="01-front-end/graphql/http/01-front-end-path.html">front-end-roadmap</a></li>
+        <li><a href="01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li>
+        <li><a href="01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li>
+        <li><a href="01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li>
+        <li><a href="01-front-end/graphql/http/Front%20end%20basics%20for%20system%20design%20.html"></a></li>
       </ul>
     </article>
 
     <article class="sd-card" style="--accent:var(--sd-c2)">
       <div class="sd-icon">🗄️</div>
       <h2>Database</h2>
-      <span class="sd-count">18 pages</span>
+      <span class="sd-count">20 pages</span>
       <ul>
         <li><a href="05-database/00-learning-path/00-index.html">Database Learning Path</a></li>
         <li><a href="05-database/01-foundations/mislanious-terms.html">Miscellaneous Database Terms</a></li>
@@ -72,6 +80,8 @@
         <li><a href="05-database/03-querying-and-performance/08-indxing.html">Indexing</a></li>
         <li><a href="05-database/03a-transactions-and-concurrency/index.html">Transactions and Concurrency</a></li>
         <li><a href="05-database/03b-query-plans-and-optimization/index.html">Query Plans and Optimization</a></li>
+        <li><a href="05-database/04-distributed-database-fundamentals/lecture-2.html">Lecture 2</a></li>
+        <li><a href="05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">CAP Theorem Questions</a></li>
         <li><a href="05-database/04a-database-security-and-access-control/index.html">Database Security and Access Control</a></li>
         <li><a href="05-database/05-scaling-and-partitioning/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li>
         <li><a href="05-database/05-scaling-and-partitioning/02-partiontion.html">Partitioning</a></li>
@@ -94,15 +104,13 @@
     <article class="sd-card" style="--accent:var(--sd-c11)">
       <div class="sd-icon">🧬</div>
       <h2>Distributed Database</h2>
-      <span class="sd-count">7 pages</span>
+      <span class="sd-count">5 pages</span>
       <ul>
         <li><a href="distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li>
         <li><a href="distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li>
         <li><a href="distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li>
         <li><a href="distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li>
         <li><a href="distributed-database/05-replication-lag.html">Replication Lag: Causes &amp; Mitigation</a></li>
-        <li><a href="distributed-database/06-distributed-db-fundamentals.html">Distributed Database Fundamentals</a></li>
-        <li><a href="distributed-database/07-cap-theorem-questions.html">CAP Theorem: Interview Question Framework</a></li>
       </ul>
     </article>
 
