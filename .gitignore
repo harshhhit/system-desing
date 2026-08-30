@@ -1,0 +1,58 @@
+# ─── OS junk ───────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ─── Editors / IDEs ────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.*.sw?
+
+# ─── Logs & temp files ────────────────────────────────────
+*.log
+*.tmp
+*.bak
+*.orig
+*.rej
+.cache/
+
+# ─── Node (if any tooling is ever added) ──────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ─── Python / Django (sqs/project/multiprotocol-messaging-starter) ─
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+ENV/
+.env
+.env.*
+!.env.example
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+local_settings.py
+/staticfiles/
+media/
+
+# ─── GitHub Pages / Jekyll build output ───────────────────
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/

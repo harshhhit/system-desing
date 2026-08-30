@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Authentication Notes</title>
 <link rel="stylesheet" href="assets/site.css">
@@ -10,7 +16,7 @@
   --bg: #ffffff; --bg-alt: #f6f8fa; --fg: #1f2328; --muted: #57606a; --border: #d0d7de;
   --link: #0969da; --accent: #6639ba; --card-bg: #ffffff; --shadow: 0 1px 3px rgba(31,35,40,0.08);
 }
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) and (min-width: 99999px) {
   :root {
     --bg:#0d1117; --bg-alt:#161b22; --fg:#e6edf3; --muted:#8d96a0; --border:#30363d;
     --link:#4493f8; --accent:#b794f6; --card-bg:#161b22; --shadow: 0 1px 3px rgba(0,0,0,0.4);

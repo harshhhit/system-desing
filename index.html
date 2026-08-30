@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=login.html"></noscript>
+<!-- /ACCESS GATE -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>System Design Notes</title>
 <style>
@@ -25,7 +31,7 @@
   --c-misc:     #7c3aed;   --c-misc-bg:     #f2ebff;
   --c-overview: #475569;   --c-overview-bg: #eef1f5;
 }
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) and (min-width: 99999px) {
   :root {
     --bg:#0d1117; --bg-alt:#161b22; --fg:#e6edf3; --muted:#8d96a0; --border:#30363d;
     --code-bg:#161b22; --link:#4493f8; --accent:#b794f6; --accent-bg:#1f1633;
@@ -178,15 +184,15 @@ a:hover { text-decoration: underline; }
       </ul>
       <h3>🔐 Authentication</h3>
       <ul>
-        <li><a href="eat-that-elephant-2/README.html">Authentication Master Guide</a></li>
-        <li><a href="eat-that-elephant-2/antigravity-filename.html">Authentication Master Guide (copy)</a></li>
+        <li><a href="eat-that-elephant-2/Authentication%20Notes.html">Authentication Master Guide</a></li>
+        <li><a href="eat-that-elephant-2/Authentication%20Notes.html">Authentication Master Guide (copy)</a></li>
         <li><a href="eat-that-elephant-2/00-login-steps.html">Secure Login Implementation Steps</a></li>
-        <li><a href="eat-that-elephant-2/01-authentication/00-index.html">Authentication Engineering Roadmap</a></li>
+        <li><a href="eat-that-elephant-2/01-authentication/01-introduction.html">Authentication Engineering Roadmap</a></li>
         <li><a href="eat-that-elephant-2/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li>
         <li><a href="eat-that-elephant-2/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li>
         <li><a href="eat-that-elephant-2/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li>
         <li><a href="eat-that-elephant-2/02-social-login/google-key-task.html">Google Social Login Checklist</a></li>
-        <li><a href="eat-that-elephant-2/02-social-login/google-login-plantuml.html">Google Sign-In PlantUML Diagram</a></li>
+        <li><a href="eat-that-elephant-2/02-social-login/google-login.html">Google Sign-In PlantUML Diagram</a></li>
       </ul>
       <h3>🌐 Distributed Systems</h3>
       <ul><li><a href="eat-that-elephant-1/distributed-system/distributed-systems.html">Distributed Systems</a></li></ul>
@@ -287,15 +293,15 @@ a:hover { text-decoration: underline; }
       <div class="card" style="--card-accent: var(--c-auth); --card-accent-bg: var(--c-auth-bg);">
         <div class="icon-wrap">🔐</div><h2>Authentication</h2><p class="count">9 pages</p>
         <ul>
-          <li><a href="eat-that-elephant-2/README.html">Authentication Master Guide</a></li>
-          <li><a href="eat-that-elephant-2/antigravity-filename.html">Authentication Master Guide (copy)</a></li>
+          <li><a href="eat-that-elephant-2/Authentication%20Notes.html">Authentication Master Guide</a></li>
+          <li><a href="eat-that-elephant-2/Authentication%20Notes.html">Authentication Master Guide (copy)</a></li>
           <li><a href="eat-that-elephant-2/00-login-steps.html">Secure Login Implementation Steps</a></li>
-          <li><a href="eat-that-elephant-2/01-authentication/00-index.html">Authentication Engineering Roadmap</a></li>
+          <li><a href="eat-that-elephant-2/01-authentication/01-introduction.html">Authentication Engineering Roadmap</a></li>
           <li><a href="eat-that-elephant-2/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li>
           <li><a href="eat-that-elephant-2/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li>
           <li><a href="eat-that-elephant-2/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li>
           <li><a href="eat-that-elephant-2/02-social-login/google-key-task.html">Google Social Login Checklist</a></li>
-          <li><a href="eat-that-elephant-2/02-social-login/google-login-plantuml.html">Google Sign-In PlantUML Diagram</a></li>
+          <li><a href="eat-that-elephant-2/02-social-login/google-login.html">Google Sign-In PlantUML Diagram</a></li>
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">

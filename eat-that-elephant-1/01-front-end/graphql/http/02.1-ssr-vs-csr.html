@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSR vs CSR · System Design Notes</title>
+
+<link rel="stylesheet" href="../../../assets/site.css">
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../../../assets/sitemap.js"></script>
+<script src="../../../assets/site-header.js" data-root="../../../"></script>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><a class="brand" href="../../../index.html">System Design Notes</a><nav><h3>🖥️ Front-End</h3><ul><li><a href="../../../01-front-end/graphql/http/01-front-end-path.html">front-end-roadmap</a></li><li><a class="active" href="../../../01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li><li><a href="../../../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li><li><a href="../../../01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li><li><a href="../../../01-front-end/graphql/http/Front%20end%20basics%20for%20system%20design%20.html"></a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../../../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../../../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../../../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../../../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../../../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../../../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../../../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../../../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../../../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../../../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../../../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../../../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../../../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../../../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../../../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../../../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../../../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../../../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../../../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../../../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../../../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../../../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../../../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../../../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../../../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../../../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../../../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../../../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../../../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../../../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../../../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../../../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../../../web-servers/server.html">Web Servers</a></li><li><a href="../../../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../../../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../../../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../../../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../../../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../../../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../../../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../../../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../../../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../../../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../../../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+  <div class="content-wrap">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <span class="brand">System Design Notes</span>
+    </div>
+    <main>
+      <p class="breadcrumb"><a href="../../../index.html">Home</a> / Front-End / SSR vs CSR</p>
+      <h1>SSR vs CSR</h1>
+      <h1 id="complete-guide-web-rendering--architecture">Complete Guide: Web Rendering &amp; Architecture</h1>
+<h2 id="ssr-csr-s3-nginx---everything-explained-with-diagrams">SSR, CSR, S3, Nginx - Everything Explained with Diagrams</h2>
+<hr>
+<h1 id="part-1-fundamental-concepts">PART 1: FUNDAMENTAL CONCEPTS</h1>
+<h2 id="where-code-executes-the-core-concept">Where Code Executes: The Core Concept</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                    WHERE CODE RUNS                              │
+├─────────────┬────────────────────────┬─────────────────────────┤
+│    SERVER   │      BROWSER (CLIENT)  │      DATABASE           │
+│─────────────┼────────────────────────┼─────────────────────────┤
+│  ▸ Node.js  │  ▸ React/Vue/Angular   │  ▸ PostgreSQL           │
+│  ▸ PHP      │  ▸ JavaScript          │  ▸ MongoDB              │
+│  ▸ Python   │  ▸ HTML/CSS rendering  │  ▸ MySQL                │
+│  ▸ Java     │  ▸ API calls (fetch)   │  ▸ Redis                │
+│  ▸ Nginx    │  ▸ DOM manipulation    │  ▸ Data storage         │
+│─────────────┼────────────────────────┼─────────────────────────┤
+│  • Hidden   │  • Visible to user     │  • Persistent storage   │
+│  • Secure   │  • Can be inspected    │  • ACID compliance      │
+│  • Compute  │  • Device-dependent    │  • Backup/restore       │
+└─────────────┴────────────────────────┴─────────────────────────┘
+</code></pre>
+<hr>
+<h1 id="part-2-client-side-rendering-csr">PART 2: CLIENT-SIDE RENDERING (CSR)</h1>
+<h2 id="csr-architecture-diagram">CSR Architecture Diagram</h2>
+<pre><code>┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│  USER    │    │  S3/CDN  │    │ BROWSER  │    │   API    │
+│  TYPES   │    │ STATIC   │    │ RENDERS  │    │ SERVER   │
+│   URL    │    │ FILES    │    │   PAGE   │    │          │
+└────┬─────┘    └────┬─────┘    └────┬─────┘    └────┬─────┘
+     │               │               │               │
+     │ 1. Request    │               │               │
+     │──────────────&gt;│               │               │
+     │               │               │               │
+     │ 2. Serve      │               │               │
+     │   index.html  │               │               │
+     │&lt;──────────────│               │               │
+     │               │               │               │
+     │ 3. Request    │               │               │
+     │   bundle.js   │               │               │
+     │──────────────&gt;│               │               │
+     │               │               │               │
+     │ 4. Serve JS   │               │               │
+     │&lt;──────────────│               │               │
+     │               │               │               │
+     │               │──┐           │               │
+     │               │  │ 5. Parse  │               │
+     │               │&lt;─┘  Execute  │               │
+     │               │    React     │               │
+     │               │             │               │
+     │               │──┐         │               │
+     │               │  │ 6. fetch( )│               │
+     │               │&lt;─┴───────────│──────────────&gt;│
+     │               │             │               │
+     │               │             │   7. Query    │
+     │               │             │    Database    │
+     │               │             │    ┌────────┐  │
+     │               │             │    │  DB    │  │
+     │               │             │    │  DATA  │  │
+     │               │             │    └────┬───┘  │
+     │               │             │         │      │
+     │               │             │&lt;────────┘      │
+     │               │             │               │
+     │               │ 8. JSON     │               │
+     │               │&lt;────────────│───────────────│
+     │               │             │               │
+     │               │──┐         │               │
+     │               │  │ 9. Render│               │
+     │               │&lt;─┘  UI with │               │
+     │               │    Data     │               │
+     │               │             │               │
+     │ 10. Page      │             │               │
+     │    Ready!     │             │               │
+     │&lt;────────────────────────────│               │
+     │               │             │               │
+</code></pre>
+<h2 id="csr-code-example">CSR Code Example</h2>
+<p><strong>S3/Static Host (index.html):</strong></p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;CSR App&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;  &lt;!-- Empty shell --&gt;
+    &lt;script src=&quot;bundle.js&quot;&gt;&lt;/script&gt;  &lt;!-- React code --&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>Browser Executes (bundle.js):</strong></p>
+<pre><code class="language-javascript">// Runs in BROWSER, NOT on S3!
+function App() {
+    const [data, setData] = useState(null);
+    
+    // API call from BROWSER to YOUR server
+    useEffect(() =&gt; {
+        fetch(&#39;https://api.yourdomain.com/users&#39;)
+            .then(res =&gt; res.json())
+            .then(setData);
+    }, []);
+    
+    return &lt;div&gt;{data?.name}&lt;/div&gt;;
+}
+</code></pre>
+<hr>
+<h1 id="part-3-server-side-rendering-ssr">PART 3: SERVER-SIDE RENDERING (SSR)</h1>
+<h2 id="ssr-architecture-diagram">SSR Architecture Diagram</h2>
+<pre><code>┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│  USER    │    │  NGINX   │    │  NODE    │    │ DATABASE │
+│  TYPES   │    │ REVERSE  │    │  SSR     │    │          │
+│   URL    │    │  PROXY   │    │ SERVER   │    │          │
+└────┬─────┘    └────┬─────┘    └────┬─────┘    └────┬─────┘
+     │               │               │               │
+     │ 1. Request    │               │               │
+     │──────────────&gt;│               │               │
+     │               │               │               │
+     │               │ 2. Forward    │               │
+     │               │──────────────&gt;│               │
+     │               │               │               │
+     │               │               │ 3. Query      │
+     │               │               │──────────────&gt;│
+     │               │               │               │
+     │               │               │ 4. Data       │
+     │               │               │&lt;──────────────│
+     │               │               │               │
+     │               │               │──┐           │
+     │               │               │  │ 5. Render  │
+     │               │               │&lt;─┘ React to   │
+     │               │               │    HTML       │
+     │               │               │               │
+     │               │ 6. Full HTML  │               │
+     │               │&lt;──────────────│               │
+     │               │               │               │
+     │ 7. Complete   │               │               │
+     │    HTML       │               │               │
+     │&lt;──────────────│               │               │
+     │               │               │               │
+     │ 8. Page       │               │               │
+     │    Visible!   │               │               │
+     │    (No waiting)               │               │
+     │               │               │               │
+     │ 9. Hydration  │               │               │
+     │    JS loads   │               │               │
+     │    in background              │               │
+     │               │               │               │
+</code></pre>
+<h2 id="ssr-code-example">SSR Code Example</h2>
+<p><strong>Node.js SSR Server:</strong></p>
+<pre><code class="language-javascript">// Runs on SERVER, NOT in browser!
+app.get(&#39;/products/:id&#39;, async (req, res) =&gt; {
+    // 1. Get data from database (server-side)
+    const product = await db.products.findById(req.params.id);
+    
+    // 2. Render React to HTML string (server-side)
+    const html = ReactDOMServer.renderToString(
+        &lt;ProductPage product={product} /&gt;
+    );
+    
+    // 3. Send COMPLETE HTML to browser
+    res.send(`
+        &lt;!DOCTYPE html&gt;
+        &lt;html&gt;
+            &lt;head&gt;&lt;title&gt;${product.name}&lt;/title&gt;&lt;/head&gt;
+            &lt;body&gt;
+                &lt;div id=&quot;root&quot;&gt;${html}&lt;/div&gt;
+                &lt;script src=&quot;hydration.js&quot;&gt;&lt;/script&gt;
+            &lt;/body&gt;
+        &lt;/html&gt;
+    `);
+});
+</code></pre>
+<hr>
+<h1 id="part-4-infrastructure-decisions">PART 4: INFRASTRUCTURE DECISIONS</h1>
+<h2 id="when-you-need-nginx-vs-when-you-dont">When You Need Nginx vs When You Don&#39;t</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│                    DO I NEED A WEB SERVER?                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                    │
+│   START HERE                                                       │
+│        │                                                           │
+│        ▼                                                           │
+│   ┌─────────┐                                                      │
+│   │ Does my │                                                      │
+│   │  page   │───────────NO──────────┐                             │
+│   │ require │                       │                             │
+│   │  SSR?   │                       ▼                             │
+│   └────┬────┘           ┌─────────────────────┐                  │
+│        │                │ Pure Static/CSR     │                  │
+│        │YES             │ • HTML/CSS files    │                  │
+│        ▼                │ • React build output│                  │
+│   ┌─────────┐           │ • No server code    │                  │
+│   │ NEED    │           └──────────┬──────────┘                  │
+│   │ NODE.js │                      │                             │
+│   │ SERVER  │                      ▼                             │
+│   └────┬────┘           ┌─────────────────────┐                  │
+│        │                │   Can use S3 + CDN  │                  │
+│        │                │   • No Nginx needed │                  │
+│        │                │   • No EC2 needed   │                  │
+│        │                │   • Cheaper         │                  │
+│        │                └─────────────────────┘                  │
+│        │                                                         │
+│        ▼                                                         │
+│   ┌─────────┐                                                    │
+│   │ Do you  │                                                    │
+│   │ need:   │───NO────────────────────────────────────────────┐  │
+│   │ • SSL   │                                                │  │
+│   │ • Rate  │                                                │  │
+│   │   limit │                                                │  │
+│   │ • Auth  │                                                │  │
+│   │ • Cache │                                                │  │
+│   └────┬────┘                                                │  │
+│        │YES                                                  │  │
+│        ▼                                                     │  │
+│   ┌─────────┐              ┌─────────────────────┐          │  │
+│   │ ADD     │              │   Just Node.js      │          │  │
+│   │ NGINX   │─────────────&gt;│   • Direct to port  │&lt;─────────┘  │
+│   │ in front│              │   • No extra layer  │             │
+│   └─────────┘              └─────────────────────┘             │
+│        │                                                       │
+│        ▼                                                       │
+│   ┌─────────────────────────────────────────────────────┐      │
+│   │           FINAL ARCHITECTURE DECISION               │      │
+│   ├─────────────────────────────────────────────────────┤      │
+│   │                                                     │      │
+│   │   SSR + Need Features    │   SSR Only              │      │
+│   │   ───────────────────────│   ──────────            │      │
+│   │   User ─→ Nginx ─→ Node  │   User ─→ Node          │      │
+│   │           ↓              │                         │      │
+│   │        Static files      │                         │      │
+│   │        (S3/disk)         │                         │      │
+│   │                                                     │      │
+│   │   CSR Only                                          │      │
+│   │   ──────────                                        │      │
+│   │   User ─→ CDN ─→ S3                                 │      │
+│   │                                                     │      │
+│   └─────────────────────────────────────────────────────┘      │
+│                                                                    │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h1 id="part-5-hybrid-architectures">PART 5: HYBRID ARCHITECTURES</h1>
+<h2 id="modern-framework-flexibility-nextjs-example">Modern Framework Flexibility (Next.js Example)</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│                    NEXT.JS - YOU DECIDE PER PAGE                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  Your Codebase:                                                    │
+│                                                                     │
+│   pages/                                                           │
+│   ├── index.js  ──────────────────┐                               │
+│   │   export default function     │                               │
+│   │   // Static Generation        │                               │
+│   │   export async function       │                               │
+│   │   getStaticProps() { ... }    │                               │
+│   │                               │                               │
+│   ├── dashboard.js ───────────────┼───┐                           │
+│   │   export default function     │   │                           │
+│   │   // SSR on every request     │   │                           │
+│   │   export async function       │   │                           │
+│   │   getServerSideProps() { ... }│   │                           │
+│   │                               │   │                           │
+│   └── admin-panel.js ─────────────┼───┼───┐                       │
+│       &#39;use client&#39;                │   │   │                       │
+│       // Pure CSR/SPA mode        │   │   │                       │
+│       export default function()   │   │   │                       │
+│                                  │   │   │                       │
+└──────────────────────────────────┼───┼───┼───────────────────────┘
+                                   │   │   │
+                                   ▼   ▼   ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    DEPLOYMENT ARCHITECTURE                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  STATIC PAGES          SSR PAGES              CSR PAGE             │
+│  ┌─────────────┐      ┌─────────────┐      ┌─────────────┐        │
+│  │  Pre-built  │      │  Node.js    │      │   Static    │        │
+│  │  at build   │      │  Server     │      │   Files     │        │
+│  │  time       │      │  Renders    │      │   on S3     │        │
+│  └──────┬──────┘      │  on-demand  │      └──────┬──────┘        │
+│         │             └──────┬──────┘             │               │
+│         ▼                    ▼                    ▼               │
+│  ┌─────────────────────────────────────────────────────┐          │
+│  │                 CDN / CACHE LAYER                   │          │
+│  │         CloudFront / Fastly / Cloudflare            │          │
+│  └─────────────────────────────────────────────────────┘          │
+│                              │                                     │
+│                              ▼                                     │
+│  ┌─────────────────────────────────────────────────────┐          │
+│  │                    USER BROWSER                      │          │
+│  └─────────────────────────────────────────────────────┘          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h1 id="part-6-complete-decision-flowchart">PART 6: COMPLETE DECISION FLOWCHART</h1>
+<h2 id="from-requirement-to-infrastructure">From Requirement to Infrastructure</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│              FROM REQUIREMENT TO INFRASTRUCTURE                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│   START                                                           │
+│     │                                                             │
+│     ▼                                                             │
+│   ┌─────────────────────────────────────────────────────────┐     │
+│   │  QUESTION 1: Does this page need to be indexed by      │     │
+│   │  Google/Bing? Is social sharing preview important?     │     │
+│   └─────────────────────────────────────────────────────────┘     │
+│     │                                                             │
+│     ├── YES → Need SSR or SSG                                    │
+│     │      ▼                                                     │
+│     │   ┌─────────────────────────────────────────────────┐     │
+│     │   │  QUESTION 2: Is content same for all users?    │     │
+│     │   └─────────────────────────────────────────────────┘     │
+│     │      │                                                     │
+│     │      ├── YES → SSG (Static Generation)                   │
+│     │      │        • Build once at deploy                     │
+│     │      │        • Deploy to S3/CDN                         │
+│     │      │        • NO SERVER NEEDED                         │
+│     │      │        • Example: Blog posts, Marketing pages     │
+│     │      │                                                   │
+│     │      └── NO → SSR (Dynamic)                             │
+│     │           • Renders per request                          │
+│     │           • NEED NODE.JS SERVER                          │
+│     │           • Example: User dashboard, Social feed        │
+│     │                                                          │
+│     └── NO → CSR or SPA                                        │
+│          • Empty shell + JavaScript                           │
+│          • API calls from browser                             │
+│          • NO SERVER NEEDED (just S3)                         │
+│          • Example: Admin panel, Internal tool                │
+│                                                               │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                    INFRASTRUCTURE DECISION                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│   YOUR CHOICE → DEPLOYMENT TARGET → NEED NGINX?                   │
+│                                                                     │
+│   SSG / CSR                                                         │
+│        └───► S3 + CloudFront ────────────────────►  ❌ NO         │
+│                                                                     │
+│   SSR (Simple)                                                     │
+│        └───► Node.js on EC2 (direct) ────────────►  ❌ NO         │
+│             (Port 3000 exposed)                                    │
+│                                                                     │
+│   SSR (Production)                                                 │
+│        └───► Node.js + Nginx on EC2 ────────────►  ✅ YES        │
+│             • SSL termination                                      │
+│             • Load balancing                                      │
+│             • Rate limiting                                       │
+│             • Static file serving                                │
+│                                                                     │
+│   SSR (Serverless)                                                │
+│        └───► Vercel/Netlify ────────────────────►  ❌ NO         │
+│             • They manage Nginx for you                           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h1 id="part-7-real-world-scenarios">PART 7: REAL-WORLD SCENARIOS</h1>
+<h2 id="scenario-a-e-commerce-site">Scenario A: E-commerce Site</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│                    E-COMMERCE WEBSITE                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│   📄 Product Pages (SEO Critical)                                 │
+│   └── Strategy: SSG + ISR                                         │
+│       └── Build 10,000 product pages at deploy                    │
+│       └── Rebuild every 24 hours                                  │
+│       └── S3 + CloudFront → NO SERVER NEEDED                      │
+│                                                                     │
+│   🛒 Cart &amp; Checkout (User-specific)                              │
+│   └── Strategy: CSR or Hydration                                  │
+│       └── API calls to backend                                    │
+│       └── S3 serves React                                         │
+│       └── NO SSR SERVER (just API server)                        │
+│                                                                     │
+│   📊 Admin Dashboard (Internal)                                   │
+│   └── Strategy: Pure CSR                                          │
+│       └── S3 serves React                                         │
+│       └── API calls to admin API                                  │
+│       └── NO SERVER NEEDED for frontend                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h2 id="scenario-b-social-media-app">Scenario B: Social Media App</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│                      SOCIAL MEDIA APP                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│   🏠 Home Feed (Personalized)                                     │
+│   └── Strategy: SSR                                               │
+│       └── NEED Node.js server                                     │
+│       └── Renders feed per user                                   │
+│       └── Nginx in front for SSL/caching                          │
+│                                                                     │
+│   📝 Profile Pages (Semi-dynamic)                                 │
+│   └── Strategy: SSG + Client-side fetch                           │
+│       └── Static shell + JS updates                               │
+│       └── S3 + CloudFront                                         │
+│                                                                     │
+│   📱 Mobile App API                                               │
+│   └── Strategy: JSON endpoints                                    │
+│       └── NEED API server                                         │
+│       └── Nginx as reverse proxy                                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h1 id="part-8-visual-summary">PART 8: VISUAL SUMMARY</h1>
+<h2 id="the-complete-picture">The Complete Picture</h2>
+<pre><code>                    INTERNET
+                        │
+                        ▼
+              ┌─────────────────┐
+              │    CDN/EDGE     │  CloudFront, Fastly, Cloudflare
+              │   Cache Layer   │  ✓ Caches responses
+              └─────────────────┘  ✓ DDoS protection
+                        │          ✓ SSL termination
+                        ▼
+    ╔═══════════════════════════════════════════════════╗
+    ║           WHERE IS YOUR APP BUILT?               ║
+    ╠═══════════════════════════════════════════════════╣
+    ║                                                   ║
+    ║   BUILD TIME              REQUEST TIME           ║
+    ║   ─────────────────────   ─────────────────────   ║
+    ║                                                   ║
+    ║   SSG:                    SSR:                   ║
+    ║   npm run build     →     Server renders    →    ║
+    ║   Creates HTML            React to HTML          ║
+    ║   Upload to S3            on each request        ║
+    ║                                                   ║
+    ║   CSR:                    ISR:                   ║
+    ║   npm run build     →     Build at deploy   →    ║
+    ║   Creates JS bundle       Rebuild on demand      ║
+    ║   Upload to S3            Cache until invalid    ║
+    ║                                                   ║
+    ╚═══════════════════════════════════════════════════╝
+                        │
+                        ▼
+    ┌─────────────────────────────────────────────────┐
+    │           SERVING THE RESPONSE                  │
+    ├─────────────┬───────────────────┬───────────────┤
+    │             │                   │              │
+    │   STATIC    │     DYNAMIC       │    HYBRID    │
+    │   FILES     │     SSR           │    MIXED     │
+    │             │                   │              │
+    │   S3        │   Node.js         │  S3 + API    │
+    │   GitHub    │   PHP-FPM         │  Server +    │
+    │   Pages     │   Java/Spring     │  CDN cache   │
+    │             │   Python/Django   │              │
+    │             │                   │              │
+    │   ❌ No     │   ✅ Needs        │  ⚠️ Depends  │
+    │   Server    │   Server          │   on page    │
+    │             │                   │              │
+    └─────────────┴───────────────────┴───────────────┘
+                        │
+                        ▼
+              ┌─────────────────┐
+              │    BROWSER      │
+              └─────────────────┘
+                        │
+        ┌───────────────┴───────────────┐
+        ▼                               ▼
+┌───────────────┐               ┌───────────────┐
+│  CSR: React   │               │  SSR: Already │
+│  Boots up     │               │  Has HTML     │
+│  Fetches data │               │  Just hydrate │
+│  Renders UI   │               │  Add events   │
+└───────────────┘               └───────────────┘
+</code></pre>
+<hr>
+<h1 id="part-9-key-takeaways">PART 9: KEY TAKEAWAYS</h1>
+<h2 id="the-4-golden-rules">The 4 Golden Rules</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│                    THE 4 GOLDEN RULES                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│   RULE 1: S3 SERVES FILES, NOT CODE                               │
+│   └── S3 is a hard drive in the cloud                             │
+│   └── It does not run React, PHP, or Node.js                      │
+│   └── It only gives files to browsers                             │
+│                                                                     │
+│   RULE 2: CODE EXECUTES WHERE IT RUNS                             │
+│   └── React in S3? ❌ No, React runs in browser                   │
+│   └── API calls from S3? ❌ No, from browser/device               │
+│   └── Database from S3? ❌ No, from API server                    │
+│                                                                     │
+│   RULE 3: SSR ALWAYS NEEDS A SERVER                               │
+│   └── Rendering React to HTML requires compute                    │
+│   └── Database queries must be protected                          │
+│   └── Environment variables stay secret                           │
+│                                                                     │
+│   RULE 4: YOU DECIDE, NOT THE FRAMEWORK                          │
+│   └── Next.js: &#39;use client&#39; vs Server Components                 │
+│   └── Nuxt: .client vs .server files                             │
+│   └── SvelteKit: export const ssr = false                        │
+│   └── Astro: export const prerender = false                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h1 id="part-10-quick-reference-card">PART 10: QUICK REFERENCE CARD</h1>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│                    QUICK REFERENCE CARD                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│   SCENARIO                    ARCHITECTURE              SERVER?    │
+│   ─────────────────────────────────────────────────────────────     │
+│                                                                     │
+│   Marketing Site             S3 + CloudFront            ❌ NO     │
+│   Blog                       SSG + S3                   ❌ NO     │
+│   React SPA (CSR)            S3 + CDN                   ❌ NO     │
+│   Vue SPA (CSR)             S3 + CDN                   ❌ NO     │
+│                                                                     │
+│   Next.js SSR               Node.js + Nginx            ✅ YES    │
+│   Remix                     Node.js + Nginx            ✅ YES    │
+│   WordPress                 PHP-FPM + Nginx            ✅ YES    │
+│   Django                    Python + Nginx             ✅ YES    │
+│                                                                     │
+│   Next.js SSG               S3 + CloudFront            ❌ NO     │
+│   Gatsby                    S3 + CloudFront            ❌ NO     │
+│   Astro (static)            S3 + CloudFront            ❌ NO     │
+│                                                                     │
+│   Next.js (hybrid)          Mixed:                     ⚠️ DEPENDS │
+│                            • Static: S3                          │
+│                            • SSR: Node.js + Nginx                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h1 id="final-summary">FINAL SUMMARY</h1>
+<p><strong>You now understand:</strong></p>
+<ol>
+<li><p><strong>CSR</strong> → Browser renders. S3 hosts files. API server provides data. NO FRONTEND SERVER needed.</p>
+</li>
+<li><p><strong>SSR</strong> → Server renders. Node.js/backend generates HTML. Nginx optional but recommended. SERVER REQUIRED.</p>
+</li>
+<li><p><strong>S3</strong> → Not a server. Just storage. Cannot run code.</p>
+</li>
+<li><p><strong>Nginx</strong> → Web server. Needed for SSL, rate limiting, proxying. Optional for direct Node.js.</p>
+</li>
+<li><p><strong>Modern frameworks</strong> → Let YOU decide per page. Not locked in.</p>
+</li>
+</ol>
+<p><strong>Your mental model is now production-ready.</strong> 🚀</p>
+
+      <div class="page-footer">
+        <span>Section: Front-End</span>
+        <span>Source: <code>ssr-vs-csr.md</code></span>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+  const t = document.getElementById('menuToggle');
+  const s = document.getElementById('sidebar');
+  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+</script>
+
+</body>
+</html>
