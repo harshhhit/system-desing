@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<!-- ================================================================
+     HOW TO USE THIS TEMPLATE
+     1. Copy it to  eat-that-elephant-1/<section>/<your-page>.html
+     2. Set the id below.
+     3. Add a matching entry (same id) to  eat-that-elephant-1/assets/pages.js
+     4. If it should show in the sidebar, add it to  eat-that-elephant-1/assets/sitemap.js
+     5. Run:  node scripts/regen-sidebars.js
+     Files starting with "_" are ignored by that script, so this
+     template is never touched.
+     ================================================================ -->
+
+<!-- ▼ THE ONLY LINE YOU NORMALLY EDIT IN <head>. pages.js (matched by this
+     id) supplies the <title>, <h1>, lead line and breadcrumb below. -->
+<script>window.PAGE_CONFIG = { id: "REPLACE-WITH-PAGE-ID" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Fallback only. site-header.js overwrites this from pages.js at runtime;
+     regen-sidebars.js rewrites it on disk. -->
+<title>New Page · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+<!-- OPTIONAL page-specific one-offs. Delete if unused. Never put the
+     theme (colors / fonts) here — that lives in assets/site.css. -->
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+</style>
+</head>
+<body>
+
+<!-- Shared top band (brand + Home + "today's revision"). Filled by JS. -->
+<div id="site-header-root"></div>
+
+<!-- The three central scripts. Order matters: data first, injector last.
+     The "../" prefixes and data-root are RELATIVE TO THIS FILE'S FOLDER:
+       eat-that-elephant-1/<folder>/page.html     -> "../"     (this template)
+       eat-that-elephant-1/<a>/<b>/page.html       -> "../../"
+       eat-that-elephant-1/page.html               -> ""
+     Change the depth => also fix the ACCESS GATE login path, the three
+     src="" values, data-root="", and the site.css href="". -->
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <!-- Sidebar. Keep the nav element present but empty: site-header.js fills
+       it from sitemap.js on load, regen-sidebars.js bakes the static copy
+       in afterwards. Do not hand-write links. -->
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <!-- Filled from pages.js by id. Leave empty. Delete the subtitle
+           line if your pages.js entry has no "subtitle". -->
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+
+      <!-- ═══════════  PASTE YOUR PAGE CONTENT BELOW  ═══════════
+           This block is the only part unique to this page.
+           Everything outside it is shared / central. -->
+
+      <h2>Section heading</h2>
+      <p>Your content…</p>
+
+      <!-- ═══════════  END OF YOUR CONTENT  ═══════════ -->
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

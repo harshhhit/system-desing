@@ -12,8 +12,16 @@ window.SITE_MAP = {
       "name": "Front-End",
       "pages": [
         {
-          "href": "01-front-end/graphql/http/01-front-end-path.html",
-          "title": "front-end-roadmap"
+          "href": "01-front-end/system-design-roadmap.html",
+          "title": "System Design Roadmap"
+        },
+        {
+          "href": "01-front-end/frontend-roadmap.html",
+          "title": "Front-End Roadmap"
+        },
+        {
+          "href": "01-front-end/graphql/http/01.02-rendering-types.html",
+          "title": "Web Rendering & Architecture"
         },
         {
           "href": "01-front-end/graphql/http/02.1-ssr-vs-csr.html",
@@ -26,10 +34,6 @@ window.SITE_MAP = {
         {
           "href": "01-front-end/graphql/http/03.1graphql-vs-rest.html",
           "title": "GraphQL vs REST"
-        },
-        {
-          "href": "01-front-end/graphql/http/Front%20end%20basics%20for%20system%20design%20.html",
-          "title": ""
         }
       ]
     },
@@ -182,6 +186,10 @@ window.SITE_MAP = {
           "href": "sqs/project/project.html",
           "title": "Multiprotocol Messaging Starter: Project Guide"
         }
+      ],
+      "resources": [
+        { "href": "sqs/message-retries-and-dead-lettering.pdf", "title": "Retries & Dead-Lettering" },
+        { "href": "sqs/project/multiprotocol-messaging-starter.zip", "title": "Starter Project (.zip)" }
       ]
     },
     {
@@ -274,3 +282,6 @@ window.SITE_MAP = {
     }
   ]
 };
+/* Register this map so a multi-site page (the repo-root portal) can read every
+   sub-site's map without the last-loaded one clobbering the others. */
+(window.SITE_MAPS = window.SITE_MAPS || {})[window.SITE_MAP.siteId] = window.SITE_MAP;

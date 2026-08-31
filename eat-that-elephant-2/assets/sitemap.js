@@ -28,7 +28,7 @@ window.SITE_MAP = {
         {
           "href": "01-authentication/03-hashing-process.html",
           "title": "Secure Password Hashing Process"
-        },
+        }
       ]
     },
     {
@@ -47,3 +47,6 @@ window.SITE_MAP = {
     }
   ]
 };
+/* Register this map so a multi-site page (the repo-root portal) can read every
+   sub-site's map without the last-loaded one clobbering the others. */
+(window.SITE_MAPS = window.SITE_MAPS || {})[window.SITE_MAP.siteId] = window.SITE_MAP;

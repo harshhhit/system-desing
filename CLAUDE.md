@@ -7,10 +7,12 @@ GitHub Pages. Two sub-sites: `eat-that-elephant-1/` (System Design Notes) and
 ## Golden rules (follow on every change)
 
 1. **All pages share one format.** Every content page in `eat-that-elephant-1/`
-   uses the same shell: `<head>` → access-gate block → `<meta charset>` order,
-   `assets/site.css`, `assets/sitemap.js` + `assets/site-header.js`, then a
-   `.sidebar` aside + `.sd-study-main` (or legacy `main`) content area. When you
-   add or edit a page, match this structure.
+   uses the same shell: access-gate block → `<script>window.PAGE_CONFIG={id}</script>`
+   → `<meta charset>` etc., `assets/site.css`, then
+   `assets/sitemap.js` + `assets/pages.js` + `assets/site-header.js`, then a
+   `.sidebar` aside + `.sd-study-main` (or legacy `main`) content area with
+   `data-breadcrumb` / `data-page-title` / `data-page-subtitle` placeholders.
+   Start from `eat-that-elephant-1/_TEMPLATE-page.html`.
 
 2. **Add info, never delete it.** You may add explanations, sections, links, or
    pages whenever it helps. Do not remove or shorten existing content, notes, or
@@ -39,23 +41,32 @@ GitHub Pages. Two sub-sites: `eat-that-elephant-1/` (System Design Notes) and
   disable it the same way. `login.html` is a bespoke light split-screen design
   (its left photo panel keeps a dark image overlay — that's the photo, not a theme).
 
-- **Sidebar is generated from `eat-that-elephant-1/assets/sitemap.js`.**
-  `site-header.js` rebuilds `.sidebar > nav` from `SITE_MAP` at runtime; the static
-  `<nav>` in each page is a pre-rendered copy of the same output. **After editing
-  `sitemap.js`, run `node scripts/regen-sidebars.js`** to refresh every page's
-  static `<nav>` (idempotent; safe to run anytime). Section order, icons, titles
-  and the `active` link all come from `SITE_MAP`. Keep the homepage cards in
-  `eat-that-elephant-1/index.html` and the hero page count in sync too.
+- **Shared UI is generated from three central files per sub-site:**
+  `assets/sitemap.js` (`SITE_MAP` — sidebar), `assets/pages.js` (`SITE_PAGES` — each
+  page's `<title>`/`<h1>`/lead line/breadcrumb), `assets/site.css` (theme).
+  `site-header.js` applies them at runtime; **`node scripts/regen-sidebars.js`** bakes
+  them into the static HTML — the `<nav>`, the `data-page-*` regions, the homepage
+  card grid + counts, and `data-section-pages` lists are all pre-rendered copies.
+  **Run that script after ANY edit to `sitemap.js` or `pages.js`** (idempotent; safe
+  anytime; `--dry-run` previews). Never hand-edit a baked `<nav>`, a `data-*` region,
+  or the homepage cards — re-run the script. Files named `_*` (e.g.
+  `eat-that-elephant-1/_TEMPLATE-page.html`) are skipped by the script.
 
-- **New page checklist:** copy an existing page of the same template, fix the
-  `<root>` relative prefix (gate redirect, `site.css`, `sitemap.js`,
-  `site-header.js data-root`), add the entry to `sitemap.js`, run
-  `scripts/regen-sidebars.js`, update the homepage card + count.
+- **New page / moving a page:** follow `eat-that-elephant-1/CLAUDE.md` (procedure, both
+  sub-sites), `eat-that-elephant-2/CLAUDE.md` (e2 specifics) and
+  `eat-that-elephant-1/README.md` (detail). In short: copy `_TEMPLATE-page.html`, set
+  `window.PAGE_CONFIG = { id }`, add matching entries to `pages.js` and (for the
+  sidebar) `sitemap.js`, run `scripts/regen-sidebars.js`. When moving, also leave a
+  meta-refresh + `location.replace` redirect stub at the old path (examples under
+  `eat-that-elephant-1/05-database/data-base/`).
 
-- **Moving/renaming a page:** create the new file, then leave a tiny
-  meta-refresh + `location.replace` redirect stub at the old path pointing to the
-  new one (examples under `eat-that-elephant-1/05-database/data-base/`). Update
-  `sitemap.js`, the homepage card, and re-run the sidebar regeneration.
+- **Verify before finishing any change to the notes sites:**
+  `node scripts/regen-sidebars.js --check` — one run covers both sub-sites and the
+  repo root. It flags missing/renamed files referenced by `sitemap.js` / `pages.js`,
+  `PAGE_CONFIG` ids with no `pages.js` entry (or a mismatched key), pages listed in
+  `pages.js` that lack the `PAGE_CONFIG`, stale baked HTML, and pages missing the
+  ACCESS GATE. Must exit `0`; fix anything it reports, or tell the user what's
+  inconsistent.
 
 - **`login.html` config:** `USERNAME` is `harshhhit` (plain text, case-sensitive,
   trimmed). `PASSWORD_HASH` is the lowercase SHA-256 hex of the password (generate
