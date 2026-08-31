@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "frontend-roadmap" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Front-End Development Roadmap (Concepts Only) · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .sd-study-main h2 { margin-top: 2.2rem; display: flex; align-items: flex-start; gap: 0.55rem; }
+  .sd-study-main h3 { margin-top: 1.3rem; font-size: 1rem; }
+  /* progress ticker */
+  .fe-progress {
+    position: sticky; top: 0.5rem; z-index: 2; margin: 1.4rem 0;
+    padding: 0.9rem 1.1rem; border: 1px solid var(--border);
+    border-radius: 10px; background: var(--card-bg); box-shadow: var(--shadow);
+  }
+  .fe-progress p { margin: 0.5rem 0 0; font-size: 0.9rem; color: var(--muted); }
+  .fe-progress strong { color: var(--sd-c1); font-size: 1.05rem; }
+  .fe-bar { height: 8px; border-radius: 999px; background: color-mix(in srgb, var(--sd-c1) 18%, transparent); overflow: hidden; }
+  .fe-bar span { display: block; height: 100%; width: 0; background: var(--sd-c1); transition: width 0.2s ease; }
+  .fe-progress button {
+    border: 1px solid var(--border); background: transparent; color: var(--muted);
+    border-radius: 6px; padding: 0.1em 0.55em; font: inherit; font-size: 0.82rem; cursor: pointer;
+  }
+  .fe-progress button:hover { color: var(--sd-c1); border-color: var(--sd-c1); }
+  .sd-study-main h2 input[type="checkbox"] {
+    margin-top: 0.35rem; width: 1.05rem; height: 1.05rem; flex: none; cursor: pointer; accent-color: var(--sd-c1);
+  }
+  .sd-study-main h2.done { color: var(--muted); }
+  .stage-note { color: var(--muted); font-size: 0.92rem; margin-top: -0.2rem; }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><nav><h3>🖥️ Front-End</h3><ul><li><a href="../01-front-end/system-design-roadmap.html">System Design Roadmap</a></li><li><a class="active" href="../01-front-end/frontend-roadmap.html">Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Front-End / Front-End Development Roadmap (Concepts Only)</p>
+      <h1 data-page-title>Front-End Development Roadmap (Concepts Only)</h1>
+      <p class="sd-study-prompt" data-page-subtitle>A concept-first map of what &ldquo;understanding front-end&rdquo; actually requires — the ideas, why they exist, and how they connect, from how the web works up to modern architecture and delivery. Tick each stage as you cover it; progress is saved in this browser.</p>
+
+      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+
+      <p>A concept-first map of what &ldquo;understanding front-end&rdquo; actually requires — no
+        code, just the ideas, why they exist, and how they connect. Follow top to bottom; each stage
+        builds on the last. Tick a stage's box once you've genuinely covered it — progress is saved
+        in this browser.</p>
+
+      <div class="fe-progress" id="feProgress">
+        <div class="fe-bar"><span id="feBar"></span></div>
+        <p><strong id="feCount">0</strong> / <span id="feTotal">12</span> stages covered
+          &nbsp;·&nbsp; <button type="button" id="feReset">reset</button></p>
+      </div>
+
+      <h2 id="stage-0"><input type="checkbox" data-stage="0"> Stage 0 — How the Web Actually Works</h2>
+      <p class="stage-note">Understand this before touching HTML/CSS/JS — everything else is built on it.</p>
+      <ul>
+        <li>Client–server model: browser (client) requests, server responds</li>
+        <li>DNS resolution → TCP/IP → TLS handshake → HTTP request/response cycle</li>
+        <li>What a URL is made of (protocol, domain, port, path, query string, fragment)</li>
+        <li>Request methods (GET, POST, etc.) and status codes (200, 301, 404, 500) — concept level</li>
+        <li>Browsers as software: each has a rendering engine (Chromium/Blink, WebKit, Gecko)</li>
+      </ul>
+
+      <h2 id="stage-1"><input type="checkbox" data-stage="1"> Stage 1 — Document Structure (HTML Concepts)</h2>
+      <ul>
+        <li>HTML as structure/meaning, not styling — the idea of markup vs presentation</li>
+        <li>The DOM (Document Object Model): the browser turns HTML into a tree of nodes</li>
+        <li>Semantic HTML: why <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;article&gt;</code> exist instead of generic <code>&lt;div&gt;</code>s</li>
+        <li>Document flow: how elements stack top-to-bottom by default</li>
+        <li>Forms as a concept: inputs, labels, and why they matter for accessibility and data collection</li>
+        <li>Metadata: what <code>&lt;head&gt;</code> does (title, favicon, meta tags for SEO/social sharing)</li>
+      </ul>
+
+      <h2 id="stage-2"><input type="checkbox" data-stage="2"> Stage 2 — Presentation (CSS Concepts)</h2>
+      <ul>
+        <li>Separation of concerns: structure (HTML) vs style (CSS) vs behavior (JS)</li>
+        <li>The Cascade: how CSS rules compete (specificity, inheritance, source order, <code>!important</code>)</li>
+        <li>The Box Model: content, padding, border, margin — how every element is a box</li>
+        <li>Positioning schemes: static, relative, absolute, fixed, sticky — conceptual differences</li>
+        <li>Layout systems:
+          <ul>
+            <li>Normal flow (block vs inline)</li>
+            <li>Flexbox — one-dimensional layout (rows/columns)</li>
+            <li>Grid — two-dimensional layout (rows AND columns)</li>
+          </ul>
+        </li>
+        <li>Responsive design: the idea of adapting layout to screen size
+          <ul>
+            <li>Media queries, breakpoints</li>
+            <li>Mobile-first vs desktop-first philosophy</li>
+            <li>Fluid vs fixed units (px vs %, rem, em, vw/vh) — what &ldquo;relative units&rdquo; solve</li>
+          </ul>
+        </li>
+        <li>Design systems concept: spacing scales, color tokens, typography scales, consistency</li>
+        <li>CSS architecture philosophies (BEM, utility-first like Tailwind's approach) — why naming conventions matter at scale</li>
+      </ul>
+
+      <h2 id="stage-3"><input type="checkbox" data-stage="3"> Stage 3 — Interactivity (JavaScript Concepts — not syntax)</h2>
+      <ul>
+        <li>JS as the &ldquo;behavior&rdquo; layer: it manipulates the DOM after the page loads</li>
+        <li>The event-driven model: events (click, scroll, input) and listeners</li>
+        <li>DOM manipulation concept: reading/changing elements after page load</li>
+        <li>Synchronous vs asynchronous execution — why this matters for a responsive UI</li>
+        <li>The idea of the Event Loop (why JS doesn't &ldquo;freeze&rdquo; the browser during network calls)</li>
+        <li>Client-side vs server-side rendering — where the HTML actually gets built</li>
+        <li>APIs and data fetching concept: browser asks a server for data (JSON) without reloading the page (the idea behind AJAX / fetch)</li>
+        <li>Browser Storage concepts: cookies vs localStorage vs sessionStorage — what each is for</li>
+      </ul>
+
+      <h2 id="stage-4"><input type="checkbox" data-stage="4"> Stage 4 — Browser Rendering Pipeline (Why Performance Matters)</h2>
+      <ul>
+        <li>Critical Rendering Path: HTML → DOM, CSS → CSSOM, DOM+CSSOM → Render Tree → Layout → Paint → Composite</li>
+        <li>Reflow vs Repaint — why some CSS/JS changes are expensive</li>
+        <li>Why script placement (top vs bottom of page) historically mattered</li>
+        <li>Concept of &ldquo;blocking&rdquo; resources (render-blocking CSS/JS)</li>
+        <li>Critical rendering performance metrics (conceptual): First Contentful Paint, Largest Contentful Paint, Time to Interactive, Cumulative Layout Shift</li>
+      </ul>
+
+      <h2 id="stage-5"><input type="checkbox" data-stage="5"> Stage 5 — Accessibility &amp; UX Fundamentals</h2>
+      <ul>
+        <li>Why accessibility (a11y) isn't optional: keyboard navigation, screen readers</li>
+        <li>ARIA roles — concept of adding meaning for assistive tech</li>
+        <li>Color contrast, focus states, readable typography</li>
+        <li>Progressive enhancement vs graceful degradation (build for everyone, enhance for capable browsers)</li>
+      </ul>
+
+      <h2 id="stage-6"><input type="checkbox" data-stage="6"> Stage 6 — Front-End Architecture Concepts</h2>
+      <ul>
+        <li>Component-based thinking: UI broken into small, reusable, self-contained pieces</li>
+        <li>Why frameworks (React, Vue, Angular, Svelte) exist — they solve DOM-manipulation complexity at scale</li>
+        <li>Declarative vs imperative UI — &ldquo;describe the end state&rdquo; vs &ldquo;describe every step&rdquo;</li>
+        <li>State management concept: what &ldquo;state&rdquo; means, why it gets hard to track as apps grow (local state vs global/shared state)</li>
+        <li>Virtual DOM concept (used by React and others): batching UI updates efficiently</li>
+        <li>Client-Side Routing: single-page apps (SPA) changing views without full page reloads</li>
+        <li>Rendering strategies (conceptual — where modern frameworks differentiate): CSR, SSR, SSG, and Hydration (how server-rendered HTML &ldquo;wakes up&rdquo; and becomes interactive)</li>
+      </ul>
+      <p class="stage-note">Deep dive: <a href="graphql/http/01.02-rendering-types.html">Web Rendering &amp; Architecture</a>,
+        <a href="graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a>.</p>
+
+      <h2 id="stage-7"><input type="checkbox" data-stage="7"> Stage 7 — Build Tooling &amp; Ecosystem (Concept Level)</h2>
+      <ul>
+        <li>Why raw JS/CSS files aren't shipped as-is in modern apps:
+          <ul>
+            <li>Bundling: combining many files into fewer optimized files</li>
+            <li>Transpiling: converting modern JS to browser-compatible JS (e.g. via Babel)</li>
+            <li>Minification: shrinking file size for faster load</li>
+            <li>Tree-shaking: removing unused code</li>
+          </ul>
+        </li>
+        <li>Package managers concept (npm/yarn/pnpm) — dependency management</li>
+        <li>Module systems: why code is split into reusable files/modules</li>
+        <li>Dev server vs production build — hot reload vs optimized static output</li>
+      </ul>
+
+      <h2 id="stage-8"><input type="checkbox" data-stage="8"> Stage 8 — APIs, Data &amp; Integration</h2>
+      <ul>
+        <li>REST vs GraphQL — two philosophies of talking to a backend (concept only)</li>
+        <li>Authentication/session concepts on the front end: tokens, cookies, how a &ldquo;logged in&rdquo; state is maintained</li>
+        <li>CORS — why browsers block cross-origin requests by default, and what it protects against</li>
+        <li>Real-time concepts: WebSockets/polling — how live updates (chat, notifications) work</li>
+      </ul>
+      <p class="stage-note">Deep dive: <a href="graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a>.</p>
+
+      <h2 id="stage-9"><input type="checkbox" data-stage="9"> Stage 9 — Testing &amp; Quality (Concepts)</h2>
+      <ul>
+        <li>Why testing exists at multiple levels: unit, integration, end-to-end (E2E)</li>
+        <li>Concept of visual regression testing (catching unintended UI changes)</li>
+        <li>Linting/formatting as a concept: enforcing consistent code style automatically</li>
+      </ul>
+
+      <h2 id="stage-10"><input type="checkbox" data-stage="10"> Stage 10 — Deployment &amp; Delivery</h2>
+      <p class="stage-note">This will feel familiar given a DevOps background.</p>
+      <ul>
+        <li>Static hosting vs dynamic server hosting — where front-end assets actually live</li>
+        <li>CDN concept: why static assets (JS/CSS/images) are served from edge locations</li>
+        <li>Caching strategies for front-end assets (cache-busting via file hashing)</li>
+        <li>CI/CD for front-end: build → test → deploy pipeline (conceptually the same discipline you already use, just for a website's assets)</li>
+        <li>Environment concepts: dev/staging/prod builds, environment variables in a front-end context</li>
+      </ul>
+
+      <h2 id="stage-11"><input type="checkbox" data-stage="11"> Stage 11 — Advanced / Modern Topics</h2>
+      <ul>
+        <li>Web Components: framework-agnostic reusable elements (concept)</li>
+        <li>Progressive Web Apps (PWA): service workers, offline capability, installability</li>
+        <li>Micro-frontends: splitting a large front-end into independently deployable pieces (mirrors microservices thinking)</li>
+        <li>Web performance budgets and lazy loading (loading only what's needed, when needed)</li>
+        <li>SEO fundamentals: how rendering strategy (CSR vs SSR/SSG) affects how search engines see your site</li>
+        <li>Browser compatibility &amp; polyfills: the concept of &ldquo;not all browsers support the same features&rdquo;</li>
+        <li>Security concepts: XSS, CSRF, Content Security Policy — what they are and why front-end code needs to guard against them</li>
+      </ul>
+
+      <h2 id="learning-order">Suggested Learning Order</h2>
+      <ol>
+        <li><strong>Stage 0–2</strong> (how the web works, HTML, CSS) — the non-negotiable foundation</li>
+        <li><strong>Stage 3–4</strong> (JS behavior + rendering pipeline) — understand why pages behave and perform the way they do</li>
+        <li><strong>Stage 5</strong> (accessibility) — cheap to learn early, expensive to retrofit later</li>
+        <li><strong>Stage 6–7</strong> (architecture + tooling) — this is &ldquo;why React/Vue/build tools exist,&rdquo; not how to use them</li>
+        <li><strong>Stage 8–9</strong> (data/APIs + testing) — how a front end talks to the rest of the system</li>
+        <li><strong>Stage 10</strong> (deployment) — a DevOps background will make this stage go fast</li>
+        <li><strong>Stage 11</strong> (advanced/modern) — only after the rest is solid</li>
+      </ol>
+      <p>Each stage answers a <em>why</em> before a <em>how</em> — that's intentional, since this is
+        the concepts, not the implementation.</p>
+
+      <!-- ═══════════  END CONTENT  ═══════════ -->
+
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = "fe_roadmap_covered";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-stage]'));
+  var total = boxes.length;
+  var countEl = document.getElementById('feCount');
+  var totalEl = document.getElementById('feTotal');
+  var barEl = document.getElementById('feBar');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  if (totalEl) totalEl.textContent = String(total);
+
+  function render() {
+    var n = 0;
+    boxes.forEach(function (b) {
+      if (b.checked) n++;
+      var h = b.closest('h2');
+      if (h) h.classList.toggle('done', b.checked);
+    });
+    if (countEl) countEl.textContent = String(n);
+    if (barEl) barEl.style.width = (total ? (n / total * 100) : 0) + "%";
+  }
+
+  boxes.forEach(function (b) {
+    var k = b.getAttribute('data-stage');
+    b.checked = saved[k] === true;
+    b.addEventListener('change', function () {
+      saved[k] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      render();
+    });
+  });
+
+  var reset = document.getElementById('feReset');
+  if (reset) reset.addEventListener('click', function () {
+    saved = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    boxes.forEach(function (b) { b.checked = false; });
+    render();
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>

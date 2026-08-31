@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "system-design-roadmap" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Design Roadmap — DevOps/SRE → System Design Interviews · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .sd-study-main h2 { margin-top: 2rem; }
+  .sd-study-main h3 { margin-top: 1.4rem; }
+  .roadmap-track {
+    margin: 1.5rem 0; padding: 1rem 1.2rem;
+    border: 1px solid var(--border); border-left: 4px solid var(--sd-c1); border-radius: 8px;
+    background: color-mix(in srgb, var(--sd-c1) 6%, transparent);
+  }
+  .roadmap-track h2 { margin: 0 0 0.4rem; font-size: 1rem; }
+  .roadmap-track ul { margin: 0.4em 0 0; }
+  .phase-tag {
+    display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--sd-c1); border: 1px solid currentColor;
+    border-radius: 999px; padding: 0.1em 0.6em; margin-left: 0.5em; vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><nav><h3>🖥️ Front-End</h3><ul><li><a class="active" href="../01-front-end/system-design-roadmap.html">System Design Roadmap</a></li><li><a href="../01-front-end/frontend-roadmap.html">Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Front-End / System Design Roadmap — DevOps/SRE → System Design Interviews</p>
+      <h1 data-page-title>System Design Roadmap — DevOps/SRE → System Design Interviews</h1>
+      <p class="sd-study-prompt" data-page-subtitle>A sequenced prep path for infra-heavy engineers: move fast through the building blocks you already run in production, slow down on interview framing (requirements → capacity → API → HLD → deep dive → tradeoffs) and the few coding-adjacent pieces (consistent hashing, rate limiters, LRU, tries) that system design rounds lean on.</p>
+
+      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+
+      <div class="roadmap-track">
+        <h2>Pages in this track</h2>
+        <p>This index and its companion deep-dives — the list updates itself as
+           pages are added to the <strong>Front-End</strong> section of
+           <code>assets/sitemap.js</code>.</p>
+        <ul data-section-pages>
+        <li><a href="../01-front-end/frontend-roadmap.html">Front-End Roadmap</a></li>
+        <li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">Web Rendering &amp; Architecture</a></li>
+        <li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li>
+        <li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li>
+        <li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li>
+      </ul><!--/section-pages-->
+      </div>
+
+      <p><strong>Context this roadmap assumes about you:</strong> ~4&nbsp;yrs DevOps/SRE, AWS CloudOps
+        certified, hands-on with ECS, Lambda, API Gateway, CloudFront, RDS, OpenSearch,
+        CodePipeline/CodeBuild/CodeDeploy, PostgreSQL, Kubernetes (kubeadm&nbsp;+&nbsp;EKS), SQS/DLQ,
+        PubNub, streaming platforms. You're weak on DSA-style coding, not on infrastructure.</p>
+
+      <p><strong>What that means strategically:</strong> most people prepping for system design come
+        from the coding side and have to <em>learn</em> infra concepts (load balancers, queues,
+        caching, sharding) from scratch. You already run these in production. Your gap isn't
+        &ldquo;what is a message queue&rdquo; — it's translating operational knowledge into the
+        <strong>structured interview format</strong> (requirements → capacity estimation → API design
+        → HLD → deep dive → tradeoffs) and picking up the handful of
+        <strong>algorithmic/data-structure concepts</strong> (consistent hashing, rate limiter
+        algorithms, LRU cache, trie for autocomplete) that system design rounds lean on. This
+        roadmap is sequenced accordingly — it moves fast through things you already know
+        operationally and slows down on interview framing and the coding-adjacent pieces.</p>
+
+      <h2>Phase 0: Interview Framing <span class="phase-tag">do this first · 2–3 days</span></h2>
+      <p>Before terminology, learn the <em>shape</em> of a system design answer — this is what
+        separates &ldquo;knows AWS&rdquo; from &ldquo;passes the interview.&rdquo;</p>
+      <ul>
+        <li>The standard flow: <strong>Clarify requirements → Define scale (capacity estimation) →
+          API design → High-level design (boxes and arrows) → Deep dive into 1–2 components →
+          Bottlenecks/tradeoffs → Wrap up</strong></li>
+        <li>Functional vs non-functional requirements — you must explicitly state assumptions (QPS,
+          read:write ratio, data size, latency SLA) before designing</li>
+        <li>Back-of-envelope math: QPS, storage estimates, bandwidth — practice doing this in your
+          head in under 2 minutes</li>
+        <li><strong>Practice resource:</strong> Alex Xu's <em>System Design Interview Vol 1 &amp; 2</em>
+          (read the first 2 chapters now — they teach exactly this framing)</li>
+      </ul>
+
+      <h2>Phase 1: Core Building Blocks <span class="phase-tag">fast pass</span></h2>
+      <p>You know most of this operationally. For each, the goal is: know it well enough to justify
+        <em>choosing</em> it in an interview, not just operate it.</p>
+      <table>
+        <tr><th>Topic</th><th>Your head start</th><th>What to add</th></tr>
+        <tr><td>Load balancing (L4 vs L7, algorithms)</td><td>You run ALB/NLB, nginx ingress</td><td>Learn <em>when</em> to pick L4 vs L7, consistent hashing for LB</td></tr>
+        <tr><td>Caching (Redis/Memcached, CDN)</td><td>You use CloudFront</td><td>Cache invalidation strategies, write-through/write-back/write-around, cache stampede</td></tr>
+        <tr><td>Databases: SQL vs NoSQL</td><td>Deep Postgres + RLS experience</td><td>When to choose NoSQL (Dynamo/Cassandra-style), CAP theorem in practice</td></tr>
+        <tr><td>Message queues</td><td>SQS/DLQ, PubNub production use</td><td>Kafka vs SQS tradeoffs, ordering guarantees, exactly-once vs at-least-once</td></tr>
+        <tr><td>Database replication &amp; sharding</td><td>You've run StatefulSets, RDS</td><td>Sharding strategies (range/hash/directory-based), replication lag handling</td></tr>
+        <tr><td>Indexing</td><td>OpenSearch experience</td><td>B-tree vs LSM-tree, when indexes hurt writes</td></tr>
+        <tr><td>API Gateway / rate limiting</td><td>Direct AWS API Gateway experience</td><td>Rate limiting <strong>algorithms</strong>: token bucket, leaky bucket, sliding window — these get asked as mini coding questions</td></tr>
+        <tr><td>CDN</td><td>CloudFront</td><td>Push vs pull CDN, edge caching for dynamic content</td></tr>
+        <tr><td>Microservices communication</td><td>Your own production architecture</td><td>Sync (REST/gRPC) vs async (event-driven), service mesh basics</td></tr>
+      </table>
+      <p><strong>Deliverable for this phase:</strong> for each row, be able to say &ldquo;we use X
+        because Y, and the tradeoff is Z&rdquo; in one breath.</p>
+
+      <h2>Phase 2: Distributed Systems Theory <span class="phase-tag">the real gap</span></h2>
+      <p>This is where operational knowledge stops being enough — interviews probe the <em>why</em>
+        behind distributed systems, not just &ldquo;it works.&rdquo;</p>
+      <ul>
+        <li>CAP theorem — not the buzzword version, the actual tradeoff space (and why it's often mischaracterized)</li>
+        <li>Consistency models: strong, eventual, causal — map these to real systems you've used (Dynamo = eventual, RDS single-region = strong)</li>
+        <li>Consensus basics: what Paxos/Raft <em>solve</em>, not the algorithm internals (interviewers rarely want you to whiteboard Raft, but you should know why leader election matters)</li>
+        <li>Idempotency and exactly-once processing — critical given your SQS/DLQ background, tie this to what you already do</li>
+        <li>Distributed locking (Redis-based, Zookeeper-based)</li>
+        <li>Consistent hashing — <strong>this one is worth implementing by hand once</strong>, it shows up constantly (load balancers, distributed caches, sharding)</li>
+        <li>Failure detection: heartbeats, gossip protocols</li>
+        <li>Idempotency keys, dedup, and the outbox pattern for reliable event publishing</li>
+      </ul>
+      <p><strong>Practice resource:</strong> <em>Designing Data-Intensive Applications</em> (Kleppmann)
+        — chapters 5, 7, 9 specifically cover this phase. Dense but this is the book that separates
+        people who memorized components from people who understand systems.</p>
+
+      <h2>Phase 3: The Coding-Adjacent Gap <span class="phase-tag">targeted, not a DSA grind</span></h2>
+      <p>You don't need LeetCode-grade DSA for system design rounds, but a handful of concepts get
+        asked as &ldquo;mini implementations&rdquo; inside design questions. Learn these
+        specifically, skip general DSA prep:</p>
+      <ul>
+        <li><strong>LRU Cache</strong> — implement it once (HashMap + doubly linked list). Asked constantly as a standalone or embedded question.</li>
+        <li><strong>Trie</strong> — for autocomplete/typeahead design questions</li>
+        <li><strong>Consistent hashing ring</strong> — implement a basic version</li>
+        <li><strong>Rate limiter</strong> (token bucket / sliding window) — implement in whatever language you're comfortable in (Python is fine, doesn't need to be production-grade)</li>
+        <li><strong>Bloom filter</strong> — concept + when to use it (dedup at scale, cache-miss avoidance)</li>
+        <li><strong>Merkle trees</strong> — concept only, comes up in &ldquo;how does DynamoDB detect replica divergence&rdquo;</li>
+      </ul>
+      <p>You can do all of this in Python without deep coding fluency — these are ~30–50 line
+        implementations, not algorithmic puzzles. Treat it as &ldquo;write pseudocode that
+        runs,&rdquo; not LeetCode grinding.</p>
+
+      <h2>Phase 4: Classic System Design Questions <span class="phase-tag">apply everything</span></h2>
+      <p>Work through these in the standard interview format (Phase 0 flow). Order is easy → hard:</p>
+      <ol>
+        <li>URL shortener (tests: hashing, capacity estimation, DB choice)</li>
+        <li>Rate limiter (tests: Phase 3 algorithms)</li>
+        <li>Key-value store / distributed cache (tests: consistent hashing, replication)</li>
+        <li>Notification system (<strong>you have real production experience here</strong> — PubNub/FCM/APNs — this should be your strongest answer)</li>
+        <li>Chat system / WhatsApp-style messaging (tests: WebSockets, message ordering, delivery guarantees)</li>
+        <li>News feed / Twitter timeline (tests: fan-out on write vs read, caching)</li>
+        <li>Live streaming platform (<strong>you built this</strong> — Baseball Scoring platform — walk through it as a real answer)</li>
+        <li>Distributed job scheduler (tests: queues, idempotency, leader election)</li>
+        <li>Search autocomplete (tests: trie, ranking)</li>
+        <li>Ride-sharing / location-based service (tests: geospatial indexing, quadtrees/geohashing)</li>
+      </ol>
+      <p><strong>Practice resource:</strong> Alex Xu Vol 1 &amp; 2 cover most of these directly.
+        ByteByteGo YouTube channel for visual walkthroughs.</p>
+
+      <h2>Phase 5: Advanced / Staff-Level Topics <span class="phase-tag">after 1–4 are solid</span></h2>
+      <ul>
+        <li>Multi-region architecture, active-active vs active-passive</li>
+        <li>Data pipeline design (batch vs stream — Kafka + Flink/Spark territory)</li>
+        <li>Chaos engineering and failure injection in design (this plays directly to your SRE background — bring it up proactively in interviews)</li>
+        <li>Cost-aware architecture tradeoffs (you already think this way from AWS work — make it explicit in interview answers)</li>
+        <li>Observability as a first-class design concern (metrics/logs/traces at scale) — your CloudWatch/monitoring background is a direct asset here</li>
+        <li>Security in system design: authN/authZ at scale, zero-trust networking</li>
+      </ul>
+
+      <h2>Suggested Sequencing</h2>
+      <table>
+        <tr><th>Weeks</th><th>Focus</th></tr>
+        <tr><td>Week 1</td><td>Phase 0 + skim Phase 1 (you already know most of it)</td></tr>
+        <tr><td>Weeks 2–3</td><td>Phase 2 (distributed systems theory) — the highest-leverage phase for you</td></tr>
+        <tr><td>Week 4</td><td>Phase 3 (targeted coding — LRU, trie, rate limiter, consistent hashing)</td></tr>
+        <tr><td>Weeks 5–6</td><td>Phase 4 — 1–2 questions/day in full interview format, out loud or written</td></tr>
+        <tr><td>Week 7+</td><td>Phase 5 + mock interviews</td></tr>
+      </table>
+
+      <h2>How to use your existing projects</h2>
+      <p>You have real answers for two classic questions already — don't treat them as separate from
+        interview prep, prep <em>with</em> them:</p>
+      <ul>
+        <li><strong>Notification system</strong> → your PubNub/FCM/APNs/SQS work</li>
+        <li><strong>Live streaming/scoring platform</strong> → your 10-service AWS microservices build</li>
+      </ul>
+      <p>Practice narrating these in the Phase 0 structure (requirements → scale → API → HLD → deep
+        dive → tradeoffs). This is usually the strongest material in an interview because it's real
+        and you can defend every decision.</p>
+
+      <!-- ═══════════  END CONTENT  ═══════════ -->
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>
