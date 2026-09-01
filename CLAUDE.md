@@ -60,6 +60,14 @@ GitHub Pages. Two sub-sites: `eat-that-elephant-1/` (System Design Notes) and
   meta-refresh + `location.replace` redirect stub at the old path (examples under
   `eat-that-elephant-1/05-database/data-base/`).
 
+- **Every page has a coverage tracker at the top.** `site-header.js` injects a sticky
+  bar on every page in `SITE_MAP`: a "Mark covered" toggle, section + site-wide
+  `done/total` progress, and a green ✓ on covered links in the sidebar (state per-viewer
+  in `localStorage`). It's automatic — never hand-add a tracker to a page; just ensure
+  the page has its `sitemap.js` + `pages.js` entries. Finer *within-page* progress
+  (per stage/topic) uses `data-stage` checkboxes + a small inline script — copy it from
+  `eat-that-elephant-1/01-front-end/frontend-roadmap.html`.
+
 - **Verify before finishing any change to the notes sites:**
   `node scripts/regen-sidebars.js --check` — one run covers both sub-sites and the
   repo root. It flags missing/renamed files referenced by `sitemap.js` / `pages.js`,

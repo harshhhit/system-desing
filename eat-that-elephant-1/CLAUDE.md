@@ -93,6 +93,25 @@ the user exactly what's inconsistent) before considering the task done.
 To create a NEW section: add `{ "icon": "…", "name": "…", "pages": [ … ] }` to
 `SITE_MAP.sections` in `sitemap.js`, then regen.
 
+## Progress tracking — every page has a coverage tracker at the top
+
+`site-header.js` injects a sticky **coverage bar** at the top of *every* page that is
+listed in `SITE_MAP` (no per-page markup needed): a **"Mark covered"** toggle, the
+current section's `done/total` with a progress meter, and the site-wide `done/total`.
+Covered pages also get a green ✓ in the sidebar. State is per-viewer in
+`localStorage` (`sdnotes_covered_<siteId>`).
+
+**So: a new page gets its coverage tracker automatically the moment it's in `sitemap.js`
++ `pages.js` and `regen` has run — do not hand-add a tracker to a page.** If it isn't
+showing, the page is missing its `pages.js` / `sitemap.js` entry (the `--check` step
+catches that).
+
+For **multi-part learning / roadmap pages** that also need *within-page* progress
+(per stage / per topic), add checkboxes `<input type="checkbox" data-stage="N">` on the
+section headings plus the small inline progress script — copy it from
+`01-front-end/frontend-roadmap.html` (keeps its own `localStorage` key). This is on top
+of the site-wide "page covered" bar, not a replacement.
+
 ## Optional hooks for index / overview pages
 
 `data-topic-grid` (one card per section) · `data-topic-grid="flat"` (one card, all pages) ·
