@@ -175,6 +175,7 @@
         var target = root + page.href;
         link.href = target;
         link.textContent = page.title;
+        link.dataset.href = page.href;
         var p = null;
         try { p = new URL(target, window.location.href).pathname; } catch (e) {}
         if ((activePath && p === activePath) || p === window.location.pathname) {
@@ -196,6 +197,86 @@
       });
       nav.appendChild(list);
     });
+  }
+
+  /* ---- coverage tracker: a sticky "mark covered" bar on every SITE_MAP page,
+     plus ✓ marks in the sidebar. State is per-viewer in localStorage. ---- */
+  var COVERED_KEY = "sdnotes_covered_" + map.siteId;
+  function readCovered() {
+    try { return JSON.parse(localStorage.getItem(COVERED_KEY) || "{}") || {}; }
+    catch (e) { return {}; }
+  }
+  function writeCovered(o) {
+    try { localStorage.setItem(COVERED_KEY, JSON.stringify(o)); } catch (e) {}
+  }
+  function allMapPages() {
+    var out = [];
+    map.sections.forEach(function (s) {
+      s.pages.forEach(function (p) { out.push({ href: p.href, section: s.name }); });
+    });
+    return out;
+  }
+  function markCoveredLinks() {
+    var cov = readCovered();
+    document.querySelectorAll(".sidebar nav a[data-href]").forEach(function (a) {
+      a.classList.toggle("covered", cov[a.dataset.href] === true);
+    });
+  }
+  function currentSection() {
+    if (!entry) return null;
+    var found = null;
+    map.sections.forEach(function (s) {
+      if (s.pages.some(function (p) { return p.href === entry.href; })) found = s;
+    });
+    return found;
+  }
+  function renderCoverageTracker() {
+    if (!mount || !entry) return;
+    var sec = currentSection();
+    var all = allMapPages();
+
+    var box = document.createElement("div");
+    box.className = "sd-coverage";
+
+    var toggle = document.createElement("label");
+    toggle.className = "sd-cov-toggle";
+    var cb = document.createElement("input");
+    cb.type = "checkbox";
+    var txt = document.createElement("span");
+    toggle.appendChild(cb);
+    toggle.appendChild(txt);
+    box.appendChild(toggle);
+
+    var meter = document.createElement("div");
+    meter.className = "sd-cov-meter";
+    var fill = document.createElement("span");
+    meter.appendChild(fill);
+    box.appendChild(meter);
+
+    var stat = document.createElement("span");
+    stat.className = "sd-cov-stat";
+    box.appendChild(stat);
+
+    function paint() {
+      var cov = readCovered();
+      cb.checked = cov[entry.href] === true;
+      txt.textContent = cb.checked ? "Covered" : "Mark covered";
+      var secPages = sec ? sec.pages : [];
+      var secDone = secPages.filter(function (p) { return cov[p.href]; }).length;
+      var allDone = all.filter(function (p) { return cov[p.href]; }).length;
+      fill.style.width = (secPages.length ? (secDone / secPages.length * 100) : 0) + "%";
+      stat.textContent = (sec ? sec.name + " " + secDone + "/" + secPages.length : "") +
+        "  ·  site " + allDone + "/" + all.length;
+      markCoveredLinks();
+    }
+    cb.addEventListener("change", function () {
+      var cov = readCovered();
+      if (cb.checked) cov[entry.href] = true; else delete cov[entry.href];
+      writeCovered(cov);
+      paint();
+    });
+    paint();
+    mount.appendChild(box);
   }
 
   /* ---- page <title> / <h1> / subtitle / breadcrumb, from SITE_PAGES ---- */
@@ -356,6 +437,8 @@
 
   renderTopBand();
   renderSidebar();
+  renderCoverageTracker();
+  markCoveredLinks();
   applyPageMeta();
   renderTopicGrid();
   renderResourceList();
