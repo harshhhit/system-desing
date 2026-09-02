@@ -136,6 +136,12 @@ window.SITE_PAGES = {
     title: "Connection Management and Database Proxies",
     subtitle: "<strong>Study prompt:</strong> Learn connection pooling, pool sizing, timeouts, connection leaks, health checks, failover, and database proxies such as PgBouncer and ProxySQL. Understand when read/write routing is safe and how replication lag can return stale data."
   },
+  "postgresql-connection-troubleshooting": {
+    href: "05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html",
+    section: "Database",
+    title: "PostgreSQL Connection & Query Troubleshooting Guide",
+    subtitle: "Diagnostic queries against <code>pg_stat_activity</code> for connection usage, connection state, per-IP/user/application breakdowns, active and long-running queries, idle and idle-in-transaction sessions, and a step-by-step workflow for \"too many connections\" incidents."
+  },
   "06a-backup-recovery-and-disaster-recovery-index": {
     href: "05-database/06a-backup-recovery-and-disaster-recovery/index.html",
     section: "Database",

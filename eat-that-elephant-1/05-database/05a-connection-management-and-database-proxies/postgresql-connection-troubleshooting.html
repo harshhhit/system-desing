@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "postgresql-connection-troubleshooting" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PostgreSQL Connection &amp; Query Troubleshooting Guide · System Design Notes</title>
+<link rel="stylesheet" href="../../assets/site.css?v=4">
+
+<!-- OPTIONAL page-specific one-offs. Delete if unused. Never put the
+     theme (colors / fonts) here — that lives in assets/site.css. -->
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+  .sd-study-main table { display: block; overflow-x: auto; }
+</style>
+</head>
+<body>
+
+<div id="site-header-root"></div>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/pages.js"></script>
+<script src="../../assets/site-header.js?v=4" data-root="../../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>🖥️ Front-End</h3><ul><li><a href="../../01-front-end/system-design-roadmap.html">System Design Roadmap</a></li><li><a href="../../01-front-end/frontend-roadmap.html">Front-End Roadmap</a></li><li><a href="../../01-front-end/graphql/http/01.02-rendering-types.html">Web Rendering &amp; Architecture</a></li><li><a href="../../01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li><li><a href="../../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li><li><a href="../../01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a class="active" href="../../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li><li><a href="../../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../../web-servers/server.html">Web Servers</a></li><li><a href="../../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Database / PostgreSQL Connection &amp; Query Troubleshooting Guide</p>
+      <h1 data-page-title>PostgreSQL Connection &amp; Query Troubleshooting Guide</h1>
+      <p class="sd-study-prompt" data-page-subtitle>Diagnostic queries against <code>pg_stat_activity</code> for connection usage, connection state, per-IP/user/application breakdowns, active and long-running queries, idle and idle-in-transaction sessions, and a step-by-step workflow for "too many connections" incidents.</p>
+
+
+      <p>This page provides a set of PostgreSQL queries for investigating:</p>
+      <ul>
+        <li>Current database connection usage</li>
+        <li>Which users/applications/IPs are consuming connections</li>
+        <li>Active and long-running queries</li>
+        <li>Idle connections</li>
+        <li><code>idle in transaction</code> sessions</li>
+        <li>Old connections</li>
+        <li>Queries running from a specific IP</li>
+        <li>Connection pool problems</li>
+        <li>PostgreSQL connection exhaustion</li>
+      </ul>
+      <div class="sd-study-note warning"><span class="sd-note-title">Important</span><p>These queries are primarily diagnostic. Do not terminate database sessions until you understand which application/service owns them.</p></div>
+
+      <h2>1. Check Current Connection Usage</h2>
+      <h3>Query</h3>
+      <pre><code>SELECT
+    count(*) AS current_connections,
+    current_setting('max_connections')::int AS max_connections,
+    round(
+        count(*) * 100.0 / current_setting('max_connections')::int,
+        2
+    ) AS usage_percent
+FROM pg_stat_activity;</code></pre>
+      <h3>What it checks</h3>
+      <p>Shows:</p>
+      <ul>
+        <li>Current PostgreSQL connections</li>
+        <li>Configured <code>max_connections</code></li>
+        <li>Percentage of the connection limit currently being used</li>
+      </ul>
+      <h3>Sample Output</h3>
+      <pre><code> current_connections | max_connections | usage_percent
+---------------------+-----------------+--------------
+ 40                  | 402             | 9.95</code></pre>
+      <h3>Interpretation</h3>
+      <p>In this example:</p>
+      <pre><code>40 / 402 = ~10%</code></pre>
+      <p>The database is <strong>not currently close to its connection limit</strong>.</p>
+      <p>If you see:</p>
+      <pre><code>390 / 402 = ~97%</code></pre>
+      <p>then the database is close to connection exhaustion.</p>
+
+      <h2>2. Check Connection State</h2>
+      <h3>Query</h3>
+      <pre><code>SELECT
+    state,
+    count(*) AS connections
+FROM pg_stat_activity
+GROUP BY state
+ORDER BY connections DESC;</code></pre>
+      <h3>What it checks</h3>
+      <p>Shows how connections are distributed between:</p>
+      <ul>
+        <li><code>active</code></li>
+        <li><code>idle</code></li>
+        <li><code>idle in transaction</code></li>
+        <li>Other PostgreSQL states</li>
+      </ul>
+      <h3>Sample Output</h3>
+      <pre><code> state                   | connections
+-------------------------+------------
+ idle                    | 35
+ active                  | 3
+ idle in transaction     | 2</code></pre>
+      <h3>Interpretation</h3>
+      <h4><code>active</code></h4>
+      <p>The connection is currently executing a query.</p>
+      <h4><code>idle</code></h4>
+      <p>The connection is open but currently not executing a query.</p>
+      <p>A large number of idle connections often indicates connection pooling.</p>
+      <h4><code>idle in transaction</code></h4>
+      <p>The application has started a transaction but is currently doing nothing inside it.</p>
+      <p>This state requires investigation because it can hold locks and prevent database cleanup.</p>
+
+      <h2>3. Find Which IP Is Using the Most Connections</h2>
+      <h3>Query</h3>
+      <pre><code>SELECT
+    client_addr,
+    count(*) AS total_connections,
+    count(*) FILTER (WHERE state = 'active') AS active,
+    count(*) FILTER (WHERE state = 'idle') AS idle,
+    count(*) FILTER (
+        WHERE state = 'idle in transaction'
+    ) AS idle_in_transaction
+FROM pg_stat_activity
+WHERE client_addr IS NOT NULL
+GROUP BY client_addr
+ORDER BY total_connections DESC;</code></pre>
+      <h3>What it checks</h3>
+      <p>Identifies which client IP is creating the most PostgreSQL connections.</p>
+      <p>This is particularly useful when applications run on:</p>
+      <ul>
+        <li>ECS</li>
+        <li>Kubernetes</li>
+        <li>EC2</li>
+        <li>Application servers</li>
+        <li>Microservices</li>
+      </ul>
+      <h3>Sample Output</h3>
+      <pre><code> client_addr | total_connections | active | idle | idle_in_transaction
+-------------+-------------------+--------+------+--------------------
+ 10.0.1.207  | 15                | 1      | 14   | 0
+ 10.0.1.84   | 10                | 0      | 10   | 0
+ 10.0.2.69   |  6                | 0      |  6   | 0
+ 10.0.2.144  |  3                | 1      |  2   | 0</code></pre>
+      <h3>Interpretation</h3>
+      <p>If one IP has a very high number of connections, investigate which ECS task/server owns that IP.</p>
+      <p>For example:</p>
+      <pre><code>10.0.1.207 → 100 connections
+10.0.1.84  → 5 connections</code></pre>
+      <p>The service running on <code>10.0.1.207</code> may have an incorrectly configured connection pool.</p>
+
+      <h2>4. Find All Active Queries</h2>
+      <h3>Query</h3>
+      <pre><code>SELECT
+    pid,
+    usename,
+    client_addr,
+    application_name,
+    state,
+    now() - query_start AS query_duration,
+    wait_event_type,
+    wait_event,
+    query
+FROM pg_stat_activity
+WHERE state = 'active'
+  AND query_start IS NOT NULL
+  AND pid &lt;&gt; pg_backend_pid()
+ORDER BY query_duration DESC;</code></pre>
+      <h3>What it checks</h3>
+      <p>Shows queries that are currently executing.</p>
+      <p>Important fields:</p>
+      <table>
+        <tr><th>Field</th><th>Meaning</th></tr>
+        <tr><td><code>pid</code></td><td>PostgreSQL process ID</td></tr>
+        <tr><td><code>usename</code></td><td>Database user</td></tr>
+        <tr><td><code>client_addr</code></td><td>Client IP</td></tr>
+        <tr><td><code>application_name</code></td><td>Application/client name</td></tr>
+        <tr><td><code>query_duration</code></td><td>How long the current query has been running</td></tr>
+        <tr><td><code>wait_event_type</code></td><td>What PostgreSQL may be waiting for</td></tr>
+        <tr><td><code>wait_event</code></td><td>Specific wait event</td></tr>
+        <tr><td><code>query</code></td><td>SQL currently executing</td></tr>
+      </table>
+      <h3>Sample Output</h3>
+      <pre><code> pid  | usename  | client_addr | state  | query_duration | wait_event | query
+------+----------+-------------+--------+----------------+------------+------------------------
+ 8234 | postgres | 10.0.1.207  | active | 00:18:42       | Lock       | UPDATE orders SET ...
+ 8121 | postgres | 10.0.2.69   | active | 00:03:12       |            | SELECT * FROM orders...</code></pre>
+      <p>The first query has been running for approximately 18 minutes.</p>
+
+      <h2>5. Find the Single Longest-Running Query</h2>
+      <h3>Query</h3>
+      <pre><code>SELECT
+    pid,
+    usename,
+    client_addr,
+    application_name,
+    now() - query_start AS query_duration,
+    wait_event_type,
+    wait_event,
+    query
+FROM pg_stat_activity
+WHERE state = 'active'
+  AND query_start IS NOT NULL
+  AND pid &lt;&gt; pg_backend_pid()
+ORDER BY query_start ASC
+LIMIT 1;</code></pre>
+      <h3>What it checks</h3>
+      <p>Returns the currently running query that started earliest.</p>
+      <h3>Sample Output</h3>
+      <pre><code> pid  | usename  | client_addr | query_duration | wait_event | query
+------+----------+-------------+----------------+------------+-------------------------
+ 8234 | postgres | 10.0.1.207  | 00:18:42       | Lock       | UPDATE orders SET ...</code></pre>
+      <h3>Important</h3>
+      <p>If this returns no rows, there may be no active application query at that moment.</p>
+      <p>That does <strong>not</strong> mean there are no open connections.</p>
+
+      <h2>6. Find Old Connections</h2>
+      <h3>Query</h3>
+      <pre><code>SELECT
+    pid,
+    usename,
+    client_addr,
+    application_name,
+    state,
+    now() - backend_start AS connection_age,
+    now() - state_change AS idle_for,
+    query
+FROM pg_stat_activity
+WHERE pid &lt;&gt; pg_backend_pid()
+ORDER BY backend_start ASC
+LIMIT 20;</code></pre>
+      <h3>What it checks</h3>
+      <p>Shows the oldest database connections.</p>
+      <h3>Sample Output</h3>
+      <pre><code> pid   | usename  | client_addr | state | connection_age | idle_for
+-------+----------+-------------+-------+----------------+----------------
+ 5431  | postgres | 10.0.1.240  | idle  | 5 days 16:36   | 5 days 16:36
+ 25357 | postgres | 10.0.1.84   | idle  | 3 days 18:27   | 3 days 18:27
+ 21294 | postgres | 10.0.1.207  | idle  | 17:27:27       | 17:27:27</code></pre>
+      <h3>Important</h3>
+      <p>A connection being old does <strong>not</strong> mean a query has been running for that entire time.</p>
+      <p>For example:</p>
+      <pre><code>connection_age = 5 days
+state = idle</code></pre>
+      <p>means the connection has been open for five days but is currently not executing a query.</p>
+
+      <h2>7. Find Idle Connections</h2>
+      <h3>Query</h3>
+      <pre><code>SELECT
+    pid,
+    usename,
+    client_addr,
+    application_name,
+    now() - backend_start AS connection_age,
+    now() - state_change AS idle_for
+FROM pg_stat_activity
+WHERE state = 'idle'
+ORDER BY idle_for DESC;</code></pre>
+      <h3>What it checks</h3>
+      <p>Finds connections that are currently idle and shows how long they have been idle.</p>
+      <h3>Sample Output</h3>
+      <pre><code> pid   | client_addr | state | connection_age | idle_for
+-------+-------------+-------+----------------+----------
+ 5431  | 10.0.1.240  | idle  | 5 days         | 5 days
+ 25357 | 10.0.1.84   | idle  | 3 days         | 3 days
+ 21294 | 10.0.1.207  | idle  | 17 hours       | 17 hours</code></pre>
+      <p>A high number of idle connections can indicate a large application connection pool.</p>
+
+      <h2>8. Find <code>idle in transaction</code> Sessions</h2>
+      <h3>Query</h3>
+      <pre><code>SELECT
+    pid,
+    usename,
+    client_addr,
+    application_name,
+    now() - xact_start AS transaction_age,
+    now() - state_change AS idle_time,
+    query
+FROM pg_stat_activity
+WHERE state = 'idle in transaction'
+ORDER BY xact_start ASC;</code></pre>
+      <h3>What it checks</h3>
+      <p>Finds sessions where an application has started a transaction but is currently doing nothing.</p>
+      <h3>Sample Output</h3>
+      <pre><code> pid  | usename | client_addr | transaction_age | idle_time | query
+------+---------+-------------+-----------------+-----------+-------------------
+ 8211 | appuser | 10.0.1.207  | 00:42:15        | 00:41:58  | UPDATE orders ...</code></pre>
+      <h3>Why this matters</h3>
+      <p>Long-running <code>idle in transaction</code> sessions can:</p>
+      <ul>
+        <li>Hold locks</li>
+        <li>Block other queries</li>
+        <li>Prevent vacuum cleanup</li>
+        <li>Cause application requests to hang</li>
+        <li>Increase database resource usage</li>
+      </ul>
+      <p>These should be investigated at the application level.</p>
+
+      <h2>9. Check Queries From a Specific IP</h2>
+      <p>Replace the IP with the IP you want to investigate.</p>
+      <p>Example:</p>
+      <pre><code>SELECT
+    pid,
+    usename,
+    client_addr,
+    application_name,
+    state,
+    now() - query_start AS query_duration,
+    wait_event_type,
+    wait_event,
+    query
+FROM pg_stat_activity
+WHERE client_addr = '10.0.1.207'
+  AND state = 'active'
+  AND pid &lt;&gt; pg_backend_pid()
+ORDER BY query_start ASC;</code></pre>
+      <h3>What it checks</h3>
+      <p>Shows currently executing queries from a specific client IP.</p>
+      <h3>Sample Output</h3>
+      <pre><code> pid   | client_addr | state  | query_duration | query
+-------+-------------+--------+----------------+----------------------
+ 12345 | 10.0.1.207  | active | 00:12:35       | SELECT ...
+ 12346 | 10.0.1.207  | active | 00:02:18       | UPDATE ...</code></pre>
+      <p>If there are no rows:</p>
+      <pre><code>No rows returned</code></pre>
+      <p>then that IP has <strong>no active query at that moment</strong>.</p>
+
+      <h2>10. Check Both Active and Idle Sessions From an IP</h2>
+      <p>If the active-query query returns nothing, use this:</p>
+      <pre><code>SELECT
+    pid,
+    usename,
+    client_addr,
+    application_name,
+    state,
+    now() - backend_start AS connection_age,
+    now() - state_change AS idle_for,
+    query
+FROM pg_stat_activity
+WHERE client_addr = '10.0.1.207'
+ORDER BY backend_start ASC;</code></pre>
+      <h3>What it checks</h3>
+      <p>Shows every PostgreSQL session belonging to the specified IP, including:</p>
+      <ul>
+        <li>Active sessions</li>
+        <li>Idle sessions</li>
+        <li>Idle-in-transaction sessions</li>
+      </ul>
+      <h3>Sample Output</h3>
+      <pre><code> pid   | client_addr | state | connection_age | idle_for
+-------+-------------+-------+----------------+----------
+ 12345 | 10.0.1.207  | idle  | 17 hours       | 17 hours
+ 12346 | 10.0.1.207  | idle  | 15 hours       | 15 hours
+ 12347 | 10.0.1.207  | active| 00:02:10        | 00:00:00</code></pre>
+
+      <h2>11. Identify the Last Query From an Idle Connection</h2>
+      <pre><code>SELECT
+    pid,
+    usename,
+    client_addr,
+    application_name,
+    state,
+    now() - state_change AS idle_for,
+    query
+FROM pg_stat_activity
+WHERE state = 'idle'
+ORDER BY idle_for DESC;</code></pre>
+      <h3>Important</h3>
+      <p>For an <code>idle</code> session, the <code>query</code> column represents the <strong>last query executed by that session</strong>.</p>
+      <p>It is <strong>not currently running</strong>.</p>
+      <p>Do not interpret this:</p>
+      <pre><code>state = idle
+query = SELECT ...</code></pre>
+      <p>as:</p>
+      <blockquote><p>The SELECT is currently running.</p></blockquote>
+      <p>The query is only the last query recorded for that connection.</p>
+
+      <h2>12. Find Connections Grouped by User/Application/IP</h2>
+      <h3>Query</h3>
+      <pre><code>SELECT
+    usename,
+    application_name,
+    client_addr,
+    state,
+    count(*) AS connections
+FROM pg_stat_activity
+GROUP BY
+    usename,
+    application_name,
+    client_addr,
+    state
+ORDER BY connections DESC;</code></pre>
+      <h3>What it checks</h3>
+      <p>Shows which combination of:</p>
+      <ul>
+        <li>Database user</li>
+        <li>Application</li>
+        <li>Client IP</li>
+        <li>Connection state</li>
+      </ul>
+      <p>is consuming connections.</p>
+      <h3>Sample Output</h3>
+      <pre><code> usename  | application_name       | client_addr | state | connections
+----------+------------------------+-------------+-------+------------
+ appuser  | my-service             | 10.0.1.207  | idle  | 50
+ appuser  | my-service             | 10.0.1.84   | idle  | 30
+ postgres | DBeaver                | 10.0.1.162  | idle  | 2</code></pre>
+      <p>This is one of the best queries for identifying connection-pool problems.</p>
+
+      <h2>13. Check PostgreSQL <code>max_connections</code></h2>
+      <pre><code>SHOW max_connections;</code></pre>
+      <h3>Sample Output</h3>
+      <pre><code> max_connections
+-----------------
+ 402</code></pre>
+      <p>This is the maximum number of PostgreSQL client connections allowed by the configuration.</p>
+
+      <h2>14. Recommended Investigation Workflow</h2>
+      <p>When the application reports:</p>
+      <pre><code>Too many connections</code></pre>
+      <p>or:</p>
+      <pre><code>remaining connection slots are reserved</code></pre>
+      <p>run these in order.</p>
+      <h3>Step 1 — Check current usage</h3>
+      <pre><code>SELECT
+    count(*) AS current_connections,
+    current_setting('max_connections')::int AS max_connections,
+    round(
+        count(*) * 100.0 / current_setting('max_connections')::int,
+        2
+    ) AS usage_percent
+FROM pg_stat_activity;</code></pre>
+      <h3>Step 2 — Check connection states</h3>
+      <pre><code>SELECT
+    state,
+    count(*) AS connections
+FROM pg_stat_activity
+GROUP BY state
+ORDER BY connections DESC;</code></pre>
+      <h3>Step 3 — Find the IP consuming the most connections</h3>
+      <pre><code>SELECT
+    client_addr,
+    count(*) AS total_connections,
+    count(*) FILTER (WHERE state = 'active') AS active,
+    count(*) FILTER (WHERE state = 'idle') AS idle,
+    count(*) FILTER (
+        WHERE state = 'idle in transaction'
+    ) AS idle_in_transaction
+FROM pg_stat_activity
+WHERE client_addr IS NOT NULL
+GROUP BY client_addr
+ORDER BY total_connections DESC;</code></pre>
+      <h3>Step 4 — Check active queries</h3>
+      <pre><code>SELECT
+    pid,
+    usename,
+    client_addr,
+    application_name,
+    state,
+    now() - query_start AS query_duration,
+    wait_event_type,
+    wait_event,
+    query
+FROM pg_stat_activity
+WHERE state = 'active'
+  AND query_start IS NOT NULL
+  AND pid &lt;&gt; pg_backend_pid()
+ORDER BY query_duration DESC;</code></pre>
+      <h3>Step 5 — Check <code>idle in transaction</code></h3>
+      <pre><code>SELECT
+    pid,
+    usename,
+    client_addr,
+    application_name,
+    now() - xact_start AS transaction_age,
+    now() - state_change AS idle_time,
+    query
+FROM pg_stat_activity
+WHERE state = 'idle in transaction'
+ORDER BY xact_start ASC;</code></pre>
+      <h3>Step 6 — Check old connections</h3>
+      <pre><code>SELECT
+    pid,
+    usename,
+    client_addr,
+    application_name,
+    state,
+    now() - backend_start AS connection_age,
+    now() - state_change AS idle_for
+FROM pg_stat_activity
+WHERE pid &lt;&gt; pg_backend_pid()
+ORDER BY backend_start ASC
+LIMIT 20;</code></pre>
+
+      <h2>15. How to Interpret the Results</h2>
+      <h3>Case A — High <code>active</code> connections</h3>
+      <p>Example:</p>
+      <pre><code>active = 380
+idle   = 10</code></pre>
+      <p>Possible causes:</p>
+      <ul>
+        <li>Heavy database workload</li>
+        <li>Slow queries</li>
+        <li>Missing indexes</li>
+        <li>Lock contention</li>
+        <li>Traffic spike</li>
+        <li>Application requests not completing</li>
+      </ul>
+      <p>Investigate active queries and wait events.</p>
+      <h3>Case B — High <code>idle</code> connections</h3>
+      <p>Example:</p>
+      <pre><code>active = 5
+idle   = 380</code></pre>
+      <p>Possible causes:</p>
+      <ul>
+        <li>Application connection pool is too large</li>
+        <li>Too many ECS tasks</li>
+        <li>Connections are being held for too long</li>
+        <li>Pool idle timeout is too high</li>
+        <li>Application isn't releasing connections correctly</li>
+      </ul>
+      <p>This is usually an <strong>application/pool configuration problem</strong>, not a slow-query problem.</p>
+      <h3>Case C — High <code>idle in transaction</code></h3>
+      <p>Example:</p>
+      <pre><code>active                = 10
+idle                  = 20
+idle in transaction   = 350</code></pre>
+      <p>This requires urgent investigation.</p>
+      <p>Possible causes:</p>
+      <ul>
+        <li>Application starts transactions and doesn't commit/rollback</li>
+        <li>Connection leak</li>
+        <li>Application request hangs after starting a transaction</li>
+        <li>Incorrect transaction handling</li>
+      </ul>
+
+      <h2>16. ECS Connection Pool Example</h2>
+      <p>Suppose an ECS service has:</p>
+      <pre><code>10 ECS tasks</code></pre>
+      <p>and every task has:</p>
+      <pre><code>max DB pool = 40</code></pre>
+      <p>The theoretical maximum becomes:</p>
+      <pre><code>10 × 40 = 400 connections</code></pre>
+      <p>If PostgreSQL allows:</p>
+      <pre><code>max_connections = 402</code></pre>
+      <p>then the ECS service alone can almost consume the entire database connection capacity.</p>
+      <p>If ECS scales to 15 tasks:</p>
+      <pre><code>15 × 40 = 600 connections</code></pre>
+      <p>PostgreSQL cannot accommodate all of them.</p>
+      <p>This is why connection pooling must be sized based on the <strong>total number of application instances/tasks</strong>, not just per application instance.</p>
+
+      <h2>17. Important Production Rule</h2>
+      <p>Do not immediately solve connection errors by increasing:</p>
+      <pre><code>max_connections</code></pre>
+      <p>Increasing the connection limit can increase memory pressure and database contention.</p>
+      <p>First determine:</p>
+      <ol>
+        <li>Who is opening the connections?</li>
+        <li>How many connections does each application instance create?</li>
+        <li>Are connections <code>active</code>, <code>idle</code>, or <code>idle in transaction</code>?</li>
+        <li>Is ECS scaling creating connection spikes?</li>
+        <li>Is the application correctly releasing connections?</li>
+        <li>Is a connection pool configured correctly?</li>
+      </ol>
+
+      <h2>18. Current Example Diagnosis</h2>
+      <p>For the example investigation represented by this README, PostgreSQL reported:</p>
+      <pre><code>Current connections: 40
+Maximum connections: 402
+Usage:               9.95%</code></pre>
+      <p>Most observed application connections were:</p>
+      <pre><code>state = idle</code></pre>
+      <p>There were also very old idle connections such as:</p>
+      <pre><code>10.0.1.240 → approximately 5 days
+10.0.1.84  → approximately 3 days
+10.0.1.207 → approximately 17 hours</code></pre>
+      <p>These old connections do <strong>not</strong> automatically mean queries have been running for those durations.</p>
+      <p>The evidence points toward investigating:</p>
+      <ul>
+        <li>Application connection pooling</li>
+        <li>ECS task count</li>
+        <li>Per-task pool size</li>
+        <li>Connection lifetime</li>
+        <li>Idle connection timeout</li>
+        <li>Connection spikes during the time the application reported the error</li>
+      </ul>
+
+      <h2>19. Safety Notes</h2>
+      <h3>Do not blindly run:</h3>
+      <pre><code>SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity;</code></pre>
+      <p>This can terminate legitimate application sessions.</p>
+      <p>Before terminating a session, identify:</p>
+      <ul>
+        <li>PID</li>
+        <li>Application</li>
+        <li>User</li>
+        <li>Client IP</li>
+        <li>State</li>
+        <li>Query</li>
+        <li>Transaction age</li>
+        <li>Business impact</li>
+      </ul>
+      <p>For production systems, prefer fixing the application connection pool or transaction handling instead of repeatedly killing connections.</p>
+
+      <h2>Quick Reference</h2>
+      <table>
+        <tr><th>Goal</th><th>Query</th></tr>
+        <tr><td>Current connections</td><td>current connection usage</td></tr>
+        <tr><td>Connection limit</td><td><code>SHOW max_connections</code></td></tr>
+        <tr><td>Connection states</td><td><code>GROUP BY state</code></td></tr>
+        <tr><td>Top IPs</td><td><code>GROUP BY client_addr</code></td></tr>
+        <tr><td>Long-running queries</td><td><code>state = 'active'</code> + <code>query_duration</code></td></tr>
+        <tr><td>Old connections</td><td><code>backend_start</code></td></tr>
+        <tr><td>Idle connections</td><td><code>state = 'idle'</code></td></tr>
+        <tr><td>Stuck transactions</td><td><code>state = 'idle in transaction'</code></td></tr>
+        <tr><td>Query from specific IP</td><td><code>client_addr = 'x.x.x.x'</code></td></tr>
+        <tr><td>Application connection pool investigation</td><td>Group by IP/user/application/state</td></tr>
+      </table>
+
+      <h2>Key Takeaway</h2>
+      <p>If PostgreSQL shows:</p>
+      <pre><code>40 / 402 connections</code></pre>
+      <p>there is <strong>no current connection exhaustion</strong>.</p>
+      <p>If the application previously reported a connection error, investigate the database and application <strong>at the time of the incident</strong>. For AWS/RDS deployments, compare the PostgreSQL connection count with the application's ECS task count and connection-pool configuration.</p>
+      <p>The most useful first query for identifying the source is:</p>
+      <pre><code>SELECT
+    client_addr,
+    count(*) AS total_connections,
+    count(*) FILTER (WHERE state = 'active') AS active,
+    count(*) FILTER (WHERE state = 'idle') AS idle,
+    count(*) FILTER (
+        WHERE state = 'idle in transaction'
+    ) AS idle_in_transaction
+FROM pg_stat_activity
+WHERE client_addr IS NOT NULL
+GROUP BY client_addr
+ORDER BY total_connections DESC;</code></pre>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

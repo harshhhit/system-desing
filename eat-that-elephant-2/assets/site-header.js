@@ -279,6 +279,224 @@
     mount.appendChild(box);
   }
 
+  /* ---- read-aloud: a "Listen" control that speaks the page's main content
+     with the browser's Web Speech API (free — uses the voices already on the
+     viewer's device; Chrome/Edge route to their cloud "Natural"/"Google"
+     voices at no cost). Text is split by block element so the bar can show
+     progress, highlight the sentence being read and scroll to it. The chosen
+     voice and reading speed are remembered per-viewer in localStorage. The
+     whole thing is a no-op when the browser has no speechSynthesis or the page
+     has no real content container (e.g. the homepage). ---- */
+  var TTS_RATE_KEY = "sdnotes_tts_rate";
+  var TTS_VOICE_KEY = "sdnotes_tts_voice";
+  /* higher = nicer / more natural; used to pick the default voice */
+  function rankVoice(v) {
+    var n = (v.name || "") + " " + (v.voiceURI || "");
+    var s = 0;
+    if (/natural|neural|online|enhanced|premium/i.test(n)) s += 100;
+    if (/google/i.test(n)) s += 40;
+    if (v.localService === false) s += 20;
+    if (/^en[-_]us/i.test(v.lang || "")) s += 10;
+    else if (/^en/i.test(v.lang || "")) s += 5;
+    if (v.default) s += 1;
+    return s;
+  }
+  function findReadableEl() {
+    return document.querySelector(".sd-study-main")
+        || document.querySelector("main")
+        || document.querySelector(".layout")
+        || document.querySelector("article");
+  }
+  function collectReadChunks(container) {
+    var sel = "h1,h2,h3,h4,h5,h6,p,li,blockquote,dt,dd,figcaption,pre,tr,caption";
+    var taken = [];
+    var out = [];
+    Array.prototype.forEach.call(container.querySelectorAll(sel), function (el) {
+      if (el.closest("[data-breadcrumb]")) return;               // skip the nav trail
+      for (var k = 0; k < taken.length; k++) {
+        if (taken[k].contains(el)) return;                       // already inside a chunk
+      }
+      var text = (el.textContent || "").replace(/\s+/g, " ").trim();
+      if (text.length < 2) return;
+      taken.push(el);
+      out.push({ el: el, text: text });
+    });
+    return out;
+  }
+  function renderReadAloud() {
+    // This script runs in <head>-ish position, before <main> is parsed, so wait
+    // for the document before looking for the content container.
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", renderReadAloud, { once: true });
+      return;
+    }
+    if (!mount) return;
+    var synth = window.speechSynthesis;
+    if (!synth || typeof window.SpeechSynthesisUtterance === "undefined") return;
+
+    var container = findReadableEl();
+    if (!container) return;
+    var chunks = collectReadChunks(container);
+    var totalLen = chunks.reduce(function (n, c) { return n + c.text.length; }, 0);
+    if (chunks.length < 2 || totalLen < 200) return;             // near-empty / index page
+
+    var bar = document.createElement("div");
+    bar.className = "sd-readaloud";
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "sd-tts-btn";
+    bar.appendChild(btn);
+
+    var stopBtn = document.createElement("button");
+    stopBtn.type = "button";
+    stopBtn.className = "sd-tts-stop";
+    stopBtn.textContent = "■ Stop";
+    stopBtn.hidden = true;
+    bar.appendChild(stopBtn);
+
+    var status = document.createElement("span");
+    status.className = "sd-tts-status";
+    bar.appendChild(status);
+
+    var rateSel = document.createElement("select");
+    rateSel.className = "sd-tts-rate";
+    rateSel.setAttribute("aria-label", "Reading speed");
+    [["0.75", "0.75×"], ["1", "1×"], ["1.25", "1.25×"],
+     ["1.5", "1.5×"], ["1.75", "1.75×"]].forEach(function (o) {
+      var op = document.createElement("option");
+      op.value = o[0]; op.textContent = o[1];
+      rateSel.appendChild(op);
+    });
+    try { rateSel.value = localStorage.getItem(TTS_RATE_KEY) || "1"; } catch (e) {}
+    if (!rateSel.value) rateSel.value = "1";
+    bar.appendChild(rateSel);
+
+    /* voice picker — English voices best-first, hidden until the list loads */
+    var voiceSel = document.createElement("select");
+    voiceSel.className = "sd-tts-voice";
+    voiceSel.setAttribute("aria-label", "Voice");
+    voiceSel.hidden = true;
+    bar.appendChild(voiceSel);
+
+    var savedVoice = "";
+    try { savedVoice = localStorage.getItem(TTS_VOICE_KEY) || ""; } catch (e) {}
+
+    function voiceList() {
+      var all = synth.getVoices() || [];
+      var en = all.filter(function (v) { return /^en/i.test(v.lang || ""); });
+      var list = (en.length ? en : all).slice();
+      list.sort(function (a, b) { return rankVoice(b) - rankVoice(a); });
+      return list;
+    }
+    function populateVoices() {
+      var list = voiceList();
+      if (!list.length) return;
+      voiceSel.replaceChildren();
+      list.forEach(function (v) {
+        var op = document.createElement("option");
+        op.value = v.voiceURI || v.name;
+        op.textContent = v.name + (v.localService === false ? " · online" : "");
+        voiceSel.appendChild(op);
+      });
+      if (savedVoice && list.some(function (v) { return (v.voiceURI || v.name) === savedVoice; })) {
+        voiceSel.value = savedVoice;
+      } else {
+        voiceSel.value = list[0].voiceURI || list[0].name;   // best available
+      }
+      voiceSel.hidden = false;
+    }
+    function currentVoice() {
+      var want = voiceSel.value;
+      if (!want) return null;
+      var all = synth.getVoices() || [];
+      for (var i = 0; i < all.length; i++) {
+        if ((all[i].voiceURI || all[i].name) === want) return all[i];
+      }
+      return null;
+    }
+    populateVoices();
+    if (voiceSel.hidden && typeof synth.addEventListener === "function") {
+      synth.addEventListener("voiceschanged", populateVoices);
+    }
+
+    var idx = 0, playing = false, paused = false, keepAlive = null, activeEl = null, gen = 0;
+
+    function rate() {
+      var r = parseFloat(rateSel.value) || 1;
+      return Math.min(2, Math.max(0.5, r));
+    }
+    function clearActive() {
+      if (activeEl) { activeEl.classList.remove("sd-tts-active"); activeEl = null; }
+    }
+    function highlight(el) {
+      clearActive();
+      activeEl = el;
+      el.classList.add("sd-tts-active");
+      var r = el.getBoundingClientRect();
+      if (r.top < 60 || r.bottom > (window.innerHeight || 0) - 20) {
+        try { el.scrollIntoView({ block: "center", behavior: "smooth" }); }
+        catch (e) { el.scrollIntoView(); }
+      }
+    }
+    function setLabel() {
+      btn.textContent = !playing ? "🔊 Listen" : paused ? "▶ Resume" : "⏸ Pause";
+      stopBtn.hidden = !playing;
+      status.textContent = playing ? (idx + 1) + " / " + chunks.length : "";
+    }
+    function stopKeepAlive() { if (keepAlive) { clearInterval(keepAlive); keepAlive = null; } }
+    function startKeepAlive() {
+      stopKeepAlive();
+      // Chrome silently stops utterances longer than ~15s unless nudged.
+      keepAlive = setInterval(function () {
+        if (playing && !paused) { try { synth.pause(); synth.resume(); } catch (e) {} }
+      }, 9000);
+    }
+    function finish() {
+      playing = false; paused = false; idx = 0;
+      stopKeepAlive(); clearActive(); setLabel();
+    }
+    function speakFrom(i) {
+      if (i >= chunks.length) { finish(); return; }
+      idx = i;
+      var myGen = gen;
+      var c = chunks[idx];
+      highlight(c.el);
+      setLabel();
+      var u = new window.SpeechSynthesisUtterance(c.text);
+      u.rate = rate();
+      var v = currentVoice();
+      if (v) { u.voice = v; u.lang = v.lang; }
+      else { u.lang = document.documentElement.lang || "en"; }
+      u.onend = function () { if (myGen === gen && playing && !paused) speakFrom(idx + 1); };
+      u.onerror = function () { if (myGen === gen && playing && !paused) speakFrom(idx + 1); };
+      synth.speak(u);
+    }
+    function start() { gen++; synth.cancel(); playing = true; paused = false; startKeepAlive(); speakFrom(0); }
+    function stop() { gen++; synth.cancel(); finish(); }
+
+    btn.addEventListener("click", function () {
+      if (!playing) { start(); return; }
+      if (paused) { paused = false; synth.resume(); startKeepAlive(); setLabel(); }
+      else { paused = true; synth.pause(); stopKeepAlive(); setLabel(); }
+    });
+    stopBtn.addEventListener("click", stop);
+    rateSel.addEventListener("change", function () {
+      try { localStorage.setItem(TTS_RATE_KEY, rateSel.value); } catch (e) {}
+      if (playing && !paused) { gen++; synth.cancel(); speakFrom(idx); }  // re-read current chunk at new speed
+    });
+    voiceSel.addEventListener("change", function () {
+      savedVoice = voiceSel.value;
+      try { localStorage.setItem(TTS_VOICE_KEY, voiceSel.value); } catch (e) {}
+      if (playing && !paused) { gen++; synth.cancel(); speakFrom(idx); }  // re-read current chunk in the new voice
+    });
+    window.addEventListener("beforeunload", function () { try { synth.cancel(); } catch (e) {} });
+    window.addEventListener("pagehide", function () { try { synth.cancel(); } catch (e) {} });
+
+    setLabel();
+    mount.appendChild(bar);
+  }
+
   /* ---- page <title> / <h1> / subtitle / breadcrumb, from SITE_PAGES ---- */
   function applyPageMeta() {
     if (!entry) return;
@@ -438,6 +656,7 @@
   renderTopBand();
   renderSidebar();
   renderCoverageTracker();
+  renderReadAloud();
   markCoveredLinks();
   applyPageMeta();
   renderTopicGrid();

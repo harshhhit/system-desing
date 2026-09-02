@@ -114,6 +114,10 @@ window.SITE_MAP = {
           "title": "05a. Connection Management and Database Proxies"
         },
         {
+          "href": "05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html",
+          "title": "05a. PostgreSQL Connection Troubleshooting"
+        },
+        {
           "href": "05-database/06a-backup-recovery-and-disaster-recovery/index.html",
           "title": "06a. Backup, Recovery, and Disaster Recovery"
         },
