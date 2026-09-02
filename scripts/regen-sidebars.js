@@ -104,7 +104,7 @@ function bakePageMeta(t, rel, entry, MAP) {
   // 2. assets/pages.js <script>, right before the site-header.js tag
   if (!/assets\/pages\.js/.test(t)) {
     t = t.replace(
-      /(<script\s+src="([^"]*?)assets\/site-header\.js"[^>]*><\/script>)/,
+      /(<script\s+src="([^"]*?)assets\/site-header\.js(?:\?[^"]*)?"[^>]*><\/script>)/,
       (m, tag, pfx) => `<script src="${pfx}assets/pages.js"></script>${tag}`
     );
   }

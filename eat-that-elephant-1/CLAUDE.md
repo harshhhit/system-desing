@@ -112,6 +112,27 @@ section headings plus the small inline progress script — copy it from
 `01-front-end/frontend-roadmap.html` (keeps its own `localStorage` key). This is on top
 of the site-wide "page covered" bar, not a replacement.
 
+## Read-aloud — every information page has a "Listen" bar at the top
+
+`site-header.js` also injects a sticky **read-aloud bar** directly under the coverage
+tracker on every page that has a real content container (`.sd-study-main`, `main`,
+`.layout`, or `article` with meaningful text). It gives a play / pause / resume button,
+a Stop button, an `n / total` progress readout, a **voice picker** (English voices ranked
+best-first, default = the nicest "Natural" / "Online" / "Google" voice the browser exposes,
+saved under `sdnotes_tts_voice`) and a **speed selector** (0.75×–1.75×, saved under
+`sdnotes_tts_rate`). It's free — the Web Speech API speaks with voices already on the
+viewer's device. It walks the content block-by-block (`h1`–`h6`, `p`, `li`, `blockquote`,
+`pre`, `tr`, …), speaks each block, and highlights + scrolls to the block being read
+(`.sd-tts-active`). The breadcrumb trail is skipped.
+
+**It is fully automatic** — no per-page markup. A new page gets the Listen bar the moment
+it uses the standard shell (`#site-header-root` mount, the three central scripts, and a
+`.sd-study-main` / `main` content area with the pasted page content). Do **not** hand-add
+a read-aloud control to a page. It safely renders nothing when the browser lacks
+`speechSynthesis` or the page has no content container (e.g. an index/overview page).
+Styling is in `assets/site.css` (`.sd-readaloud`, `.sd-tts-btn`, `.sd-tts-stop`,
+`.sd-tts-rate`, `.sd-tts-voice`, `.sd-tts-status`, `.sd-tts-active`).
+
 ## Optional hooks for index / overview pages
 
 `data-topic-grid` (one card per section) · `data-topic-grid="flat"` (one card, all pages) ·

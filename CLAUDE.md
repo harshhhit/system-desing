@@ -68,6 +68,20 @@ GitHub Pages. Two sub-sites: `eat-that-elephant-1/` (System Design Notes) and
   (per stage/topic) uses `data-stage` checkboxes + a small inline script — copy it from
   `eat-that-elephant-1/01-front-end/frontend-roadmap.html`.
 
+- **Every information page has a "Listen" (read-aloud) bar at the top.** `site-header.js`
+  injects a sticky bar under the coverage tracker on any page whose content container
+  (`.sd-study-main` / `main` / `.layout` / `article`) holds real text: a play/pause/resume
+  button, a Stop button, an `n / total` progress readout, a voice picker (English voices
+  best-first, defaulting to the nicest "Natural"/"Online" voice the browser exposes) and a
+  speed selector (0.75×–1.75×) — both remembered per-viewer in `localStorage`. It's free:
+  the Web Speech API uses voices already on the viewer's device. It reads the content
+  block-by-block via the browser's Web Speech API, highlighting and scrolling to the
+  block being spoken. It's automatic and degrades to nothing when the browser has no
+  `speechSynthesis` or the page has no content container (e.g. the homepage) — **never
+  hand-add it to a page**; a new page gets it for free just by using the standard shell
+  (`#site-header-root` + the three central scripts + a `.sd-study-main`/`main` content
+  area). Styling lives in `assets/site.css` under `.sd-readaloud` / `.sd-tts-*`.
+
 - **Verify before finishing any change to the notes sites:**
   `node scripts/regen-sidebars.js --check` — one run covers both sub-sites and the
   repo root. It flags missing/renamed files referenced by `sitemap.js` / `pages.js`,
