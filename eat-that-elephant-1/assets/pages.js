@@ -8,17 +8,29 @@
    then add a matching entry here (href relative to this sub-site root).
    'subtitle' is optional and may contain inline HTML. */
 window.SITE_PAGES = {
-  "system-design-roadmap": {
-    href: "01-front-end/system-design-roadmap.html",
-    section: "Front-End",
-    title: "System Design Roadmap — DevOps/SRE → System Design Interviews",
-    subtitle: "A sequenced prep path for infra-heavy engineers: move fast through the building blocks you already run in production, slow down on interview framing (requirements → capacity → API → HLD → deep dive → tradeoffs) and the few coding-adjacent pieces (consistent hashing, rate limiters, LRU, tries) that system design rounds lean on."
-  },
   "frontend-roadmap": {
     href: "01-front-end/frontend-roadmap.html",
     section: "Front-End",
     title: "Front-End Development Roadmap (Concepts Only)",
     subtitle: "A concept-first map of what &ldquo;understanding front-end&rdquo; actually requires — the ideas, why they exist, and how they connect, from how the web works up to modern architecture and delivery. Tick each stage as you cover it; progress is saved in this browser."
+  },
+  "04-client-server-model": {
+    href: "01-front-end/graphql/http/04-client-server-model.html",
+    section: "Front-End",
+    title: "Client-Server Model, End to End",
+    subtitle: "Beginner to advanced: the restaurant-analogy mental model, DNS/TCP/TLS/HTTP request mechanics, HTTP/1.1 vs 2 vs 3 vs WebSockets, monolith &rarr; REST &rarr; microservices architecture, caching/load balancing/async workers/replication, security, and modern paradigms &mdash; ending in one summary request-flow diagram."
+  },
+  "04-2-request-flow-interactive": {
+    href: "01-front-end/graphql/http/04.2-request-flow-interactive.html",
+    section: "Front-End",
+    title: "Interactive Request Flow",
+    subtitle: "Every method from the Client-Server Model page, walked through as one guided, 13-step request: DNS &rarr; TCP/TLS &rarr; CDN &rarr; load balancer &rarr; security gate &rarr; API gateway &rarr; auth &rarr; cache/DB &rarr; queue &rarr; response &rarr; render."
+  },
+  "04-1-cookies-sessions-jwt": {
+    href: "01-front-end/graphql/http/04.1-cookies-sessions-jwt.html",
+    section: "Front-End",
+    title: "Cookies, Sessions & JWT",
+    subtitle: "State management deep dive: how cookies work, server-side sessions vs. stateless JWTs, the modern access/refresh hybrid, and the CSRF/XSS trade-offs behind each."
   },
   "01-02-rendering-types": {
     href: "01-front-end/graphql/http/01.02-rendering-types.html",
@@ -39,6 +51,12 @@ window.SITE_PAGES = {
     href: "01-front-end/graphql/http/03.1graphql-vs-rest.html",
     section: "Front-End",
     title: "GraphQL vs REST"
+  },
+  "system-design-roadmap": {
+    href: "01-front-end/system-design-roadmap.html",
+    section: "Front-End",
+    title: "System Design Roadmap — DevOps/SRE → System Design Interviews",
+    subtitle: "A sequenced prep path for infra-heavy engineers: move fast through the building blocks you already run in production, slow down on interview framing (requirements → capacity → API → HLD → deep dive → tradeoffs) and the few coding-adjacent pieces (consistent hashing, rate limiters, LRU, tries) that system design rounds lean on."
   },
   "00-learning-path-00-index": {
     href: "05-database/00-learning-path/00-index.html",
