@@ -12,28 +12,40 @@ window.SITE_MAP = {
       "name": "Front-End",
       "pages": [
         {
-          "href": "01-front-end/system-design-roadmap.html",
-          "title": "System Design Roadmap"
+          "href": "01-front-end/frontend-roadmap.html",
+          "title": "00. Front-End Roadmap"
         },
         {
-          "href": "01-front-end/frontend-roadmap.html",
-          "title": "Front-End Roadmap"
+          "href": "01-front-end/graphql/http/04-client-server-model.html",
+          "title": "01. Client-Server Model, End to End"
+        },
+        {
+          "href": "01-front-end/graphql/http/04.2-request-flow-interactive.html",
+          "title": "01a. Interactive Request Flow"
+        },
+        {
+          "href": "01-front-end/graphql/http/04.1-cookies-sessions-jwt.html",
+          "title": "01b. Cookies, Sessions & JWT"
         },
         {
           "href": "01-front-end/graphql/http/01.02-rendering-types.html",
-          "title": "Web Rendering & Architecture"
+          "title": "02. Web Rendering & Architecture"
         },
         {
           "href": "01-front-end/graphql/http/02.1-ssr-vs-csr.html",
-          "title": "SSR vs CSR"
+          "title": "02a. SSR vs CSR"
         },
         {
           "href": "01-front-end/graphql/http/02.1ssr-vs-csr-v.html",
-          "title": "SSR vs CSR (v2)"
+          "title": "02b. SSR vs CSR (v2)"
         },
         {
           "href": "01-front-end/graphql/http/03.1graphql-vs-rest.html",
-          "title": "GraphQL vs REST"
+          "title": "03. GraphQL vs REST"
+        },
+        {
+          "href": "01-front-end/system-design-roadmap.html",
+          "title": "04. System Design Roadmap"
         }
       ]
     },
