@@ -19,6 +19,7 @@
   .sd-study-main ul.todo input[type="checkbox"] { margin-right: 0.55em; transform: translateY(1px); }
   .sd-phase-goal { margin: 0.4em 0; }
   .sd-phase-goal + .sd-phase-goal { margin-top: 0.2em; }
+  .sd-study-main ul.todo li label:has(input:checked) { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--border); }
 </style>
 </head>
 <body>
@@ -33,6 +34,12 @@
       <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Distributed Database / Replication &amp; Distributed Data — Solution Architect Roadmap (Part 1)</p>
       <h1 data-page-title>Replication &amp; Distributed Data — Solution Architect Roadmap (Part 1)</h1>
       <p class="sd-study-prompt" data-page-subtitle><strong>How to use this:</strong> each phase has a <em>Goal</em>, <em>Concepts to master</em>, and a <em>Todo</em> checklist. Do the phases in order — later phases assume the earlier ones are solid. Treat every unchecked box as your backlog. <strong>Part 2:</strong> <a href="02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions</a>.</p>
+
+      <div class="sd-progress" id="ddrProgress">
+        <div class="sd-progress-bar"><span id="ddrBar"></span></div>
+        <p class="sd-progress-text"><strong id="ddrCount">0</strong> / <span id="ddrTotal">52</span> todos checked, across 10 phases
+          &nbsp;·&nbsp; <button type="button" class="sd-progress-reset" id="ddrReset">reset</button></p>
+      </div>
 
       <h2>Phase 0 — Prerequisites (Don't Skip)</h2>
       <p class="sd-phase-goal"><strong>Goal:</strong> Have the vocabulary before the deep dives make sense.</p>
@@ -167,5 +174,44 @@
     </main>
   </div>
 </div>
+<script>
+(function () {
+  var KEY = "distdb_replication_todos";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.todo input[type="checkbox"]'));
+  var total = boxes.length;
+  var countEl = document.getElementById('ddrCount');
+  var totalEl = document.getElementById('ddrTotal');
+  var barEl = document.getElementById('ddrBar');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  if (totalEl) totalEl.textContent = String(total);
+
+  function render() {
+    var n = 0;
+    boxes.forEach(function (b) { if (b.checked) n++; });
+    if (countEl) countEl.textContent = String(n);
+    if (barEl) barEl.style.width = (total ? (n / total * 100) : 0) + "%";
+  }
+
+  boxes.forEach(function (b, i) {
+    b.checked = saved[i] === true;
+    b.addEventListener('change', function () {
+      saved[i] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      render();
+    });
+  });
+
+  var reset = document.getElementById('ddrReset');
+  if (reset) reset.addEventListener('click', function () {
+    saved = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    boxes.forEach(function (b) { b.checked = false; });
+    render();
+  });
+
+  render();
+})();
+</script>
 </body>
 </html>

@@ -13,6 +13,13 @@
 <title>Database Index · System Design Notes</title>
 
 <link rel="stylesheet" href="../../assets/site.css?v=4">
+<style>
+  main h2:has(input[type="checkbox"]) { display: flex; align-items: flex-start; gap: 0.55rem; }
+  main h2 input[type="checkbox"] {
+    margin-top: 0.35rem; width: 1.05rem; height: 1.05rem; flex: none; cursor: pointer; accent-color: var(--sd-c1);
+  }
+  main h2.done { color: var(--muted); }
+</style>
 </head>
 <body>
 <div id="site-header-root"></div>
@@ -30,7 +37,14 @@
       <p class="breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Database / Database Index</p>
       <h1 data-page-title>Database Index</h1>
       <h1 id="📘-database--distributed-systems--learning-roadmap">📘 Database &amp; Distributed Systems — Learning Roadmap</h1>
-<h2 id="stage-1-foundations-single-node-database-basics">Stage 1. Foundations (Single-Node Database Basics)</h2>
+
+      <div class="sd-progress" id="dbrProgress">
+        <div class="sd-progress-bar"><span id="dbrBar"></span></div>
+        <p class="sd-progress-text"><strong id="dbrCount">0</strong> / <span id="dbrTotal">6</span> stages covered
+          &nbsp;·&nbsp; <button type="button" class="sd-progress-reset" id="dbrReset">reset</button></p>
+      </div>
+
+<h2 id="stage-1-foundations-single-node-database-basics"><input type="checkbox" data-stage="1"> Stage 1. Foundations (Single-Node Database Basics)</h2>
 <p><strong>Why?</strong> Before scaling out, you must know how a single database works.</p>
 <ul>
 <li><p><strong>Relational (SQL) vs Non-relational (NoSQL)</strong></p>
@@ -65,7 +79,7 @@
 </li>
 </ul>
 <hr>
-<h2 id="stage-2-distributed-database-theory">Stage 2. Distributed Database Theory</h2>
+<h2 id="stage-2-distributed-database-theory"><input type="checkbox" data-stage="2"> Stage 2. Distributed Database Theory</h2>
 <p><strong>Why?</strong> Single servers can’t handle global scale → we distribute.</p>
 <ul>
 <li><p><strong>Why Distribution?</strong></p>
@@ -104,7 +118,7 @@
 </li>
 </ul>
 <hr>
-<h2 id="stage-3-data-distribution-techniques">Stage 3. Data Distribution Techniques</h2>
+<h2 id="stage-3-data-distribution-techniques"><input type="checkbox" data-stage="3"> Stage 3. Data Distribution Techniques</h2>
 <p><strong>Why?</strong> Large systems need splitting &amp; copying data.</p>
 <ul>
 <li><p><strong>Partitioning (Sharding)</strong></p>
@@ -132,7 +146,7 @@
 </li>
 </ul>
 <hr>
-<h2 id="stage-4-data-synchronization--change-tracking">Stage 4. Data Synchronization &amp; Change Tracking</h2>
+<h2 id="stage-4-data-synchronization--change-tracking"><input type="checkbox" data-stage="4"> Stage 4. Data Synchronization &amp; Change Tracking</h2>
 <p><strong>Why?</strong> In distributed DBs, data changes must stay in sync.</p>
 <ul>
 <li><p><strong>Change Data Capture (CDC)</strong></p>
@@ -162,7 +176,7 @@
 </li>
 </ul>
 <hr>
-<h2 id="stage-5-search--query-optimization">Stage 5. Search &amp; Query Optimization</h2>
+<h2 id="stage-5-search--query-optimization"><input type="checkbox" data-stage="5"> Stage 5. Search &amp; Query Optimization</h2>
 <p><strong>Why?</strong> Traditional DBs aren’t great for large-scale text or ranking queries.</p>
 <ul>
 <li><p><strong>Full-text Search</strong></p>
@@ -186,7 +200,7 @@
 </li>
 </ul>
 <hr>
-<h2 id="stage-6-system-design-integration">Stage 6. System Design Integration</h2>
+<h2 id="stage-6-system-design-integration"><input type="checkbox" data-stage="6"> Stage 6. System Design Integration</h2>
 <p><strong>Why?</strong> Combine everything for real-world architecture.</p>
 <ul>
 <li><p><strong>Scalable DB Design Choices</strong></p>
@@ -245,6 +259,50 @@ If you’d like, I can also create a <strong>single-page “mental map” diagra
   const t = document.getElementById('menuToggle');
   const s = document.getElementById('sidebar');
   if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+</script>
+<script>
+(function () {
+  var KEY = "db_roadmap_covered";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-stage]'));
+  var total = boxes.length;
+  var countEl = document.getElementById('dbrCount');
+  var totalEl = document.getElementById('dbrTotal');
+  var barEl = document.getElementById('dbrBar');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  if (totalEl) totalEl.textContent = String(total);
+
+  function render() {
+    var n = 0;
+    boxes.forEach(function (b) {
+      if (b.checked) n++;
+      var h = b.closest('h2');
+      if (h) h.classList.toggle('done', b.checked);
+    });
+    if (countEl) countEl.textContent = String(n);
+    if (barEl) barEl.style.width = (total ? (n / total * 100) : 0) + "%";
+  }
+
+  boxes.forEach(function (b) {
+    var k = b.getAttribute('data-stage');
+    b.checked = saved[k] === true;
+    b.addEventListener('change', function () {
+      saved[k] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      render();
+    });
+  });
+
+  var reset = document.getElementById('dbrReset');
+  if (reset) reset.addEventListener('click', function () {
+    saved = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    boxes.forEach(function (b) { b.checked = false; });
+    render();
+  });
+
+  render();
+})();
 </script>
 
 </body>

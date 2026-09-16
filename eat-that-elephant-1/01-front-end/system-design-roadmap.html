@@ -79,107 +79,17 @@
         roadmap is sequenced accordingly — it moves fast through things you already know
         operationally and slows down on interview framing and the coding-adjacent pieces.</p>
 
-      <h2>Phase 0: Interview Framing <span class="phase-tag">do this first · 2–3 days</span></h2>
+      <div class="sd-progress" id="sdrProgress">
+        <div class="sd-progress-bar"><span id="sdrBar"></span></div>
+        <p class="sd-progress-text"><strong id="sdrCount">0</strong> / <span id="sdrTotal">6</span> phases covered
+          &nbsp;·&nbsp; <button type="button" class="sd-progress-reset" id="sdrReset">reset</button></p>
+      </div>
+
+      <h2 id="phase-0"><input type="checkbox" data-stage="0"> Phase 0: Interview Framing <span class="phase-tag">do this first · 2–3 days</span></h2>
       <p>Before terminology, learn the <em>shape</em> of a system design answer — this is what
         separates &ldquo;knows AWS&rdquo; from &ldquo;passes the interview.&rdquo;</p>
       <ul>
-        <li>The standard Database Basics: Partitioning & Data Distribution
-DATABSE
-
-Data Distribution Concepts
-These determine how data is split, stored, and accessed across systems.
-
-Partitioning
-
-Splitting a table into smaller, more manageable pieces (partitions).
-Can be horizontal (rows) or vertical (columns).
-Horizontal Partitioning
-
-Rows are split based on some condition (e.g., customers by region).
-Common in scaling large datasets.
-Vertical Partitioning
-
-Columns are split into different tables, often to separate frequently accessed from rarely accessed data.
-Sharding
-
-A type of horizontal partitioning across different servers/nodes.
-Each shard holds a subset of the data; together they form the whole dataset.
-Range Partitioning
-
-Data split by value ranges (e.g., dates 2020–2021 in one partition, 2022–2023 in another).
-List Partitioning
-
-Data split based on a predefined list of values (e.g., partition by country codes).
-Hash Partitioning
-
-A hash function determines the partition location for each row.
-Composite Partitioning
-
-Combination of two methods (e.g., range + hash).
-Replication Concepts
-These deal with copying data for performance, fault tolerance, and availability.
-
-Replication
-
-Keeping multiple copies of the same data on different servers.
-Master-Slave Replication
-
-One server handles writes (master), others handle reads (slaves).
-Multi-Master Replication
-
-Multiple servers can handle writes, requiring conflict resolution.
-Synchronous vs Asynchronous Replication
-
-Sync: Changes written to all replicas before confirming success.
-Async: Primary confirms before replicas are updated.
-Indexing & Storage Optimization
-These improve data retrieval efficiency.
-
-Indexing
-
-Data structures (like B-Trees, Hash indexes) to speed up queries.
-Covering Index
-
-Index that contains all required columns for a query.
-Clustered Index
-
-Table data is stored in the order of the index.
-Non-Clustered Index
-
-Separate index structure pointing to table rows.
-Materialized Views
-
-Precomputed query results stored for fast access.
-Caching & Acceleration
-Reduce database load.
-
-Query Caching
-
-Storing results of queries to avoid recomputation.
-Result Set Caching
-
-Cache full query responses in memory.
-In-Memory Databases
-
-Keep all data in RAM for very fast access.
-Scalability & Availability Patterns
-Architectural strategies for large systems.
-
-Federation
-
-Splitting database functionality into smaller, specialized databases.
-Data Warehousing
-
-Storing historical, analytical data separately from transactional systems.
-CQRS (Command Query Responsibility Segregation)
-
-Splitting read and write workloads into different models.
-Event Sourcing
-
-Storing all changes as events instead of just final state.
-Distributed Databases
-
-Data stored and processed across multiple nodes.flow: <strong>Clarify requirements → Define scale (capacity estimation) →
+        <li>The standard flow: <strong>Clarify requirements → Define scale (capacity estimation) →
           API design → High-level design (boxes and arrows) → Deep dive into 1–2 components →
           Bottlenecks/tradeoffs → Wrap up</strong></li>
         <li>Functional vs non-functional requirements — you must explicitly state assumptions (QPS,
@@ -190,7 +100,65 @@ Data stored and processed across multiple nodes.flow: <strong>Clarify requiremen
           (read the first 2 chapters now — they teach exactly this framing)</li>
       </ul>
 
-      <h2>Phase 1: Core Building Blocks <span class="phase-tag">fast pass</span></h2>
+      <details class="roadmap-track">
+        <summary style="cursor:pointer; font-weight:700;">Reference note — Database Partitioning, Replication &amp; Scaling Concepts <span class="phase-tag">carried-over content</span></summary>
+        <p>This got pasted into the middle of the bullet above at some point; recovered here intact
+          rather than dropped, since it's genuinely useful background for Phase 1's database row.
+          It overlaps with the dedicated <a href="../05-database/00-learning-path/00-index.html">Database Learning Path</a>
+          (partitioning, replication, indexing and caching each get their own deep-dive pages there).</p>
+
+        <h4>Data Distribution Concepts</h4>
+        <p>These determine how data is split, stored, and accessed across systems.</p>
+        <ul>
+          <li><strong>Partitioning</strong> — splitting a table into smaller, more manageable pieces (partitions). Can be horizontal (rows) or vertical (columns).</li>
+          <li><strong>Horizontal Partitioning</strong> — rows are split based on some condition (e.g., customers by region). Common in scaling large datasets.</li>
+          <li><strong>Vertical Partitioning</strong> — columns are split into different tables, often to separate frequently accessed from rarely accessed data.</li>
+          <li><strong>Sharding</strong> — a type of horizontal partitioning across different servers/nodes. Each shard holds a subset of the data; together they form the whole dataset.</li>
+          <li><strong>Range Partitioning</strong> — data split by value ranges (e.g., dates 2020–2021 in one partition, 2022–2023 in another).</li>
+          <li><strong>List Partitioning</strong> — data split based on a predefined list of values (e.g., partition by country codes).</li>
+          <li><strong>Hash Partitioning</strong> — a hash function determines the partition location for each row.</li>
+          <li><strong>Composite Partitioning</strong> — combination of two methods (e.g., range + hash).</li>
+        </ul>
+
+        <h4>Replication Concepts</h4>
+        <p>These deal with copying data for performance, fault tolerance, and availability.</p>
+        <ul>
+          <li><strong>Replication</strong> — keeping multiple copies of the same data on different servers.</li>
+          <li><strong>Master-Slave Replication</strong> — one server handles writes (master), others handle reads (slaves).</li>
+          <li><strong>Multi-Master Replication</strong> — multiple servers can handle writes, requiring conflict resolution.</li>
+          <li><strong>Synchronous vs Asynchronous Replication</strong> — sync: changes written to all replicas before confirming success. Async: primary confirms before replicas are updated.</li>
+        </ul>
+
+        <h4>Indexing &amp; Storage Optimization</h4>
+        <p>These improve data retrieval efficiency.</p>
+        <ul>
+          <li><strong>Indexing</strong> — data structures (like B-Trees, Hash indexes) to speed up queries.</li>
+          <li><strong>Covering Index</strong> — index that contains all required columns for a query.</li>
+          <li><strong>Clustered Index</strong> — table data is stored in the order of the index.</li>
+          <li><strong>Non-Clustered Index</strong> — separate index structure pointing to table rows.</li>
+          <li><strong>Materialized Views</strong> — precomputed query results stored for fast access.</li>
+        </ul>
+
+        <h4>Caching &amp; Acceleration</h4>
+        <p>Reduce database load.</p>
+        <ul>
+          <li><strong>Query Caching</strong> — storing results of queries to avoid recomputation.</li>
+          <li><strong>Result Set Caching</strong> — cache full query responses in memory.</li>
+          <li><strong>In-Memory Databases</strong> — keep all data in RAM for very fast access.</li>
+        </ul>
+
+        <h4>Scalability &amp; Availability Patterns</h4>
+        <p>Architectural strategies for large systems.</p>
+        <ul>
+          <li><strong>Federation</strong> — splitting database functionality into smaller, specialized databases.</li>
+          <li><strong>Data Warehousing</strong> — storing historical, analytical data separately from transactional systems.</li>
+          <li><strong>CQRS</strong> (Command Query Responsibility Segregation) — splitting read and write workloads into different models.</li>
+          <li><strong>Event Sourcing</strong> — storing all changes as events instead of just final state.</li>
+          <li><strong>Distributed Databases</strong> — data stored and processed across multiple nodes.</li>
+        </ul>
+      </details>
+
+      <h2 id="phase-1"><input type="checkbox" data-stage="1"> Phase 1: Core Building Blocks <span class="phase-tag">fast pass</span></h2>
       <p>You know most of this operationally. For each, the goal is: know it well enough to justify
         <em>choosing</em> it in an interview, not just operate it.</p>
       <table>
@@ -208,7 +176,7 @@ Data stored and processed across multiple nodes.flow: <strong>Clarify requiremen
       <p><strong>Deliverable for this phase:</strong> for each row, be able to say &ldquo;we use X
         because Y, and the tradeoff is Z&rdquo; in one breath.</p>
 
-      <h2>Phase 2: Distributed Systems Theory <span class="phase-tag">the real gap</span></h2>
+      <h2 id="phase-2"><input type="checkbox" data-stage="2"> Phase 2: Distributed Systems Theory <span class="phase-tag">the real gap</span></h2>
       <p>This is where operational knowledge stops being enough — interviews probe the <em>why</em>
         behind distributed systems, not just &ldquo;it works.&rdquo;</p>
       <ul>
@@ -225,7 +193,7 @@ Data stored and processed across multiple nodes.flow: <strong>Clarify requiremen
         — chapters 5, 7, 9 specifically cover this phase. Dense but this is the book that separates
         people who memorized components from people who understand systems.</p>
 
-      <h2>Phase 3: The Coding-Adjacent Gap <span class="phase-tag">targeted, not a DSA grind</span></h2>
+      <h2 id="phase-3"><input type="checkbox" data-stage="3"> Phase 3: The Coding-Adjacent Gap <span class="phase-tag">targeted, not a DSA grind</span></h2>
       <p>You don't need LeetCode-grade DSA for system design rounds, but a handful of concepts get
         asked as &ldquo;mini implementations&rdquo; inside design questions. Learn these
         specifically, skip general DSA prep:</p>
@@ -241,7 +209,7 @@ Data stored and processed across multiple nodes.flow: <strong>Clarify requiremen
         implementations, not algorithmic puzzles. Treat it as &ldquo;write pseudocode that
         runs,&rdquo; not LeetCode grinding.</p>
 
-      <h2>Phase 4: Classic System Design Questions <span class="phase-tag">apply everything</span></h2>
+      <h2 id="phase-4"><input type="checkbox" data-stage="4"> Phase 4: Classic System Design Questions <span class="phase-tag">apply everything</span></h2>
       <p>Work through these in the standard interview format (Phase 0 flow). Order is easy → hard:</p>
       <ol>
         <li>URL shortener (tests: hashing, capacity estimation, DB choice)</li>
@@ -258,7 +226,7 @@ Data stored and processed across multiple nodes.flow: <strong>Clarify requiremen
       <p><strong>Practice resource:</strong> Alex Xu Vol 1 &amp; 2 cover most of these directly.
         ByteByteGo YouTube channel for visual walkthroughs.</p>
 
-      <h2>Phase 5: Advanced / Staff-Level Topics <span class="phase-tag">after 1–4 are solid</span></h2>
+      <h2 id="phase-5"><input type="checkbox" data-stage="5"> Phase 5: Advanced / Staff-Level Topics <span class="phase-tag">after 1–4 are solid</span></h2>
       <ul>
         <li>Multi-region architecture, active-active vs active-passive</li>
         <li>Data pipeline design (batch vs stream — Kafka + Flink/Spark territory)</li>
@@ -294,6 +262,51 @@ Data stored and processed across multiple nodes.flow: <strong>Clarify requiremen
     </main>
   </div>
 </div>
+
+<script>
+(function () {
+  var KEY = "sd_roadmap_covered";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-stage]'));
+  var total = boxes.length;
+  var countEl = document.getElementById('sdrCount');
+  var totalEl = document.getElementById('sdrTotal');
+  var barEl = document.getElementById('sdrBar');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  if (totalEl) totalEl.textContent = String(total);
+
+  function render() {
+    var n = 0;
+    boxes.forEach(function (b) {
+      if (b.checked) n++;
+      var h = b.closest('h2');
+      if (h) h.classList.toggle('done', b.checked);
+    });
+    if (countEl) countEl.textContent = String(n);
+    if (barEl) barEl.style.width = (total ? (n / total * 100) : 0) + "%";
+  }
+
+  boxes.forEach(function (b) {
+    var k = b.getAttribute('data-stage');
+    b.checked = saved[k] === true;
+    b.addEventListener('change', function () {
+      saved[k] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      render();
+    });
+  });
+
+  var reset = document.getElementById('sdrReset');
+  if (reset) reset.addEventListener('click', function () {
+    saved = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    boxes.forEach(function (b) { b.checked = false; });
+    render();
+  });
+
+  render();
+})();
+</script>
 
 </body>
 </html>

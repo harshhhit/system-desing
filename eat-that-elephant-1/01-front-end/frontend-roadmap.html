@@ -13,27 +13,8 @@
 <title>Front-End Development Roadmap (Concepts Only) · System Design Notes</title>
 <link rel="stylesheet" href="../assets/site.css?v=4">
 <style>
-  .sd-study-main h2 { margin-top: 2.2rem; display: flex; align-items: flex-start; gap: 0.55rem; }
+  .sd-study-main h2 { margin-top: 2.2rem; }
   .sd-study-main h3 { margin-top: 1.3rem; font-size: 1rem; }
-  /* progress ticker */
-  .fe-progress {
-    position: sticky; top: 0.5rem; z-index: 2; margin: 1.4rem 0;
-    padding: 0.9rem 1.1rem; border: 1px solid var(--border);
-    border-radius: 10px; background: var(--card-bg); box-shadow: var(--shadow);
-  }
-  .fe-progress p { margin: 0.5rem 0 0; font-size: 0.9rem; color: var(--muted); }
-  .fe-progress strong { color: var(--sd-c1); font-size: 1.05rem; }
-  .fe-bar { height: 8px; border-radius: 999px; background: color-mix(in srgb, var(--sd-c1) 18%, transparent); overflow: hidden; }
-  .fe-bar span { display: block; height: 100%; width: 0; background: var(--sd-c1); transition: width 0.2s ease; }
-  .fe-progress button {
-    border: 1px solid var(--border); background: transparent; color: var(--muted);
-    border-radius: 6px; padding: 0.1em 0.55em; font: inherit; font-size: 0.82rem; cursor: pointer;
-  }
-  .fe-progress button:hover { color: var(--sd-c1); border-color: var(--sd-c1); }
-  .sd-study-main h2 input[type="checkbox"] {
-    margin-top: 0.35rem; width: 1.05rem; height: 1.05rem; flex: none; cursor: pointer; accent-color: var(--sd-c1);
-  }
-  .sd-study-main h2.done { color: var(--muted); }
   .stage-note { color: var(--muted); font-size: 0.92rem; margin-top: -0.2rem; }
 </style>
 </head>
@@ -59,10 +40,10 @@
         builds on the last. Tick a stage's box once you've genuinely covered it — progress is saved
         in this browser.</p>
 
-      <div class="fe-progress" id="feProgress">
-        <div class="fe-bar"><span id="feBar"></span></div>
-        <p><strong id="feCount">0</strong> / <span id="feTotal">12</span> stages covered
-          &nbsp;·&nbsp; <button type="button" id="feReset">reset</button></p>
+      <div class="sd-progress" id="feProgress">
+        <div class="sd-progress-bar"><span id="feBar"></span></div>
+        <p class="sd-progress-text"><strong id="feCount">0</strong> / <span id="feTotal">12</span> stages covered
+          &nbsp;·&nbsp; <button type="button" class="sd-progress-reset" id="feReset">reset</button></p>
       </div>
 
       <h2 id="stage-0"><input type="checkbox" data-stage="0"> Stage 0 — How the Web Actually Works</h2>
