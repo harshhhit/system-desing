@@ -197,6 +197,27 @@
 .sd-card ul li { margin: 0.3em 0; }
 .sd-card .sd-more { font-size: 0.8rem; color: var(--muted); margin-top: 0.2em; }
 
+/* ---- weekly reading target (injected into [data-weekly-target], homepage only) ---- */
+[data-weekly-target] { max-width: 1180px; margin: 0 auto; padding: 0 2.5rem 1.6rem; }
+.sd-weekly {
+  background: var(--card-bg, #fff); border: 1px solid var(--border, #e4e7ec); border-radius: var(--radius-lg);
+  padding: 1.3rem 1.5rem; box-shadow: var(--shadow);
+}
+.sd-weekly-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap; }
+.sd-weekly-head h2 { margin: 0; font-size: 1.1rem; font-weight: 800; border: none; padding: 0; letter-spacing: -0.005em; }
+.sd-weekly-countdown { font-size: 0.82rem; font-weight: 600; color: var(--sd-auth); white-space: nowrap; }
+.sd-weekly-meter { margin-top: 0.7rem; height: 7px; border-radius: 999px;
+  background: color-mix(in srgb, var(--sd-c9, #10b981) 16%, transparent); overflow: hidden; }
+.sd-weekly-meter span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--sd-c9, #10b981), #34d399); transition: width 0.25s var(--ease); }
+.sd-weekly-stat { display: block; margin-top: 0.35rem; font-size: 0.78rem; font-weight: 600; color: var(--muted, #5b6472); }
+.sd-weekly-list { list-style: none; margin: 0.9rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.sd-weekly-item label { display: flex; align-items: center; gap: 0.55em; font-size: 0.92rem; cursor: pointer; }
+.sd-weekly-item input { width: 1.05rem; height: 1.05rem; cursor: pointer; accent-color: var(--sd-c9, #10b981); flex-shrink: 0; }
+.sd-weekly-item a { color: var(--fg); font-weight: 600; }
+.sd-weekly-item a:hover { color: var(--sd-auth); }
+.sd-weekly-item:has(input:checked) a { color: var(--muted, #5b6472); text-decoration: line-through; font-weight: 500; }
+.sd-weekly-section { margin-left: auto; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+
 .sd-resource-list { max-width: 1180px; margin: 0 auto; padding: 0 2.5rem 1rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
 .sd-resource-list a {
   display: inline-flex; align-items: center; gap: 0.4em; background: var(--card-bg, #fff); border: 1px solid var(--border, #e4e7ec);
@@ -209,7 +230,7 @@
 .sd-footer-note a { color: var(--muted); text-decoration: underline; }
 
 @media (max-width: 860px) {
-  .sd-hero, .sd-grid, .sd-section-title, .sd-resource-list, .sd-footer-note { padding-left: 1.2rem; padding-right: 1.2rem; }
+  .sd-hero, .sd-grid, .sd-section-title, .sd-resource-list, .sd-footer-note, [data-weekly-target] { padding-left: 1.2rem; padding-right: 1.2rem; }
 }
 
 /* ---- learning-path lesson shell ---- */

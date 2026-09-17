@@ -137,6 +137,28 @@ Styling is in `assets/site.css` (`.sd-readaloud`, `.sd-tts-btn`, `.sd-tts-stop`,
 
 `data-topic-grid` (one card per section) · `data-topic-grid="flat"` (one card, all pages) ·
 `data-resource-list` (all PDF/zip resources) · `data-stat-topics` / `data-stat-pages`
-(counts) · `data-section-pages` (sibling pages of this page's section, auto-updating).
+(counts) · `data-section-pages` (sibling pages of this page's section, auto-updating) ·
+`data-weekly-target` (this week's random reading-target widget — picks
+`WEEKLY_TARGET_COUNT` uncovered pages fresh every Monday and counts down to Sunday;
+currently on `eat-that-elephant-1/index.html` only — see "Weekly reading target" below).
 The grid / resource-list / section-pages hooks need a sentinel comment right after the
-close tag, e.g. `</ul><!--/section-pages-->`.
+close tag, e.g. `</ul><!--/section-pages-->`. `data-weekly-target` needs no sentinel —
+it's pure runtime state, never baked by `regen-sidebars.js`.
+
+## Weekly reading target — random weekly picks, Monday to Sunday
+
+`site-header.js` injects a **"This week's reading target"** card into any page with a
+`<div data-weekly-target></div>` mount (currently just `eat-that-elephant-1/index.html`).
+Every Monday (viewer-local time) it randomly picks `WEEKLY_TARGET_COUNT` (3) pages —
+preferring ones not yet marked covered — as that week's target, and shows a countdown to
+Sunday plus a progress meter. Checking an item off in the widget marks that page covered
+**site-wide** (it writes the same `sdnotes_covered_<siteId>` key the coverage tracker
+uses), so the widget, the sidebar ✓ marks and the per-page "Mark covered" toggle always
+agree. State lives in `localStorage` (`sdnotes_weekly_<siteId>`), per-viewer, and is
+purely additive — no server, no build step. If the week rolls over with items unfinished,
+they're simply dropped and a fresh random batch is picked (no carry-over, by design — see
+`site-header.js`'s `pickWeek()`). To add this widget to another index page, just add the
+`data-weekly-target` mount `<div>`; nothing else is needed. To port it to
+`eat-that-elephant-2/`, copy the whole "weekly reading target" block (and its CSS in
+`site.css`) into that sub-site's own `assets/site-header.js` / `assets/site.css` copies —
+it hasn't been added there yet.

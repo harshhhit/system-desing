@@ -15,6 +15,7 @@
      [data-topic-grid]      -> "browse by topic" cards (index pages)
      [data-resource-list]   -> downloadable-resource chips (index pages)
      [data-stat-topics] / [data-stat-pages] -> counts (index pages)
+     [data-weekly-target]   -> "this week's reading target" widget (homepage)
 
    Everything is guarded: a missing map, missing PAGE_CONFIG, or a missing mount
    is a no-op, never an error. */
@@ -277,6 +278,133 @@
     });
     paint();
     mount.appendChild(box);
+  }
+
+  /* ---- weekly reading target: a homepage-only widget ([data-weekly-target]).
+     Every Monday it picks a fresh batch of WEEKLY_TARGET_COUNT random pages —
+     preferring pages not yet marked covered — as "this week's target", and
+     counts down to Sunday. Unfinished picks are simply dropped and replaced
+     with a new random batch next Monday; nothing carries over, so the state
+     stays a single small object. Checking a target off marks it covered
+     site-wide (shares COVERED_KEY with the coverage tracker above), so this
+     widget's progress and the sidebar ✓ marks always agree. ---- */
+  var WEEKLY_KEY = "sdnotes_weekly_" + map.siteId;
+  var WEEKLY_TARGET_COUNT = 3;
+  function mondayOf(d) {
+    var m = new Date(d);
+    m.setHours(0, 0, 0, 0);
+    var day = m.getDay(); // 0 = Sun .. 6 = Sat
+    m.setDate(m.getDate() + (day === 0 ? -6 : 1) - day);
+    return m;
+  }
+  function dateKey(d) {
+    function pad(n) { return n < 10 ? "0" + n : "" + n; }
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  }
+  function readWeekly() {
+    try { return JSON.parse(localStorage.getItem(WEEKLY_KEY) || "null"); }
+    catch (e) { return null; }
+  }
+  function writeWeekly(state) {
+    try { localStorage.setItem(WEEKLY_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function pickWeek() {
+    var list = allPages();
+    if (!list.length) return null;
+    var weekStart = dateKey(mondayOf(new Date()));
+    var state = readWeekly();
+    if (state && state.weekStart === weekStart && state.targets && state.targets.length) return state;
+
+    var cov = readCovered();
+    var pool = list.filter(function (p) { return cov[p.href] !== true; });
+    if (pool.length < WEEKLY_TARGET_COUNT) pool = list.slice(); // not enough left uncovered — allow repeats
+    var picks = [];
+    var n = Math.min(WEEKLY_TARGET_COUNT, pool.length);
+    for (var i = 0; i < n; i++) {
+      picks.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+    }
+    state = { weekStart: weekStart, targets: picks };
+    writeWeekly(state);
+    return state;
+  }
+  function renderWeeklyTarget() {
+    var box = document.querySelector("[data-weekly-target]");
+    if (!box) return;
+    var state = pickWeek();
+    if (!state) return;
+
+    var sunday = mondayOf(new Date());
+    sunday.setDate(sunday.getDate() + 6);
+    sunday.setHours(23, 59, 59, 999);
+    var daysLeft = Math.max(0, Math.ceil((sunday - new Date()) / 86400000));
+
+    box.replaceChildren();
+    var card = document.createElement("div");
+    card.className = "sd-weekly";
+
+    var head = document.createElement("div");
+    head.className = "sd-weekly-head";
+    var h = document.createElement("h2");
+    h.textContent = "🎯 This week's reading target";
+    head.appendChild(h);
+    var countdown = document.createElement("span");
+    countdown.className = "sd-weekly-countdown";
+    countdown.textContent = daysLeft === 0
+      ? "Last day — resets Monday"
+      : daysLeft + " day" + (daysLeft === 1 ? "" : "s") + " left · resets Monday";
+    head.appendChild(countdown);
+    card.appendChild(head);
+
+    var meter = document.createElement("div");
+    meter.className = "sd-weekly-meter";
+    var fill = document.createElement("span");
+    meter.appendChild(fill);
+    card.appendChild(meter);
+
+    var stat = document.createElement("span");
+    stat.className = "sd-weekly-stat";
+    card.appendChild(stat);
+
+    var list = document.createElement("ul");
+    list.className = "sd-weekly-list";
+    card.appendChild(list);
+
+    function paint() {
+      var cov = readCovered();
+      var done = state.targets.filter(function (p) { return cov[p.href] === true; }).length;
+      var total = state.targets.length;
+      fill.style.width = (total ? (done / total * 100) : 0) + "%";
+      stat.textContent = done + " / " + total + " done this week";
+      list.replaceChildren();
+      state.targets.forEach(function (p) {
+        var li = document.createElement("li");
+        li.className = "sd-weekly-item";
+        var label = document.createElement("label");
+        var cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.checked = cov[p.href] === true;
+        cb.addEventListener("change", function () {
+          var c = readCovered();
+          if (cb.checked) c[p.href] = true; else delete c[p.href];
+          writeCovered(c);
+          paint();
+          markCoveredLinks();
+        });
+        label.appendChild(cb);
+        var a = document.createElement("a");
+        a.href = root + p.href;
+        a.textContent = p.title;
+        label.appendChild(a);
+        var sec = document.createElement("span");
+        sec.className = "sd-weekly-section";
+        sec.textContent = p.section;
+        label.appendChild(sec);
+        li.appendChild(label);
+        list.appendChild(li);
+      });
+    }
+    paint();
+    box.appendChild(card);
   }
 
   /* ---- read-aloud: a "Listen" control that speaks the page's main content
@@ -662,4 +790,5 @@
   renderTopicGrid();
   renderResourceList();
   renderSectionPages();
+  renderWeeklyTarget();
 })();

@@ -11,12 +11,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>System Design Notes</title>
 <meta name="description" content="A personal knowledge base covering front-end, databases, distributed systems, messaging, storage, and more.">
-<link rel="stylesheet" href="assets/site.css?v=4">
+<link rel="stylesheet" href="assets/site.css?v=5">
 </head>
 <body>
 <div id="site-header-root"></div>
 <script src="assets/sitemap.js"></script>
-<script src="assets/site-header.js?v=4" data-root=""></script>
+<script src="assets/site-header.js?v=5" data-root=""></script>
 
 <main>
   <header class="sd-hero">
@@ -27,6 +27,10 @@
       <div class="stat"><b data-stat-pages>53</b><span>Pages</span></div>
     </div>
   </header>
+
+  <!-- Filled at runtime by assets/site-header.js from localStorage (per-viewer
+       random weekly pick + progress) — never baked by regen-sidebars.js. -->
+  <div data-weekly-target></div>
 
   <h2 class="sd-section-title">Browse by topic</h2>
   <!-- Cards are generated from assets/sitemap.js by assets/site-header.js and
