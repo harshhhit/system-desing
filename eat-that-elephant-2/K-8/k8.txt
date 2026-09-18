@@ -1,0 +1,788 @@
+Kubernetes Control Plane Summary 
+
+What is the Control Plane? 
+
+The Kubernetes Control Plane is the brain of the cluster. It is responsible for managing cluster state, making scheduling decisions, maintaining desired state, and coordinating all cluster operations. 
+
+Every Kubernetes action eventually passes through the Control Plane. 
+
+Example operations: 
+
+Creating a Deployment 
+
+Scaling Pods 
+
+Updating ConfigMaps 
+
+Scheduling workloads 
+
+Recovering failed Pods 
+
+Managing Nodes 
+
+The Control Plane continuously works to ensure the actual cluster state matches the desired state defined by users. 
+
+ 
+
+ 
+
+High-Level Architecture 
+
+User / CI-CD 
+      │ 
+      ▼ 
+kube-apiserver 
+      │ 
+      ▼ 
+     etcd 
+      │ 
+      ▼ 
+Controllers 
+      │ 
+      ▼ 
+Scheduler 
+      │ 
+      ▼ 
+Worker Nodes 
+ 
+
+Core components: 
+
+kube-apiserver 
+
+etcd 
+
+kube-scheduler 
+
+kube-controller-manager 
+
+ 
+
+ 
+
+1. kube-apiserver 
+
+What is it? 
+
+The API Server is the front door of Kubernetes. 
+
+Every request enters the cluster through kube-apiserver. 
+
+Nothing talks directly to etcd except the API Server. 
+
+Examples: 
+
+kubectl 
+Helm 
+Controllers 
+Scheduler 
+Kubelets 
+Operators 
+ 
+
+All communicate through the API Server. 
+
+ 
+
+ 
+
+Responsibilities 
+
+Accept API requests 
+
+Validate requests 
+
+Authenticate users 
+
+Authorize operations 
+
+Apply admission controls 
+
+Persist data into etcd 
+
+Expose Kubernetes APIs 
+
+ 
+
+ 
+
+Internal Flow 
+
+kubectl apply 
+      │ 
+      ▼ 
+API Server 
+      │ 
+      ├── Authentication 
+      ├── Authorization 
+      ├── Validation 
+      └── Admission Control 
+      │ 
+      ▼ 
+etcd 
+ 
+
+ 
+
+Why It Exists 
+
+Without a central API: 
+
+Scheduler 
+Controller 
+Kubelet 
+etcd 
+ 
+
+would all need direct communication. 
+
+The API Server provides: 
+
+Single entry point 
+
+Security boundary 
+
+Consistent validation 
+
+Auditability 
+
+ 
+
+ 
+
+Failure Impact 
+
+If API Server fails: 
+
+New Deployments Fail 
+Scaling Fails 
+kubectl Fails 
+ 
+
+Existing Pods usually continue running. 
+
+Cluster management becomes unavailable. 
+
+ 
+
+ 
+
+2. etcd 
+
+What is it? 
+
+etcd is Kubernetes' distributed key-value database.It stores the entire cluster state. 
+
+Think of it as the source of truth. 
+
+ 
+
+ 
+
+What is Stored? 
+
+Pods 
+
+Deployments 
+
+ConfigMaps 
+
+Secrets 
+
+Services 
+
+Nodes 
+
+Namespaces 
+
+RBAC Rules 
+
+Everything Kubernetes knows is stored in etcd. 
+
+ 
+
+ 
+
+Example 
+
+Deployment created: 
+
+replicas: 3 
+ 
+
+Stored in etcd: 
+
+Desired Replicas = 3 
+ 
+
+Controllers continuously compare: 
+
+Desired State 
+vs 
+Actual State 
+ 
+
+using data from etcd. 
+
+ 
+
+ 
+
+Why It Exists 
+
+Kubernetes is a declarative system.The cluster must remember: What should exist? 
+ 
+
+etcd stores that desired state. 
+
+ 
+
+ 
+
+Failure Impact 
+
+If etcd is lost: 
+
+Cluster State Lost 
+ 
+
+Potential consequences: 
+
+Deployments disappear 
+
+Services disappear 
+
+Secrets disappear 
+
+ConfigMaps disappear 
+
+Existing containers may still run temporarily, but Kubernetes loses knowledge of them. 
+
+ 
+
+ 
+
+Production Considerations 
+
+etcd is the most critical component in Kubernetes. 
+
+Best practices: 
+
+Regular backups 
+
+Multi-node quorum 
+
+Fast SSD storage 
+
+Encryption at rest 
+
+Disaster recovery testing 
+
+ 
+
+ 
+
+3. kube-scheduler 
+
+What is it? 
+
+The Scheduler decides where Pods should run. When a new Pod is created: 
+
+Pod Created 
+      │ 
+      ▼ 
+No Node Assigned  Scheduler selects the best node. 
+
+ 
+
+ 
+
+Responsibilities 
+
+Node selection 
+
+Resource placement 
+
+Capacity evaluation 
+
+Affinity rules 
+
+Anti-affinity rules 
+
+Taints and tolerations 
+
+Topology awareness 
+
+ 
+
+ 
+
+Scheduling Process 
+
+Scheduler evaluates: 
+
+CPU 
+Memory 
+Storage 
+Affinity Rules 
+Node Labels 
+Taints 
+Policies 
+ 
+
+Then chooses a node. 
+
+ 
+
+ 
+
+Internal Flow 
+
+Unscheduled Pod 
+        │ 
+        ▼ 
+Scheduler 
+        │ 
+        ▼ 
+Node Selected 
+        │ 
+        ▼ 
+API Server Updated 
+ 
+
+ 
+
+Why It Exists 
+
+Without scheduling: 
+
+Pod Created 
+ 
+
+but Kubernetes would not know: 
+
+Where should it run? 
+ 
+
+Scheduler solves placement decisions. 
+
+ 
+
+ 
+
+Failure Impact 
+
+If Scheduler fails: 
+
+Existing Pods Continue Running 
+ 
+
+But: 
+
+New Pods Remain Pending 
+ 
+
+Symptoms: 
+
+kubectl get pods 
+ 
+STATUS = Pending 
+ 
+
+ 
+
+Scheduler Tradeoffs 
+
+Advantages: 
+
+Efficient resource utilization 
+
+Automated placement 
+
+High cluster density 
+
+Policy-based scheduling 
+
+Disadvantages: 
+
+Scheduling decisions can become complex 
+
+Large clusters increase scheduling overhead 
+
+Poor constraints may create resource fragmentation 
+
+ 
+
+ 
+
+4. kube-controller-manager 
+
+What is it? 
+
+Controller Manager runs multiple controllers. 
+
+Controllers are reconciliation loops. 
+
+Their job: 
+
+Desired State 
+       = 
+Actual State 
+ 
+
+ 
+
+What is a Controller? 
+
+A controller continuously watches cluster state. 
+
+Example: 
+
+Desired Pods = 3 
+Actual Pods = 2 
+ 
+
+Controller detects mismatch: 
+
+Create 1 More Pod 
+ 
+
+ 
+
+Common Controllers 
+
+Deployment Controller 
+
+Manages Deployments. 
+
+Deployment 
+    ↓ 
+ReplicaSet 
+    ↓ 
+Pods 
+ 
+
+ 
+
+ReplicaSet Controller 
+
+Maintains replica count. 
+
+Desired = 5 
+Actual = 4 
+ 
+Create 1 Pod 
+ 
+
+ 
+
+Node Controller 
+
+Monitors node health. 
+
+Node Failure 
+      ↓ 
+Pod Recovery 
+ 
+
+ 
+
+Job Controller 
+
+Tracks Job completion. 
+
+Job Running 
+     ↓ 
+Job Completed 
+ 
+
+ 
+
+Service Account Controller 
+
+Manages service accounts and tokens. 
+
+ 
+
+ 
+
+Internal Architecture 
+
+Controller 
+      │ 
+Watch API Server 
+      │ 
+Detect Drift 
+      │ 
+Correct Drift 
+ 
+
+Controllers run continuously. 
+
+ 
+
+ 
+
+Why It Exists 
+
+Kubernetes is built on reconciliation. 
+
+Users define: 
+
+Desired State 
+ 
+
+Controllers enforce: 
+
+Actual State 
+ 
+
+ 
+
+Failure Impact 
+
+If Controller Manager fails: 
+
+Existing Workloads Continue Running 
+ 
+
+But Kubernetes stops correcting problems. 
+
+Examples: 
+
+Failed Pods not recreated 
+
+Node failures not handled 
+
+Replica counts not maintained 
+
+Jobs not managed 
+
+ 
+
+ 
+
+Control Plane Reconciliation Model 
+
+The most important Kubernetes concept: 
+
+Desired State 
+       │ 
+       ▼ 
+      etcd 
+       │ 
+       ▼ 
+Controllers Watch 
+       │ 
+       ▼ 
+Differences Found 
+       │ 
+       ▼ 
+Actions Taken 
+       │ 
+       ▼ 
+Actual State Matches Desired State 
+ 
+
+Kubernetes constantly performs reconciliation. 
+
+ 
+
+ 
+
+Component Dependencies 
+
+kube-apiserver 
+      │ 
+      ▼ 
+     etcd 
+ 
+Scheduler 
+      │ 
+      ▼ 
+API Server 
+ 
+Controllers 
+      │ 
+      ▼ 
+API Server 
+ 
+Kubelets 
+      │ 
+      ▼ 
+API Server 
+ 
+
+The API Server is the central communication hub. 
+
+ 
+
+ 
+
+Tradeoffs 
+
+API Server 
+
+Advantages 
+
+Centralized security 
+
+Validation 
+
+Auditing 
+
+Consistent API access 
+
+Disadvantages 
+
+Critical dependency 
+
+Can become a bottleneck at large scale 
+
+ 
+
+ 
+
+etcd 
+
+Advantages 
+
+Strong consistency 
+
+Reliable cluster state 
+
+Distributed architecture 
+
+Disadvantages 
+
+Operationally sensitive 
+
+Backup and recovery are critical 
+
+Performance directly affects cluster responsiveness 
+
+ 
+
+ 
+
+Scheduler 
+
+Advantages 
+
+Automated placement 
+
+Resource optimization 
+
+Policy-driven scheduling 
+
+Disadvantages 
+
+Complex scheduling rules can slow decisions 
+
+Poor policies may reduce cluster efficiency 
+
+ 
+
+ 
+
+Controller Manager 
+
+Advantages 
+
+Self-healing 
+
+Continuous reconciliation 
+
+Automatic recovery 
+
+Disadvantages 
+
+Large clusters generate significant reconciliation activity 
+
+Misconfigured controllers can cause cascading actions 
+
+ 
+
+ 
+
+Failure Scenarios 
+
+API Server Failure 
+
+Symptoms: 
+
+kubectl commands fail 
+Deployments fail 
+Scaling fails 
+ 
+
+Existing workloads continue running. 
+
+ 
+
+ 
+
+etcd Failure 
+
+Symptoms: 
+
+Cluster state unavailable 
+ 
+
+Highest severity failure. 
+
+ 
+
+ 
+
+Scheduler Failure 
+
+Symptoms: 
+
+Pods stuck in Pending state 
+ 
+
+Existing Pods continue running. 
+
+ 
+
+ 
+
+Controller Manager Failure 
+
+Symptoms: 
+
+Pods not recreated 
+Nodes not reconciled 
+Replica drift occurs 
+ 
+
+Cluster loses self-healing capabilities. 
+
+ 
+
+ 
+
+Key Takeaways 
+
+The Control Plane is the brain of Kubernetes. 
+
+kube-apiserver is the single entry point to the cluster. 
+
+etcd stores the entire cluster state and acts as the source of truth. 
+
+kube-scheduler decides where Pods should run. 
+
+kube-controller-manager continuously reconciles desired and actual state. 
+
+Controllers provide Kubernetes self-healing behavior. 
+
+Scheduler handles placement, not execution. 
+
+API Server is the communication hub for all Kubernetes components. 
+
+etcd is the most critical data component and requires strong backup practices. 
+
+Kubernetes operates through a continuous reconciliation loop driven by controllers and desired state. 
+
+ 

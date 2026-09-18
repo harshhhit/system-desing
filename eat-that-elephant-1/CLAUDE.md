@@ -47,6 +47,9 @@ the checklist below.**
    ```js
    { "href": "<folder>/<slug>.html", "title": "<short sidebar label>" }
    ```
+   **Don't just append it to the end of the array.** Read the section's existing pages
+   and decide where this one actually falls in the learning sequence, then insert it
+   there and give it a stage number — see "Sidebar ordering" below.
 
 5. **Bake:** `node scripts/regen-sidebars.js`
    (writes the nav, `<title>`, `<h1>`, breadcrumb, index grids, `data-section-pages`
@@ -92,6 +95,42 @@ the user exactly what's inconsistent) before considering the task done.
 
 To create a NEW section: add `{ "icon": "…", "name": "…", "pages": [ … ] }` to
 `SITE_MAP.sections` in `sitemap.js`, then regen.
+
+## Sidebar ordering — the stage-number convention
+
+A section's `pages` array in `sitemap.js` is not an unordered bag — its order **is**
+the study path, and each entry's `title` (the sidebar label, not `pages.js`'s title)
+carries a stage number that makes the sequence visible. Follow the pattern already
+used by `Database` (`00. Database Learning Path`, `01. Database Foundations`,
+`01a. SQL and Relational Fundamentals`, `02. …`, `02a. …`) and `Front-End`
+(`00. Front-End Roadmap`, `01. Client-Server Model, End to End`,
+`01a. Interactive Request Flow`, `01b. Cookies, Sessions & JWT`, `02. …`):
+
+- A bare number (`00.`, `01.`, `02.`, …) marks a **main topic** — its own stage in the
+  path.
+- A number + letter (`01a.`, `01b.`, `02a.`, …) marks a **direct sub-topic or deep
+  dive** of the numbered page immediately before it.
+- The number is cosmetic wayfinding that lives **only** in `sitemap.js`'s `title`.
+  Never put it in `pages.js`'s `title` (the page's own `<title>`/`<h1>` stays clean —
+  `"SQL and Relational Fundamentals"`, not `"01a. SQL and Relational Fundamentals"`),
+  and never in the filename or `PAGE_CONFIG.id`.
+
+**When a new page belongs to an existing, already-numbered section, place it where it
+actually falls in the learning sequence — don't append it to the end by default.**
+
+1. Insert its `sitemap.js` entry at the right position.
+2. Give it the right label: a new main number for a new topic, or
+   `<parent-number><next-letter>` for a deep dive of an existing page (e.g. a second
+   deep dive of `01.` after `01a.` already exists becomes `01b.`).
+3. If the insertion pushes later pages' numbers up (what was `02.` must become `03.`,
+   etc.), renumber those `sitemap.js` labels in the same edit — numbers stay
+   sequential with no gaps or collisions. Only the label **text** changes; never rename
+   files, `PAGE_CONFIG.id`s, or `pages.js` keys to match.
+4. Re-run `node scripts/regen-sidebars.js` and `--check` as usual.
+
+If a section has no numbering yet (built before this convention), leave it alone
+unless the user asks for it — don't renumber a whole section as a side effect of
+adding one unrelated page.
 
 ## Progress tracking — every page has a coverage tracker at the top
 

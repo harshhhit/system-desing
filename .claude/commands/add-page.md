@@ -111,13 +111,35 @@ if you don't add a `subtitle` in `pages.js` (step 5).
 HTML-escapes these values itself (`esc()` in `regen-sidebars.js`) — writing
 `&amp;` here produces double-escaped `&amp;amp;` in the baked output.
 
-## 6. Add to the sidebar (only if it belongs there) — `assets/sitemap.js`
+## 6. Place it in the section's study path — `assets/sitemap.js`
 
-Inside the matching section's `"pages": […]`:
+Don't just append the new entry to the end of the section's `"pages": […]` array.
+Read every existing page in that section (`href` + `title`) and work out where this
+page's topic actually falls in the learning sequence, then insert it there:
 
 ```js
-{ "href": "<section-folder>/<slug>.html", "title": "<short sidebar label>" }
+{ "href": "<section-folder>/<slug>.html", "title": "<stage-number>. <short sidebar label>" }
 ```
+
+Follow the stage-number convention already used by `Database` and `Front-End`
+(full rule in `eat-that-elephant-1/CLAUDE.md`, "Sidebar ordering"):
+
+- A bare number (`00.`, `01.`, `02.`, …) = a new main topic / stage.
+- A number + letter (`01a.`, `01b.`, …) = a direct sub-topic or deep dive of the
+  numbered page immediately before it (next new deep dive of `01.` after `01a.`
+  exists becomes `01b.`).
+- The number lives **only** in this `sitemap.js` label — never in `pages.js`'s
+  `title` (keep that clean, e.g. `"SQL and Relational Fundamentals"` not
+  `"01a. SQL and Relational Fundamentals"`), never in the filename or
+  `PAGE_CONFIG.id`.
+- If inserting this page pushes later pages' numbers up (what was `02.` must
+  become `03.`, etc.), renumber those existing `sitemap.js` labels in the same
+  edit so numbers stay sequential with no gaps or collisions — text only, don't
+  touch their files/ids.
+- **Exception:** if the section has no numbering yet (built before this
+  convention existed), just append the new page as before — don't retrofit
+  numbers onto a whole section as a side effect of adding one page. Only
+  number-and-place when the section is already numbered.
 
 ## 7. Bake and verify — do not skip
 
@@ -137,6 +159,7 @@ node scripts/regen-sidebars.js
 
 ## 8. Report
 
-Tell the user the new page path, its section, and confirm the content was
-carried over in full (list the section headings you preserved) — don't just
-say "done."
+Tell the user the new page path, its section, where you placed it in the study
+sequence (and its stage number, plus any existing labels you had to renumber),
+and confirm the content was carried over in full (list the section headings you
+preserved) — don't just say "done."
