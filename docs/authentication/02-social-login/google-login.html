@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "google-login" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Sign-In with Credential Manager · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="stylesheet" href="../../assets/site.css?v=5">
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/pages.js"></script><script src="../../assets/site-header.js?v=5" data-root="../../"></script>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav><h3>☸️ Kubernetes</h3><ul><li><a href="../../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li><li><a href="../../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li><li><a href="../../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li><li><a href="../../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li><li><a href="../../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul><h3>🔐 Authentication</h3><ul><li><a href="../../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li><li><a href="../../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li><li><a href="../../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a class="active" href="../../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul><h3>🖥️ Front-End</h3><ul><li><a href="../../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li><li><a href="../../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li><li><a href="../../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../../web-servers/server.html">Web Servers</a></li><li><a href="../../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+  <div class="content-wrap">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <span class="brand">System Design Notes</span>
+    </div>
+    <main>
+      <p class="breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Authentication / Google Sign-In with Credential Manager</p>
+      <h1 data-page-title>Google Sign-In with Credential Manager</h1>
+      <h1 id="🌐-google-sign-in-with-credential-manager">🌐 Google Sign-In with Credential Manager</h1>
+<p>This guide explains how <strong>Google Sign-In</strong> works in an Android app backed by a Node.js API.</p>
+<div class="alert alert-tip"><p class="alert-title">TIP</p><p><strong>Quick Summary</strong>: The Android app gets an ID Token from Google, sends it to your Backend, and your Backend verifies it with Google before issuing its own session tokens.</p>
+</div>
+
+<hr>
+<h2 id="⚡-quick-implementation-checklist">⚡ Quick Implementation Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Android</strong>: Integrate Credential Manager API.</li>
+<li><input disabled="" type="checkbox"> <strong>Android</strong>: Obtain <code>ID Token</code> from Google.</li>
+<li><input disabled="" type="checkbox"> <strong>Backend</strong>: Create endpoint <code>POST /socialAuth/social-register</code>.</li>
+<li><input disabled="" type="checkbox"> <strong>Backend</strong>: Verify token using <code>google-auth-library</code>.</li>
+<li><input disabled="" type="checkbox"> <strong>Backend</strong>: Check if user exists (Login) or create new (Register).</li>
+<li><input disabled="" type="checkbox"> <strong>Backend</strong>: Return your own <code>accessToken</code> &amp; <code>refreshToken</code>.</li>
+</ul>
+<hr>
+<h2 id="🖼️-sequence-diagram-mermaid">🖼️ Sequence Diagram (Mermaid)</h2>
+<p>This diagram visualizes the trust handshake between the Android app, your backend, Google’s servers, and your database.</p>
+<div class="mermaid">sequenceDiagram
+    autonumber
+    actor User as 👤 User
+    participant App as 📱 Android App
+    participant API as 🛡️ Backend API
+    participant Google as ☁️ Google OAuth
+    participant DB as 🗄️ Database
+
+    User->>App: Clicks "Sign in with Google"
+    App->>Google: Request ID Token (via SDK)
+    Google-->>App: Returns ID Token (JWT)
+
+    Note right of App: Token contains email, name, picture
+
+    App->>API: POST /socialAuth/social-register<br/>(ID Token, Device Info)
+    
+    API->>Google: verifyIdToken(token)
+    Google-->>API: Valid Payload (email, sub, etc.)
+
+    alt User Already Exists
+        API->>DB: Find User by Email
+        DB-->>API: User Record Found
+        API->>API: Generate Auth Tokens
+        API-->>App: 200 OK {user, tokens}
+    else New User Registration
+        API->>DB: Find User by Email
+        DB-->>API: Not Found
+        API->>DB: INSERT New User
+        DB-->>API: User Created
+        API->>API: Generate Auth Tokens
+        API-->>App: 201 Created {user, tokens}
+    end
+
+    App-->>User: Show Logged-in Dashboard
+</div>
+
+<hr>
+<h2 id="🔍-step-by-step-explanation">🔍 Step-by-Step Explanation</h2>
+<h3 id="1-user-action">1. User Action</h3>
+<p>The user taps the Google sign-in button. The Android app starts the OAuth flow using the <strong>Credential Manager API</strong>.</p>
+<h3 id="2-app-requests-id-token">2. App Requests ID Token</h3>
+<p>Google handles the UI. After successful login, it returns an <strong>ID Token</strong> (a JWT) that proves identity.</p>
+<h3 id="3-app-sends-token-to-backend">3. App Sends Token to Backend</h3>
+<p>The app sends the ID token to your API:
+<code>POST /socialAuth/social-register</code></p>
+<h3 id="4-backend-verifies-token">4. Backend Verifies Token</h3>
+<p><strong>Crucial Step</strong>: Your backend must <strong>NOT</strong> trust the token blindly. It verifies it with Google to ensure:</p>
+<ul>
+<li>Valid signature?</li>
+<li>Not expired?</li>
+<li>Issued for <em>your</em> Client ID?</li>
+</ul>
+<h3 id="5-login-or-registration-logic">5. Login or Registration Logic</h3>
+<ul>
+<li><strong>Existing User</strong>: If the email exists in your DB, log them in.</li>
+<li><strong>New User</strong>: If not, create a new user record automatically (JIT Provisioning).</li>
+</ul>
+<h3 id="6-issue-app-tokens">6. Issue App Tokens</h3>
+<p>Finally, your backend issues its <strong>own</strong> access/refresh tokens. The app uses these for future requests, not the Google token.</p>
+
+      <div class="page-footer">
+        <span>Section: Authentication</span>
+        <span>Source: <code>google-login.md</code></span>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+  const t = document.getElementById('menuToggle');
+  const s = document.getElementById('sidebar');
+  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+</script>
+<script>
+  const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark) and (min-width: 99999px)').matches;
+  mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default' });
+</script>
+</body>
+</html>

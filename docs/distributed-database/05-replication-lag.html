@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "05-replication-lag" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Replication Lag — Causes, Measurement, Mitigation · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+  .sd-study-main .lead { font-weight: 700; }
+  .sd-study-main blockquote {
+    margin: 1em 0; padding: 0.6em 1.1em; border-left: 4px solid var(--sd-c11, #0891b2);
+    background: color-mix(in srgb, var(--sd-c11, #0891b2) 8%, transparent); border-radius: 8px;
+  }
+  .sd-study-main blockquote p { margin: 0.4em 0; }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script><script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><a class="brand" href="../index.html">System Design Notes</a><nav><h3>☸️ Kubernetes</h3><ul><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul><h3>🔐 Authentication</h3><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul><h3>🖥️ Front-End</h3><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a class="active" href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Distributed Database / Replication Lag — Causes, Measurement, Mitigation</p>
+      <h1 data-page-title>Replication Lag — Causes, Measurement, Mitigation</h1>
+      <p class="sd-study-prompt" data-page-subtitle>A companion deep-dive to the <a href="index.html">Distributed Data Roadmap</a> (Phase 1). Lag is the time difference between when a write commits on the leader and when it becomes visible on a follower. It is <strong>never just about network speed</strong>.</p>
+
+      <h2>1. What actually causes replication lag? (The 4 culprits)</h2>
+
+      <h3>Network RTT — the red herring</h3>
+      <p>The least common cause. Modern datacenter networks have sub-millisecond latency. Inter-region (e.g. US → Europe) adds ~100ms, which is trivial next to the real culprits.</p>
+
+      <h3>The I/O bottleneck — the heavy lifter</h3>
+      <p>The leader writes to its disk <strong>sequentially</strong> (fast). The replica must apply the change to its existing B-Tree or LSM-Tree indexes — <strong>random</strong> disk I/O plus updating secondary indexes. If the replica's disk IOPS are lower than the leader's, lag spikes.</p>
+
+      <h3>The "thundering herd" of reads — the hidden killer</h3>
+      <p>Replicas usually serve analytical queries (heavy <code>SELECT</code> scans). While a replica is crunching a 5-minute report its CPU is maxed out, so it <strong>stops applying the replication stream</strong>. Lag grows for the duration of the read.</p>
+
+      <h3>Single-threaded apply — the architectural choke</h3>
+      <p>Most databases (MySQL, PostgreSQL) apply the replication stream on a <strong>single CPU core</strong> on the replica, to guarantee transactions land in the exact same order as the leader. If the leader handles 10,000 writes/sec across 20 cores, the replica is replaying 10,000 writes/sec on 1 core. It physically cannot keep up.</p>
+
+      <h2>2. How is replication lag actually measured?</h2>
+      <p>Databases don't use a "stopwatch" — they use transaction timestamps embedded in the replication log.</p>
+      <ul>
+        <li><strong>MySQL:</strong> <code>Seconds_Behind_Source</code> — the replica compares the Unix timestamp of the last event it applied against its own system clock.</li>
+        <li><strong>PostgreSQL:</strong> <code>pg_stat_replication</code> exposes <code>write_lag</code>, <code>flush_lag</code>, and <code>replay_lag</code>, comparing the leader's current LSN (Log Sequence Number) against the LSN the replica reports back.</li>
+      </ul>
+      <div class="sd-study-note warning"><span class="sd-note-title">Operational trap</span><p><code>Seconds_Behind_Source</code> is a lie if the replica is completely stalled (e.g. network partition). If it hasn't received an event in 5 minutes, it reports <strong>0 lag</strong> — because the last timestamp it applied is 5 minutes old, matching its clock. The real lag is infinite. Monitor <strong>heartbeat timestamps</strong> (periodic empty writes) to catch this.</p></div>
+
+      <h2>3. Why is lag the #1 operational headache?</h2>
+      <p>Because it breaks the mental model developers have about databases. Three catastrophic failure modes are caused solely by lag:</p>
+      <ul>
+        <li><strong>Read-your-writes:</strong> a user saves a new profile picture (leader write), refreshes, and their read hits a lagging replica showing the old picture. They think the system is broken.</li>
+        <li><strong>Monotonic reads:</strong> a user reads a comment thread on Replica A (up-to-date), refreshes, gets routed to Replica B (lagging), and the comment they just saw <strong>disappears</strong>. Data goes backward in time for them.</li>
+        <li><strong>The "zombie" backup:</strong> if the leader crashes and failover promotes a lagging replica, you either (a) lose all data that hadn't replicated yet, or (b) bring the old leader back as a replica, which then tries to revert the new leader's data — split-brain and corrupted primary keys.</li>
+      </ul>
+
+      <h2>4. Misconception: "just use physical replication to reduce lag"</h2>
+      <p>A common intuitive leap that is actually incorrect. It depends entirely on what "physical" means:</p>
+      <ul>
+        <li><strong>Physical (row-based) replication</strong> — shipping the exact changed rows: this <em>increases</em> bandwidth but <em>reduces</em> CPU overhead on the replica, because it doesn't have to re-parse complex SQL logic.</li>
+        <li><strong>Physical (disk-block) replication</strong> — shipping raw disk pages: this makes lag <strong>worse</strong>, not better. If you ship a raw page change and the replica is running a heavy analytical query that holds that same page in its cache, the apply process <strong>blocks and waits</strong>. Physical replication is brittle and stalls easily.</li>
+      </ul>
+
+      <h2>5. The real ways to mitigate lag (the Ops toolkit)</h2>
+      <p>You cannot eliminate lag — you manage it with these four proven mechanisms:</p>
+      <ul>
+        <li><strong>Synchronous replication (the nuclear option):</strong> make the client wait until the replica applies the change. Fixes lag by definition, but kills write throughput and availability. Only for critical financial data.</li>
+        <li><strong>Read-only routing with bounded staleness:</strong> configure the load balancer to route reads only to replicas whose lag is under a threshold (e.g. &lt; 1s). A replica that lags beyond it is pulled from the read pool until it catches up.</li>
+        <li><strong>Session stickiness:</strong> pin a single user's session to exactly one replica for its duration. Prevents the "disappearing data" problem (monotonic reads) even if that replica lags.</li>
+        <li><strong>Scale the replica's hardware:</strong> since apply is single-threaded, give replicas faster single-core CPU and higher-IOPS NVMe SSDs than the leader. <strong>Leaders scale out (more cores); replicas scale up (faster cores).</strong></li>
+      </ul>
+
+      <h2>The ultimate operational truth about lag</h2>
+      <p>Lag is not a bug — it is a <strong>thermometer for the health of your entire stack</strong>. When lag spikes, 90% of the time it is not a database problem, it is an application problem: someone pushed a schema migration (<code>ALTER TABLE ADD COLUMN</code>) that locks the table, or an analyst ran an unindexed <code>SELECT *</code> that maxed out the replica's CPU.</p>
+      <blockquote>
+        <p>Treat lag like a pressure gauge: you don't try to stop the pressure, you build alarms for when it exceeds ~10 seconds — and you architect the application to gracefully tolerate temporary staleness (Version Vectors or Hybrid Logical Clocks in the application code itself).</p>
+      </blockquote>
+    </main>
+  </div>
+</div>
+</body>
+</html>

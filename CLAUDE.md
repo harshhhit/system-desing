@@ -1,18 +1,24 @@
 # Project instructions
 
 Static HTML/CSS/JS knowledge-base site (no framework, no build step), hosted on
-GitHub Pages. Two sub-sites: `eat-that-elephant-1/` (System Design Notes) and
-`eat-that-elephant-2/` (Authentication Notes). A repo-root `index.html` links to both.
+GitHub Pages, branded **Infra Owl**. All content lives in one directory, `docs/`
+(System Design, Kubernetes, Authentication, and everything else — merged from what
+used to be two separate sub-sites, `eat-that-elephant-1/` and `eat-that-elephant-2/`;
+that split name is gone, `docs/` is now the only content directory). The repo-root
+`index.html` is the single homepage — a separate, hand-authored portal page (its own
+inline CSS, not `docs/assets/site.css`) that links into every page under `docs/`. Two
+tiny redirect stubs remain at the old sub-site homepage paths (`docs/index.html` and
+`eat-that-elephant-2/Authentication Notes.html`) so old bookmarks still land somewhere.
 
 ## Golden rules (follow on every change)
 
-1. **All pages share one format.** Every content page in `eat-that-elephant-1/`
+1. **All pages share one format.** Every content page in `docs/`
    uses the same shell: access-gate block → `<script>window.PAGE_CONFIG={id}</script>`
    → `<meta charset>` etc., `assets/site.css`, then
    `assets/sitemap.js` + `assets/pages.js` + `assets/site-header.js`, then a
    `.sidebar` aside + `.sd-study-main` (or legacy `main`) content area with
    `data-breadcrumb` / `data-page-title` / `data-page-subtitle` placeholders.
-   Start from `eat-that-elephant-1/_TEMPLATE-page.html`.
+   Start from `docs/_TEMPLATE-page.html`.
 
 2. **Add info, never delete it.** You may add explanations, sections, links, or
    pages whenever it helps. Do not remove or shorten existing content, notes, or
@@ -41,24 +47,25 @@ GitHub Pages. Two sub-sites: `eat-that-elephant-1/` (System Design Notes) and
   disable it the same way. `login.html` is a bespoke light split-screen design
   (its left photo panel keeps a dark image overlay — that's the photo, not a theme).
 
-- **Shared UI is generated from three central files per sub-site:**
-  `assets/sitemap.js` (`SITE_MAP` — sidebar), `assets/pages.js` (`SITE_PAGES` — each
-  page's `<title>`/`<h1>`/lead line/breadcrumb), `assets/site.css` (theme).
+- **Shared UI is generated from three central files:**
+  `docs/assets/sitemap.js` (`SITE_MAP` — sidebar), `docs/assets/pages.js` (`SITE_PAGES` —
+  each page's `<title>`/`<h1>`/lead line/breadcrumb), `docs/assets/site.css` (theme).
   `site-header.js` applies them at runtime; **`node scripts/regen-sidebars.js`** bakes
-  them into the static HTML — the `<nav>`, the `data-page-*` regions, the homepage
-  card grid + counts, and `data-section-pages` lists are all pre-rendered copies.
-  **Run that script after ANY edit to `sitemap.js` or `pages.js`** (idempotent; safe
+  them into the static HTML under `docs/` — the `<nav>`, the `data-page-*` regions, and
+  `data-section-pages` lists are all pre-rendered copies. The repo-root `index.html`
+  homepage is separate and hand-maintained (not baked by this script); when you add or
+  move a `docs/` page, also update its matching link(s) there.
+  **Run the script after ANY edit to `sitemap.js` or `pages.js`** (idempotent; safe
   anytime; `--dry-run` previews). Never hand-edit a baked `<nav>`, a `data-*` region,
   or the homepage cards — re-run the script. Files named `_*` (e.g.
-  `eat-that-elephant-1/_TEMPLATE-page.html`) are skipped by the script.
+  `docs/_TEMPLATE-page.html`) are skipped by the script.
 
-- **New page / moving a page:** follow `eat-that-elephant-1/CLAUDE.md` (procedure, both
-  sub-sites), `eat-that-elephant-2/CLAUDE.md` (e2 specifics) and
-  `eat-that-elephant-1/README.md` (detail). In short: copy `_TEMPLATE-page.html`, set
-  `window.PAGE_CONFIG = { id }`, add matching entries to `pages.js` and (for the
-  sidebar) `sitemap.js`, run `scripts/regen-sidebars.js`. When moving, also leave a
-  meta-refresh + `location.replace` redirect stub at the old path (examples under
-  `eat-that-elephant-1/05-database/data-base/`).
+- **New page / moving a page:** follow `docs/CLAUDE.md` (procedure) and `docs/README.md`
+  (detail). In short: copy `_TEMPLATE-page.html`, set `window.PAGE_CONFIG = { id }`, add
+  matching entries to `pages.js` and (for the sidebar) `sitemap.js`, run
+  `scripts/regen-sidebars.js`. When moving, also leave a meta-refresh +
+  `location.replace` redirect stub at the old path (examples under
+  `docs/05-database/data-base/`).
 
 - **Every page has a coverage tracker at the top.** `site-header.js` injects a sticky
   bar on every page in `SITE_MAP`: a "Mark covered" toggle, section + site-wide
@@ -66,7 +73,7 @@ GitHub Pages. Two sub-sites: `eat-that-elephant-1/` (System Design Notes) and
   in `localStorage`). It's automatic — never hand-add a tracker to a page; just ensure
   the page has its `sitemap.js` + `pages.js` entries. Finer *within-page* progress
   (per stage/topic) uses `data-stage` checkboxes + a small inline script — copy it from
-  `eat-that-elephant-1/01-front-end/frontend-roadmap.html`.
+  `docs/01-front-end/frontend-roadmap.html`.
 
 - **Every information page has a "Listen" (read-aloud) bar at the top.** `site-header.js`
   injects a sticky bar under the coverage tracker on any page whose content container
@@ -82,8 +89,8 @@ GitHub Pages. Two sub-sites: `eat-that-elephant-1/` (System Design Notes) and
   (`#site-header-root` + the three central scripts + a `.sd-study-main`/`main` content
   area). Styling lives in `assets/site.css` under `.sd-readaloud` / `.sd-tts-*`.
 
-- **Verify before finishing any change to the notes sites:**
-  `node scripts/regen-sidebars.js --check` — one run covers both sub-sites and the
+- **Verify before finishing any change to the notes site:**
+  `node scripts/regen-sidebars.js --check` — one run covers `docs/` and the
   repo root. It flags missing/renamed files referenced by `sitemap.js` / `pages.js`,
   `PAGE_CONFIG` ids with no `pages.js` entry (or a mismatched key), pages listed in
   `pages.js` that lack the `PAGE_CONFIG`, stale baked HTML, and pages missing the
@@ -95,7 +102,7 @@ GitHub Pages. Two sub-sites: `eat-that-elephant-1/` (System Design Notes) and
   with `hash-tool.html`; no trailing newline). "Remember me" → `localStorage`,
   otherwise `sessionStorage`. `robots.txt` disallows the whole site.
 
-- **Do not rewrite `eat-that-elephant-1/01-front-end/graphql/http/Front end basics
+- **Do not rewrite `docs/01-front-end/graphql/http/Front end basics
     for system design .html`** — it is a saved external reference page (a Claude web
   snapshot with its own `_files/` assets). It may be gated and linked, and its
   `<html data-mode>` may be set to `light`, but its body content is kept as-is.

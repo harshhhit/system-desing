@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "k8s-leader-election" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leader Election: HA for Controller Manager &amp; Scheduler · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><ul><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li><li><a class="active" href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul><h3>🔐 Authentication</h3><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul><h3>🖥️ Front-End</h3><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Kubernetes / Leader Election: HA for Controller Manager &amp; Scheduler</p>
+      <h1 data-page-title>Leader Election: HA for Controller Manager &amp; Scheduler</h1>
+      <p class="sd-study-prompt" data-page-subtitle>How Lease objects in etcd let multiple replicas of kube-controller-manager and kube-scheduler run without fighting over the same resources — election process, tuning, and failure scenarios.</p>
+
+      <h2>The Problem It Solves</h2>
+      <p>Kubernetes control plane components (<strong>kube-controller-manager</strong> and <strong>kube-scheduler</strong>) are designed to be <strong>stateless</strong>. This means you can run multiple replicas for high availability.</p>
+      <p><strong>The problem:</strong> if you run 3 replicas of the controller-manager and all 3 are active simultaneously:</p>
+      <ul>
+        <li><strong>Deployment Controller:</strong> all 3 replicas would try to scale Deployments simultaneously → race conditions.</li>
+        <li><strong>ReplicaSet Controller:</strong> all 3 would try to create/delete Pods simultaneously → conflicts.</li>
+        <li><strong>Node Controller:</strong> all 3 would try to mark nodes as <code>NotReady</code> simultaneously → split-brain.</li>
+      </ul>
+      <p><strong>The solution: Leader Election</strong> — only one replica (the <strong>leader</strong>) actively performs work. The other replicas (<strong>followers</strong>) stand by, ready to take over if the leader fails.</p>
+
+      <h2>How Leader Election Works in Kubernetes</h2>
+      <p>Kubernetes uses <strong>leases</strong> (a custom resource in the <code>coordination.k8s.io/v1</code> API group) to implement leader election. It's based on the <strong>distributed lock</strong> pattern.</p>
+      <table>
+        <tr><th>Concept</th><th>Description</th><th>Analogy</th></tr>
+        <tr><td>Leader</td><td>The active instance that performs the actual work.</td><td>The captain of a ship — only one person gives orders.</td></tr>
+        <tr><td>Follower (Standby)</td><td>Passive instances that monitor the leader and are ready to take over.</td><td>The crew waiting for the captain to fall sick.</td></tr>
+        <tr><td>Lease</td><td>A distributed lock stored in etcd that tracks who is the current leader.</td><td>The captain's badge — whoever holds it is in charge.</td></tr>
+        <tr><td>Renewal</td><td>The leader periodically updates the lease to say "I'm still alive."</td><td>The captain shouting "I'm still here!" every few seconds.</td></tr>
+        <tr><td>Expiry</td><td>If the leader stops renewing, the lease expires and a new leader is elected.</td><td>The captain goes silent; the crew picks a new captain.</td></tr>
+      </table>
+      <div class="mermaid">stateDiagram-v2
+    [*] --> Follower
+    Follower --> Leader: lease expired &amp; CAS wins
+    Leader --> Leader: renew lease every retry-period
+    Leader --> Follower: crash / lose leadership
+    Follower --> Follower: sees valid lease, waits
+</div>
+
+      <h2>The Election Process, Step by Step</h2>
+      <table>
+        <tr><th>Step</th><th>Action</th><th>Component</th><th>Description</th><th>State</th></tr>
+        <tr><td>1</td><td>Component Starts</td><td>Controller Manager / Scheduler</td><td>Reads configuration (<code>--leader-elect=true</code>); identifies itself with a unique identity (hostname + Pod IP).</td><td>Initializing</td></tr>
+        <tr><td>2</td><td>Try to Acquire Lease</td><td>Leader Elector</td><td>Performs an atomic "create or update" on the Lease object (name <code>kube-controller-manager</code>, namespace <code>kube-system</code>).</td><td>Acquiring</td></tr>
+        <tr><td>3</td><td>Check Existing Leader</td><td>Leader Elector</td><td>Reads the Lease from etcd.</td><td>Checking</td></tr>
+        <tr><td>4</td><td>If No Leader</td><td>Leader Elector</td><td>Becomes leader immediately.</td><td>Leader</td></tr>
+        <tr><td>5</td><td>If Leader Exists (not expired)</td><td>Leader Elector</td><td>Becomes follower; watches the Lease.</td><td>Follower</td></tr>
+        <tr><td>6</td><td>If Leader Exists (expired)</td><td>Leader Elector</td><td>Attempts to acquire the Lease atomically.</td><td>Competing</td></tr>
+        <tr><td>7</td><td>If Acquire Succeeds</td><td>Leader Elector</td><td>Becomes leader; starts controllers/scheduling.</td><td>Leader</td></tr>
+        <tr><td>8</td><td>If Acquire Fails</td><td>Leader Elector</td><td>Backs off; watches the Lease; retries.</td><td>Follower</td></tr>
+        <tr><td>9</td><td>Leader Renews</td><td>Leader</td><td>Periodically updates <code>renewTime</code> in the Lease (default lease duration: 15 seconds).</td><td>Leader (maintaining)</td></tr>
+        <tr><td>10</td><td>Leader Fails</td><td>Leader</td><td>Stops renewing the Lease.</td><td>Failure</td></tr>
+        <tr><td>11</td><td>Lease Expires</td><td>etcd</td><td>Lease duration passes; the Lease becomes invalid.</td><td>Expired</td></tr>
+        <tr><td>12</td><td>Follower Detects</td><td>Follower</td><td>Sees the expired Lease; attempts to acquire it.</td><td>Acquiring</td></tr>
+        <tr><td>13</td><td>New Leader Elected</td><td>Follower</td><td>Acquires the Lease; becomes the new leader.</td><td>Leader</td></tr>
+      </table>
+
+      <h2>Lease Object Structure</h2>
+      <p>The Lease object is stored in etcd and looks like this:</p>
+      <pre><code>apiVersion: coordination.k8s.io/v1
+kind: Lease
+metadata:
+  name: kube-controller-manager
+  namespace: kube-system
+spec:
+  # Who is the current leader?
+  holderIdentity: "controller-manager-7d8f9-abcde"
+
+  # How many seconds before the lease expires?
+  leaseDurationSeconds: 15
+
+  # When was the lease last renewed?
+  renewTime: "2024-01-15T10:30:45Z"
+
+  # When did the current leader acquire the lease?
+  acquireTime: "2024-01-15T10:30:45Z"
+
+  # How many times has leadership changed?
+  leaderTransitions: 42</code></pre>
+
+      <h3>Lease Object Fields</h3>
+      <table>
+        <tr><th>Field</th><th>Description</th><th>Example</th><th>Used By</th></tr>
+        <tr><td><code>holderIdentity</code></td><td>Who currently holds the lease (leader).</td><td><code>"controller-manager-7d8f9-abcde"</code></td><td>All components (who is the leader)</td></tr>
+        <tr><td><code>leaseDurationSeconds</code></td><td>How many seconds before the lease expires.</td><td><code>15</code></td><td>Leader (renews within this); followers (check expiration)</td></tr>
+        <tr><td><code>renewTime</code></td><td>When the lease was last renewed.</td><td><code>"2024-01-15T10:45:30Z"</code></td><td>Leader (sets); followers (checks)</td></tr>
+        <tr><td><code>acquireTime</code></td><td>When the current leader acquired the lease.</td><td><code>"2024-01-15T10:30:45Z"</code></td><td>History (when this leader took over)</td></tr>
+        <tr><td><code>leaderTransitions</code></td><td>How many times leadership has changed.</td><td><code>42</code></td><td>History (how stable the leadership is)</td></tr>
+      </table>
+
+      <h2>Leader Election Parameters</h2>
+      <table>
+        <tr><th>Parameter</th><th>Default</th><th>Description</th><th>Relationship</th><th>When to Change</th></tr>
+        <tr><td><code>--leader-elect</code></td><td><code>true</code></td><td>Enable/disable leader election.</td><td>N/A</td><td>Only <code>false</code> for development/single-node clusters.</td></tr>
+        <tr><td><code>--leader-elect-lease-duration</code></td><td><code>15s</code></td><td>How long a lease is valid before expiration.</td><td>Must be &gt; renew-deadline + retry-period.</td><td>Increase for slower etcd (30s); decrease for faster failover (5s).</td></tr>
+        <tr><td><code>--leader-elect-renew-deadline</code></td><td><code>10s</code></td><td>How long the leader tries to renew before giving up.</td><td>Must be &lt; lease-duration.</td><td>Decrease for faster failure detection.</td></tr>
+        <tr><td><code>--leader-elect-retry-period</code></td><td><code>2s</code></td><td>How often followers check the lease.</td><td>Must be &lt; renew-deadline.</td><td>Decrease for faster failover; increase to reduce API Server load.</td></tr>
+        <tr><td><code>--leader-elect-resource-lock</code></td><td><code>leases</code></td><td>Resource type used for locking.</td><td>N/A</td><td>Can be <code>leases</code>, <code>endpoints</code>, or <code>configmaps</code>.</td></tr>
+      </table>
+      <p><strong>Relationship between parameters:</strong></p>
+      <pre><code>retry-period (2s) < renew-deadline (10s) < lease-duration (15s)</code></pre>
+
+      <h3>Tuning Recommendations by Cluster Size</h3>
+      <table>
+        <tr><th>Cluster Size</th><th>Lease Duration</th><th>Renew Deadline</th><th>Retry Period</th><th>Reasoning</th></tr>
+        <tr><td>Small (1-2 nodes)</td><td>15s</td><td>10s</td><td>2s</td><td>Default; works fine for most clusters.</td></tr>
+        <tr><td>Medium (3-5 nodes)</td><td>15s</td><td>10s</td><td>2s</td><td>Default; works fine.</td></tr>
+        <tr><td>Large (10+ nodes)</td><td>30s</td><td>20s</td><td>5s</td><td>Reduces etcd load; network latency may be higher.</td></tr>
+        <tr><td>Cloud (slow etcd)</td><td>30s</td><td>20s</td><td>5s</td><td>etcd may be slower in cloud; longer duration prevents flapping.</td></tr>
+        <tr><td>On-Prem (fast etcd)</td><td>10s</td><td>5s</td><td>1s</td><td>Faster failover; low latency network.</td></tr>
+        <tr><td>Development</td><td>15s</td><td>10s</td><td>2s</td><td>Default; leader election is usually disabled here.</td></tr>
+      </table>
+
+      <h2>The Election Algorithm (client-go's leaderelection)</h2>
+      <p>Leader election is implemented in the <strong>client-go</strong> library. Here's the pseudocode each component runs:</p>
+      <pre><code>// Each component runs this loop
+func runLeaderElection() {
+    // Create a lease lock
+    lock := &resourcelock.LeaseLock{
+        LeaseMeta: metav1.ObjectMeta{
+            Name:      "kube-controller-manager",
+            Namespace: "kube-system",
+        },
+        Client: clientset.CoordinationV1(),
+        LockConfig: resourcelock.ResourceLockConfig{
+            Identity: "controller-manager-7d8f9-abcde",
+        },
+    }
+
+    // Start leader election
+    leaderelection.RunOrDie(ctx, leaderelection.LeaderElectionConfig{
+        Lock:            lock,
+        LeaseDuration:   15 * time.Second,
+        RenewDeadline:   10 * time.Second,
+        RetryPeriod:     2 * time.Second,
+        Callbacks: leaderelection.LeaderCallbacks{
+            OnStartedLeading: func(ctx context.Context) {
+                // This is the leader! Start controllers
+                startControllers()
+            },
+            OnStoppedLeading: func() {
+                // Lost leadership; stop controllers gracefully
+                stopControllers()
+            },
+            OnNewLeader: func(identity string) {
+                // A new leader was elected (not us)
+                log.Printf("New leader elected: %s", identity)
+            },
+        },
+    })
+}</code></pre>
+
+      <h2>Practical Usage Example: HA Control Plane</h2>
+      <p>Set up a highly available Kubernetes control plane with 3 controller-manager replicas and 3 scheduler replicas, one on each of Node 1, Node 2, Node 3 (each also running an API server and an etcd member).</p>
+      <p>Leader election happens via two independent Leases in etcd:</p>
+      <pre><code>Lease: kube-controller-manager
+  holderIdentity: controller-manager-node1
+  renewTime: 2024-01-15T10:30:45Z
+  leaseDurationSeconds: 15
+
+Lease: kube-scheduler
+  holderIdentity: scheduler-node2
+  renewTime: 2024-01-15T10:30:50Z
+  leaseDurationSeconds: 15</code></pre>
+      <p><strong>Current leaders:</strong> Controller Manager → <code>controller-manager-node1</code> (active); Scheduler → <code>scheduler-node2</code> (active).</p>
+      <p><strong>Followers (standby):</strong> Controller Manager → <code>controller-manager-node2</code>, <code>controller-manager-node3</code>; Scheduler → <code>scheduler-node1</code>, <code>scheduler-node3</code>.</p>
+
+      <h3>Timeline: Normal Operation</h3>
+      <p><strong>Time 00:00</strong> — all components start:</p>
+      <pre><code>Node 1 (controller-manager):
+  → Attempts to acquire lease
+  → Lease is empty → becomes leader
+  → Starts all controllers
+
+Node 2 (controller-manager):
+  → Attempts to acquire lease
+  → Lease held by Node 1 → becomes follower
+  → Watches lease; does nothing
+
+Node 3 (controller-manager):
+  → Attempts to acquire lease
+  → Lease held by Node 1 → becomes follower
+  → Watches lease; does nothing</code></pre>
+      <p><strong>Time 00:05</strong> — leader renews lease:</p>
+      <pre><code>Node 1 (leader):
+  → Renews lease (updates renewTime to 00:05)
+  → Lease duration: 15s (expires at 00:20)
+
+Node 2 (follower):
+  → Watches lease update
+  → Sees renewTime updated → leader is still alive
+  → Continues waiting</code></pre>
+
+      <h3>Timeline: Leader Failure</h3>
+      <p><strong>Time 00:10</strong> — Node 1 crashes (power outage):</p>
+      <pre><code>Node 1:
+  → CRASH! (no more lease renewals)
+
+Node 2 (follower):
+  → Watches lease; last renewTime was 00:05
+  → Lease was renewed at 00:05, duration is 15s, so it expires at 00:20
+
+Time 00:20 - Lease expires:
+  → Node 2 sees lease has expired (leaseDurationSeconds: 15)
+  → Node 2 attempts to acquire lease (atomic compare-and-swap)
+  → Success! Node 2 becomes the new leader
+  → Node 2 starts all controllers
+
+Time 00:21 - Node 3 notices:
+  → Node 3 sees holderIdentity changed to Node 2
+  → Node 3 remains a follower</code></pre>
+      <p><strong>Recovery time:</strong> ~15-20 seconds (lease duration + retry period).</p>
+
+      <h3>Timeline: Split-Brain Prevention</h3>
+      <p>What if two nodes try to become leader simultaneously?</p>
+      <pre><code>Scenario: Both Node 2 and Node 3 detect lease expiration at the same time
+
+Node 2:
+  → GET lease → holderIdentity: "" (expired)
+  → PUT lease with holderIdentity: node2, resourceVersion: 12345
+  → etcd checks: resourceVersion matches → SUCCESS
+
+Node 3:
+  → GET lease → holderIdentity: "" (expired)
+  → PUT lease with holderIdentity: node3, resourceVersion: 12345
+  → etcd checks: resourceVersion has changed (now 12346) → CONFLICT
+  → Node 3 receives error: "the object has been modified"
+  → Node 3 retries: reads lease, sees Node 2 is leader
+  → Node 3 becomes follower
+
+Result: Only one leader (Node 2) - Split-brain avoided!</code></pre>
+      <div class="mermaid">sequenceDiagram
+    participant N2 as Node 2
+    participant N3 as Node 3
+    participant E as etcd (Lease)
+    N2->>E: GET lease (expired)
+    N3->>E: GET lease (expired)
+    N2->>E: CAS write holderIdentity=node2
+    E-->>N2: SUCCESS
+    N3->>E: CAS write holderIdentity=node3
+    E-->>N3: CONFLICT (resourceVersion changed)
+    N3->>N3: Become follower
+</div>
+
+      <h2>Viewing and Debugging Leader Election</h2>
+      <table>
+        <tr><th>Command</th><th>Description</th></tr>
+        <tr><td><code>kubectl get lease -n kube-system</code></td><td>List all leases. Shows <code>holderIdentity</code> and age.</td></tr>
+        <tr><td><code>kubectl get lease kube-controller-manager -n kube-system -o yaml</code></td><td>View full lease details — <code>holderIdentity</code>, <code>renewTime</code>, etc.</td></tr>
+        <tr><td><code>kubectl get lease kube-controller-manager -n kube-system -w</code></td><td>Watch lease changes in real time — shows when the leader changes.</td></tr>
+        <tr><td><code>kubectl describe lease kube-controller-manager -n kube-system</code></td><td>Human-readable lease info — holder, age, transitions.</td></tr>
+        <tr><td><code>kubectl logs -n kube-system deployment/kube-controller-manager | grep leader</code></td><td>Check logs for leader election events — "became leader" or "stopped leading."</td></tr>
+      </table>
+
+      <h3>Example: checking the current leader</h3>
+      <pre><code>$ kubectl get lease kube-controller-manager -n kube-system -o yaml
+
+apiVersion: coordination.k8s.io/v1
+kind: Lease
+metadata:
+  name: kube-controller-manager
+  namespace: kube-system
+spec:
+  acquireTime: "2024-01-15T10:30:45Z"
+  holderIdentity: controller-manager-7d8f9-abcde  # ← Current leader
+  leaseDurationSeconds: 15
+  leaderTransitions: 42
+  renewTime: "2024-01-15T10:45:30Z"  # ← Last renewal</code></pre>
+      <pre><code>$ kubectl get leases -n kube-system
+NAME                      HOLDER                                     AGE
+kube-controller-manager   controller-manager-7d8f9-abcde            2d
+kube-scheduler            scheduler-6f7d8-xyz12                     2d
+cloud-provider            cloud-provider-3a4b5-def34               1d</code></pre>
+      <pre><code>$ kubectl get lease kube-controller-manager -n kube-system -w
+
+NAME                      HOLDER                                     AGE
+kube-controller-manager   controller-manager-7d8f9-abcde            2d
+kube-controller-manager   controller-manager-abc12-def34            2d  # <- changed!</code></pre>
+
+      <h2>Component-Specific Lease Names</h2>
+      <table>
+        <tr><th>Component</th><th>Lease Name</th><th>Lease Namespace</th><th>Purpose</th></tr>
+        <tr><td>kube-controller-manager</td><td><code>kube-controller-manager</code></td><td><code>kube-system</code></td><td>Controls all built-in controllers (Deployment, ReplicaSet, Node, etc.)</td></tr>
+        <tr><td>kube-scheduler</td><td><code>kube-scheduler</code></td><td><code>kube-system</code></td><td>Controls Pod scheduling decisions.</td></tr>
+        <tr><td>cloud-controller-manager</td><td><code>cloud-provider</code></td><td><code>kube-system</code></td><td>Controls cloud-specific controllers (load balancers, storage).</td></tr>
+        <tr><td>Custom Controller</td><td><code>&lt;custom-name&gt;</code></td><td><code>&lt;custom-namespace&gt;</code></td><td>Controls custom resources (CRDs).</td></tr>
+      </table>
+
+      <h2>Why Leader Election Is Critical</h2>
+      <table>
+        <tr><th>Problem Without Leader Election</th><th>Consequence</th><th>How Leader Election Solves It</th></tr>
+        <tr><td>Duplicate Controllers</td><td>Multiple replicas create/delete resources simultaneously → corruption.</td><td>Only the leader runs controllers; followers are passive.</td></tr>
+        <tr><td>Race Conditions</td><td>Two controllers try to update the same resource → conflicts.</td><td>Only one controller makes changes; no conflicts.</td></tr>
+        <tr><td>Split-Brain</td><td>Different nodes have different views of the cluster state.</td><td>A single leader ensures a consistent view.</td></tr>
+        <tr><td>Thundering Herd</td><td>All replicas react to events simultaneously → API Server overload.</td><td>Only the leader reacts; followers don't process events.</td></tr>
+        <tr><td>Resource Waste</td><td>All replicas use CPU/memory for active work.</td><td>Followers use minimal resources (only watch for leadership).</td></tr>
+      </table>
+
+      <h2>Failure Scenarios</h2>
+      <table>
+        <tr><th>Scenario</th><th>What Happens</th><th>Recovery Time</th><th>Impact</th></tr>
+        <tr><td>Leader Node Fails</td><td>Leader stops renewing lease.</td><td>~15-20 seconds (lease duration + retry)</td><td>New leader elected; controllers restart.</td></tr>
+        <tr><td>Leader Network Partition</td><td>Leader can't reach API Server.</td><td>~10-15 seconds</td><td>New leader elected; old leader detects isolation and stops.</td></tr>
+        <tr><td>Follower Node Fails</td><td>Follower does nothing; no impact.</td><td>0 seconds (other followers remain)</td><td>No impact; cluster remains HA.</td></tr>
+        <tr><td>All Nodes Fail</td><td>No leader elected.</td><td>Until at least one node recovers</td><td>Cluster is down (needs manual recovery).</td></tr>
+        <tr><td>API Server Overload</td><td>Leader can't renew lease on time.</td><td>~2-5 seconds (next retry)</td><td>Temporary; may cause frequent leader changes.</td></tr>
+        <tr><td>etcd Slow</td><td>Renewal takes longer than renew-deadline.</td><td>~15-30 seconds</td><td>Leader may lose leadership prematurely.</td></tr>
+      </table>
+
+      <h2>High Availability Modes</h2>
+      <table>
+        <tr><th>Mode</th><th>Description</th><th>Leader Election</th><th>Use Case</th></tr>
+        <tr><td>Single Replica</td><td>Only one instance running.</td><td>May be disabled (<code>--leader-elect=false</code>)</td><td>Development; small clusters.</td></tr>
+        <tr><td>Multi-Replica (Active/Standby)</td><td>Multiple replicas; one active, others standby.</td><td>Required (<code>--leader-elect=true</code>)</td><td>Production HA clusters (3 replicas).</td></tr>
+        <tr><td>Active/Active</td><td>All replicas work (not possible for these controllers).</td><td>Not applicable</td><td>Not used for controller-manager/scheduler.</td></tr>
+      </table>
+
+      <h2>Summary, Visually</h2>
+      <pre><code>                    etcd: Lease "kube-controller-manager"
+                    holderIdentity: "cm-node1"
+                    renewTime: 2024-01-15T10:45:30Z
+                    leaseDurationSeconds: 15
+                              │
+             ┌────────────────┼────────────────┐
+             │  Watch Lease   │  Watch Lease    │  Watch Lease
+             ▼                ▼                 ▼
+        Node 1: LEADER    Node 2: FOLLOWER  Node 3: FOLLOWER
+        renews every 2s   watches, idle     watches, idle
+        100+ workers running
+
+If Node 1 fails:
+  1. Lease expires after 15 seconds
+  2. Node 2 detects expiration
+  3. Node 2 acquires lease (atomic CAS)
+  4. Node 2 becomes leader, starts 100+ workers
+  5. Node 3 detects new leader, remains follower
+  6. Total downtime: ~15-20 seconds</code></pre>
+
+      <h2>Key Takeaways</h2>
+      <table>
+        <tr><th>Concept</th><th>Key Insight</th><th>Why It Matters</th></tr>
+        <tr><td>Leader Election</td><td>Only one replica of controller-manager/scheduler is active at a time.</td><td>Prevents race conditions, split-brain, and resource conflicts.</td></tr>
+        <tr><td>Leases</td><td>Distributed locks stored in etcd that track the current leader.</td><td>Provides a reliable, atomic way to elect a leader.</td></tr>
+        <tr><td>Lease Duration</td><td>Default 15 seconds; determines failover time.</td><td>Tuning this balances HA speed vs. etcd load.</td></tr>
+        <tr><td>Follower Nodes</td><td>Standby replicas that consume minimal resources.</td><td>Provides high availability with minimal resource waste.</td></tr>
+        <tr><td>Atomic Operations</td><td>etcd's compare-and-swap (CAS) ensures only one node becomes leader.</td><td>Prevents split-brain even in network partitions.</td></tr>
+        <tr><td>Renewal</td><td>Leader must periodically renew the lease to maintain leadership.</td><td>Ensures the leader is still alive; prevents stale leaders.</td></tr>
+      </table>
+
+      <h2>Quick Reference Card</h2>
+      <table>
+        <tr><th>Concept</th><th>One-Sentence Summary</th></tr>
+        <tr><td>Leader Election</td><td>Ensures only one replica of controller-manager or scheduler is active at any time.</td></tr>
+        <tr><td>Lease</td><td>A distributed lock stored in etcd that tracks the current leader and its renewal time.</td></tr>
+        <tr><td>Holder Identity</td><td>The unique ID of the current leader (e.g., <code>controller-manager-7d8f9-abcde</code>).</td></tr>
+        <tr><td>Lease Duration</td><td>How long a lease is valid before it expires (default 15 seconds).</td></tr>
+        <tr><td>Renew Deadline</td><td>How long the leader tries to renew before giving up (default 10 seconds).</td></tr>
+        <tr><td>Retry Period</td><td>How often followers check the lease (default 2 seconds).</td></tr>
+        <tr><td>Failover Time</td><td>~15-20 seconds (lease duration + retry period) to elect a new leader.</td></tr>
+        <tr><td>Split-Brain Prevention</td><td>etcd's atomic compare-and-swap ensures only one node becomes leader.</td></tr>
+      </table>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+</body>
+</html>

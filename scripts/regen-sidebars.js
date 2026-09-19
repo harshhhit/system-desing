@@ -10,8 +10,8 @@
  *   - a <script>window.PAGE_CONFIG={id:"…"}</script> and the assets/pages.js
  *     <script> tag, inserted into any page that is missing them
  *
- * Runs over BOTH sub-sites. Idempotent — safe to run anytime.
- * Run it after ANY edit to a sub-site's assets/sitemap.js or assets/pages.js.
+ * Runs over the docs/ site. Idempotent — safe to run anytime.
+ * Run it after ANY edit to docs/assets/sitemap.js or docs/assets/pages.js.
  *
  *   node scripts/regen-sidebars.js            # apply
  *   node scripts/regen-sidebars.js --dry-run  # show a diff, write nothing
@@ -33,8 +33,7 @@ const err = m => ERRORS.push(m);
 const warn = m => WARNINGS.push(m);
 
 const SITES = [
-  { id: "e1", dir: path.join(REPO, "eat-that-elephant-1") },
-  { id: "e2", dir: path.join(REPO, "eat-that-elephant-2") },
+  { id: "docs", dir: path.join(REPO, "docs") },
 ];
 
 const esc = s => String(s)
