@@ -16,6 +16,8 @@
      [data-resource-list]   -> downloadable-resource chips (index pages)
      [data-stat-topics] / [data-stat-pages] -> counts (index pages)
      [data-weekly-target]   -> "this week's reading target" widget (homepage)
+     every <p> (and every substantial <li>) in the content area -> a "🗒️+"
+                                            note marker, or the note you already saved there
 
    Everything is guarded: a missing map, missing PAGE_CONFIG, or a missing mount
    is a no-op, never an error. */
@@ -625,6 +627,134 @@
     mount.appendChild(bar);
   }
 
+  /* ---- inline notes: a "🗒️+" marker next to every <p> in the content
+     container, and next to any <li> substantial enough to be its own sentence
+     (short one-line items like "Pods" or "kubectl" don't get one — the
+     paragraph is the base unit, not every line). Click it to write a note;
+     it's pinned right after that block until edited or deleted. Notes are
+     keyed by page href + a fingerprint of the block's own text (its index in
+     the page plus a hash of its text), so
+     a note stays attached to the right spot even as other content is added
+     elsewhere on the page. Purely per-viewer, localStorage only — there is
+     no server, so notes live only in the browser they were written in.
+     Runs after renderReadAloud() so its markers/cards are never picked up as
+     text to speak. ---- */
+  var NOTES_KEY = "sdnotes_notes_" + map.siteId;
+  function readNotes() {
+    try { return JSON.parse(localStorage.getItem(NOTES_KEY) || "{}") || {}; }
+    catch (e) { return {}; }
+  }
+  function writeNotes(o) {
+    try { localStorage.setItem(NOTES_KEY, JSON.stringify(o)); } catch (e) {}
+  }
+  function hashStr(s) {
+    var h = 5381;
+    for (var i = 0; i < s.length; i++) { h = ((h << 5) + h) + s.charCodeAt(i); h = h | 0; }
+    return (h >>> 0).toString(36);
+  }
+  function renderNotes() {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", renderNotes, { once: true });
+      return;
+    }
+    var container = findReadableEl();
+    if (!container) return;
+    var pageKey = entry ? entry.href : window.location.pathname;
+
+    var LI_MIN_LEN = 40; // short one-line list items ("Pods", "kubectl") don't get their own marker
+
+    var blocks = [];
+    Array.prototype.forEach.call(container.querySelectorAll("p,li"), function (el) {
+      if (el.closest("[data-breadcrumb]") || el.closest("[data-page-subtitle]")) return;
+      if (el.closest(".sd-note-card") || el.closest(".sd-note-form")) return;
+      var text = (el.textContent || "").replace(/\s+/g, " ").trim();
+      if (text.length < 2) return;
+      if (el.tagName === "LI" && text.length < LI_MIN_LEN) return; // paragraphs are the base unit
+      blocks.push({ el: el, text: text });
+    });
+
+    function place(el, node) {
+      if (el.tagName === "LI") el.appendChild(node);
+      else el.insertAdjacentElement("afterend", node);
+    }
+    function saveNote(pageNotes, id, text) {
+      var store = readNotes();
+      var pn = store[pageKey] || {};
+      if (text) { pn[id] = { text: text, ts: Date.now() }; pageNotes[id] = pn[id]; }
+      else { delete pn[id]; delete pageNotes[id]; }
+      store[pageKey] = pn;
+      writeNotes(store);
+    }
+    function buildMarker(el, id, pageNotes) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "sd-note-marker";
+      btn.setAttribute("aria-label", "Add a note here");
+      btn.textContent = "🗒️+";
+      btn.addEventListener("click", function () { btn.replaceWith(buildForm(el, id, pageNotes, "")); });
+      return btn;
+    }
+    function buildCard(el, id, pageNotes) {
+      var note = pageNotes[id];
+      var card = document.createElement("div");
+      card.className = "sd-note-card";
+      var body = document.createElement("p");
+      body.className = "sd-note-text";
+      body.textContent = note.text;
+      card.appendChild(body);
+      var actions = document.createElement("div");
+      actions.className = "sd-note-actions";
+      var editBtn = document.createElement("button");
+      editBtn.type = "button"; editBtn.textContent = "✏️ Edit";
+      var delBtn = document.createElement("button");
+      delBtn.type = "button"; delBtn.textContent = "🗑️ Delete";
+      actions.appendChild(editBtn); actions.appendChild(delBtn);
+      card.appendChild(actions);
+      editBtn.addEventListener("click", function () { card.replaceWith(buildForm(el, id, pageNotes, note.text)); });
+      delBtn.addEventListener("click", function () {
+        saveNote(pageNotes, id, null);
+        card.replaceWith(buildMarker(el, id, pageNotes));
+      });
+      return card;
+    }
+    function buildForm(el, id, pageNotes, initial) {
+      var wrap = document.createElement("div");
+      wrap.className = "sd-note-form";
+      var ta = document.createElement("textarea");
+      ta.className = "sd-note-input";
+      ta.value = initial || "";
+      ta.placeholder = "Write a note about this…";
+      wrap.appendChild(ta);
+      var actions = document.createElement("div");
+      actions.className = "sd-note-actions";
+      var saveBtn = document.createElement("button");
+      saveBtn.type = "button"; saveBtn.textContent = "Save";
+      var cancelBtn = document.createElement("button");
+      cancelBtn.type = "button"; cancelBtn.textContent = "Cancel";
+      actions.appendChild(saveBtn); actions.appendChild(cancelBtn);
+      wrap.appendChild(actions);
+      saveBtn.addEventListener("click", function () {
+        var val = ta.value.trim();
+        if (!val) { wrap.replaceWith(pageNotes[id] ? buildCard(el, id, pageNotes) : buildMarker(el, id, pageNotes)); return; }
+        saveNote(pageNotes, id, val);
+        wrap.replaceWith(buildCard(el, id, pageNotes));
+      });
+      cancelBtn.addEventListener("click", function () {
+        wrap.replaceWith(pageNotes[id] ? buildCard(el, id, pageNotes) : buildMarker(el, id, pageNotes));
+      });
+      setTimeout(function () { ta.focus(); }, 0);
+      return wrap;
+    }
+
+    var store = readNotes();
+    var pageNotes = store[pageKey] || {};
+    blocks.forEach(function (block, i) {
+      var id = i + "|" + hashStr(block.text);
+      var node = pageNotes[id] ? buildCard(block.el, id, pageNotes) : buildMarker(block.el, id, pageNotes);
+      place(block.el, node);
+    });
+  }
+
   /* ---- page <title> / <h1> / subtitle / breadcrumb, from SITE_PAGES ---- */
   function applyPageMeta() {
     if (!entry) return;
@@ -785,6 +915,7 @@
   renderSidebar();
   renderCoverageTracker();
   renderReadAloud();
+  renderNotes();
   markCoveredLinks();
   applyPageMeta();
   renderTopicGrid();

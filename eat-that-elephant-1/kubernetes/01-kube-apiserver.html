@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "k8s-apiserver" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kube-apiserver Deep Dive · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><ul><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a class="active" href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul><h3>🖥️ Front-End</h3><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Kubernetes / kube-apiserver Deep Dive</p>
+      <h1 data-page-title>kube-apiserver Deep Dive</h1>
+      <p class="sd-study-prompt" data-page-subtitle>The front door of Kubernetes: every request — kubectl, Helm, controllers, kubelets — passes through here before it reaches etcd.</p>
+
+      <h2>What Is It?</h2>
+      <p>The API Server is the front door of Kubernetes.</p>
+      <p>Every request enters the cluster through kube-apiserver.</p>
+      <p>Nothing talks directly to etcd except the API Server.</p>
+      <h3>Examples</h3>
+      <ul>
+        <li>kubectl</li>
+        <li>Helm</li>
+        <li>Controllers</li>
+        <li>Scheduler</li>
+        <li>Kubelets</li>
+        <li>Operators</li>
+      </ul>
+      <p>All communicate through the API Server.</p>
+
+      <h2>Responsibilities</h2>
+      <ul>
+        <li>Accept API requests</li>
+        <li>Validate requests</li>
+        <li>Authenticate users</li>
+        <li>Authorize operations</li>
+        <li>Apply admission controls</li>
+        <li>Persist data into etcd</li>
+        <li>Expose Kubernetes APIs</li>
+      </ul>
+
+      <h2>Responsibilities — Detailed Walkthrough</h2>
+
+      <h3>1. Accept API Requests</h3>
+      <ul>
+        <li>The Kubernetes API Server is the entry point for all cluster operations.</li>
+        <li>It receives requests from users, kubectl, controllers, and external applications.</li>
+        <li>Requests usually arrive through REST APIs over HTTPS.</li>
+        <li>Every create, update, delete, or read operation starts here.</li>
+        <li>The API server acts as the front door of the control plane.</li>
+        <li>It converts incoming HTTP requests into Kubernetes objects and actions.</li>
+        <li>Without this component, no communication with the cluster is possible.</li>
+      </ul>
+
+      <h3>2. Validate Requests</h3>
+      <ul>
+        <li>After receiving a request, Kubernetes checks whether the request is correctly formed.</li>
+        <li>Validation ensures required fields are present and data types are correct.</li>
+        <li>It prevents invalid or malformed resources from entering the cluster.</li>
+        <li>Schema validation is based on Kubernetes API definitions.</li>
+        <li>For example, a Deployment without a container image will fail validation.</li>
+        <li>Validation protects cluster consistency and reliability.</li>
+        <li>Only valid objects proceed to the next processing stage.</li>
+      </ul>
+
+      <h3>3. Authenticate Users</h3>
+      <ul>
+        <li>Authentication verifies the identity of the requester.</li>
+        <li>Kubernetes answers the question, &ldquo;Who is making this request?&rdquo;</li>
+        <li>Users can authenticate using certificates, tokens, IAM roles, or OIDC providers.</li>
+        <li>Authentication does not determine permissions.</li>
+        <li>It simply establishes the identity of the user or service account.</li>
+        <li>If authentication fails, the request is immediately rejected.</li>
+        <li>Successful authentication passes the request to the authorization phase.</li>
+      </ul>
+
+      <h3>4. Authorize Operations</h3>
+      <ul>
+        <li>Authorization determines what an authenticated user is allowed to do.</li>
+        <li>Kubernetes asks, &ldquo;Can this user perform this action?&rdquo;</li>
+        <li>It checks permissions using mechanisms like RBAC, ABAC, or Webhooks.</li>
+        <li>Actions include creating pods, deleting deployments, or viewing secrets.</li>
+        <li>Unauthorized operations are denied even if the user is authenticated.</li>
+        <li>RBAC is the most commonly used authorization mechanism.</li>
+        <li>This stage enforces security and least-privilege access.</li>
+      </ul>
+
+      <h3>5. Apply Admission Controls</h3>
+      <ul>
+        <li>Admission Controllers inspect requests before objects are stored.</li>
+        <li>They can modify, reject, or enforce policies on resources.</li>
+        <li>Examples include setting default values or enforcing security standards.</li>
+        <li>They act after authorization but before persistence.</li>
+        <li>Mutating admission controllers can change requests automatically.</li>
+        <li>Validating admission controllers ensure policies are satisfied.</li>
+        <li>This stage helps maintain compliance and cluster governance.</li>
+      </ul>
+
+      <h3>6. Persist Data into etcd</h3>
+      <ul>
+        <li>Kubernetes stores cluster state information inside etcd.</li>
+        <li>etcd is a distributed key-value database used by the control plane.</li>
+        <li>Resource definitions such as Pods, Deployments, and Services are saved here.</li>
+        <li>The API server writes changes to etcd after all checks are complete.</li>
+        <li>etcd serves as the single source of truth for the cluster.</li>
+        <li>Controllers continuously read this data to maintain the desired state.</li>
+        <li>Losing etcd data can affect the entire cluster's operation.</li>
+      </ul>
+
+      <h3>7. Expose Kubernetes APIs</h3>
+      <ul>
+        <li>The API Server provides REST endpoints for Kubernetes resources.</li>
+        <li>Components such as kube-scheduler and kube-controller-manager interact through these APIs.</li>
+        <li>Users access these APIs using kubectl, SDKs, or CI/CD pipelines.</li>
+        <li>APIs support operations like GET, POST, PUT, PATCH, and DELETE.</li>
+        <li>This interface allows automation and integration with external tools.</li>
+        <li>API versioning ensures backward compatibility between releases.</li>
+        <li>By exposing APIs, Kubernetes enables a consistent way to manage cluster resources.</li>
+      </ul>
+
+      <h2>API Groups &amp; Versioning</h2>
+      <p>Every Kubernetes object is addressed by an API group and version, not a single flat namespace of types:</p>
+      <ul>
+        <li>The <strong>core group</strong> (also called the "legacy" group) has no name — Pods, Services, ConfigMaps, Secrets use <code>apiVersion: v1</code> directly.</li>
+        <li><strong>Named groups</strong> use <code>apiVersion: &lt;group&gt;/&lt;version&gt;</code>, e.g. Deployments and ReplicaSets live in <code>apps/v1</code>, Jobs and CronJobs in <code>batch/v1</code>, Roles and RoleBindings in <code>rbac.authorization.k8s.io/v1</code>.</li>
+        <li>Each version carries a maturity level — <code>v1alpha1</code> (experimental, may change or disappear), <code>v1beta1</code> (well-tested, minor changes possible), <code>v1</code> (stable, backward-compatible going forward).</li>
+      </ul>
+      <p>This grouping lets the API surface grow — new resource types, new versions of existing ones — without breaking clients pinned to a stable group/version.</p>
+
+      <h2>Internal Flow</h2>
+      <pre><code>kubectl apply
+      │
+      ▼
+API Server
+      │
+      ├── Authentication
+      ├── Authorization
+      ├── Validation
+      └── Admission Control
+      │
+      ▼
+etcd</code></pre>
+
+      <h2>Complete Flow</h2>
+      <pre><code>Client (kubectl, UI, CI/CD)
+            |
+            v
+      API Server
+            |
+            v
+   1. Accept Request
+            |
+            v
+   2. Validate Request
+            |
+            v
+   3. Authenticate User
+            |
+            v
+   4. Authorize Operation
+            |
+            v
+   5. Admission Controllers
+            |
+            v
+   6. Store in etcd
+            |
+            v
+   7. Expose APIs to Other Components
+            |
+            v
+Controllers, Scheduler, Kubelet</code></pre>
+      <p>This sequence represents the complete lifecycle of how Kubernetes processes an API request before the desired state is eventually enforced throughout the cluster.</p>
+      <p>Same lifecycle, as a sequence diagram:</p>
+      <div class="mermaid">sequenceDiagram
+    participant C as Client (kubectl/CI)
+    participant A as kube-apiserver
+    participant E as etcd
+    participant W as Controllers / Scheduler / Kubelet
+    C->>A: Request
+    A->>A: Authenticate
+    A->>A: Authorize
+    A->>A: Admission Control
+    A->>E: Persist object
+    E-->>A: Ack
+    A-->>C: Response
+    A-->>W: Watch event
+</div>
+
+      <h2>Why It Exists</h2>
+      <p>Without a central API:</p>
+      <ul>
+        <li>Scheduler</li>
+        <li>Controller</li>
+        <li>Kubelet</li>
+        <li>etcd</li>
+      </ul>
+      <p>would all need direct communication.</p>
+      <p>The API Server provides:</p>
+      <ul>
+        <li>Single entry point</li>
+        <li>Security boundary</li>
+        <li>Consistent validation</li>
+        <li>Auditability</li>
+      </ul>
+
+      <h2>Failure Impact</h2>
+      <p>If API Server fails:</p>
+      <ul>
+        <li>New Deployments Fail</li>
+        <li>Scaling Fails</li>
+        <li>kubectl Fails</li>
+      </ul>
+      <p>Existing Pods usually continue running.</p>
+      <p>Cluster management becomes unavailable.</p>
+
+      <h2>Tradeoffs</h2>
+      <h3>Advantages</h3>
+      <ul>
+        <li>Centralized security</li>
+        <li>Validation</li>
+        <li>Auditing</li>
+        <li>Consistent API access</li>
+      </ul>
+      <h3>Disadvantages</h3>
+      <ul>
+        <li>Critical dependency</li>
+        <li>Can become a bottleneck at large scale</li>
+      </ul>
+
+      <h2>Failure Scenario</h2>
+      <p>Symptoms:</p>
+      <ul>
+        <li>kubectl commands fail</li>
+        <li>Deployments fail</li>
+        <li>Scaling fails</li>
+      </ul>
+      <p>Existing workloads continue running.</p>
+
+      <h2>High Availability &amp; Scaling</h2>
+      <ul>
+        <li>Because kube-apiserver keeps no state of its own — everything lives in etcd — it can run as multiple identical replicas behind a load balancer, and any replica can serve any request.</li>
+        <li>A <strong>watch cache</strong> lets the API server serve most reads and watches from in-memory state instead of hitting etcd for every request, which is what makes it scale to many clients watching the same objects.</li>
+        <li><strong>API Priority and Fairness</strong> classifies and queues incoming requests so that a burst of low-priority traffic (e.g. a runaway controller) can't starve high-priority requests (e.g. node heartbeats) of capacity.</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+</body>
+</html>

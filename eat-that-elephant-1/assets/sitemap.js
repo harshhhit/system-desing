@@ -8,6 +8,60 @@ window.SITE_MAP = {
   "parentHome": "index.html",
   "sections": [
     {
+      "icon": "☸️",
+      "name": "Kubernetes",
+      "pages": [
+        {
+          "href": "kubernetes/00-index.html",
+          "title": "00. Control Plane Overview"
+        },
+        {
+          "href": "kubernetes/01-kube-apiserver.html",
+          "title": "01. kube-apiserver"
+        },
+        {
+          "href": "kubernetes/02-etcd.html",
+          "title": "02. etcd"
+        },
+        {
+          "href": "kubernetes/03-kube-scheduler.html",
+          "title": "03. kube-scheduler"
+        },
+        {
+          "href": "kubernetes/04-kube-controller-manager.html",
+          "title": "04. kube-controller-manager"
+        },
+        {
+          "href": "kubernetes/05-api-request-flow.html",
+          "title": "05. API Request Flow"
+        },
+        {
+          "href": "kubernetes/06-rbac-namespace-scope.html",
+          "title": "06. RBAC: Namespace Scoping"
+        },
+        {
+          "href": "kubernetes/07-persistent-storage.html",
+          "title": "07. Persistent Storage & Distributed DBs"
+        },
+        {
+          "href": "kubernetes/08-configmap-secret.html",
+          "title": "08. ConfigMap & Secret"
+        },
+        {
+          "href": "kubernetes/09-data-plane.html",
+          "title": "09. Data Plane Deep Dive"
+        },
+        {
+          "href": "kubernetes/10-api-request-lifecycle.html",
+          "title": "10. API Request Lifecycle: The Four Gates"
+        },
+        {
+          "href": "kubernetes/11-leader-election.html",
+          "title": "11. Leader Election: HA for Controller Manager & Scheduler"
+        }
+      ]
+    },
+    {
       "icon": "🖥️",
       "name": "Front-End",
       "pages": [

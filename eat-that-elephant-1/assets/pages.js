@@ -8,6 +8,78 @@
    then add a matching entry here (href relative to this sub-site root).
    'subtitle' is optional and may contain inline HTML. */
 window.SITE_PAGES = {
+  "k8s-overview": {
+    href: "kubernetes/00-index.html",
+    section: "Kubernetes",
+    title: "Kubernetes Control Plane: Overview",
+    subtitle: "The brain of the cluster — architecture, the reconciliation loop, and how kube-apiserver, etcd, the scheduler, and the controller manager depend on each other."
+  },
+  "k8s-apiserver": {
+    href: "kubernetes/01-kube-apiserver.html",
+    section: "Kubernetes",
+    title: "kube-apiserver Deep Dive",
+    subtitle: "The front door of Kubernetes: every request — kubectl, Helm, controllers, kubelets — passes through here before it reaches etcd."
+  },
+  "k8s-etcd": {
+    href: "kubernetes/02-etcd.html",
+    section: "Kubernetes",
+    title: "etcd Deep Dive",
+    subtitle: "Kubernetes' distributed key-value store and single source of truth for cluster state."
+  },
+  "k8s-scheduler": {
+    href: "kubernetes/03-kube-scheduler.html",
+    section: "Kubernetes",
+    title: "kube-scheduler Deep Dive",
+    subtitle: "How Kubernetes decides which node an unscheduled Pod should run on."
+  },
+  "k8s-controller-manager": {
+    href: "kubernetes/04-kube-controller-manager.html",
+    section: "Kubernetes",
+    title: "kube-controller-manager Deep Dive",
+    subtitle: "The reconciliation loops that keep actual cluster state converging on desired state."
+  },
+  "k8s-api-request-flow": {
+    href: "kubernetes/05-api-request-flow.html",
+    section: "Kubernetes",
+    title: "Kubernetes API Request Flow: Auth, AuthZ, Admission",
+    subtitle: "Walking a single <code>kubectl get pods -n frontend</code> call through authentication, authorization, admission control, validation, and etcd &mdash; read vs. write paths."
+  },
+  "k8s-rbac-namespace-scope": {
+    href: "kubernetes/06-rbac-namespace-scope.html",
+    section: "Kubernetes",
+    title: "RBAC: Scoping a Namespace-Only User",
+    subtitle: "A worked example: give a user access to one namespace only, why RBAC can't restrict specific nodes, and where SSH/OS access takes over."
+  },
+  "k8s-persistent-storage": {
+    href: "kubernetes/07-persistent-storage.html",
+    section: "Kubernetes",
+    title: "Persistent Storage & Distributed Databases on Kubernetes",
+    subtitle: "PV/PVC/StorageClass, why each database instance gets its own volume, and where Kubernetes' job ends and the database's replication/failover job begins."
+  },
+  "k8s-configmap-secret": {
+    href: "kubernetes/08-configmap-secret.html",
+    section: "Kubernetes",
+    title: "ConfigMap & Secret: Separating Config from Sensitive Data",
+    subtitle: "Non-sensitive vs. sensitive configuration, why Base64 isn't encryption, and how Pods consume both without hardcoding values into the image."
+  },
+  "k8s-data-plane": {
+    href: "kubernetes/09-data-plane.html",
+    section: "Kubernetes",
+    title: "Data Plane Deep Dive",
+    subtitle: "Kubelet, CRI, CNI, CSI, and kube-proxy — the worker-node layer that actually runs containers, wires up networking and storage, and forwards Service traffic."
+  },
+  "k8s-request-lifecycle": {
+    href: "kubernetes/10-api-request-lifecycle.html",
+    section: "Kubernetes",
+    title: "API Server Request Lifecycle: The Four Gates",
+    subtitle: "Authentication, Authorization, Admission Control, and etcd — the four sequential security and validation gates every request must clear."
+  },
+  "k8s-leader-election": {
+    href: "kubernetes/11-leader-election.html",
+    section: "Kubernetes",
+    title: "Leader Election: HA for Controller Manager & Scheduler",
+    subtitle: "How Lease objects in etcd let multiple replicas of kube-controller-manager and kube-scheduler run without fighting over the same resources — election process, tuning, and failure scenarios."
+  },
   "frontend-roadmap": {
     href: "01-front-end/frontend-roadmap.html",
     section: "Front-End",

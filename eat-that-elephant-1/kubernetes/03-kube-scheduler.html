@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "k8s-scheduler" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kube-scheduler Deep Dive · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><ul><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a class="active" href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul><h3>🖥️ Front-End</h3><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Kubernetes / kube-scheduler Deep Dive</p>
+      <h1 data-page-title>kube-scheduler Deep Dive</h1>
+      <p class="sd-study-prompt" data-page-subtitle>How Kubernetes decides which node an unscheduled Pod should run on.</p>
+
+      <h2>What Is It?</h2>
+      <p>The Scheduler decides where Pods should run. When a new Pod is created:</p>
+      <pre><code>Pod Created
+      │
+      ▼
+No Node Assigned → Scheduler selects the best node.</code></pre>
+
+      <h2>Responsibilities</h2>
+      <ul>
+        <li>Node selection</li>
+        <li>Resource placement</li>
+        <li>Capacity evaluation</li>
+        <li>Affinity rules</li>
+        <li>Anti-affinity rules</li>
+        <li>Taints and tolerations</li>
+        <li>Topology awareness</li>
+      </ul>
+
+      <h2>Node Selection</h2>
+      <p>Node selection is the simplest scheduling mechanism in Kubernetes. It allows a Pod to run only on nodes that have specific labels — the scheduler checks node labels and matches them against the Pod's requirements. If a node contains the required label, it becomes a candidate for scheduling; if no node matches, the Pod remains in a <code>Pending</code> state.</p>
+      <p>Node selection is usually implemented using <code>nodeSelector</code>. It provides <strong>hard constraints</strong>, meaning the scheduler must satisfy them — there is no "soft" nodeSelector. Organizations commonly use it to separate workloads such as production, development, GPU, storage-heavy, or compliance-specific applications. It's simple but not flexible for complex placement requirements (that's what affinity is for, below).</p>
+      <p><strong>Major things to understand:</strong> node labels, <code>nodeSelector</code>, hard scheduling constraints, Pending Pods due to no matching nodes, label management strategy.</p>
+
+      <h2>Resource Placement</h2>
+      <p>Resource placement refers to scheduling Pods based on available node resources. The scheduler evaluates CPU, memory, ephemeral storage, and extended resources. Pod <strong>resource requests</strong> determine the minimum resources required — nodes lacking sufficient available resources are filtered out. This prevents overcommitment and node exhaustion.</p>
+      <p>Kubernetes schedules based on <em>requested</em> resources, not actual usage. Proper resource requests help achieve predictable scheduling behavior; resource placement directly impacts cluster utilization and workload performance, and poor resource sizing often leads to scheduling failures or resource waste.</p>
+      <p><strong>Major things to understand:</strong> CPU requests and limits, memory requests and limits, ephemeral storage, extended resources (GPU, FPGA), resource accounting, scheduler filtering phase.</p>
+
+      <h2>Capacity Evaluation</h2>
+      <p>Capacity evaluation is the process of determining whether a node can accommodate a Pod. The scheduler compares requested resources against a node's <strong>allocatable</strong> resources — allocatable capacity excludes resources reserved for system components (kubelet, OS, eviction thresholds), so it's always ≤ the node's raw capacity.</p>
+      <p>Nodes are continuously evaluated as workloads are added or removed, and capacity evaluation happens before scoring candidate nodes. It helps prevent resource contention and node instability — insufficient capacity causes Pods to remain unscheduled. Kubernetes maintains a view of cluster resource availability through the API server, and accurate capacity information is critical for efficient scheduling.</p>
+      <p><strong>Major things to understand:</strong> node capacity vs. allocatable resources, scheduler cache, resource reservation, cluster utilization, node pressure conditions, scheduling failures.</p>
+
+      <h2>nodeSelector vs. Affinity/Anti-Affinity — Intuition</h2>
+      <p>Affinity and anti-affinity let you constrain which nodes your Pod is eligible to be scheduled on, based on labels of nodes <em>or</em> labels of other Pods.</p>
+
+      <h3>1. What is <code>nodeSelector</code>?</h3>
+      <p>Think of <code>nodeSelector</code> like a simple filter:</p>
+      <ul>
+        <li>You put labels on nodes (e.g. <code>disk: ssd</code>, <code>size: large</code>).</li>
+        <li>In your Pod spec, you say: "Only run me on nodes that have label <code>disk: ssd</code>."</li>
+      </ul>
+      <p>✅ Simple — either the node matches <em>all</em> labels, or it doesn't.<br>
+      ❌ Limited — no "or" logic, no "soft" rules, no "I prefer but don't require."</p>
+
+      <h3>2. What do affinity/anti-affinity add?</h3>
+      <p>They give you more powerful rules:</p>
+      <p><strong>a. More expressive matching</strong> — with <code>nodeSelector</code>, only AND (all labels must match). With affinity, you can say "node must have <code>disk=ssd</code> <strong>or</strong> <code>disk=nvme</code>." You can also say "avoid nodes with <code>disk=hdd</code>" (anti-affinity).</p>
+      <p><strong>b. Soft rules (preferences)</strong> — a hard rule (required): the Pod <em>must</em> go to a matching node, otherwise it won't be scheduled. A soft rule (preferred): "try to put me on an SSD node, but if none exists, put me anywhere." That's huge for reliability — your Pod can still run even if the ideal node type is unavailable.</p>
+      <p><strong>c. Look at other Pods, not just node labels</strong> — node affinity looks at node labels; <strong>inter-pod affinity/anti-affinity</strong> looks at labels on Pods already running on a node. Example: "schedule me on a node where there's already a Pod with label <code>app=frontend</code>" (affinity), or "don't schedule me on a node where a Pod with label <code>app=backend</code> is running" (anti-affinity). This helps with keeping related Pods together (affinity) for low latency, and spreading Pods apart (anti-affinity) for high availability.</p>
+
+      <h3>3. Two types of affinity</h3>
+      <table>
+        <tr><th>Type</th><th>Looks at…</th><th>Example</th></tr>
+        <tr><td>Node affinity</td><td>Labels on the node itself</td><td>"Run me on a node in <code>us-east-1</code> zone, preferably with GPU."</td></tr>
+        <tr><td>Inter-pod affinity/anti-affinity</td><td>Labels on other Pods running on the same node (or same zone, etc.)</td><td>"Don't run two database Pods on the same node."</td></tr>
+      </table>
+
+      <h3>4. Real-world analogy</h3>
+      <p>Imagine you're assigning people to seats in a bus:</p>
+      <ul>
+        <li><strong>nodeSelector</strong>: "Only sit in seats labeled 'window'." — strict, simple.</li>
+        <li><strong>Node affinity</strong>: "I prefer a window seat, but if none available, an aisle is okay." — soft.</li>
+        <li><strong>Inter-pod anti-affinity</strong>: "I don't want to sit next to anyone who is eating fish." — based on other passengers, not seat labels.</li>
+        <li><strong>Inter-pod affinity</strong>: "I want to sit next to my coworker (same project label)."</li>
+      </ul>
+
+      <p><strong>Summary for memory:</strong></p>
+      <ul>
+        <li><code>nodeSelector</code> → simple, <strong>hard</strong>, node-labels-only.</li>
+        <li>Node affinity → <strong>hard or soft</strong>, expressive logic on node labels.</li>
+        <li>Inter-pod affinity/anti-affinity → <strong>hard or soft</strong>, based on other Pods.</li>
+      </ul>
+      <p>This makes Kubernetes scheduling much more flexible and intelligent for production environments.</p>
+
+      <h2>Affinity Rules</h2>
+      <p>Affinity rules tell Kubernetes where Pods prefer or must run. Affinity provides more advanced scheduling than node selectors — it allows matching based on node labels <em>and</em> the placement of other, already-running Pods. Affinity can be mandatory (a hard rule) or preferred (a soft rule that influences scoring):</p>
+      <ul>
+        <li><strong>Required</strong> (<code>requiredDuringSchedulingIgnoredDuringExecution</code>) — acts as a hard rule; the Pod must go to a matching node or it won't be scheduled at all.</li>
+        <li><strong>Preferred</strong> (<code>preferredDuringSchedulingIgnoredDuringExecution</code>) — acts as a soft rule; e.g. "try to put me on an SSD node, but if none exists, put me anywhere." It influences scoring rather than filtering.</li>
+      </ul>
+      <p>It enables workload placement near specific hardware or services, improving performance, locality, and regulatory compliance — large clusters often use affinity to optimize application architecture.</p>
+
+      <h3>Node Affinity</h3>
+      <p>Matches node labels. Unlike <code>nodeSelector</code> (which is a strict AND of all labels), node affinity supports richer boolean logic — e.g. "node must have <code>disk=ssd</code> OR <code>disk=nvme</code>."</p>
+
+      <h3>Pod Affinity</h3>
+      <p>Places Pods close to other Pods, matched via label selectors over a topology domain (e.g. "schedule me on a node in the same zone as Pods labeled <code>app=cache</code>").</p>
+
+      <p><strong>Major things to understand:</strong> hard vs. soft affinity, label selectors, node affinity, Pod affinity, scheduler scoring.</p>
+
+      <h2>Anti-Affinity Rules</h2>
+      <p>Anti-affinity is the opposite of affinity — it prevents Pods from being scheduled together. It improves fault tolerance and availability: applications can avoid placing replicas on the same node, reducing the impact of a single node failure. Anti-affinity is commonly used for databases and stateful applications.</p>
+      <p>The scheduler evaluates existing Pod locations before placement. Hard anti-affinity can make scheduling difficult in small clusters, and excessive anti-affinity can lead to resource fragmentation.</p>
+
+      <h3>Pod Anti-Affinity</h3>
+      <pre><code>podAntiAffinity:
+  requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchLabels:
+          app: my-db
+      topologyKey: "kubernetes.io/hostname"</code></pre>
+
+      <p><strong>Use cases:</strong> spread replicas, high availability, fault isolation, multi-tenant environments.</p>
+      <p><strong>Key concepts:</strong> topology domains, label selectors, required anti-affinity, preferred anti-affinity.</p>
+
+      <h2>Taints and Tolerations</h2>
+      <p>Taints work from the <strong>node</strong> side, while tolerations work from the <strong>Pod</strong> side. A taint marks a node as unsuitable for certain workloads — Pods must explicitly tolerate the taint to run there. Taints provide workload isolation and are commonly used for dedicated nodes: GPU nodes often use taints to prevent accidental scheduling and reserve expensive infrastructure. Multiple taints can exist on a node, and the scheduler checks tolerations before placement.</p>
+      <table>
+        <tr><th>Effect</th><th>Behavior</th></tr>
+        <tr><td><code>NoSchedule</code></td><td>New Pods without a matching toleration won't be scheduled here; existing Pods are left alone.</td></tr>
+        <tr><td><code>PreferNoSchedule</code></td><td>Soft version — the scheduler tries to avoid the node but will use it if there's no alternative.</td></tr>
+        <tr><td><code>NoExecute</code></td><td>New Pods won't be scheduled here <em>and</em> already-running Pods without a matching toleration are evicted.</td></tr>
+      </table>
+      <p><strong>Major things to understand:</strong> node taints, Pod tolerations, dedicated workloads, node eviction, NoSchedule vs. NoExecute, system taints.</p>
+
+      <h2>Topology Awareness</h2>
+      <p>Topology awareness helps Kubernetes make scheduling decisions based on physical or logical infrastructure boundaries. A <strong>topology domain</strong> can be a node, rack, zone, region, or data center. Kubernetes can spread workloads across topology domains to improve application availability during failures and reduce single points of failure.</p>
+      <p>The scheduler uses topology labels to understand infrastructure layout — modern clusters heavily rely on topology-aware scheduling, especially in multi-zone cloud environments, to balance resiliency, latency, and resource utilization.</p>
+      <p><strong>Examples:</strong> node, rack, availability zone, region.</p>
+      <p><strong>Major things to understand:</strong> topology labels, availability zones, failure domains, topology spread constraints, Pod distribution, cross-zone traffic costs.</p>
+
+      <h2>Scheduling Process</h2>
+      <p>Scheduler evaluates:</p>
+      <ul>
+        <li>CPU</li>
+        <li>Memory</li>
+        <li>Storage</li>
+        <li>Affinity Rules</li>
+        <li>Node Labels</li>
+        <li>Taints</li>
+        <li>Policies</li>
+      </ul>
+      <p>Then chooses a node.</p>
+
+      <h2>How the Scheduler Picks a Node</h2>
+      <p>Choosing a node happens in two phases:</p>
+      <ul>
+        <li><strong>Filtering</strong> (predicates) — eliminates every node that can't run the Pod at all: not enough CPU/memory, a required label doesn't match nodeSelector/affinity rules, or the node has a taint the Pod doesn't tolerate. What's left is the set of <em>feasible</em> nodes.</li>
+        <li><strong>Scoring</strong> (priorities) — ranks the feasible nodes and picks the highest-scoring one. Scoring plugins balance goals like spreading Pods evenly across nodes, bin-packing onto fewer nodes to save resources, or preferring nodes that already have the Pod's image cached.</li>
+      </ul>
+      <p>If no node survives filtering, the Pod stays <code>Pending</code> until one becomes available.</p>
+      <div class="mermaid">flowchart LR
+    Pod["🆕 Unscheduled Pod"] --> Filter{"Filtering<br/>eliminate infeasible nodes"}
+    Filter --> Score{"Scoring<br/>rank feasible nodes"}
+    Score --> Bind["📌 Bind to highest-scoring node"]
+    Bind --> API["🚪 API Server updated"]
+</div>
+
+      <h2>Internal Flow</h2>
+      <pre><code>Unscheduled Pod
+        │
+        ▼
+Scheduler
+        │
+        ▼
+Node Selected
+        │
+        ▼
+API Server Updated</code></pre>
+
+      <h2>Why It Exists</h2>
+      <p>Without scheduling:</p>
+      <pre><code>Pod Created</code></pre>
+      <p>but Kubernetes would not know:</p>
+      <p>Where should it run?</p>
+      <p>Scheduler solves placement decisions.</p>
+
+      <h2>Failure Impact</h2>
+      <p>If Scheduler fails:</p>
+      <pre><code>Existing Pods Continue Running</code></pre>
+      <p>But:</p>
+      <pre><code>New Pods Remain Pending</code></pre>
+      <p>Symptoms:</p>
+      <pre><code>kubectl get pods
+STATUS = Pending</code></pre>
+
+      <h2>Scheduler Tradeoffs</h2>
+      <h3>Advantages</h3>
+      <ul>
+        <li>Efficient resource utilization</li>
+        <li>Automated placement</li>
+        <li>High cluster density</li>
+        <li>Policy-based scheduling</li>
+      </ul>
+      <h3>Disadvantages</h3>
+      <ul>
+        <li>Scheduling decisions can become complex</li>
+        <li>Large clusters increase scheduling overhead</li>
+        <li>Poor constraints may create resource fragmentation</li>
+      </ul>
+
+      <h2>Tradeoffs Summary</h2>
+      <p>From the Control Plane's consolidated tradeoffs comparison:</p>
+      <h3>Advantages</h3>
+      <ul>
+        <li>Automated placement</li>
+        <li>Resource optimization</li>
+        <li>Policy-driven scheduling</li>
+      </ul>
+      <h3>Disadvantages</h3>
+      <ul>
+        <li>Complex scheduling rules can slow decisions</li>
+        <li>Poor policies may reduce cluster efficiency</li>
+      </ul>
+
+      <h2>Failure Scenario</h2>
+      <p>Symptoms: Pods stuck in Pending state.</p>
+      <p>Existing Pods continue running.</p>
+
+      <h2>Priority &amp; Preemption</h2>
+      <p>A <code>PriorityClass</code> gives Pods a priority value. When the cluster is full and a high-priority Pod can't be scheduled, the scheduler can <strong>preempt</strong> — evict — one or more lower-priority Pods from a node to make room, rather than leaving the high-priority Pod pending indefinitely.</p>
+
+      <h2>Multiple &amp; Custom Schedulers</h2>
+      <p>A Pod can request a specific scheduler with <code>spec.schedulerName</code>. This means multiple schedulers can run side by side in the same cluster — the default kube-scheduler alongside a custom or specialized scheduler (e.g. for batch/ML workloads with different bin-packing goals) — each only picking up Pods addressed to it.</p>
+
+      <h2>Scheduler Components You Must Understand</h2>
+      <p>To master Kubernetes scheduling, focus on these building blocks end to end:</p>
+      <ol>
+        <li><strong>Scheduling Queue</strong> — stores unscheduled Pods waiting for placement.</li>
+        <li><strong>Filtering Phase</strong> — removes nodes that cannot run the Pod (resource shortage, missing labels, untolerated taints, affinity mismatch). See "How the Scheduler Picks a Node" above.</li>
+        <li><strong>Scoring Phase</strong> — ranks remaining nodes (least loaded node, preferred affinity, resource balance). See "How the Scheduler Picks a Node" above.</li>
+        <li><strong>Binding Phase</strong> — assigns the Pod to the selected node, writing the binding back to the API server.</li>
+        <li><strong>Scheduler Cache</strong> — maintains cluster state (nodes, assumed Pods, resource usage) in memory for fast decisions without re-querying the API server on every cycle.</li>
+        <li><strong>Scheduling Framework Plugins</strong> — the extension points the scheduler runs at each phase. Important plugins: <code>NodeResourcesFit</code>, <code>NodeAffinity</code>, <code>PodTopologySpread</code>, <code>TaintToleration</code>, <code>InterPodAffinity</code>.</li>
+        <li><strong>Preemption</strong> — the scheduler evicts lower-priority Pods when higher-priority Pods need resources. See "Priority &amp; Preemption" above.</li>
+        <li><strong>Priority Classes</strong> — determine which workloads are more important via <code>PriorityClass</code>. See "Priority &amp; Preemption" above.</li>
+        <li><strong>Topology Manager</strong> — coordinates NUMA-aware resource placement (aligning CPU, memory, and device assignment on the same NUMA node for latency-sensitive workloads).</li>
+        <li><strong>Cluster Autoscaler Interaction</strong> — when no node fits a Pod, the scheduler leaves it Pending, the Cluster Autoscaler adds a node, and the scheduler retries placement:
+          <pre><code>Scheduler → Pod Pending
+Cluster Autoscaler → Add Node
+Scheduler → Retry Placement</code></pre>
+        </li>
+      </ol>
+
+      <h2>Recommended Learning Order</h2>
+      <ol>
+        <li>Resource Requests &amp; Limits</li>
+        <li>Node Selection</li>
+        <li>Node Affinity</li>
+        <li>Pod Affinity</li>
+        <li>Pod Anti-Affinity</li>
+        <li>Taints &amp; Tolerations</li>
+        <li>Topology Spread Constraints</li>
+        <li>Scheduler Filtering &amp; Scoring</li>
+        <li>Priority Classes &amp; Preemption</li>
+        <li>Scheduler Framework Plugins</li>
+      </ol>
+      <p>Once you understand these ten topics, you'll be able to debug most real-world Kubernetes scheduling issues encountered in production clusters.</p>
+      <p>Reference: <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/" target="_blank" rel="noopener">kubernetes.io — Assigning Pods to Nodes</a>.</p>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+</body>
+</html>
