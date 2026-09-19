@@ -27,6 +27,10 @@
   --c-dist:     #0891b2;   --c-dist-bg:     #e6f8fb;
   --c-msg:      #ea580c;   --c-msg-bg:      #fff1e6;
   --c-storage:  #db2777;   --c-storage-bg:  #ffe9f4;
+  --c-caching:  #0284c7;   --c-caching-bg:  #e5f4ff;
+  --c-traffic:  #ea4335;   --c-traffic-bg:  #ffeceb;
+  --c-net:      #059669;   --c-net-bg:      #e6faf1;
+  --c-obs:      #a16207;   --c-obs-bg:      #fef3c7;
   --c-web:      #4f46e5;   --c-web-bg:      #edecff;
   --c-dev:      #0d9488;   --c-dev-bg:      #e2fbf7;
   --c-plan:     #dc2626;   --c-plan-bg:     #ffecec;
@@ -42,7 +46,7 @@
     --shadow-hover: 0 10px 24px rgba(0,0,0,0.55);
     --frontend-bg:#0d1117;
     --c-frontend-bg:#0e1f3d; --c-k8s-bg:#101b33;--c-database-bg:#0d2417; --c-auth-bg:#26123d; --c-dist-bg:#062a31;
-    --c-msg-bg:#33190a; --c-storage-bg:#33081d; --c-web-bg:#181240; --c-dev-bg:#052e28;
+    --c-msg-bg:#33190a; --c-storage-bg:#33081d; --c-caching-bg:#062338; --c-traffic-bg:#330d0a; --c-net-bg:#052a1e; --c-obs-bg:#2e2205; --c-web-bg:#181240; --c-dev-bg:#052e28;
     --c-plan-bg:#320a0a; --c-proj-bg:#301c05; --c-misc-bg:#1e1140; --c-overview-bg:#1b2027;
   }
 }
@@ -272,7 +276,11 @@ a:hover { text-decoration: underline; }
         <li><a href="docs/authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li>
       </ul>
       <h3>🌐 Distributed Systems</h3>
-      <ul><li><a href="docs/distributed-system/distributed-systems.html">Distributed Systems</a></li></ul>
+      <ul>
+        <li><a href="docs/distributed-system/distributed-systems.html">Distributed Systems</a></li>
+        <li><a href="docs/distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li>
+        <li><a href="docs/distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li>
+      </ul>
       <h3>🧬 Distributed Database</h3>
       <ul>
         <li><a href="docs/distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li>
@@ -286,12 +294,30 @@ a:hover { text-decoration: underline; }
         <li><a href="docs/sqs/01-sqs.html">SQS Overview</a></li>
         <li><a href="docs/sqs/02-queus-methord.html">Queue Methods</a></li>
         <li><a href="docs/sqs/use-case.html">SQS Use Cases</a></li>
+        <li><a href="docs/sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li>
+        <li><a href="docs/sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li>
+        <li><a href="docs/sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li>
         <li><a href="docs/sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li>
         <li><a class="resource" href="docs/sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering (PDF)</a></li>
         <li><a class="resource" href="docs/sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li>
       </ul>
       <h3>💾 Storage</h3>
       <ul><li><a href="docs/storage/storage-type.html">Storage Types</a></li></ul>
+      <h3>🧊 Caching &amp; CDN</h3>
+      <ul><li><a href="docs/caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul>
+      <h3>🚦 Traffic Management</h3>
+      <ul>
+        <li><a href="docs/traffic/00-load-balancing.html">00. Load Balancing</a></li>
+        <li><a href="docs/traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li>
+      </ul>
+      <h3>🔌 Networking</h3>
+      <ul><li><a href="docs/networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul>
+      <h3>🛡️ Observability, Security &amp; Ops</h3>
+      <ul>
+        <li><a href="docs/observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li>
+        <li><a href="docs/observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li>
+        <li><a href="docs/observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li>
+      </ul>
       <h3>🖧 Web Servers</h3>
       <ul>
         <li><a href="docs/web-servers/server.html">Web Servers</a></li>
@@ -305,6 +331,7 @@ a:hover { text-decoration: underline; }
         <li><a href="docs/path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li>
         <li><a href="docs/path/01-b-MVP.html">MVP Planning</a></li>
         <li><a href="docs/path/02-apis.html">API Planning</a></li>
+        <li><a href="docs/path/03-coverage-gap-analysis.html">Coverage Gap Analysis &amp; Prompts</a></li>
       </ul>
       <h3>🏗️ Project Walkthroughs</h3>
       <ul>
@@ -342,8 +369,8 @@ a:hover { text-decoration: underline; }
       <h1>🦉 Infra Owl</h1>
       <p class="lede">A personal knowledge base covering authentication, databases, distributed systems, messaging, storage, and more — converted from raw notes into a browsable reference site.</p>
       <div class="stats">
-        <div class="stat"><b>70</b><span>Pages</span></div>
-        <div class="stat"><b>13</b><span>Topics</span></div>
+        <div class="stat"><b>83</b><span>Pages</span></div>
+        <div class="stat"><b>17</b><span>Topics</span></div>
         <div class="stat"><b>8</b><span>Downloads</span></div>
       </div>
     </div>
@@ -422,8 +449,12 @@ a:hover { text-decoration: underline; }
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
-        <div class="icon-wrap">🌐</div><h2>Distributed Systems</h2><p class="count">1 page</p>
-        <ul><li><a href="docs/distributed-system/distributed-systems.html">Distributed Systems</a></li></ul>
+        <div class="icon-wrap">🌐</div><h2>Distributed Systems</h2><p class="count">3 pages</p>
+        <ul>
+          <li><a href="docs/distributed-system/distributed-systems.html">Distributed Systems</a></li>
+          <li><a href="docs/distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li>
+          <li><a href="docs/distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li>
+        </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
         <div class="icon-wrap">🧬</div><h2>Distributed Database</h2><p class="count">5 pages</p>
@@ -436,17 +467,43 @@ a:hover { text-decoration: underline; }
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-msg); --card-accent-bg: var(--c-msg-bg);">
-        <div class="icon-wrap">📨</div><h2>Messaging &amp; Queues</h2><p class="count">4 pages</p>
+        <div class="icon-wrap">📨</div><h2>Messaging &amp; Queues</h2><p class="count">7 pages</p>
         <ul>
           <li><a href="docs/sqs/01-sqs.html">SQS Overview</a></li>
           <li><a href="docs/sqs/02-queus-methord.html">Queue Methods</a></li>
           <li><a href="docs/sqs/use-case.html">SQS Use Cases</a></li>
+          <li><a href="docs/sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li>
+          <li><a href="docs/sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li>
+          <li><a href="docs/sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li>
           <li><a href="docs/sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li>
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-storage); --card-accent-bg: var(--c-storage-bg);">
         <div class="icon-wrap">💾</div><h2>Storage</h2><p class="count">1 page</p>
         <ul><li><a href="docs/storage/storage-type.html">Storage Types</a></li></ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-caching); --card-accent-bg: var(--c-caching-bg);">
+        <div class="icon-wrap">🧊</div><h2>Caching &amp; CDN</h2><p class="count">1 page</p>
+        <ul><li><a href="docs/caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-traffic); --card-accent-bg: var(--c-traffic-bg);">
+        <div class="icon-wrap">🚦</div><h2>Traffic Management</h2><p class="count">2 pages</p>
+        <ul>
+          <li><a href="docs/traffic/00-load-balancing.html">00. Load Balancing</a></li>
+          <li><a href="docs/traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li>
+        </ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-net); --card-accent-bg: var(--c-net-bg);">
+        <div class="icon-wrap">🔌</div><h2>Networking</h2><p class="count">1 page</p>
+        <ul><li><a href="docs/networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-obs); --card-accent-bg: var(--c-obs-bg);">
+        <div class="icon-wrap">🛡️</div><h2>Observability, Security &amp; Ops</h2><p class="count">3 pages</p>
+        <ul>
+          <li><a href="docs/observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li>
+          <li><a href="docs/observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li>
+          <li><a href="docs/observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li>
+        </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-web); --card-accent-bg: var(--c-web-bg);">
         <div class="icon-wrap">🖧</div><h2>Web Servers</h2><p class="count">2 pages</p>
@@ -460,12 +517,13 @@ a:hover { text-decoration: underline; }
         <ul><li><a href="docs/software-development-principles/01-sdp.html">Software Development Principles</a></li></ul>
       </div>
       <div class="card" style="--card-accent: var(--c-plan); --card-accent-bg: var(--c-plan-bg);">
-        <div class="icon-wrap">🗺️</div><h2>Planning &amp; Roadmap</h2><p class="count">4 pages</p>
+        <div class="icon-wrap">🗺️</div><h2>Planning &amp; Roadmap</h2><p class="count">5 pages</p>
         <ul>
           <li><a href="docs/path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li>
           <li><a href="docs/path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li>
           <li><a href="docs/path/01-b-MVP.html">MVP Planning</a></li>
           <li><a href="docs/path/02-apis.html">API Planning</a></li>
+          <li><a href="docs/path/03-coverage-gap-analysis.html">Coverage Gap Analysis &amp; Prompts</a></li>
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-proj); --card-accent-bg: var(--c-proj-bg);">
@@ -674,6 +732,8 @@ a:hover { text-decoration: underline; }
     { title: "Secure Password Hashing Process", url: "docs/authentication/01-authentication/03-hashing-process.html" },
     { title: "Google Sign-In with Credential Manager", url: "docs/authentication/02-social-login/google-login.html" },
     { title: "Distributed Systems", url: "docs/distributed-system/distributed-systems.html" },
+    { title: "Consensus Algorithms: Raft & Paxos", url: "docs/distributed-system/01-consensus-algorithms.html" },
+    { title: "Consistent Hashing", url: "docs/distributed-system/02-consistent-hashing.html" },
     { title: "Replication & Distributed Data Roadmap", url: "docs/distributed-database/index.html" },
     { title: "Replication Mechanism — The 4 Dimensions", url: "docs/distributed-database/02-replication-mechanism.html" },
     { title: "PACELC — Senior Interview Masterclass", url: "docs/distributed-database/03-pacelc-interview-masterclass.html" },
@@ -681,12 +741,23 @@ a:hover { text-decoration: underline; }
     { title: "Replication Lag — Causes, Measurement, Mitigation", url: "docs/distributed-database/05-replication-lag.html" },
     { title: "SQS Overview", url: "docs/sqs/01-sqs.html" },
     { title: "Queue Methods", url: "docs/sqs/02-queus-methord.html" },
+    { title: "Kafka Fundamentals", url: "docs/sqs/03-kafka-fundamentals.html" },
+    { title: "Event Sourcing & CQRS", url: "docs/sqs/04-event-sourcing-and-cqrs.html" },
+    { title: "Microservice Resilience Patterns", url: "docs/sqs/05-microservice-resilience-patterns.html" },
     { title: "Storage Types", url: "docs/storage/storage-type.html" },
+    { title: "Caching & CDN Fundamentals", url: "docs/caching/00-caching-and-cdn-fundamentals.html" },
+    { title: "Load Balancing", url: "docs/traffic/00-load-balancing.html" },
+    { title: "Rate Limiting & Throttling", url: "docs/traffic/01-rate-limiting-and-throttling.html" },
+    { title: "Networking Fundamentals", url: "docs/networking/00-networking-fundamentals.html" },
+    { title: "Observability Fundamentals", url: "docs/observability-security/00-observability-fundamentals.html" },
+    { title: "Application Security Fundamentals", url: "docs/observability-security/01-application-security-fundamentals.html" },
+    { title: "CI/CD & Deployment Strategies", url: "docs/observability-security/02-cicd-and-deployment-strategies.html" },
     { title: "Web Servers", url: "docs/web-servers/server.html" },
     { title: "WSGI Explained", url: "docs/web-servers/wsgi.html" },
     { title: "Software Development Principles", url: "docs/software-development-principles/01-sdp.html" },
     { title: "System Design: EC2 Hosting Checklist", url: "docs/path/00-system-desing.html" },
     { title: "MVP Planning", url: "docs/path/01-b-MVP.html" },
+    { title: "Coverage Gap Analysis & Prompts", url: "docs/path/03-coverage-gap-analysis.html" },
     { title: "Pub/Sub and PubNub", url: "docs/mislanious/01-pubsub-and-pubnub.html" },
     { title: "Memory Profiling", url: "docs/mislanious/Memory-Profiling.html" }
   ];

@@ -87,7 +87,8 @@ the user exactly what's inconsistent) before considering the task done.
 ## Section names — use one of these verbatim for `section` / the sitemap section
 
 `Kubernetes` · `Authentication` · `Front-End` · `Database` · `Distributed Systems` ·
-`Distributed Database` · `Messaging & Queues` · `Storage` · `Web Servers` ·
+`Distributed Database` · `Messaging & Queues` · `Storage` · `Caching & CDN` ·
+`Traffic Management` · `Networking` · `Observability, Security & Ops` · `Web Servers` ·
 `Dev Principles` · `Planning & Roadmap` · `Project Walkthroughs` · `Miscellaneous`
 
 `Authentication` (`docs/authentication/`) holds login/session, OAuth/social-login,

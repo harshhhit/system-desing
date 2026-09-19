@@ -233,6 +233,14 @@ window.SITE_MAP = {
         {
           "href": "distributed-system/distributed-systems.html",
           "title": "Distributed Systems"
+        },
+        {
+          "href": "distributed-system/01-consensus-algorithms.html",
+          "title": "Consensus Algorithms: Raft & Paxos"
+        },
+        {
+          "href": "distributed-system/02-consistent-hashing.html",
+          "title": "Consistent Hashing"
         }
       ]
     },
@@ -279,6 +287,18 @@ window.SITE_MAP = {
           "title": "SQS Use Cases"
         },
         {
+          "href": "sqs/03-kafka-fundamentals.html",
+          "title": "Kafka Fundamentals"
+        },
+        {
+          "href": "sqs/04-event-sourcing-and-cqrs.html",
+          "title": "Event Sourcing & CQRS"
+        },
+        {
+          "href": "sqs/05-microservice-resilience-patterns.html",
+          "title": "Microservice Resilience Patterns"
+        },
+        {
           "href": "sqs/project/project.html",
           "title": "Multiprotocol Messaging Starter: Project Guide"
         }
@@ -295,6 +315,58 @@ window.SITE_MAP = {
         {
           "href": "storage/storage-type.html",
           "title": "Storage Types"
+        }
+      ]
+    },
+    {
+      "icon": "🧊",
+      "name": "Caching & CDN",
+      "pages": [
+        {
+          "href": "caching/00-caching-and-cdn-fundamentals.html",
+          "title": "00. Caching & CDN Fundamentals"
+        }
+      ]
+    },
+    {
+      "icon": "🚦",
+      "name": "Traffic Management",
+      "pages": [
+        {
+          "href": "traffic/00-load-balancing.html",
+          "title": "00. Load Balancing"
+        },
+        {
+          "href": "traffic/01-rate-limiting-and-throttling.html",
+          "title": "01. Rate Limiting & Throttling"
+        }
+      ]
+    },
+    {
+      "icon": "🔌",
+      "name": "Networking",
+      "pages": [
+        {
+          "href": "networking/00-networking-fundamentals.html",
+          "title": "00. Networking Fundamentals"
+        }
+      ]
+    },
+    {
+      "icon": "🛡️",
+      "name": "Observability, Security & Ops",
+      "pages": [
+        {
+          "href": "observability-security/00-observability-fundamentals.html",
+          "title": "00. Observability Fundamentals"
+        },
+        {
+          "href": "observability-security/01-application-security-fundamentals.html",
+          "title": "01. Application Security Fundamentals"
+        },
+        {
+          "href": "observability-security/02-cicd-and-deployment-strategies.html",
+          "title": "02. CI/CD & Deployment Strategies"
         }
       ]
     },
@@ -341,6 +413,10 @@ window.SITE_MAP = {
         {
           "href": "path/02-apis.html",
           "title": "API Planning"
+        },
+        {
+          "href": "path/03-coverage-gap-analysis.html",
+          "title": "03. Coverage Gap Analysis & Prompts"
         }
       ]
     },

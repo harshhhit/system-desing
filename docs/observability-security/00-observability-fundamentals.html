@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "00-observability-fundamentals" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Observability Fundamentals · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2>Observability vs. monitoring</h2>
+      <p>Monitoring answers questions you already thought to ask ahead of time ("is CPU above 80%?").
+      <strong>Observability</strong> is about being able to answer questions you <em>didn't</em> anticipate —
+      "why did this specific user's request take 4 seconds at 3:12pm?" — by having enough raw signal recorded
+      to investigate after the fact, not just a dashboard that was pre-built for a known failure mode. This
+      page covers the general, cross-service version; <a href="../05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a> in the Database section covers the same pillars scoped specifically to a database.</p>
+
+      <h2>The three pillars</h2>
+      <table>
+      <tr><th>Pillar</th><th>What it captures</th><th>Best for</th></tr>
+      <tr><td><strong>Metrics</strong></td><td>Numeric time series — counters (only go up, e.g. total requests), gauges (go up or down, e.g. current memory), histograms (a distribution, e.g. latency buckets)</td><td>Trends, dashboards, alerting thresholds — cheap to store, low cardinality</td></tr>
+      <tr><td><strong>Logs</strong></td><td>Discrete, timestamped events, ideally structured (JSON key/value, not free-text) rather than a printed sentence</td><td>"What exactly happened on this one request/entity" — the detail metrics intentionally throw away</td></tr>
+      <tr><td><strong>Traces</strong></td><td>The path a single request took across every service it touched, broken into timed <strong>spans</strong> (one span per hop/operation)</td><td>"Where did the time actually go" across a multi-service call — the thing neither metrics nor logs alone can answer</td></tr>
+      </table>
+      <p>The three are complementary, not substitutes: a metric's spike tells you <em>something</em> is wrong
+      and roughly when; a trace for a slow request from that window shows <em>which service</em> in the chain
+      was slow; a log from that specific span shows <em>why</em> (the exact error, the exact query). Losing any
+      one pillar leaves a real gap the other two can't fill.</p>
+
+      <h2>Metrics in practice: the Prometheus/Grafana model</h2>
+      <ul>
+      <li><strong>Pull-based scraping</strong> — Prometheus polls each service's <code>/metrics</code> HTTP endpoint on an interval, rather than services pushing metrics out — simpler service discovery, and a service that's down is visible as "scrape failed" rather than silently missing data.</li>
+      <li><strong>Cardinality</strong> — every unique combination of metric name + label values (e.g. <code>http_requests{status="500", path="/api/x", user_id="42"}</code>) is a separate time series. Putting a high-cardinality value like a raw user ID in a label can multiply storage and query cost by orders of magnitude — a very common real-world Prometheus mistake, and a strong interview signal to mention.</li>
+      <li><strong>Grafana</strong> queries Prometheus (or other backends) to render dashboards — it's a visualization layer, not a separate data store.</li>
+      </ul>
+
+      <h2>Logs: make them structured, and correlate them</h2>
+      <ul>
+      <li><strong>Structured logging</strong> — emit JSON key/value fields instead of a formatted sentence, so logs are queryable/filterable (by <code>status=500</code>, by <code>user_id</code>) instead of requiring regex over free text.</li>
+      <li><strong>Log levels</strong> — DEBUG/INFO/WARN/ERROR, tunable per-environment so production doesn't pay the volume cost of debug-level logging by default.</li>
+      <li><strong>Correlation / request IDs</strong> — generate one ID at the edge (the API gateway, see <a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a>) and thread it through every downstream call and every log line for that request, so a single request's logs can be reassembled across every service it touched — the low-tech precursor to full distributed tracing below.</li>
+      <li><strong>Centralized aggregation</strong> (e.g. the ELK stack, or Grafana Loki) — ships every service's logs to one searchable place, since SSH-ing into individual instances to grep a log file doesn't scale past a handful of servers.</li>
+      </ul>
+
+      <h2>Distributed tracing</h2>
+      <ul>
+      <li>A single incoming request gets a <strong>trace ID</strong>; each hop/operation within it (a service call, a DB query) is a <strong>span</strong> with its own start/end time and a reference to its parent span — together they reconstruct the full call tree with per-hop timing.</li>
+      <li><strong>Context propagation</strong> — the trace ID and current span ID travel with the request across process/service boundaries (typically an HTTP header, standardized as W3C <code>traceparent</code>), which is why every service in a traced system has to participate — one un-instrumented hop breaks the chain.</li>
+      <li><strong>Sampling</strong> — tracing every single request in a high-traffic system is often too expensive to store; systems sample a percentage (or always trace slow/error requests specifically — "tail-based" sampling) to keep cost bounded while still catching the interesting cases.</li>
+      </ul>
+
+      <h2>SLI, SLO, SLA, and error budgets</h2>
+      <ul>
+      <li><strong>SLI (Service Level Indicator)</strong> — the actual measured metric, e.g. "% of requests under 200ms."</li>
+      <li><strong>SLO (Service Level Objective)</strong> — the internal target for that SLI, e.g. "99.9% of requests under 200ms, measured over 30 days."</li>
+      <li><strong>SLA (Service Level Agreement)</strong> — an SLO turned into an external, often contractual, promise to customers — usually looser than the internal SLO, leaving margin.</li>
+      <li><strong>Error budget</strong> — <code>100% − SLO</code> is the amount of "badness" allowed before the SLO is breached (0.1% for a 99.9% SLO). It's a deliberate tool: once the budget for the period is spent, teams pause new feature risk and prioritize reliability work until it recovers — a concrete way to balance velocity against reliability instead of arguing about it abstractly every time.</li>
+      </ul>
+
+      <h2>Alerting</h2>
+      <ul>
+      <li><strong>Alert on symptoms, not causes</strong> — page on "error rate is elevated" or "latency SLO is at risk," not on every individual possible cause ("disk is at 85%"); causes are for the dashboard/runbook you check once paged, not a separate page of their own.</li>
+      <li><strong>Alert fatigue</strong> — too many low-value or flapping alerts trains responders to ignore pages, which is worse than having no alert at all; every alert should be actionable and rare enough to stay meaningful.</li>
+      <li>Tie alerts back to the SLO/error-budget framing above where possible — "we're burning error budget too fast" is a more durable alerting philosophy than a pile of ad hoc thresholds accumulated over time.</li>
+      </ul>
+
+      <h2>Interview checklist</h2>
+      <ul>
+      <li>Name all three pillars and, more importantly, say what each is <em>for</em> — interviewers listen for whether you know why you'd reach for a trace instead of a log, not just that both exist.</li>
+      <li>Bring up cardinality unprompted if metrics/labels come up — it's the detail that separates real Prometheus experience from a surface-level answer.</li>
+      <li>Mention correlation IDs / trace context propagation specifically when a design spans multiple services — "how do you debug a slow request across five services" is a very common follow-up.</li>
+      <li>Frame reliability targets as SLI → SLO → SLA, and use error budget language to justify a "pause features, fix reliability" call rather than treating uptime as a vague aspiration.</li>
+      <li>Justify alerting design around symptoms/actionability, not "alert on everything that could go wrong."</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "00-load-balancing" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Load Balancing · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2>Why load balancing exists</h2>
+      <p>A single server has a ceiling — on connections, CPU, memory — and a single point of failure. A load
+      balancer sits in front of a pool of backend instances, spreads incoming traffic across them, and stops
+      sending traffic to any instance that stops responding. That gets you two things at once: horizontal
+      scalability (add more instances, handle more traffic) and availability (one instance dying doesn't take
+      the service down). Almost everything else in this note is either "how do you pick which instance gets
+      this request" or "how do you know an instance is actually healthy."</p>
+
+      <h2>L4 vs. L7 — what layer the balancer operates at</h2>
+      <table>
+      <tr><th></th><th>Layer 4 (transport)</th><th>Layer 7 (application)</th></tr>
+      <tr><td>Sees</td><td>IP + TCP/UDP port only — not the request itself</td><td>Full HTTP request: path, headers, cookies, body</td></tr>
+      <tr><td>Routing decisions</td><td>Which backend gets this <em>connection</em>, based on IP/port and the algorithm below</td><td>Can route by URL path (<code>/api</code> vs <code>/static</code>), header, cookie, hostname — content-aware</td></tr>
+      <tr><td>Overhead</td><td>Very low — just forwards packets (sometimes without even terminating the TCP connection)</td><td>Higher — terminates TCP/TLS, parses the request, often opens a second connection to the backend</td></tr>
+      <tr><td>Protocol awareness</td><td>None — works for any TCP/UDP traffic, not just HTTP</td><td>HTTP/HTTPS/gRPC-aware; can do retries, header rewriting, WAF rules</td></tr>
+      <tr><td>Examples</td><td>AWS NLB, IPVS, raw <code>iptables</code>/DSR setups</td><td>AWS ALB, Nginx, Envoy, HAProxy (L7 mode), API gateways</td></tr>
+      <tr><td>Pick it when</td><td>raw throughput/latency matters more than smart routing, or the traffic isn't HTTP</td><td>you need path-based routing, TLS termination, cookie-based session affinity, or per-request logic</td></tr>
+      </table>
+      <p>Most real stacks use both, layered: an L4 balancer (or the cloud provider's edge network) absorbs the
+      raw connection volume and hands off to an L7 tier that does the smart, per-request routing.</p>
+
+      <h2>Load balancing algorithms</h2>
+      <table>
+      <tr><th>Algorithm</th><th>How it picks</th><th>Good for</th><th>Weak point</th></tr>
+      <tr><td>Round robin</td><td>Cycles through backends in order, one request each</td><td>Simple, works well when every backend and every request is roughly equal</td><td>Ignores current load — a backend still processing a slow request gets the next one anyway</td></tr>
+      <tr><td>Weighted round robin</td><td>Round robin, but bigger/faster instances get proportionally more requests</td><td>Mixed-size instance pools</td><td>Weights are static — doesn't react to real-time load</td></tr>
+      <tr><td>Least connections</td><td>Sends the request to whichever backend currently has the fewest open connections</td><td>Long-lived or uneven-duration requests (the round-robin weak point, fixed)</td><td>"Connections" isn't the same as "load" for every workload — a backend can have few connections but high CPU</td></tr>
+      <tr><td>Weighted least connections</td><td>Least connections, weighted by instance capacity</td><td>Mixed-size pools with uneven request durations</td><td>More state to track and keep accurate</td></tr>
+      <tr><td>IP hash / consistent hashing</td><td>Hashes a key (client IP, session id) to deterministically pick the same backend every time</td><td>Session affinity without cookies; also how CDN edge nodes and cache clients pick a shard</td><td>Uneven key distribution can still overload one backend (hot key, see <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a>); losing a backend reshuffles its keys</td></tr>
+      <tr><td>Least response time</td><td>Combines active connections and recent response latency</td><td>Latency-sensitive services with variable per-backend performance</td><td>More expensive to compute; needs continuous latency sampling</td></tr>
+      <tr><td>Random / power-of-two-choices</td><td>Pick 2 backends at random, send to whichever has fewer connections</td><td>Scales better than "check every backend" at very large pool sizes, nearly as good as full least-connections</td><td>Slightly worse than true least-connections in the average case</td></tr>
+      </table>
+
+      <h2>Health checks</h2>
+      <ul>
+      <li><strong>Active checks</strong> — the load balancer itself polls each backend on an interval (a TCP connect, an HTTP <code>GET /healthz</code>, or a custom check) and pulls it out of rotation on repeated failure.</li>
+      <li><strong>Passive checks</strong> — the load balancer watches real traffic; if a backend starts erroring or timing out on actual requests, it's marked unhealthy without a separate probe.</li>
+      <li><strong>Tuning that matters in an interview</strong>: check <em>interval</em> (how often), <em>timeout</em> (how long to wait for a response), and <em>threshold</em> (how many consecutive failures/successes before flipping state) — too aggressive and one blip pulls a healthy backend out; too lax and a dead backend keeps eating requests.</li>
+      <li>A deep health check (e.g. "can this instance reach the database") catches more real failures than a shallow one ("process is running"), but couples the LB's routing decision to a dependency's health — a DB blip can then pull every backend out of rotation at once.</li>
+      </ul>
+
+      <h2>Session affinity ("sticky sessions")</h2>
+      <p>If a backend keeps per-user state in local memory (an in-process cache, a WebSocket connection, an
+      uploaded-file-in-progress), every request from that user has to land on the <em>same</em> backend —
+      that's session affinity, usually implemented as a cookie the LB sets on first response, or via IP hash
+      above.</p>
+      <div class="sd-study-note tip"><span class="sd-note-title">The better fix is usually statelessness</span><p>Sticky sessions work, but they reintroduce the single-point-of-failure problem one layer down (that user's traffic all depends on one instance) and complicate scaling down. The alternative — keep backends stateless and put session state in a shared store (JWT in the client, or a session id backed by Redis) — is why <a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a> matters for load-balanced systems specifically, not just for auth.</p></div>
+
+      <h2>Global vs. local load balancing</h2>
+      <ul>
+      <li><strong>Local (server-side) LB</strong> — the classic case above: a dedicated tier/appliance in front of one datacenter's backend pool.</li>
+      <li><strong>Global server load balancing (GSLB)</strong> — routes users to an entire <em>region</em>/datacenter, typically via DNS (return the IP of the nearest or healthiest region) or anycast (the same IP is announced from multiple locations; routers deliver the packet to the nearest one) — the same mechanism a CDN uses to route to the nearest PoP (see <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a>).</li>
+      <li><strong>Client-side LB</strong> — the client (or a sidecar proxy next to it, as in a service mesh) holds the list of healthy backends itself and picks one directly, skipping a centralized LB hop entirely. Common inside a microservice fleet where the "client" is another internal service, not an end user.</li>
+      </ul>
+
+      <h2>Interview checklist</h2>
+      <ul>
+      <li>Say which layer (L4 vs L7) and why — "I need path-based routing" or "this isn't HTTP" both justify the choice.</li>
+      <li>Name an algorithm and justify it against the workload's shape (uniform vs. long-lived vs. latency-sensitive requests), not just "round robin" by default.</li>
+      <li>Mention health checks explicitly — an LB that never removes dead backends isn't actually providing availability.</li>
+      <li>If the design needs sticky sessions, say so and note the trade-off against statelessness — interviewers listen for whether you know that's a trade-off, not a free feature.</li>
+      <li>At global scale, separate "which instance" (local LB, algorithms above) from "which region" (GSLB/DNS/anycast) — they're different problems solved at different layers.</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

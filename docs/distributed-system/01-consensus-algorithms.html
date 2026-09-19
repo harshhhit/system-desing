@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "01-consensus-algorithms" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consensus Algorithms: Raft &amp; Paxos · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2>Why consensus is a hard problem</h2>
+      <p>Consensus means getting a set of nodes to agree on a single value — "who's the leader," "what's the
+      next entry in this log," "did this write commit" — even though nodes can crash, restart, and messages can
+      be delayed or lost. It's the foundation underneath leader election, distributed locks, and any
+      "replicated log" a cluster uses to stay consistent. Without it, a network partition or a crashed node
+      leaves the question "which answer is actually true?" unanswerable — which is exactly the failure mode
+      called <strong>split-brain</strong>, covered below.</p>
+
+      <h2>Quorums — the mechanism both algorithms are built on</h2>
+      <p>Instead of requiring every node to agree (impossible to guarantee once nodes can fail), consensus
+      algorithms require a <strong>majority</strong> — <code>⌊N/2⌋ + 1</code> out of <code>N</code> nodes — to
+      agree before a value is considered committed.</p>
+      <ul>
+      <li>Any two majorities out of the same <code>N</code> nodes must overlap by at least one node — that overlap is what guarantees a new majority can't "forget" what a previous majority already agreed on.</li>
+      <li>This generalizes to the read/write quorum model from replicated databases (<code>W + R &gt; N</code> guarantees every read overlaps the last write) — see <a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">CAP Theorem Questions</a> for the read side of this same idea.</li>
+      <li>Because a majority is required, a cluster of <code>N</code> nodes tolerates <code>⌊(N-1)/2⌋</code> failures — 5 nodes tolerate 2 failures, which is why odd cluster sizes (3, 5, 7) are the norm: an even-sized cluster pays for an extra node without tolerating an extra failure.</li>
+      </ul>
+
+      <h2>Paxos</h2>
+      <p>The original proof that consensus is solvable despite failures — correct, but notoriously difficult to
+      reason about and implement (its own author called explaining it a fight).</p>
+      <ul>
+      <li><strong>Roles</strong>: proposers (suggest values), acceptors (vote on them), learners (find out what was decided). A node commonly plays more than one role.</li>
+      <li><strong>Phase 1 — Prepare/Promise</strong>: a proposer asks acceptors to promise not to accept any proposal older than this one; a majority of promises lets it proceed.</li>
+      <li><strong>Phase 2 — Accept/Accepted</strong>: the proposer sends the actual value; if a majority accepts it, it's chosen.</li>
+      <li><strong>Multi-Paxos</strong> — running the full two-phase protocol per value is expensive, so real systems elect a stable leader/distinguished proposer and skip straight to phase 2 for a whole stream of values, only falling back to phase 1 on leader change. This is the version actually used in production (e.g. inside Google's Chubby, and conceptually inside ZooKeeper's Zab).</li>
+      </ul>
+
+      <h2>Raft</h2>
+      <p>Designed specifically to be <em>understandable</em> — same guarantees as Multi-Paxos, decomposed into
+      three separable sub-problems.</p>
+      <ul>
+      <li><strong>Leader election</strong> — time is divided into terms; nodes start as followers, and if a follower doesn't hear from a leader within a randomized election timeout, it becomes a candidate and requests votes. The randomization is deliberate — it makes two nodes becoming candidates at the exact same moment (a split vote) unlikely, so elections converge quickly.</li>
+      <li><strong>Log replication</strong> — once elected, the leader is the only node that accepts writes; it appends each entry to its own log, replicates it to followers, and considers the entry <em>committed</em> once a majority have stored it — only then is it applied and acknowledged to the client.</li>
+      <li><strong>Safety</strong> — a candidate can only win an election if its log is at least as up-to-date as a majority of the cluster's, which guarantees a new leader can never "lose" a previously committed entry.</li>
+      </ul>
+      <table>
+      <tr><th></th><th>Paxos (Multi-Paxos)</th><th>Raft</th></tr>
+      <tr><td>Leader concept</td><td>Implicit — a "distinguished proposer," an optimization, not part of the core algorithm</td><td>Explicit, first-class part of the protocol — all writes go through the leader, always</td></tr>
+      <tr><td>Understandability</td><td>Famously difficult; the base algorithm and the practical Multi-Paxos optimization are usually taught/described separately</td><td>Designed for this specifically — leader election, log replication, and safety are presented as separate, sequential sub-problems</td></tr>
+      <tr><td>Used by</td><td>Google Chubby, Spanner (a Paxos variant); ZooKeeper's Zab is closely related</td><td>etcd, Consul, CockroachDB — see <a href="../kubernetes/02-etcd.html">etcd Deep Dive</a> for what this looks like inside Kubernetes' control plane</td></tr>
+      </table>
+      <div class="sd-study-note tip"><span class="sd-note-title">The practical difference is smaller than it looks</span><p>Both provide the same guarantee (linearizable agreement via majority quorum) and both end up with a stable leader in real deployments — Raft just makes that leader concept explicit and mandatory from the start instead of arriving at it as an optimization. For an interview, knowing <em>why</em> a leader + majority quorum gives safety matters more than reciting either algorithm's message sequence from memory.</p></div>
+
+      <h2>Split-brain — and how quorum prevents it</h2>
+      <p>A network partition splits a cluster into two groups, each of which can still talk to itself. If both
+      groups kept accepting writes independently as if they were the whole cluster, you'd get two diverging,
+      inconsistent copies of the data — that's split-brain.</p>
+      <ul>
+      <li>Quorum-based consensus prevents this by construction: only the partition that contains a <em>majority</em> of nodes can elect a leader or commit a write. The minority partition can see that it doesn't have a majority and correctly refuses to accept writes, rather than guessing.</li>
+      <li>This is a direct, deliberate <strong>availability</strong> trade for <strong>consistency</strong> — the minority side becomes unavailable rather than risk serving/accepting inconsistent data, which is the CP choice in CAP terms.</li>
+      <li>It's also why a 2-node cluster can't safely tolerate any failure: if the link between them drops, neither side has a majority of 2, so the whole cluster stops accepting writes — a concrete reason minimum viable consensus clusters are sized 3, not 2.</li>
+      </ul>
+
+      <h2>Where this shows up in real systems</h2>
+      <ul>
+      <li><strong>etcd</strong> (Raft) — the source of truth for the entire Kubernetes control plane; see <a href="../kubernetes/02-etcd.html">etcd Deep Dive</a> and <a href="../kubernetes/11-leader-election.html">Leader Election: HA for Controller Manager &amp; Scheduler</a> for how kube-controller-manager and kube-scheduler themselves use a Raft-backed lease in etcd to elect a single active instance.</li>
+      <li><strong>ZooKeeper</strong> (Zab, a Paxos-family protocol) — historically the coordination service behind Kafka (partition leader election, cluster metadata) before Kafka's own KRaft mode replaced it.</li>
+      <li><strong>Distributed databases</strong> — Spanner and CockroachDB use Paxos/Raft respectively per data shard to agree on the order of writes within that shard; see <a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap</a> for how this fits into the broader replication picture.</li>
+      </ul>
+
+      <h2>Interview checklist</h2>
+      <ul>
+      <li>State the core mechanism in one sentence: majority quorum + overlapping majorities is what makes agreement safe despite failures.</li>
+      <li>Know the failure-tolerance math: an <code>N</code>-node cluster tolerates <code>⌊(N-1)/2⌋</code> failures, and explain why odd sizes are chosen.</li>
+      <li>Explain split-brain and why quorum prevents it, not just that it does — the minority partition can detect it lacks a majority and self-refuses.</li>
+      <li>Be ready to name a real system (etcd/Raft is the easiest, given it's already covered in the Kubernetes section) and say specifically what it uses consensus <em>for</em> (leader election vs. a replicated log of configuration/state).</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "03-coverage-gap-analysis" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coverage Gap Analysis &amp; Prompts · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2>How this list was built</h2>
+      <p>Audited on 2026-09-19 by grepping every page under <code>docs/</code> for ~30 core
+      system-design keywords, then cross-checking <code>assets/sitemap.js</code> and
+      <code>assets/pages.js</code> for a <strong>dedicated</strong> page on each — a passing
+      mention inside another note (e.g. "use a cache here") doesn't count as coverage. The
+      list below is only topics with <strong>zero dedicated page</strong> anywhere in the site.
+      A link-integrity pass (every <code>sitemap.js</code>/<code>pages.js</code> <code>href</code>
+      resolves, every <code>PAGE_CONFIG</code> id matches, every page carries the access gate)
+      also ran and found nothing broken — the gaps here are content gaps, not wiring bugs.</p>
+
+      <div class="sd-study-note warning"><span class="sd-note-title">Node.js is not installed in this environment</span><p>This page was added by hand-copying <code>_TEMPLATE-page.html</code> and adding matching entries to <code>pages.js</code> / <code>sitemap.js</code>, because <code>node scripts/regen-sidebars.js</code> couldn't run here (<code>node: command not found</code>). The page works today — <code>site-header.js</code> fills the sidebar/heading live from <code>sitemap.js</code>/<code>pages.js</code> at runtime. What's still outstanding: the <em>baked</em> no-JS <code>&lt;nav&gt;</code> copies in every other page under <code>docs/</code> don't yet include a link to this page, and <code>--check</code> hasn't been re-run. Once node is available, run <code>node scripts/regen-sidebars.js &amp;&amp; node scripts/regen-sidebars.js --check</code> once — it's idempotent and will simply bake this page in and confirm a clean 0.</p></div>
+
+      <h2>Already solid</h2>
+      <p>These 13 sidebar sections have real depth and don't need new top-level coverage —
+      gaps inside them are called out per-topic below instead of repeated here.</p>
+      <ul>
+        <li><strong>Kubernetes</strong> — control plane, data plane, RBAC, storage, leader election (12 pages)</li>
+        <li><strong>Authentication</strong> — login flow, password hashing, OAuth/social login</li>
+        <li><strong>Front-End</strong> — rendering models, SSR/CSR, GraphQL vs REST, cookies/JWT</li>
+        <li><strong>Database</strong> — the single deepest section: foundations → SQL → modeling → transactions → query plans → distributed fundamentals → security → scaling → connection pooling → backup/DR → observability (20 pages)</li>
+        <li><strong>Distributed Systems / Distributed Database</strong> — replication mechanics, PACELC, WAL vs binlog, replication lag</li>
+        <li><strong>Messaging &amp; Queues</strong> — SQS deep-dive plus a runnable multiprotocol starter project</li>
+        <li><strong>Storage, Web Servers, Dev Principles, Planning &amp; Roadmap, Project Walkthroughs, Miscellaneous</strong> — solid single-topic coverage each</li>
+      </ul>
+
+      <h2>What's missing — and the prompt to close each gap</h2>
+      <p>Grouped into clusters that map to either a brand-new sidebar section or a clear
+      extension of an existing one. Each prompt is written to be pasted as-is into a Claude
+      Code session in this repo — it names the <code>add-page</code> skill and the exact
+      section, so the page comes out wired correctly the first time (template copied,
+      <code>PAGE_CONFIG</code> id set, <code>pages.js</code> + <code>sitemap.js</code> entries
+      added, <code>regen-sidebars.js</code> run and <code>--check</code>ed) without a second pass.</p>
+
+      <h3>1. Caching &amp; CDN <em>(new section — suggest icon 🧊)</em> — <strong>✅ done</strong></h3>
+      <p><strong>Covered:</strong> <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a> — new "Caching &amp; CDN" 🧊 sidebar section, added 2026-09-19. The subtopics and prompt below are kept for reference / in case the page needs a deeper follow-up split later.</p>
+      <p>Mentioned in passing across ~26 pages, never explained as its own system-design topic.</p>
+      <ul>
+        <li>Cache-aside vs read-through vs write-through vs write-back</li>
+        <li>Eviction policies (LRU/LFU/TTL), stampede/thundering-herd protection, cache invalidation</li>
+        <li>Redis vs Memcached — when each wins</li>
+        <li>CDN edge caching, cache-control headers, purge/invalidation, static vs dynamic content at the edge</li>
+      </ul>
+<pre><code>Use the add-page skill to add a new page to docs/caching/ (new sidebar section "Caching &amp; CDN", icon 🧊) covering: cache-aside vs read-through vs write-through vs write-back, eviction policies (LRU/LFU/TTL), cache stampede + invalidation strategies, Redis vs Memcached trade-offs, and CDN edge caching (cache-control headers, purge, static vs dynamic). Follow docs/CLAUDE.md's procedure exactly and run the verify step.</code></pre>
+
+      <h3>2. Traffic Management <em>(new section — suggest icon 🚦)</em> — <strong>✅ done</strong></h3>
+      <p><strong>Covered:</strong> <a href="../traffic/00-load-balancing.html">Load Balancing</a> and <a href="../traffic/01-rate-limiting-and-throttling.html">Rate Limiting &amp; Throttling</a> — new "Traffic Management" 🚦 sidebar section, added 2026-09-19.</p>
+      <ul>
+        <li>Load balancing: L4 vs L7, algorithms (round robin, least-connections, consistent-hash), health checks, sticky sessions</li>
+        <li>Rate limiting &amp; throttling: token bucket, leaky bucket, fixed/sliding window, distributed rate limiting</li>
+      </ul>
+<pre><code>Use the add-page skill to add two pages to docs/traffic/ (new sidebar section "Traffic Management", icon 🚦): one on load balancing (L4 vs L7, round robin / least-connections / consistent-hashing algorithms, health checks, sticky sessions) and one on rate limiting &amp; throttling (token bucket, leaky bucket, fixed and sliding window, distributed rate limiting with Redis). Follow docs/CLAUDE.md's procedure and run the verify step.</code></pre>
+
+      <h3>3. Networking Fundamentals <em>(new section — suggest icon 🔌)</em> — <strong>✅ done</strong></h3>
+      <p><strong>Covered:</strong> <a href="../networking/00-networking-fundamentals.html">Networking Fundamentals</a> — new "Networking" 🔌 sidebar section, added 2026-09-19.</p>
+      <ul>
+        <li>TCP vs UDP, the TCP handshake, DNS resolution path</li>
+        <li>TLS handshake, HTTP/1.1 vs HTTP/2 vs HTTP/3</li>
+        <li>WebSockets and gRPC in practice (already touched in API Planning, but no standalone deep-dive)</li>
+      </ul>
+<pre><code>Use the add-page skill to add a new page to docs/networking/ (new sidebar section "Networking", icon 🔌) covering TCP vs UDP and the TCP handshake, DNS resolution end to end, the TLS handshake, and HTTP/1.1 vs HTTP/2 vs HTTP/3 — plus a short section on when to reach for WebSockets vs gRPC vs plain HTTP polling. Follow docs/CLAUDE.md's procedure and run the verify step.</code></pre>
+
+      <h3>4. Distributed Coordination <em>(extend "Distributed Systems" 🌐)</em> — <strong>✅ done</strong></h3>
+      <p><strong>Covered:</strong> <a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a> and <a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a> — added to the existing "Distributed Systems" 🌐 section, 2026-09-19.</p>
+      <ul>
+        <li>Consensus algorithms: Raft and Paxos, quorum reads/writes, split-brain</li>
+        <li>Consistent hashing as its own deep-dive (currently only referenced, e.g. from partitioning notes)</li>
+      </ul>
+<pre><code>Use the add-page skill to add two pages under docs/distributed-system/ (existing sidebar section "Distributed Systems"): one on consensus algorithms (Raft vs Paxos, quorum reads/writes, split-brain, how etcd/ZooKeeper use this under the hood) and one standalone deep-dive on consistent hashing (virtual nodes, rebalancing cost vs mod-N hashing). Follow docs/CLAUDE.md's procedure and run the verify step.</code></pre>
+
+      <h3>5. Streaming &amp; Event-Driven Architecture <em>(extend "Messaging &amp; Queues" 📨)</em> — <strong>✅ done</strong></h3>
+      <p><strong>Covered:</strong> <a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a>, <a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a>, and <a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a> — added to the existing "Messaging &amp; Queues" 📨 section, 2026-09-19.</p>
+      <ul>
+        <li>Kafka fundamentals — partitions, consumer groups, offsets, retention — vs SQS's model</li>
+        <li>Event sourcing &amp; CQRS</li>
+        <li>Microservice resilience patterns: circuit breaker, saga, retries/backoff, API gateway, service mesh, bulkhead</li>
+      </ul>
+<pre><code>Use the add-page skill to add three pages under docs/sqs/ (existing sidebar section "Messaging &amp; Queues"): one on Kafka fundamentals (partitions, consumer groups, offsets, retention) contrasted with the existing SQS notes, one on event sourcing &amp; CQRS, and one on microservice resilience patterns (circuit breaker, saga, retries with backoff, API gateway, service mesh, bulkhead isolation). Follow docs/CLAUDE.md's procedure and run the verify step.</code></pre>
+
+      <h3>6. Observability, Security &amp; Ops <em>(new section — suggest icon 🛡️)</em> — <strong>✅ done</strong></h3>
+      <p><strong>Covered:</strong> <a href="../observability-security/00-observability-fundamentals.html">Observability Fundamentals</a>, <a href="../observability-security/01-application-security-fundamentals.html">Application Security Fundamentals</a>, and <a href="../observability-security/02-cicd-and-deployment-strategies.html">CI/CD &amp; Deployment Strategies</a> — new "Observability, Security &amp; Ops" 🛡️ sidebar section, added 2026-09-19.</p>
+      <p>The Database section already has DB-scoped observability and security pages
+      (<a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a>,
+      <a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a>) — these would be the
+      system-wide counterparts.</p>
+      <ul>
+        <li>Metrics/logs/traces, the three pillars, Prometheus + Grafana basics, SLI/SLO/SLA, alerting</li>
+        <li>Application security fundamentals: OWASP Top 10, encryption in transit/at rest, secrets management</li>
+        <li>CI/CD &amp; deployment strategies: blue-green, canary, rolling, the testing pyramid for distributed systems</li>
+      </ul>
+<pre><code>Use the add-page skill to add three pages to docs/observability-security/ (new sidebar section "Observability, Security &amp; Ops", icon 🛡️): one on general observability (metrics/logs/traces, Prometheus + Grafana, SLI/SLO/SLA, alerting — distinct from the existing DB-scoped 05-database/07-observability-capacity-and-operations page), one on application security fundamentals (OWASP Top 10, encryption in transit/at rest, secrets management), and one on CI/CD &amp; deployment strategies (blue-green, canary, rolling deploys, testing pyramid). Follow docs/CLAUDE.md's procedure and run the verify step.</code></pre>
+
+      <h3>7. Containers &amp; Docker <em>(extend "Kubernetes" ☸️, as a prerequisite page)</em></h3>
+      <ul>
+        <li>Images, layers, the container runtime — the primer the Kubernetes section currently assumes as background</li>
+      </ul>
+<pre><code>Use the add-page skill to add a page docs/kubernetes/00a-containers-and-docker.html (existing sidebar section "Kubernetes", slotting in before "00. Control Plane Overview") covering container fundamentals: images, layers, the container runtime, and how a container differs from a VM — the prerequisite the rest of the Kubernetes section currently assumes. Follow docs/CLAUDE.md's procedure and run the verify step.</code></pre>
+
+      <h3>8. More interview practice <em>(extend "Project Walkthroughs" 🏗️)</em></h3>
+      <p>Only two worked designs exist today (Image Share System, Instagram). Classic interview
+      prompts with no walkthrough yet:</p>
+      <ul>
+        <li>URL shortener</li>
+        <li>Chat / messaging app (WhatsApp-style)</li>
+        <li>Rate limiter (design, not just the algorithm notes from cluster 2 above)</li>
+        <li>News-feed / timeline (Twitter-style)</li>
+        <li>Video streaming (YouTube-style)</li>
+        <li>Ride-sharing dispatch (Uber-style)</li>
+        <li>Notification system (fan-out, delivery guarantees)</li>
+      </ul>
+<pre><code>Use the add-page skill to add a worked system-design walkthrough to docs/project-explaintion/ (existing sidebar section "Project Walkthroughs") for: [pick one — URL shortener / chat app / rate limiter / news-feed timeline / video streaming / ride-sharing dispatch / notification system]. Match the depth and structure of the existing project-explaintion/instagram/major-tools.html page. Follow docs/CLAUDE.md's procedure and run the verify step.</code></pre>
+
+      <h2>Suggested order</h2>
+      <p>If tackling one at a time: clusters 1–2 (caching, CDN, load balancing, rate limiting)
+      and cluster 4 (consensus, consistent hashing) come up most often in interviews and lean
+      hardest on the Database/Distributed Systems sections already here — do those first.
+      Cluster 6 (observability/security/CI-CD) and cluster 8 (more mock interviews) round the
+      site out afterward.</p>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

@@ -274,6 +274,18 @@ window.SITE_PAGES = {
     section: "Distributed Systems",
     title: "Distributed Systems"
   },
+  "01-consensus-algorithms": {
+    href: "distributed-system/01-consensus-algorithms.html",
+    section: "Distributed Systems",
+    title: "Consensus Algorithms: Raft & Paxos",
+    subtitle: "Quorums, Paxos's prepare/accept phases, Raft's leader election and log replication, split-brain, and how etcd/ZooKeeper use this in practice."
+  },
+  "02-consistent-hashing": {
+    href: "distributed-system/02-consistent-hashing.html",
+    section: "Distributed Systems",
+    title: "Consistent Hashing",
+    subtitle: "Why mod-N hashing breaks on resize, the hash ring, virtual nodes, rebalancing cost, and where this shows up in databases, caches, load balancers, and CDNs."
+  },
   "distributed-database-index": {
     href: "distributed-database/index.html",
     section: "Distributed Database",
@@ -319,6 +331,24 @@ window.SITE_PAGES = {
     section: "Messaging & Queues",
     title: "SQS Use Cases"
   },
+  "03-kafka-fundamentals": {
+    href: "sqs/03-kafka-fundamentals.html",
+    section: "Messaging & Queues",
+    title: "Kafka Fundamentals",
+    subtitle: "Topics and partitions, consumer groups and offsets, delivery semantics, retention and log compaction, replication and acks — contrasted with SQS."
+  },
+  "04-event-sourcing-and-cqrs": {
+    href: "sqs/04-event-sourcing-and-cqrs.html",
+    section: "Messaging & Queues",
+    title: "Event Sourcing & CQRS",
+    subtitle: "Storing state as immutable events, snapshotting, splitting write and read models, projections and materialized views, and when this is (and isn't) worth the complexity."
+  },
+  "05-microservice-resilience-patterns": {
+    href: "sqs/05-microservice-resilience-patterns.html",
+    section: "Messaging & Queues",
+    title: "Microservice Resilience Patterns",
+    subtitle: "Circuit breaker, retries with backoff and idempotency, bulkhead isolation, the saga pattern, API gateway, and service mesh."
+  },
   "project": {
     href: "sqs/project/project.html",
     section: "Messaging & Queues",
@@ -328,6 +358,48 @@ window.SITE_PAGES = {
     href: "storage/storage-type.html",
     section: "Storage",
     title: "Storage Types"
+  },
+  "00-caching-and-cdn-fundamentals": {
+    href: "caching/00-caching-and-cdn-fundamentals.html",
+    section: "Caching & CDN",
+    title: "Caching & CDN Fundamentals",
+    subtitle: "Caching layers, cache-aside vs write-through vs write-behind, eviction and invalidation, cache stampede, Redis vs Memcached, and CDN edge caching."
+  },
+  "00-load-balancing": {
+    href: "traffic/00-load-balancing.html",
+    section: "Traffic Management",
+    title: "Load Balancing",
+    subtitle: "L4 vs L7, algorithms (round robin, least connections, consistent hashing), health checks, sticky sessions, and global vs local load balancing."
+  },
+  "01-rate-limiting-and-throttling": {
+    href: "traffic/01-rate-limiting-and-throttling.html",
+    section: "Traffic Management",
+    title: "Rate Limiting & Throttling",
+    subtitle: "Token bucket, leaky bucket, fixed and sliding window algorithms, distributed rate limiting with Redis, and the client contract (429, Retry-After)."
+  },
+  "00-networking-fundamentals": {
+    href: "networking/00-networking-fundamentals.html",
+    section: "Networking",
+    title: "Networking Fundamentals",
+    subtitle: "TCP vs UDP, the TCP handshake, DNS resolution end to end, the TLS handshake, HTTP/1.1 vs HTTP/2 vs HTTP/3, and WebSockets vs gRPC vs plain HTTP."
+  },
+  "00-observability-fundamentals": {
+    href: "observability-security/00-observability-fundamentals.html",
+    section: "Observability, Security & Ops",
+    title: "Observability Fundamentals",
+    subtitle: "The three pillars (metrics, logs, traces), Prometheus/Grafana, structured logging and correlation IDs, distributed tracing, SLI/SLO/SLA and error budgets, and alerting."
+  },
+  "01-application-security-fundamentals": {
+    href: "observability-security/01-application-security-fundamentals.html",
+    section: "Observability, Security & Ops",
+    title: "Application Security Fundamentals",
+    subtitle: "The OWASP Top 10, encryption in transit and at rest, secrets management, and threat modeling."
+  },
+  "02-cicd-and-deployment-strategies": {
+    href: "observability-security/02-cicd-and-deployment-strategies.html",
+    section: "Observability, Security & Ops",
+    title: "CI/CD & Deployment Strategies",
+    subtitle: "CI vs CD vs continuous deployment, a typical pipeline, blue-green vs canary vs rolling deploys, the testing pyramid, feature flags, and rollback strategy."
   },
   "server": {
     href: "web-servers/server.html",
@@ -363,6 +435,12 @@ window.SITE_PAGES = {
     href: "path/02-apis.html",
     section: "Planning & Roadmap",
     title: "API Planning"
+  },
+  "03-coverage-gap-analysis": {
+    href: "path/03-coverage-gap-analysis.html",
+    section: "Planning & Roadmap",
+    title: "Coverage Gap Analysis & Prompts",
+    subtitle: "What the site is missing, grouped by topic, each with a ready-to-paste prompt to close the gap."
   },
   "200-images": {
     href: "project-explaintion/image-share-system/200-images.html",

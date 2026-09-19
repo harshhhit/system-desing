@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "02-consistent-hashing" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consistent Hashing · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2>The problem: naive hashing doesn't survive a resize</h2>
+      <p>The obvious way to shard <code>N</code> keys across <code>M</code> servers is
+      <code>server = hash(key) % M</code>. It's simple and spreads load evenly — right up until <code>M</code>
+      changes. Add or remove a single server and <code>hash(key) % M</code> gives a different answer for
+      <strong>almost every key</strong>, not just the keys that "belong" to the changed server — going from 4
+      servers to 5 remaps roughly <code>(M-1)/M</code>, i.e. about 80%, of all keys. For a cache, that's a
+      near-total cache wipe (a stampede — see <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching
+      &amp; CDN Fundamentals</a>) every time you scale. For a sharded database, it means moving nearly all the
+      data on every resize.</p>
+
+      <h2>Consistent hashing: the ring</h2>
+      <ol>
+      <li>Hash both the servers and the keys onto the same circular space (e.g. a 32- or 64-bit integer range, wrapping back to 0 — a "ring").</li>
+      <li>Each key belongs to the first server found walking clockwise from that key's position on the ring.</li>
+      <li>Adding a server only takes over the slice of the ring between it and the next server clockwise — every other key on the ring is untouched.</li>
+      <li>Removing a server hands its slice to the next server clockwise — again, nothing else on the ring moves.</li>
+      </ol>
+      <p>The result: a resize moves roughly <code>1/M</code> of the keys instead of nearly all of them — the
+      exact problem mod-N hashing has.</p>
+
+      <h2>Virtual nodes — fixing uneven distribution</h2>
+      <p>With only a handful of physical servers hashed to a handful of points on the ring, the slices between
+      them can be very uneven by chance — one server might own 5% of the ring, another 40%. <strong>Virtual
+      nodes</strong> fix this: each physical server is hashed onto the ring not once but many times (e.g. 100–200
+      points, each representing the same physical server under a different virtual identity).</p>
+      <ul>
+      <li>More points per server means the law of large numbers smooths out the slice sizes — load balances far more evenly across physical servers.</li>
+      <li>When a server joins or leaves, its virtual points are scattered around the whole ring, so the keys it picks up or gives away are spread across <em>many</em> other servers roughly evenly, rather than dumping the entire load onto whichever single physical neighbor happens to be next on the ring.</li>
+      <li>Virtual nodes also make it easy to give a more powerful server proportionally more of the ring — just assign it more virtual points, the same idea as weighted load balancing (see <a href="../traffic/00-load-balancing.html">Load Balancing</a>).</li>
+      </ul>
+
+      <h2>Rebalancing cost, compared</h2>
+      <table>
+      <tr><th>Scheme</th><th>Keys remapped on a resize</th><th>Load distribution</th></tr>
+      <tr><td>Mod-N hashing (<code>hash(key) % M</code>)</td><td>Nearly all keys — <code>(M-1)/M</code></td><td>Even, but only while <code>M</code> never changes</td></tr>
+      <tr><td>Consistent hashing, no virtual nodes</td><td>~<code>1/M</code> of keys</td><td>Can be uneven — a server's slice size depends on the luck of its single hash position</td></tr>
+      <tr><td>Consistent hashing with virtual nodes</td><td>Still ~<code>1/M</code>, but spread across many servers instead of one neighbor</td><td>Even — smoothed by having many points per server</td></tr>
+      </table>
+
+      <h2>Where this shows up in real systems</h2>
+      <ul>
+      <li><strong>Distributed data stores</strong> — DynamoDB and Cassandra both partition data around a consistent-hash ring so nodes can be added or removed without a full data reshuffle; see <a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">Partitioning</a> for the general sharding picture this slots into.</li>
+      <li><strong>Cache client sharding</strong> — a Memcached client library hashes keys across a pool of cache servers this way, so losing one server only invalidates its share of the cache instead of scrambling every key's server assignment (see <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a>).</li>
+      <li><strong>Load balancers</strong> — the "IP hash / consistent hashing" algorithm in <a href="../traffic/00-load-balancing.html">Load Balancing</a> is this same ring, used to keep a client pinned to the same backend without a sticky-session cookie, while still surviving backend pool changes gracefully.</li>
+      <li><strong>CDN routing</strong> — request routing to edge nodes/PoPs uses the same principle so that adding or removing an edge node doesn't invalidate every cache key's assignment across the whole network at once.</li>
+      </ul>
+
+      <h2>Interview checklist</h2>
+      <ul>
+      <li>Lead with the concrete failure of mod-N hashing (~80%+ of keys remapped on one resize) — that's the motivating problem, not an aside.</li>
+      <li>State the ring mechanism and the ~1/M rebalancing result in one breath — that's the actual answer to "why consistent hashing."</li>
+      <li>Always mention virtual nodes explicitly — "consistent hashing" without virtual nodes is a common half-answer; the even-distribution property specifically depends on them.</li>
+      <li>Be ready to name where it's used: sharded databases, cache client routing, load-balancer session affinity, CDN edge routing — the same idea, four different layers.</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

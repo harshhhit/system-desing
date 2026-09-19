@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "05-microservice-resilience-patterns" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microservice Resilience Patterns · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2>The problem these patterns all address</h2>
+      <p>In a monolith, a failing function call is a stack trace. In a microservice architecture, a failing
+      call is a network call to another process that might be slow, down, or overloaded — and if nothing
+      contains that failure, it doesn't stay local: a caller that keeps retrying a dead dependency, or keeps
+      waiting on a slow one, consumes its own threads/connections and starts failing too, which then does the
+      same thing to <em>its</em> callers. This is a <strong>cascading failure</strong>, and every pattern on
+      this page exists to stop one service's bad day from becoming the whole system's bad day.</p>
+
+      <h2>Circuit breaker</h2>
+      <p>Named for the electrical version: after enough failures calling a dependency, stop calling it
+      entirely for a while, instead of continuing to hammer something that's clearly down.</p>
+      <ul>
+      <li><strong>Closed</strong> — normal state, requests pass through; failures are counted.</li>
+      <li><strong>Open</strong> — once failures cross a threshold, the breaker trips: calls fail immediately (or return a fallback) <em>without</em> hitting the network at all, for a cooldown period.</li>
+      <li><strong>Half-open</strong> — after the cooldown, let a small number of trial requests through; if they succeed, close the breaker again, if they fail, reopen it.</li>
+      </ul>
+      <p>The payoff is twofold: it stops wasting the caller's own resources (threads, connections) on calls
+      almost certain to fail, and it gives the struggling dependency room to recover instead of being kept
+      down by continued load.</p>
+
+      <h2>Retries with backoff</h2>
+      <ul>
+      <li><strong>Exponential backoff</strong> — wait longer between each retry (1s, 2s, 4s, 8s…) instead of retrying immediately, so a struggling dependency isn't hit with the same request rate that may have contributed to it struggling in the first place.</li>
+      <li><strong>Jitter</strong> — add randomness to each wait so that many clients retrying after the same failure (e.g. after a dependency blips) don't all retry in lockstep and recreate the exact spike that just happened — the same self-inflicted thundering herd covered in <a href="../traffic/01-rate-limiting-and-throttling.html">Rate Limiting &amp; Throttling</a>.</li>
+      <li><strong>Retries require idempotency</strong> — retrying a call that already partially succeeded (e.g. "charge the card" succeeded but the response was lost) must be safe to repeat. This is usually solved with an idempotency key the caller generates once and sends on every retry, so the server can recognize and dedupe a repeat.</li>
+      <li>Retries and circuit breakers work together, not against each other: the breaker stops retries from ever reaching a dependency it's already given up on.</li>
+      </ul>
+
+      <h2>Bulkhead isolation</h2>
+      <p>Named for a ship's watertight compartments — a hull breach floods one compartment, not the whole
+      ship. Applied to services: give each dependency its <em>own</em> resource pool (a thread pool, a
+      connection pool) instead of sharing one pool across every downstream call. If one dependency goes slow
+      and every call to it hangs, it only exhausts <em>its own</em> pool — calls to every other, healthy
+      dependency keep working on their own separate pool instead of queuing behind the stuck one.</p>
+
+      <h2>Saga pattern — distributed "transactions" without 2PC</h2>
+      <p>A single-database transaction can just roll back on failure. A business operation spanning multiple
+      services (place an order → reserve inventory → charge payment → schedule shipping) has no single
+      database to wrap a transaction around, and a blocking two-phase-commit across services doesn't scale and
+      couples their availability together. A <strong>saga</strong> instead breaks the operation into a sequence
+      of local transactions, each with a <strong>compensating transaction</strong> that undoes it if a later
+      step fails (e.g. "release the inventory reservation" compensates "reserve inventory").</p>
+      <table>
+      <tr><th></th><th>Choreography</th><th>Orchestration</th></tr>
+      <tr><td>Coordination</td><td>Each service reacts to events from the previous step and emits its own — no central coordinator (a natural fit for the event backbone in <a href="03-kafka-fundamentals.html">Kafka Fundamentals</a>)</td><td>A central orchestrator explicitly calls each step and decides what to do on failure</td></tr>
+      <tr><td>Pro</td><td>Fully decoupled — services don't know about each other, only about events</td><td>The whole flow's logic lives in one place — easy to read, easy to change</td></tr>
+      <tr><td>Con</td><td>The overall flow is implicit, scattered across services — harder to see "what happens when step 3 fails" without tracing events</td><td>The orchestrator is a new, more central dependency; more coupling between it and every step</td></tr>
+      </table>
+
+      <h2>API gateway</h2>
+      <p>A single entry point in front of a microservice fleet that terminates external requests and handles
+      cross-cutting concerns once instead of duplicating them in every service: authentication, rate limiting
+      (see <a href="../traffic/01-rate-limiting-and-throttling.html">Rate Limiting &amp; Throttling</a>), request
+      routing to the right backend service, and sometimes response aggregation across several services into one
+      client-facing response. It's the same "coarse enforcement point" idea as the edge/gateway tier in the
+      rate-limiting note, generalized beyond just limits.</p>
+
+      <h2>Service mesh</h2>
+      <p>Instead of building retries, circuit breaking, mTLS, and observability into every service's
+      application code, a service mesh runs a small proxy (<strong>sidecar</strong>) alongside every service
+      instance and routes all its network traffic through that proxy. The proxies handle these concerns
+      uniformly at the infrastructure layer — the same client-side load-balancing idea from
+      <a href="../traffic/00-load-balancing.html">Load Balancing</a>, generalized into a dedicated process next
+      to every caller rather than logic embedded in each application. The trade-off is operational: another
+      moving part (the mesh control plane) and another hop (proxy → proxy) added to every call.</p>
+
+      <h2>Interview checklist</h2>
+      <ul>
+      <li>Match the pattern to the failure mode: circuit breaker for "dependency is down," bulkhead for "one slow dependency shouldn't starve resources needed by others," retries+backoff for "transient failure," saga for "multi-service operation with no shared transaction."</li>
+      <li>Any retry story needs an idempotency answer — interviewers will ask "what if this request actually succeeded and the response was just lost."</li>
+      <li>For a saga, pick choreography vs. orchestration explicitly and name the trade-off (implicit-but-decoupled vs. explicit-but-centralized), and always describe the compensating transaction for at least one failure path.</li>
+      <li>API gateway and service mesh solve overlapping concerns at different layers (edge vs. every internal hop) — know which one a given cross-cutting concern actually belongs to.</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>
