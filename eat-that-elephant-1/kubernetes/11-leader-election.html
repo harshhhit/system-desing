@@ -11,6 +11,7 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Leader Election: HA for Controller Manager &amp; Scheduler · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="../assets/site.css?v=5">
 </head>
 <body>
@@ -52,6 +53,13 @@
         <tr><td>Renewal</td><td>The leader periodically updates the lease to say "I'm still alive."</td><td>The captain shouting "I'm still here!" every few seconds.</td></tr>
         <tr><td>Expiry</td><td>If the leader stops renewing, the lease expires and a new leader is elected.</td><td>The captain goes silent; the crew picks a new captain.</td></tr>
       </table>
+      <div class="mermaid">stateDiagram-v2
+    [*] --> Follower
+    Follower --> Leader: lease expired &amp; CAS wins
+    Leader --> Leader: renew lease every retry-period
+    Leader --> Follower: crash / lose leadership
+    Follower --> Follower: sees valid lease, waits
+</div>
 
       <h2>The Election Process, Step by Step</h2>
       <table>
@@ -245,6 +253,18 @@ Node 3:
   → Node 3 becomes follower
 
 Result: Only one leader (Node 2) - Split-brain avoided!</code></pre>
+      <div class="mermaid">sequenceDiagram
+    participant N2 as Node 2
+    participant N3 as Node 3
+    participant E as etcd (Lease)
+    N2->>E: GET lease (expired)
+    N3->>E: GET lease (expired)
+    N2->>E: CAS write holderIdentity=node2
+    E-->>N2: SUCCESS
+    N3->>E: CAS write holderIdentity=node3
+    E-->>N3: CONFLICT (resourceVersion changed)
+    N3->>N3: Become follower
+</div>
 
       <h2>Viewing and Debugging Leader Election</h2>
       <table>
@@ -368,5 +388,8 @@ If Node 1 fails:
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

@@ -11,6 +11,7 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kubernetes API Request Flow: Auth, AuthZ, Admission · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="../assets/site.css?v=5">
 </head>
 <body>
@@ -97,6 +98,23 @@ Kubernetes controllers / scheduler / kubelet</code></pre>
         <li>Controllers/watchers receive the change and Kubernetes reconciles the desired state.</li>
         <li>For a read such as <code>get pods</code>, Kubernetes normally reads the current state rather than writing a new object to etcd.</li>
       </ol>
+      <div class="mermaid">sequenceDiagram
+    participant U as kubectl
+    participant A as kube-apiserver
+    participant E as etcd
+    U->>A: GET /pods?namespace=frontend
+    A->>A: Authenticate ("who are you?")
+    A->>A: Authorize ("can you do this?")
+    A->>A: Admission Control
+    A->>A: API Validation
+    alt read
+        A-->>U: Return current state (no etcd write)
+    else write
+        A->>E: Persist object
+        E-->>A: Ack
+        A-->>U: Response
+    end
+</div>
 
       <h2>Watches: How Controllers Stay in Sync</h2>
       <p>Controllers and <code>kubectl get pods --watch</code> don't poll the API server in a loop. They use the <strong>List + Watch</strong> pattern:</p>
@@ -110,5 +128,8 @@ Kubernetes controllers / scheduler / kubelet</code></pre>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

@@ -11,6 +11,7 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>API Server Request Lifecycle: The Four Gates · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="../assets/site.css?v=5">
 </head>
 <body>
@@ -47,10 +48,19 @@
    │
    ▼
 4. etcd — "Store it permanently."</code></pre>
+      <div class="mermaid">flowchart TD
+    R["📨 Request"] --> Authn["🪪 Authentication<br/>Who are you?"]
+    Authn --> Authz["✅ Authorization<br/>What can you do?"]
+    Authz --> Adm["🛡️ Admission Control<br/>Should this be allowed?"]
+    Adm --> ETCD[("🗄️ etcd<br/>Store permanently")]
+</div>
 
     </main>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

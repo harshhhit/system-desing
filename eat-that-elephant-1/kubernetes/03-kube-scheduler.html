@@ -11,6 +11,7 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>kube-scheduler Deep Dive · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="../assets/site.css?v=5">
 </head>
 <body>
@@ -174,6 +175,12 @@ No Node Assigned → Scheduler selects the best node.</code></pre>
         <li><strong>Scoring</strong> (priorities) — ranks the feasible nodes and picks the highest-scoring one. Scoring plugins balance goals like spreading Pods evenly across nodes, bin-packing onto fewer nodes to save resources, or preferring nodes that already have the Pod's image cached.</li>
       </ul>
       <p>If no node survives filtering, the Pod stays <code>Pending</code> until one becomes available.</p>
+      <div class="mermaid">flowchart LR
+    Pod["🆕 Unscheduled Pod"] --> Filter{"Filtering<br/>eliminate infeasible nodes"}
+    Filter --> Score{"Scoring<br/>rank feasible nodes"}
+    Score --> Bind["📌 Bind to highest-scoring node"]
+    Bind --> API["🚪 API Server updated"]
+</div>
 
       <h2>Internal Flow</h2>
       <pre><code>Unscheduled Pod
@@ -281,5 +288,8 @@ Scheduler → Retry Placement</code></pre>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

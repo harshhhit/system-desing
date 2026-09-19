@@ -11,6 +11,7 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Data Plane Deep Dive · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="../assets/site.css?v=5">
 </head>
 <body>
@@ -84,9 +85,31 @@
       </ul>
       <p>When you type <code>http://&lt;Node-IP&gt;:30000</code> in your browser, the packet hits the node's kernel, iptables modifies the destination to <code>10.244.1.5:80</code>, and the CNI routes it directly to your nginx container.</p>
 
+      <h2>The Whole Journey, as a Sequence Diagram</h2>
+      <div class="mermaid">sequenceDiagram
+    participant Dev as Developer
+    participant K as Kubelet
+    participant CRI as CRI (containerd)
+    participant CNI as CNI (Calico)
+    participant CSI as CSI (EBS)
+    participant KP as kube-proxy
+    Dev->>K: Pod assigned (nginx)
+    K->>CRI: Pull image & start container
+    CRI-->>K: Container running (no network/disk)
+    K->>CNI: Attach network, assign IP
+    CNI-->>K: Pod IP 10.244.1.5
+    K->>CSI: Mount volume (if PVC)
+    CSI-->>K: Disk mounted
+    Dev->>KP: Expose Service (NodePort)
+    KP->>KP: Program iptables/IPVS rules
+</div>
+
     </main>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

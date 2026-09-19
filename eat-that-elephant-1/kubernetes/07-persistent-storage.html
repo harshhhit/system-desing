@@ -11,6 +11,7 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Persistent Storage &amp; Distributed Databases on Kubernetes · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="../assets/site.css?v=5">
 </head>
 <body>
@@ -46,6 +47,12 @@
       <p>A Kubernetes <strong>StatefulSet</strong> is commonly used because database nodes require stable identities, predictable Pod names, and stable storage associations. Its <code>volumeClaimTemplates</code> allow Kubernetes to automatically create a separate PVC for every StatefulSet replica.</p>
       <p>The resulting relationship is conceptually:</p>
       <pre><code>Pod → PVC → PV → physical storage</code></pre>
+      <div class="mermaid">flowchart LR
+    Pod["📦 Pod"] --> PVC["📋 PVC"]
+    PVC --> PV["💾 PV"]
+    PV --> SC["⚙️ StorageClass / Provisioner"]
+    SC --> Disk[("🗄️ Physical / Cloud Storage")]
+</div>
       <p>If a database Pod is recreated, its StatefulSet identity and PVC allow it to reconnect to its existing storage instead of starting with an empty filesystem.</p>
 
       <h2>Storage Provides Durability, Not Distribution</h2>
@@ -64,5 +71,8 @@
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

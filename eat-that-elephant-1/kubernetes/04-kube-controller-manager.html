@@ -11,6 +11,7 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>kube-controller-manager Deep Dive · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="../assets/site.css?v=5">
 </head>
 <body>
@@ -140,6 +141,15 @@ Correct Drift</code></pre>
         <tr><td>SharedInformer</td><td>A shared version of Informer where multiple controllers can use the same watch connection to reduce API Server load.</td><td>A shared newspaper subscription — multiple people read the same copy.</td></tr>
         <tr><td>Work Queue</td><td>A queue that holds events (add, update, delete) that need to be processed. Helps with retries, deduplication, and rate limiting.</td><td>A to-do list — you put tasks here and process them one by one.</td></tr>
       </table>
+      <div class="mermaid">flowchart LR
+    API["🚪 API Server"] -- watch --> Informer["👂 Informer"]
+    Informer --> Cache[("🗃️ Local Cache / Indexer")]
+    Cache --> Lister["📖 Lister"]
+    Informer -- event key --> Queue["📥 Work Queue"]
+    Queue --> Reconcile["⚙️ Reconcile Loop"]
+    Reconcile -- read --> Lister
+    Reconcile -- write --> API
+</div>
 
       <h3>Deep Dive into Each Component</h3>
 
@@ -222,5 +232,8 @@ Correct Drift</code></pre>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

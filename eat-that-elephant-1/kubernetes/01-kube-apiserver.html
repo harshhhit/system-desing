@@ -11,6 +11,7 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>kube-apiserver Deep Dive · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="../assets/site.css?v=5">
 </head>
 <body>
@@ -190,6 +191,21 @@ etcd</code></pre>
             v
 Controllers, Scheduler, Kubelet</code></pre>
       <p>This sequence represents the complete lifecycle of how Kubernetes processes an API request before the desired state is eventually enforced throughout the cluster.</p>
+      <p>Same lifecycle, as a sequence diagram:</p>
+      <div class="mermaid">sequenceDiagram
+    participant C as Client (kubectl/CI)
+    participant A as kube-apiserver
+    participant E as etcd
+    participant W as Controllers / Scheduler / Kubelet
+    C->>A: Request
+    A->>A: Authenticate
+    A->>A: Authorize
+    A->>A: Admission Control
+    A->>E: Persist object
+    E-->>A: Ack
+    A-->>C: Response
+    A-->>W: Watch event
+</div>
 
       <h2>Why It Exists</h2>
       <p>Without a central API:</p>
@@ -252,5 +268,8 @@ Controllers, Scheduler, Kubelet</code></pre>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

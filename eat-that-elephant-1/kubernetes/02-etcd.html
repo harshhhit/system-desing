@@ -11,6 +11,7 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>etcd Deep Dive · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="../assets/site.css?v=5">
 </head>
 <body>
@@ -72,6 +73,13 @@ Actual State</code></pre>
         <li>A cluster of <code>N</code> members tolerates the loss of up to <code>(N-1)/2</code> members while still having a quorum. That's why clusters use <strong>odd sizes</strong> — typically 3 or 5: a 3-member cluster tolerates 1 failure, a 5-member cluster tolerates 2, and adding an even-numbered member (e.g. going from 3 to 4) raises cost without raising fault tolerance.</li>
         <li>If the leader fails, the remaining members hold a new election and pick a new leader before accepting writes again.</li>
       </ul>
+      <div class="mermaid">flowchart TD
+    L["👑 Leader"] -- replicate write --> F1["Follower 1"]
+    L -- replicate write --> F2["Follower 2"]
+    F1 -- ack --> L
+    F2 -- ack --> L
+    L -- majority acked --> Done["✅ Write Committed"]
+</div>
 
       <h2>Failure Impact</h2>
       <p>If etcd is lost:</p>
@@ -124,5 +132,8 @@ etcdctl snapshot restore backup.db --data-dir /var/lib/etcd-restore</code></pre>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

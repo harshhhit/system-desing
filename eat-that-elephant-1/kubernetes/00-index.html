@@ -11,6 +11,7 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kubernetes Control Plane: Overview · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="../assets/site.css?v=5">
 </head>
 <body>
@@ -63,6 +64,16 @@ Scheduler
       │
       ▼
 Worker Nodes</code></pre>
+      <p>Same flow, as a diagram:</p>
+      <div class="mermaid">flowchart TD
+    User["👤 User / CI-CD"] --> API["🚪 kube-apiserver"]
+    API --> ETCD[("🗄️ etcd")]
+    API --> Sched["📋 kube-scheduler"]
+    API --> CM["🔁 kube-controller-manager"]
+    Sched --> Nodes["🖥️ Worker Nodes"]
+    CM --> Nodes
+    Nodes -. watch / report .-> API
+</div>
       <h3>Core components</h3>
       <ul>
         <li><a href="01-kube-apiserver.html">kube-apiserver</a></li>
@@ -89,6 +100,14 @@ Actions Taken
        │
        ▼
 Actual State Matches Desired State</code></pre>
+      <div class="mermaid">flowchart LR
+    Desired["📝 Desired State"] --> Watch["👀 Controllers Watch etcd"]
+    Watch --> Diff{"Differences?"}
+    Diff -- yes --> Act["⚙️ Take Action"]
+    Act --> Actual["✅ Actual State"]
+    Diff -- no --> Actual
+    Actual -. loop .-> Watch
+</div>
       <p>Kubernetes constantly performs reconciliation.</p>
 
       <h2>Component Dependencies</h2>
@@ -148,5 +167,8 @@ API Server</code></pre>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>
