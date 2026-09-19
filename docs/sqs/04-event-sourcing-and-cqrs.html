@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "04-event-sourcing-and-cqrs" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Sourcing &amp; CQRS · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2>Event sourcing: store what happened, not just the current state</h2>
+      <p>A conventional model stores current state and overwrites it on every update — an <code>orders</code>
+      row's <code>status</code> column just becomes <code>"shipped"</code>, and whatever it was before is gone.
+      <strong>Event sourcing</strong> instead stores the full sequence of immutable events that led there —
+      <code>OrderPlaced</code>, <code>PaymentReceived</code>, <code>OrderShipped</code> — and derives current
+      state by replaying them in order. The event log <em>is</em> the source of truth; any "current state" view
+      is just a cache of it.</p>
+      <table>
+      <tr><th>Gain</th><th>Cost</th></tr>
+      <tr><td>Full audit trail for free — every change is already an explicit, timestamped record of what happened and (with metadata) why</td><td>Replaying the full history to get current state gets expensive as the log grows</td></tr>
+      <tr><td>Time travel — reconstruct state as of any point in the past by replaying only up to that point</td><td>Event schemas change over time; old events must still be readable ("upcasting" old event shapes to new ones)</td></tr>
+      <tr><td>Natural fit for a Kafka-style log (see <a href="03-kafka-fundamentals.html">Kafka Fundamentals</a>) as the storage/transport mechanism</td><td>Debugging "what's the current state" requires replaying, not just reading a row — a real shift in mental model</td></tr>
+      </table>
+      <div class="sd-study-note tip"><span class="sd-note-title">Snapshotting</span><p>To avoid replaying an entity's entire history on every read, periodically persist a snapshot of its current state alongside the event log. Reads then replay only the events since the last snapshot — the log stays the source of truth, the snapshot is just a cached checkpoint.</p></div>
+
+      <h2>CQRS: separate the write model from the read model</h2>
+      <p><strong>CQRS (Command Query Responsibility Segregation)</strong> is a distinct idea that's often paired
+      with event sourcing but doesn't require it: instead of one model serving both writes (commands) and reads
+      (queries), split them into two. The write side is optimized for validating and recording changes
+      correctly; the read side is optimized — independently — for however queries actually need the data
+      shaped, including multiple different read models for different consumers of the same data.</p>
+      <ul>
+      <li>A normalized write model doesn't have to be denormalized for read performance, and a read model doesn't have to fit the write side's schema at all — they can even live in entirely different databases (a relational write store, a search-optimized read store).</li>
+      <li>This directly addresses the same "how do I choose the database" trade-off in <a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">How to Choose the Database</a> — CQRS lets you pick a different, purpose-fit answer for reads than for writes instead of one compromise database.</li>
+      </ul>
+
+      <h2>How they combine</h2>
+      <ol>
+      <li>A command arrives, is validated, and — instead of updating a row — appends a new event to that entity's event log.</li>
+      <li>The write side acknowledges once the event is durably appended (this is the source of truth being updated).</li>
+      <li>One or more <strong>projections</strong> — separate processes subscribed to the event stream — consume each new event and update a read-optimized <strong>materialized view</strong> (a denormalized table, a search index, a cache).</li>
+      <li>Queries read from the materialized view, never from replaying the event log directly.</li>
+      </ol>
+      <div class="sd-study-note warning"><span class="sd-note-title">The read side is eventually consistent</span><p>Between step 2 and step 3 there's a real (usually small) window where the write has committed but the read-side projection hasn't caught up yet — a user can write something and, for a moment, not see it reflected in a query. Any system built this way has to decide explicitly how to handle that gap (read-your-writes tricks, UI optimism, or simply accepting the lag) rather than assume the read side is always current.</p></div>
+
+      <h2>When this is worth the complexity</h2>
+      <ul>
+      <li><strong>Reach for it</strong> when an audit trail is a real requirement (financial ledgers, compliance-heavy domains), when read and write access patterns genuinely diverge enough that one schema can't serve both well, or when the domain is naturally event-shaped (order fulfillment, workflow/state-machine-heavy processes).</li>
+      <li><strong>Skip it</strong> for straightforward CRUD domains — event sourcing and CQRS add real operational and cognitive overhead (event schema versioning, projection lag, replay tooling), and most systems don't need either. This is one of the more commonly over-applied patterns in system design interviews; being able to say "this doesn't need it" is as valuable as knowing how it works.</li>
+      </ul>
+
+      <h2>Interview checklist</h2>
+      <ul>
+      <li>Keep the two ideas distinct: event sourcing is about <em>how state is stored</em> (as events, not current state); CQRS is about <em>splitting write and read models</em>. They're commonly combined but are independent decisions.</li>
+      <li>Always mention the read side's eventual consistency explicitly when proposing this — it's the detail interviewers probe for.</li>
+      <li>Bring up snapshotting the moment "replay the whole history" comes up as a cost.</li>
+      <li>Be ready to argue <em>against</em> using it for a simple CRUD-shaped problem — knowing the trade-off cuts both ways is part of a strong answer.</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

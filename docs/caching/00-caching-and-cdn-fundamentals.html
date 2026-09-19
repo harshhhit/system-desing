@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "00-caching-and-cdn-fundamentals" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caching &amp; CDN Fundamentals · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2>Why caching exists</h2>
+      <p>Every cache trades a little staleness for a lot of speed: reading from memory (nanoseconds–microseconds)
+      instead of making a network round trip to a database or an origin server (single-digit to hundreds of
+      milliseconds) is the single biggest latency win available in most systems, and it removes read load from
+      whatever sits behind it. The cost is that what the cache holds can drift out of sync with the source of
+      truth — caching as a discipline is mostly about managing that drift on purpose instead of by accident.</p>
+
+      <h2>Where a cache can live</h2>
+      <table>
+      <tr><th>Layer</th><th>Example</th><th>Typical latency</th><th>Shared by</th></tr>
+      <tr><td>Browser / client cache</td><td><code>Cache-Control</code>, Service Worker cache</td><td>~0ms (no request leaves the device)</td><td>one user</td></tr>
+      <tr><td>CDN / edge</td><td>Cloudflare, CloudFront, Fastly</td><td>~10–50ms (nearest PoP)</td><td>everyone near that PoP</td></tr>
+      <tr><td>Reverse proxy</td><td>Varnish, Nginx <code>proxy_cache</code></td><td>~1ms</td><td>everyone hitting that server</td></tr>
+      <tr><td>Distributed / remote cache</td><td>Redis, Memcached</td><td>~1ms (same datacenter)</td><td>every app instance</td></tr>
+      <tr><td>In-process / local cache</td><td>an in-memory map, Caffeine, <code>functools.lru_cache</code></td><td>~microseconds</td><td>one process only — cheapest, but N copies across N instances go stale independently</td></tr>
+      <tr><td>Database buffer pool</td><td>Postgres <code>shared_buffers</code>, InnoDB buffer pool</td><td>~microseconds</td><td>that DB instance — see <a href="../05-database/03-querying-and-performance/08-indxing.html">Indexing</a></td></tr>
+      </table>
+      <p>A single request in a real system typically passes through several of these layers in order — client →
+      CDN → reverse proxy/app cache → distributed cache → database — missing at each one before falling through
+      to the next.</p>
+
+      <h2>Caching strategies — who writes, who reads, in what order</h2>
+      <table>
+      <tr><th>Strategy</th><th>Read path</th><th>Write path</th><th>Trade-off</th></tr>
+      <tr><td><strong>Cache-aside</strong> (lazy loading)</td><td>App checks the cache; on a miss, reads the DB, then populates the cache</td><td>App writes the DB, then invalidates (or updates) the cache key</td><td>The most common strategy. Cache and DB can briefly disagree between the DB write and the invalidation; only data that's actually requested ever gets cached.</td></tr>
+      <tr><td><strong>Read-through</strong></td><td>App always asks the cache; the cache itself loads from the DB on a miss</td><td>usually paired with write-through</td><td>Simpler application code (the cache library owns the miss path), at the cost of coupling the cache to the data-loading logic.</td></tr>
+      <tr><td><strong>Write-through</strong></td><td>—</td><td>App writes to the cache, which synchronously writes to the DB</td><td>Cache and DB never disagree, but every write pays the DB's latency — no write speedup.</td></tr>
+      <tr><td><strong>Write-behind / write-back</strong></td><td>—</td><td>App writes to the cache; the cache asynchronously flushes to the DB later</td><td>Fastest writes, absorbs write bursts — but a cache crash before the flush loses data, so it needs a durable queue/log behind it.</td></tr>
+      <tr><td><strong>Write-around</strong></td><td>Cache-aside on read</td><td>App writes straight to the DB, skipping the cache entirely</td><td>Keeps the cache from filling with cold, write-once-read-rarely data; the first read after a write is always a miss.</td></tr>
+      </table>
+      <div class="sd-study-note tip"><span class="sd-note-title">Default choice</span><p>Cache-aside + write-around is what most teams reach for first: it's the simplest to reason about, and it only ever caches data that's actually being read. Reach for write-through or write-behind specifically when the cache and DB must never disagree, or when write latency itself is the bottleneck.</p></div>
+
+      <h2>Eviction — what gets thrown out when the cache is full</h2>
+      <ul>
+      <li><strong>LRU (Least Recently Used)</strong> — evicts whatever hasn't been touched in the longest time. The default in Redis (<code>allkeys-lru</code>) and most caching libraries; a good general-purpose choice because real traffic is usually Zipfian (a small set of keys accounts for most of the reads).</li>
+      <li><strong>LFU (Least Frequently Used)</strong> — evicts by access count instead of recency. Beats LRU when a key is hit constantly but happened to go quiet for an hour; Redis offers this as <code>allkeys-lfu</code>.</li>
+      <li><strong>FIFO</strong> — evicts in insertion order regardless of use. Cheap to implement, rarely optimal — a key read every second can still be evicted just because it happens to be the oldest.</li>
+      <li><strong>TTL / expiration</strong> — every entry gets a time budget regardless of memory pressure. Used alongside LRU/LFU, not instead of it — TTL is the main tool for bounding <em>freshness</em>, eviction policy is the tool for bounding <em>memory</em>.</li>
+      </ul>
+
+      <h2>Invalidation — the genuinely hard part</h2>
+      <p>"There are only two hard things in Computer Science: cache invalidation and naming things" isn't a joke
+      about implementation effort, it's about correctness: a stale cache doesn't crash — it just quietly serves
+      wrong answers.</p>
+      <ul>
+      <li><strong>TTL expiry</strong> — the simplest strategy, and the only one that needs zero coordination: bound staleness to "at most N seconds old" and move on. Wrong choice when correctness matters more than a few seconds of staleness (an account balance, an inventory count).</li>
+      <li><strong>Explicit invalidation on write</strong> — the write path deletes or updates the cache key. Correct in principle, but every code path that writes that data has to remember to do it — a second service or a one-off backfill script that writes directly to the DB silently breaks the cache.</li>
+      <li><strong>Versioned / namespaced keys</strong> — e.g. <code>user:42:v3</code>; bump the version on write instead of deleting. Old readers naturally age out, and there's no race between "delete the key" and "a slow read that started before the write repopulates the old value."</li>
+      <li><strong>Event-driven invalidation</strong> — a write publishes an event (a DB change stream, or a message queue — see <a href="../sqs/01-sqs.html">SQS Overview</a>) and every cache node subscribes and invalidates. Scales to many cache nodes/services without them all knowing about each other directly, at the cost of eventual rather than immediate consistency.</li>
+      <li><strong>Stale-while-revalidate</strong> — serve the stale value immediately, kick off a background refresh, the next request gets the fresh value. Trades a bounded amount of staleness for zero-latency cache misses; it's the pattern CDNs use by default (see below).</li>
+      </ul>
+
+      <h2>Cache stampede (thundering herd)</h2>
+      <p>A hot key expires, and every one of the thousands of requests that would have hit the cache in that
+      instant now misses at the same moment and hammers the database simultaneously — often hard enough to take
+      it down, which is worse than never having had a cache at all.</p>
+      <ul>
+      <li><strong>Locking / request coalescing</strong> — the first request to miss takes a short-lived lock and recomputes; every other concurrent request for the same key waits on that one result instead of each recomputing it independently.</li>
+      <li><strong>Early / probabilistic recomputation</strong> — recompute slightly before the TTL actually expires (with random jitter so not every key refreshes at once), so the cache is never truly empty for that key.</li>
+      <li><strong>TTL jitter</strong> — add a small random offset to every TTL so a batch of keys written at the same time (e.g. a cache warm-up after a deploy) doesn't all expire in the same millisecond.</li>
+      <li><strong>Stale-while-revalidate</strong> — the same fix as above: keep serving the old value while one request refreshes it in the background.</li>
+      </ul>
+      <div class="sd-study-note warning"><span class="sd-note-title">The "hot key" problem is a different failure mode</span><p>A stampede is many requests hitting an <em>empty</em> slot at once. A hot key is one key so popular it saturates a single cache shard/node even while warm (a celebrity's profile, a viral post) — the fix is different: client-side/local caching of that one key, or replicating just that key across shards, not TTL tuning.</p></div>
+
+      <h2>Redis vs. Memcached</h2>
+      <table>
+      <tr><th></th><th>Redis</th><th>Memcached</th></tr>
+      <tr><td>Data model</td><td>Strings, hashes, lists, sets, sorted sets, streams, HyperLogLog</td><td>Strings/blobs only</td></tr>
+      <tr><td>Persistence</td><td>Optional (RDB snapshots, AOF log) — can survive a restart</td><td>None — a restart empties it, by design</td></tr>
+      <tr><td>Threading</td><td>Mostly single-threaded per shard (simpler, atomic ops for free)</td><td>Multithreaded — can use more cores on one box for pure key-value GET/SET</td></tr>
+      <tr><td>Pub/sub, scripting, transactions</td><td>Yes — also usable as a lightweight queue/broker</td><td>No</td></tr>
+      <tr><td>Clustering</td><td>Redis Cluster — built-in sharding + replication</td><td>Client-side sharding only (e.g. consistent hashing in the client)</td></tr>
+      <tr><td>Pick it when</td><td>you need more than GET/SET — counters, leaderboards (sorted sets), rate limiting, pub/sub, or durability</td><td>you want the simplest, most memory-efficient pure object cache and nothing else</td></tr>
+      </table>
+
+      <h2>CDN: caching at the edge</h2>
+      <p>A CDN is a distributed cache sitting in front of your origin server: dozens to hundreds of
+      <strong>PoPs (Points of Presence)</strong> spread geographically, so a user's request is answered by
+      whichever PoP is nearest instead of crossing the planet to the origin. DNS or anycast routing sends each
+      user to their nearest PoP automatically.</p>
+      <ul>
+      <li><strong>Origin pull</strong> — the common model: a PoP fetches from your origin on its first miss for a given URL, then caches it for subsequent requests until the TTL expires. Nothing to push, nothing to pre-warm.</li>
+      <li><strong>Origin push</strong> — you proactively upload content to the CDN ahead of demand — common for release-day assets (video, game patches) where a stampede on first request would overwhelm the origin.</li>
+      </ul>
+
+      <h3>Cache-Control headers — how the origin tells every cache in the chain what to do</h3>
+      <table>
+      <tr><th>Header value</th><th>Meaning</th></tr>
+      <tr><td><code>max-age=N</code></td><td>Fresh for N seconds; any cache (browser, CDN, proxy) may store and reuse it.</td></tr>
+      <tr><td><code>s-maxage=N</code></td><td>Same as <code>max-age</code>, but only for shared caches (CDN/proxy) — lets you cache longer at the edge than in the user's own browser.</td></tr>
+      <tr><td><code>no-cache</code></td><td>Misleadingly named — <em>may</em> be stored, but must be revalidated with the origin (via <code>ETag</code>/<code>If-None-Match</code>) before every use.</td></tr>
+      <tr><td><code>no-store</code></td><td>The real "don't cache this" — never stored anywhere; use it for genuinely sensitive, per-request data.</td></tr>
+      <tr><td><code>private</code></td><td>Only the end user's own browser may cache it — shared caches (CDN) must not.</td></tr>
+      <tr><td><code>public</code></td><td>Any cache may store it, even a normally-uncacheable authenticated response.</td></tr>
+      <tr><td><code>stale-while-revalidate=N</code></td><td>Serve the stale copy for up to N more seconds after expiry while refetching in the background — turns every refresh into a zero-latency cache hit.</td></tr>
+      <tr><td><code>stale-if-error=N</code></td><td>If the origin is down or erroring, keep serving the stale copy for N seconds instead of surfacing the error — a cheap resilience win for free.</td></tr>
+      </table>
+
+      <h3>Purging and invalidating edge content</h3>
+      <ul>
+      <li><strong>Let it expire</strong> — the simplest option: set a TTL and don't fight it. Right choice for anything that changes on a schedule rather than on demand.</li>
+      <li><strong>Explicit purge / invalidation API</strong> — every major CDN exposes an API to force-evict a URL (or a whole path/tag) immediately; needed when content changes at an unpredictable time (a CMS publish, a bug-fix redeploy of a JS bundle).</li>
+      <li><strong>Cache-busting via the URL itself</strong> — bake a content hash or version into the filename (<code>app.a1b2c3.js</code>) and set an effectively infinite TTL. A new deploy is a new URL, so there's never anything to invalidate, and the old URL just harmlessly stays cached forever. This is why build tools fingerprint static assets.</li>
+      </ul>
+
+      <h3>Static vs. dynamic content at the edge</h3>
+      <p>Static assets (JS/CSS/images, fingerprinted per the point above) are the easy, textbook case for a CDN —
+      cache them aggressively, for a very long time. Dynamic, personalized, or authenticated responses (a
+      logged-in user's dashboard, an API response scoped to one account) are harder: either mark them
+      <code>private</code>/<code>no-store</code> and skip the edge entirely, or split the response so the CDN
+      caches a static shell/fragment and an edge function or the client fills in the personalized part after
+      load. Modern CDNs also run <strong>edge compute</strong> (Cloudflare Workers, Lambda@Edge) to do light
+      request-time logic — auth checks, A/B routing, header rewriting — right at the PoP instead of
+      round-tripping to the origin for it.</p>
+
+      <h2>Interview checklist</h2>
+      <ul>
+      <li>Name the layer: is this a browser-cache, CDN, app-level-cache, or DB-buffer-pool problem? They have different failure modes and different fixes.</li>
+      <li>State the strategy explicitly (cache-aside vs. write-through vs. write-behind) — interviewers will ask what happens if the cache write fails, and the answer depends entirely on which strategy you picked.</li>
+      <li>Always name an eviction policy <em>and</em> a TTL — "cache it" alone isn't a complete answer.</li>
+      <li>Call out cache-stampede risk on any "single hot key" scenario (trending topic, homepage, celebrity profile) and name a mitigation (locking, jitter, stale-while-revalidate).</li>
+      <li>Remember caches trade consistency for speed — be ready to say how stale is acceptable for this specific piece of data, and why.</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

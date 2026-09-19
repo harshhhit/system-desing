@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "00-networking-fundamentals" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Networking Fundamentals · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2>Why this layer matters for system design</h2>
+      <p>Every "should we cache this," "how many round trips does this take," and "why is this API slow from
+      one region and fast from another" question ultimately comes down to what's happening below the
+      application layer — how a connection gets established, how a name becomes an address, and how much of
+      that has to happen again for every single request. This page is the plumbing that
+      <a href="../01-front-end/graphql/http/04-client-server-model.html">Client-Server Model, End to End</a>
+      and <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a> both sit
+      on top of.</p>
+
+      <h2>TCP vs. UDP</h2>
+      <table>
+      <tr><th></th><th>TCP</th><th>UDP</th></tr>
+      <tr><td>Connection</td><td>Connection-oriented — a handshake before any data flows</td><td>Connectionless — just send the packet</td></tr>
+      <tr><td>Reliability</td><td>Guarantees delivery and order (retransmits lost packets, buffers out-of-order ones)</td><td>None — packets can be lost, duplicated, or arrive out of order and nothing fixes it for you</td></tr>
+      <tr><td>Flow / congestion control</td><td>Built in — slows down automatically when the network is congested</td><td>None — the application has to implement its own if it needs it</td></tr>
+      <tr><td>Overhead</td><td>Higher — handshake, acks, retransmission bookkeeping</td><td>Minimal — just a small header</td></tr>
+      <tr><td>Used by</td><td>HTTP/1.1, HTTP/2, most APIs, databases, anything needing correctness</td><td>DNS queries, video/voice streaming, gaming, HTTP/3 (QUIC runs over UDP — see below)</td></tr>
+      <tr><td>Pick it when</td><td>losing or reordering a byte is unacceptable (an API call, a file transfer)</td><td>a late or dropped packet is better than a delayed one (a live video frame arriving stale is useless anyway)</td></tr>
+      </table>
+
+      <h2>The TCP handshake</h2>
+      <ol>
+      <li><strong>SYN</strong> — client sends a synchronize packet with an initial sequence number, proposing a connection.</li>
+      <li><strong>SYN-ACK</strong> — server acknowledges and sends its own sequence number back.</li>
+      <li><strong>ACK</strong> — client acknowledges the server's number; the connection is now open.</li>
+      </ol>
+      <p>That's one full round trip before a single byte of actual data (or TLS negotiation) can begin — the
+      reason connection reuse (HTTP keep-alive, connection pooling to a database — see
+      <a href="../05-database/05a-connection-management-and-database-proxies/index.html">Connection Management and Database Proxies</a>)
+      matters so much: paying the handshake cost once and reusing the connection for many requests is far
+      cheaper than paying it per request. Closing a connection (FIN/ACK from each side, four steps) has its own
+      smaller cost, and a server holding many connections in that teardown state is a real resource-exhaustion
+      concern under high request-per-second load.</p>
+
+      <h2>DNS resolution, end to end</h2>
+      <p>Turning <code>example.com</code> into an IP address before a TCP handshake can even start:</p>
+      <ol>
+      <li>Check the browser's own DNS cache, then the OS cache — if the name was resolved recently and its TTL hasn't expired, stop here.</li>
+      <li>Query a <strong>recursive resolver</strong> (the ISP's, or a public one like <code>8.8.8.8</code>/<code>1.1.1.1</code>) which does the rest of the walk on the client's behalf.</li>
+      <li>Resolver asks a <strong>root server</strong> — "who handles <code>.com</code>?" — gets back the <strong>TLD server</strong>'s address.</li>
+      <li>Resolver asks the <strong>TLD server</strong> — "who handles <code>example.com</code>?" — gets back the domain's <strong>authoritative name server</strong>.</li>
+      <li>Resolver asks the <strong>authoritative server</strong> for the actual <code>A</code>/<code>AAAA</code> record, caches the answer for its TTL, and returns it to the client.</li>
+      </ol>
+      <p>Every one of those hops is a full round trip the first time (a "cold" lookup can add tens to hundreds
+      of milliseconds), which is why DNS caching and short-but-not-too-short TTLs matter, and why CDN/GSLB
+      routing (see <a href="../traffic/00-load-balancing.html">Load Balancing</a>) exploits this same lookup to
+      return a different, nearer IP depending on where the query came from.</p>
+
+      <h2>The TLS handshake</h2>
+      <p>HTTPS is HTTP over a TCP connection that's had TLS negotiated on top of it first — so a fresh HTTPS
+      request pays for the TCP handshake <em>and</em> the TLS handshake before any HTTP request/response
+      happens.</p>
+      <ul>
+      <li><strong>ClientHello</strong> — client sends the TLS versions and cipher suites it supports, plus a random value.</li>
+      <li><strong>ServerHello + certificate</strong> — server picks a cipher suite, sends its certificate (proving identity, signed by a CA the client trusts) and its own random value.</li>
+      <li><strong>Key exchange</strong> — both sides derive the same shared symmetric session key without ever sending it over the wire (Diffie-Hellman in practice), which then encrypts everything else in the session — symmetric crypto is far cheaper than the asymmetric crypto used just to set that key up.</li>
+      <li><strong>Finished</strong> — both sides confirm the handshake succeeded; encrypted application data (the actual HTTP request) can now flow.</li>
+      </ul>
+      <p><strong>TLS 1.3</strong> cut this from two round trips to one (and offers a "0-RTT" resumption mode for
+      returning clients) — one of the concrete reasons upgrading matters, not just a version-number bump.
+      <strong>Session resumption</strong> (a session ticket/ID from a previous connection) skips the full
+      handshake on reconnect entirely, which is why a client that closes and reopens connections to the same
+      host repeatedly is far more expensive than one that keeps a connection alive.</p>
+
+      <h2>HTTP/1.1 vs. HTTP/2 vs. HTTP/3</h2>
+      <table>
+      <tr><th></th><th>HTTP/1.1</th><th>HTTP/2</th><th>HTTP/3</th></tr>
+      <tr><td>Transport</td><td>TCP</td><td>TCP</td><td><strong>QUIC</strong> — over UDP</td></tr>
+      <tr><td>Multiplexing</td><td>No — one request waits for the previous one to finish per connection (browsers work around this by opening several parallel connections)</td><td>Yes — many requests/responses interleaved on a single connection</td><td>Yes, and without HTTP/2's remaining weakness (below)</td></tr>
+      <tr><td>Head-of-line blocking</td><td>Severe — a slow response blocks everything behind it on that connection</td><td>Fixed at the HTTP layer, but still present at the <em>TCP</em> layer — one lost packet stalls every multiplexed stream until it's retransmitted</td><td>Fixed at both layers — QUIC's streams are independent, so a lost packet only stalls the one stream it belongs to</td></tr>
+      <tr><td>Header compression</td><td>None — headers sent in full, every request</td><td>HPACK</td><td>QPACK (HPACK adapted for QUIC's out-of-order delivery)</td></tr>
+      <tr><td>Connection setup</td><td>TCP handshake, then TLS handshake, separately</td><td>Same as HTTP/1.1</td><td>QUIC folds the transport and TLS 1.3 handshake into a single round trip (0-RTT on resumption)</td></tr>
+      <tr><td>Server push</td><td>No</td><td>Yes (in practice, little-used and being deprecated in browsers)</td><td>No (removed)</td></tr>
+      </table>
+
+      <h2>WebSockets vs. gRPC vs. plain HTTP</h2>
+      <table>
+      <tr><th></th><th>Plain HTTP (polling)</th><th>WebSockets</th><th>gRPC</th></tr>
+      <tr><td>Direction</td><td>Client-initiated request/response only</td><td>Full-duplex — either side can push at any time, over one long-lived connection</td><td>Request/response by default; also supports client/server/bidirectional streaming</td></tr>
+      <tr><td>Protocol</td><td>Text-based HTTP, usually JSON</td><td>Its own framed protocol after an HTTP Upgrade handshake</td><td>HTTP/2 + Protocol Buffers (binary, schema-defined)</td></tr>
+      <tr><td>Best for</td><td>Simple request/response, cacheable resources, public APIs</td><td>Live, bidirectional, low-latency use cases — chat, live cursors, trading tickers, notifications</td><td>Internal service-to-service calls where a shared schema and low serialization overhead matter more than human-readability</td></tr>
+      <tr><td>Watch out for</td><td>Polling too often wastes requests; too rarely feels laggy — see also long-polling as a middle ground (hold the request open until there's something to return)</td><td>Stateful connection ties a client to one server instance — see <a href="../traffic/00-load-balancing.html">session affinity</a>; needs its own reconnect/heartbeat logic</td><td>Not human-readable on the wire, and browser support needs a proxy (gRPC-Web) since browsers can't drive raw HTTP/2 streams directly</td></tr>
+      </table>
+      <div class="sd-study-note tip"><span class="sd-note-title">Pick by direction of data flow, then by audience</span><p>If only the client ever initiates, plain HTTP is enough. If the server needs to push without being asked, that's WebSockets (browser-facing) or gRPC streaming (service-to-service). If it's internal microservice traffic where every caller controls their own client, gRPC's schema and binary framing usually win over hand-rolled JSON HTTP.</p></div>
+
+      <h2>Interview checklist</h2>
+      <ul>
+      <li>Separate the three costs of "a fresh HTTPS request to a new host": DNS lookup, TCP handshake, TLS handshake — and know that connection reuse and session resumption are how real systems avoid paying them repeatedly.</li>
+      <li>Justify TCP vs. UDP by whether ordered, guaranteed delivery is actually required, not by default.</li>
+      <li>If the design streams or pushes data to a client, name WebSockets/gRPC explicitly and say why plain request/response polling doesn't fit.</li>
+      <li>Know that HTTP/2 fixed application-level head-of-line blocking but not the TCP-level one — and that's specifically what HTTP/3 (QUIC) fixes.</li>
+      <li>DNS and CDN routing are the same trick — the first lookup can point a client at a different, nearer server depending on where the query originated.</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

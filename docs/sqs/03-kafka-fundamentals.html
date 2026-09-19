@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "03-kafka-fundamentals" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kafka Fundamentals · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2>The core difference from SQS: a log, not a queue</h2>
+      <p><a href="01-sqs.html">SQS Overview</a> covers a classic queue: a message is delivered, and once a
+      consumer acknowledges it, it's gone. Kafka is built on a different primitive — an append-only,
+      durable, ordered <strong>log</strong>. Consuming a message doesn't remove it; every consumer tracks its
+      own position (offset) in the log and can replay from any earlier point. That one structural difference
+      drives almost everything else below.</p>
+
+      <h2>Topics and partitions</h2>
+      <ul>
+      <li>A <strong>topic</strong> is a named stream (e.g. <code>orders</code>), split into some number of <strong>partitions</strong> — independent, ordered logs that together make up the topic.</li>
+      <li>Kafka guarantees order <em>within</em> a partition only, never across the whole topic — a core interview point: "Kafka preserves order" is only true per-partition.</li>
+      <li>A producer picks a partition per message, usually by hashing a <strong>key</strong> (e.g. <code>order_id</code>) — the same key always lands on the same partition, which is what gives you ordering guarantees for all events about one entity.</li>
+      <li>Partition count sets the ceiling on consumer parallelism (see below) and is chosen up front — increasing it later changes which partition a given key hashes to, breaking per-key ordering for keys already in flight.</li>
+      </ul>
+
+      <h2>Consumer groups and offsets</h2>
+      <ul>
+      <li>Consumers belong to a <strong>consumer group</strong>; Kafka assigns each partition in a topic to exactly one consumer within that group — so a group with as many consumers as partitions gets full parallelism, and extra consumers beyond that sit idle.</li>
+      <li>Multiple independent groups can each consume the <em>same</em> topic from scratch — this is Kafka's fan-out: unlike an SQS queue (where one message goes to one consumer, full stop), N independent services can each read every event, at their own pace, without competing.</li>
+      <li>Each consumer tracks an <strong>offset</strong> — its position in a partition — and periodically commits it (to Kafka itself, in practice) so that a restart resumes from the last committed point instead of the beginning.</li>
+      <li><strong>Rebalancing</strong> — when a consumer joins or leaves a group, partitions are reassigned among the survivors; this pauses consumption briefly and is a real operational concern at scale (frequent restarts causing frequent rebalances).</li>
+      </ul>
+      <table>
+      <tr><th>Delivery semantics</th><th>How it's achieved</th></tr>
+      <tr><td>At-most-once</td><td>Commit the offset <em>before</em> processing — a crash after commit but before processing finishes loses the message</td></tr>
+      <tr><td>At-least-once</td><td>Commit the offset <em>after</em> processing succeeds — a crash after processing but before commit reprocesses the message (so processing must be idempotent)</td></tr>
+      <tr><td>Exactly-once</td><td>Kafka's idempotent producer (dedupes retried sends) + transactional writes (an offset commit and a downstream write succeed or fail together) — real, but adds meaningful complexity and is usually scoped to Kafka-to-Kafka pipelines</td></tr>
+      </table>
+
+      <h2>Retention</h2>
+      <ul>
+      <li><strong>Time/size-based retention</strong> — the default: keep every message for N days (or up to N gigabytes per partition), then delete the oldest. A new consumer group can still replay the last N days of history — something an SQS queue, which deletes on ack, simply can't offer.</li>
+      <li><strong>Log compaction</strong> — an alternative retention mode: instead of deleting by age, Kafka keeps only the <em>latest</em> message per key, deleting older ones. Turns a topic into something closer to a changelog of a key-value store — the basis for rebuilding state (see Event Sourcing &amp; CQRS) or for Kafka Streams' internal state stores.</li>
+      </ul>
+
+      <h2>Replication</h2>
+      <ul>
+      <li>Each partition has a <strong>leader</strong> broker (handles all reads/writes for it) and some number of <strong>follower</strong> replicas that copy its log.</li>
+      <li>The <strong>ISR (in-sync replica)</strong> set is the subset of followers caught up closely enough with the leader to be eligible to take over if it fails — a follower that falls too far behind drops out of the ISR.</li>
+      <li><strong><code>acks</code></strong> controls the producer's durability trade-off: <code>acks=0</code> (fire and forget, fastest, can silently lose messages), <code>acks=1</code> (wait for the leader only), <code>acks=all</code> (wait for the full ISR — safest, since a fully-committed message survives even a leader failure).</li>
+      </ul>
+
+      <h2>Kafka vs. SQS</h2>
+      <table>
+      <tr><th></th><th>Kafka</th><th>SQS</th></tr>
+      <tr><td>Model</td><td>Durable, ordered (per-partition) log</td><td>Queue — message removed on ack</td></tr>
+      <tr><td>Replay</td><td>Yes, within the retention window (or forever, with compaction)</td><td>No — once acked and deleted, it's gone</td></tr>
+      <tr><td>Fan-out to multiple consumers</td><td>Native — independent consumer groups each read everything</td><td>One consumer per message; fan-out needs SNS-to-multiple-SQS-queues on top</td></tr>
+      <tr><td>Ordering</td><td>Per-partition, by key</td><td>FIFO queues only, and throughput-limited</td></tr>
+      <tr><td>Operational model</td><td>Self-managed cluster (or a managed service like MSK) — more moving parts</td><td>Fully managed, zero infrastructure to run</td></tr>
+      <tr><td>Reach for it when</td><td>you need replay, high-throughput event streaming, or multiple independent consumers of the same stream</td><td>you need simple, reliable point-to-point task distribution and don't want to operate a cluster — see <a href="use-case.html">SQS Use Cases</a></td></tr>
+      </table>
+
+      <h2>Interview checklist</h2>
+      <ul>
+      <li>State the log-vs-queue distinction first — most of Kafka's other properties (replay, fan-out, per-partition order) follow directly from it.</li>
+      <li>Be precise about ordering: per-partition only, driven by the producer's partition key — not "Kafka guarantees order."</li>
+      <li>Know how partition count caps parallel consumption within one group, and how multiple groups get independent full copies of the stream.</li>
+      <li>Name a delivery-semantics choice (at-least-once is the common default) and note that it requires idempotent consumers.</li>
+      <li>Justify Kafka vs. SQS by the actual requirement — replay/fan-out/throughput vs. simple managed task queueing — not by familiarity.</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

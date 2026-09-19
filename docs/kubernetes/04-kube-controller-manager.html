@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "k8s-controller-manager" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kube-controller-manager Deep Dive · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><ul><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a class="active" href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul><h3>🔐 Authentication</h3><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul><h3>🖥️ Front-End</h3><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Kubernetes / kube-controller-manager Deep Dive</p>
+      <h1 data-page-title>kube-controller-manager Deep Dive</h1>
+      <p class="sd-study-prompt" data-page-subtitle>The reconciliation loops that keep actual cluster state converging on desired state.</p>
+
+      <h2>What Is It?</h2>
+      <p>Controller Manager runs multiple controllers.</p>
+      <p>Controllers are reconciliation loops.</p>
+      <p>Their job:</p>
+      <pre><code>Desired State
+       =
+Actual State</code></pre>
+
+      <h2>Desired State vs. Actual State</h2>
+      <table>
+        <tr><th>Term</th><th>Definition</th><th>Example</th></tr>
+        <tr><td>Desired State</td><td>The configuration you declare in your YAML manifests. It is stored in etcd (the cluster's database).</td><td><code>replicas: 5</code> in a Deployment YAML.</td></tr>
+        <tr><td>Actual State</td><td>The real-world status of your cluster at this very moment.</td><td>Only 3 Pods are currently running because 2 crashed.</td></tr>
+        <tr><td>Reconciliation</td><td>The continuous process of comparing Desired vs. Actual and taking action to correct drift.</td><td>Kubernetes starts 2 new Pods to bring the count back to 5.</td></tr>
+      </table>
+
+      <h2>What Is a Controller?</h2>
+      <p>A controller continuously watches cluster state.</p>
+      <p>Example:</p>
+      <pre><code>Desired Pods = 3
+Actual Pods = 2</code></pre>
+      <p>Controller detects mismatch:</p>
+      <pre><code>Create 1 More Pod</code></pre>
+
+      <h2>Common Controllers</h2>
+      <h3>Deployment Controller</h3>
+      <p>Manages Deployments.</p>
+      <pre><code>Deployment
+    ↓
+ReplicaSet
+    ↓
+Pods</code></pre>
+
+      <h3>ReplicaSet Controller</h3>
+      <p>Maintains replica count.</p>
+      <pre><code>Desired = 5
+Actual = 4
+Create 1 Pod</code></pre>
+
+      <h3>Node Controller</h3>
+      <p>Monitors node health.</p>
+      <pre><code>Node Failure
+      ↓
+Pod Recovery</code></pre>
+
+      <h3>Job Controller</h3>
+      <p>Tracks Job completion.</p>
+      <pre><code>Job Running
+     ↓
+Job Completed</code></pre>
+
+      <h3>Service Account Controller</h3>
+      <p>Manages service accounts and tokens.</p>
+
+      <h3>Namespace Controller</h3>
+      <p>Handles namespace deletion: when a Namespace is deleted, this controller cleans up every object inside it before the Namespace itself is removed.</p>
+
+      <h3>Endpoint / EndpointSlice Controller</h3>
+      <p>Keeps the list of Pod IPs behind a Service up to date, so kube-proxy always routes traffic to currently-running Pods.</p>
+      <pre><code>Service selector matches 3 Pods
+      ↓
+EndpointSlice updated with 3 Pod IPs
+      ↓
+kube-proxy programs routing rules</code></pre>
+
+      <h3>PersistentVolume Controller</h3>
+      <p>Binds PersistentVolumeClaims to matching PersistentVolumes, and reclaims (or deletes) the volume once its claim is released.</p>
+
+      <h3>HorizontalPodAutoscaler Controller</h3>
+      <p>Watches metrics (CPU, memory, or custom metrics) and adjusts a Deployment's or ReplicaSet's replica count to match a target.</p>
+      <pre><code>Observed CPU > target
+      ↓
+Increase replicas</code></pre>
+
+      <h3>StatefulSet Controller</h3>
+      <p>Maintains StatefulSets — Pods with stable identities, stable network names, and stable storage — creating and updating them one at a time, in order.</p>
+
+      <h3>DaemonSet Controller</h3>
+      <p>Ensures exactly one copy of a Pod runs on every node (or every matching node) — used for node-level agents like log collectors or CNI plugins.</p>
+
+      <h3>CronJob Controller</h3>
+      <p>Creates a new Job on a schedule, the same way cron creates a new process on a schedule.</p>
+
+      <h2>Internal Architecture</h2>
+      <pre><code>Controller
+      │
+Watch API Server
+      │
+Detect Drift
+      │
+Correct Drift</code></pre>
+      <p>Controllers run continuously.</p>
+
+      <h2>Theory: The Watch-Reconcile Loop</h2>
+      <p>The Watch-Reconcile loop is the engine that powers every Kubernetes controller. It's how the controller efficiently watches for changes without overwhelming the API Server.</p>
+
+      <h3>The Problem It Solves</h3>
+      <p>Kubernetes has thousands of resources (Pods, Services, Deployments, etc.). Polling the API Server every few seconds for changes would crash the API Server due to massive load.</p>
+      <p>Instead, Kubernetes uses a watch-based event system — the controller "subscribes" to changes and gets notified when something happens.</p>
+
+      <h3>The Four Core Components</h3>
+      <table>
+        <tr><th>Component</th><th>Purpose</th><th>Analogy</th></tr>
+        <tr><td>Informer</td><td>Watches the API Server for changes to a specific resource type (e.g., Pods) and caches the data locally.</td><td>A news subscription — you get notified when something changes.</td></tr>
+        <tr><td>Lister</td><td>Reads from the local cache (not the API Server) to query resources quickly without network calls.</td><td>A local copy of the news — you can read it instantly without calling the news agency.</td></tr>
+        <tr><td>SharedInformer</td><td>A shared version of Informer where multiple controllers can use the same watch connection to reduce API Server load.</td><td>A shared newspaper subscription — multiple people read the same copy.</td></tr>
+        <tr><td>Work Queue</td><td>A queue that holds events (add, update, delete) that need to be processed. Helps with retries, deduplication, and rate limiting.</td><td>A to-do list — you put tasks here and process them one by one.</td></tr>
+      </table>
+      <div class="mermaid">flowchart LR
+    API["🚪 API Server"] -- watch --> Informer["👂 Informer"]
+    Informer --> Cache[("🗃️ Local Cache / Indexer")]
+    Cache --> Lister["📖 Lister"]
+    Informer -- event key --> Queue["📥 Work Queue"]
+    Queue --> Reconcile["⚙️ Reconcile Loop"]
+    Reconcile -- read --> Lister
+    Reconcile -- write --> API
+</div>
+
+      <h3>Deep Dive into Each Component</h3>
+
+      <h3>1. Informer (The Watcher)</h3>
+      <p><strong>What it does:</strong> An Informer uses the Kubernetes Watch API to establish a persistent connection to the API Server. It listens for events (Add, Update, Delete) on a specific resource type.</p>
+      <p><strong>How it works:</strong></p>
+      <ul>
+        <li>On startup, it performs a List operation to get all existing resources.</li>
+        <li>It then starts a Watch to get incremental changes.</li>
+        <li>It stores all this data in a local cache (called an Indexer).</li>
+      </ul>
+      <p><strong>Why it matters:</strong> Without Informers, every controller would need to constantly poll the API Server, causing massive network congestion.</p>
+
+      <h3>2. Lister (The Reader)</h3>
+      <p><strong>What it does:</strong> Lister is a read-only interface to the Informer's local cache.</p>
+      <p><strong>How it works:</strong> Instead of making an API call to <code>GET /api/v1/pods</code>, the controller calls <code>lister.Pods("default").Get("nginx-pod")</code>. This reads from the local cache (memory), which is instantaneous.</p>
+      <p><strong>Why it matters:</strong> Reading from cache is thousands of times faster than making an API call. It also reduces load on the API Server and etcd.</p>
+
+      <h3>3. SharedInformer (The Efficient Watcher)</h3>
+      <p><strong>What it does:</strong> Normally, each controller would have its own Informer and its own watch connection to the API Server. If you have 50 controllers watching Pods, that's 50 watch connections — bad for the API Server.</p>
+      <p><strong>How it works:</strong> SharedInformer allows multiple controllers to share the same watch connection. They all register their event handlers with the same SharedInformer.</p>
+      <p><strong>Why it matters:</strong> It dramatically reduces API Server load. One watch connection vs. 50.</p>
+
+      <h3>4. Work Queue (The Traffic Controller)</h3>
+      <p><strong>What it does:</strong> A work queue holds events (keys/identifiers of resources that changed) until the controller is ready to process them.</p>
+      <p><strong>How it works:</strong></p>
+      <ul>
+        <li>Event handlers push a key (e.g., <code>default/nginx-pod</code>) into the work queue.</li>
+        <li>Worker goroutines pop keys from the queue and call the reconciliation logic.</li>
+        <li>The queue supports retries (if processing fails, the key goes back to the queue), rate limiting (slow down if errors happen), and deduplication (don't process the same key twice if multiple events occur).</li>
+      </ul>
+      <p><strong>Why it matters:</strong> It decouples event observation from event processing. If reconciliation takes 5 seconds, the Informer can still collect events during that time without blocking.</p>
+
+      <h2>Why It Exists</h2>
+      <p>Kubernetes is built on reconciliation.</p>
+      <p>Users define:</p>
+      <pre><code>Desired State</code></pre>
+      <p>Controllers enforce:</p>
+      <pre><code>Actual State</code></pre>
+
+      <h2>Failure Impact</h2>
+      <p>If Controller Manager fails:</p>
+      <pre><code>Existing Workloads Continue Running</code></pre>
+      <p>But Kubernetes stops correcting problems.</p>
+      <p>Examples:</p>
+      <ul>
+        <li>Failed Pods not recreated</li>
+        <li>Node failures not handled</li>
+        <li>Replica counts not maintained</li>
+        <li>Jobs not managed</li>
+      </ul>
+
+      <h2>Tradeoffs</h2>
+      <h3>Advantages</h3>
+      <ul>
+        <li>Self-healing</li>
+        <li>Continuous reconciliation</li>
+        <li>Automatic recovery</li>
+      </ul>
+      <h3>Disadvantages</h3>
+      <ul>
+        <li>Large clusters generate significant reconciliation activity</li>
+        <li>Misconfigured controllers can cause cascading actions</li>
+      </ul>
+
+      <h2>Failure Scenario</h2>
+      <p>Symptoms:</p>
+      <ul>
+        <li>Pods not recreated</li>
+        <li>Nodes not reconciled</li>
+        <li>Replica drift occurs</li>
+      </ul>
+      <p>Cluster loses self-healing capabilities.</p>
+
+      <h2>High Availability</h2>
+      <p>Like kube-scheduler, kube-controller-manager runs as several replicas but only one is active — it holds a <strong>Lease</strong> object in etcd and renews it periodically. If the active instance crashes, its lease expires, and a standby replica claims the lease and starts running the reconciliation loops. Only one replica ever reconciles at a time, so controllers never race each other.</p>
+      <p>For the full mechanics — the election algorithm, lease tuning parameters, failure-recovery timelines, and split-brain prevention — see <a href="11-leader-election.html">Leader Election: HA for Controller Manager &amp; Scheduler</a>.</p>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+</body>
+</html>

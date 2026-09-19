@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "02-cicd-and-deployment-strategies" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CI/CD &amp; Deployment Strategies · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2>CI, CD, and continuous deployment — three different promises</h2>
+      <ul>
+      <li><strong>Continuous Integration (CI)</strong> — every code change is automatically built and tested as soon as it's pushed, so integration problems (two people's changes conflicting, a break nobody noticed) surface in minutes, not at the end of a long-lived branch.</li>
+      <li><strong>Continuous Delivery (CD)</strong> — every change that passes CI is automatically packaged into a deployable artifact and is <em>always</em> in a releasable state — but a human still decides when to actually ship it.</li>
+      <li><strong>Continuous Deployment</strong> — the same pipeline, minus the manual gate: every change that passes all checks deploys to production automatically. The distinction between this and continuous delivery is entirely about whether a human clicks "deploy," not about the pipeline itself.</li>
+      </ul>
+
+      <h2>A typical pipeline</h2>
+      <ol>
+      <li><strong>Build</strong> — compile/bundle the code, produce a versioned, immutable artifact (a container image is the common case today).</li>
+      <li><strong>Test</strong> — run the automated test suite (see the testing pyramid below) against the build; fail fast and stop the pipeline on the first failure rather than deploying anyway.</li>
+      <li><strong>Security/quality gates</strong> — dependency vulnerability scanning, static analysis, license checks — automated versions of the checks in <a href="01-application-security-fundamentals.html">Application Security Fundamentals</a>'s "vulnerable/outdated components" row.</li>
+      <li><strong>Deploy</strong> — push the artifact to an environment using one of the strategies below, typically staging first, then production.</li>
+      <li><strong>Verify</strong> — automated smoke tests and/or a monitored rollout window (see <a href="00-observability-fundamentals.html">Observability Fundamentals</a>) before calling the deploy complete.</li>
+      </ol>
+
+      <h2>Deployment strategies</h2>
+      <table>
+      <tr><th>Strategy</th><th>How it works</th><th>Rollback speed</th><th>Cost / complexity</th></tr>
+      <tr><td>Recreate</td><td>Stop the old version entirely, then start the new one</td><td>Slow — redeploy the old version from scratch</td><td>Simplest, but guarantees downtime during the swap</td></tr>
+      <tr><td>Rolling</td><td>Replace instances a few at a time, waiting for each batch to become healthy before moving to the next</td><td>Moderate — roll forward with the old version, same gradual process</td><td>No extra infrastructure needed; both versions briefly serve traffic side by side, so both must be compatible with the current data/API contract</td></tr>
+      <tr><td>Blue-green</td><td>Deploy the new version ("green") fully, alongside the still-running old version ("blue"); flip the load balancer/router to green all at once once it's verified</td><td>Fast — flip the router back to blue</td><td>Needs double the running capacity during the switch, but the cutover itself is instant and the rollback is just as instant</td></tr>
+      <tr><td>Canary</td><td>Route a small percentage of real traffic to the new version, watch its error rate/latency, then progressively increase the percentage if it looks healthy</td><td>Fast — route the canary's traffic slice back to the old version</td><td>Most operationally involved (needs traffic-splitting and close monitoring), but limits the blast radius of a bad deploy to a small slice of real users instead of all of them</td></tr>
+      </table>
+      <div class="sd-study-note tip"><span class="sd-note-title">These aren't mutually exclusive</span><p>A canary deploy is commonly done <em>as</em> a rolling or blue-green deploy with an extra "watch a small slice first" gate in front of it — they answer different questions (how do old/new versions coexist during rollout vs. how much real traffic sees the new version before it's trusted) and often combine.</p></div>
+
+      <h2>The testing pyramid</h2>
+      <ul>
+      <li><strong>Unit tests</strong> — the base of the pyramid: fast, isolated, test one function/class in isolation from the network and other services. Should be the large majority of the suite because they're cheap to run and pinpoint failures precisely.</li>
+      <li><strong>Integration tests</strong> — verify that a service correctly talks to its real (or realistically faked) dependencies — a database, a queue. Fewer than unit tests; slower, but catch the class of bug unit tests structurally can't (a wrong SQL query that's syntactically valid, a wire-format mismatch).</li>
+      <li><strong>End-to-end tests</strong> — drive the whole system through a real user-facing flow. The fewest of the three — slow, often flaky, expensive to maintain — reserved for the handful of flows that matter most (checkout, login), not exhaustive coverage.</li>
+      <li><strong>Contract testing</strong> — for microservices specifically: instead of a slow, brittle e2e test spanning every service, each consumer and provider of an API independently verify against a shared contract (e.g. Pact) that their expectations still match, without either side needing the other actually running.</li>
+      </ul>
+
+      <h2>Feature flags</h2>
+      <p>Decouple <em>deploying</em> code from <em>releasing</em> a feature: ship the new code path behind a flag
+      that's off by default, deploy it safely (it has zero behavioral effect while off), then flip the flag on —
+      for everyone at once, for a percentage (a form of canarying at the feature level rather than the
+      infrastructure level), or for specific users. This also makes "rollback" instant and cheap for a bad
+      feature specifically: flip the flag off, no redeploy needed at all.</p>
+
+      <h2>Rollback strategy</h2>
+      <ul>
+      <li>Decide the rollback mechanism <em>before</em> deploying, not while an incident is already happening — for infrastructure-level issues that's redeploying the previous artifact (fast with blue-green, slower with recreate); for a bad feature specifically, a feature flag flip is faster than either.</li>
+      <li>Database migrations complicate rollback the most: a migration that's already run and been written to by the new code often can't simply be reversed once real writes have happened — favor backward-compatible, additive migrations (add a column, don't rename/drop one in the same release) so the previous code version can still run against the new schema if a rollback is needed.</li>
+      </ul>
+
+      <h2>Interview checklist</h2>
+      <ul>
+      <li>Distinguish CI (build+test on every change) from CD (always releasable) from continuous deployment (auto-ships) precisely — these get conflated constantly, and being precise is a cheap, clear signal.</li>
+      <li>Pick a deployment strategy by the actual constraint: zero extra infrastructure → rolling; instant, safe cutover → blue-green; minimizing blast radius of an unknown-risk change → canary.</li>
+      <li>Know the testing pyramid's shape (many unit, fewer integration, fewest e2e) and be ready to justify <em>why</em> that shape, not just name the layers.</li>
+      <li>If the design involves a schema change, mention backward-compatible migrations specifically — it's the detail that makes a rollback plan actually credible.</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

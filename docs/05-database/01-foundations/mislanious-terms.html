@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "mislanious-terms" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miscellaneous Database Terms · System Design Notes</title>
+
+<link rel="stylesheet" href="../../assets/site.css?v=5">
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/pages.js"></script><script src="../../assets/site-header.js?v=5" data-root="../../"></script>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav><h3>☸️ Kubernetes</h3><ul><li><a href="../../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li><li><a href="../../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li><li><a href="../../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li><li><a href="../../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li><li><a href="../../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul><h3>🔐 Authentication</h3><ul><li><a href="../../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li><li><a href="../../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li><li><a href="../../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul><h3>🖥️ Front-End</h3><ul><li><a href="../../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li><li><a href="../../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a class="active" href="../../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li><li><a href="../../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../../web-servers/server.html">Web Servers</a></li><li><a href="../../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+  <div class="content-wrap">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <span class="brand">System Design Notes</span>
+    </div>
+    <main>
+      <p class="breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Database / Miscellaneous Database Terms</p>
+      <h1 data-page-title>Miscellaneous Database Terms</h1>
+      <h2 id="integrity-constraine-in-db">integrity constraine in DB</h2>
+<p>A constraint in a database is a rule applied to a table&#39;s columns to limit the type of data that can be stored in them. Constraints ensure the accuracy and reliability of the data in the database. 🔒 They are used to enforce business rules and maintain the integrity of the data. If a data manipulation operation (like an INSERT, UPDATE, or DELETE) violates a constraint, the operation is automatically rolled back, preventing the invalid data from being saved.</p>
+<h2 id="-common-types-of-constraints">** Common Types of Constraints</h2>
+<p>Here are some of the most common types of constraints used in databases:</p>
+<p>NOT NULL: This constraint ensures that a column cannot have a NULL (empty or missing) value. For example, a NOT NULL constraint on a customer_name column ensures every customer record has a name.</p>
+<p>UNIQUE: This constraint ensures that all values in a column or a set of columns are unique. For example, a UNIQUE constraint on an email column in a users table guarantees that no two users can have the same email address.</p>
+<p>PRIMARY KEY: This is a unique identifier for a row in a table. It is a combination of the NOT NULL and UNIQUE constraints. A table can only have one primary key.  For example, a student_id column is often set as the primary key for a students table.</p>
+<p>FOREIGN KEY: This constraint links two tables together by using a column (or a set of columns) from one table that refers to the primary key of another table. It is used to maintain referential integrity. 🤝 For example, an order_id in a products table might be a foreign key that references the order_id in an orders table.</p>
+<p>CHECK: This constraint is used to enforce a condition that must be met for a value to be inserted into a column. For example, a CHECK constraint could ensure that an age column only accepts values greater than 18.</p>
+<p>DEFAULT: This constraint provides a default value for a column when no value is specified during an INSERT operation. For example, a DEFAULT constraint on a status column could set its value to &#39;active&#39; unless another value is provided</p>
+<p> <strong>Referential integrity</strong></p>
+<p> Referential integrity is a fundamental concept in relational databases that ensures the consistency and validity of relationships between tables. 🤝 It prevents the creation of &quot;orphan records&quot;—data in a table that references a record that doesn&#39;t exist in another</p>
+<p> How It Works</p>
+<p>Referential integrity is enforced by foreign key constraints. A foreign key in one table (the &quot;child&quot; or referencing table) must directly reference the primary key of another table (the &quot;parent&quot; or referenced table).</p>
+<p>This relationship means:</p>
+<pre><code>You can&#39;t insert a record into the child table if its foreign key value doesn&#39;t match an existing primary key value in the parent table. For example, you can&#39;t create an order for a customer who doesn&#39;t exist.
+
+You can&#39;t delete a record from the parent table if there are related records in the child table. For example, you can&#39;t delete a customer record if they have existing orders. This prevents the orders from becoming &quot;orphaned.&quot;
+
+You can&#39;t update a primary key value in the parent table if there are dependent records in the child table.
+</code></pre>
+<p>Actions on Delete/Update</p>
+<p>Most database systems provide options to handle what happens when you try to delete or update a record in the parent table that has related child records. These are called cascading actions:</p>
+<pre><code>ON DELETE CASCADE: When a record in the parent table is deleted, all corresponding records in the child table are also automatically deleted.
+
+ON UPDATE CASCADE: When a primary key value in the parent table is updated, the corresponding foreign key values in the child table are automatically updated to match.
+
+NO ACTION or RESTRICT: This is the default behavior. The action (delete or update) is simply rejected if a child record exists.
+
+SET NULL: When a record in the parent table is deleted, the foreign key values in the child records are set to NULL. This only works if the foreign key column allows NULL values.
+</code></pre>
+<h3 id="primary-key">PRIMARY KEY</h3>
+<p>A primary key uniquely identifies each record in a table, while a foreign key creates a link between two tables by referencing the primary key of another table. They are essential for ensuring data integrity and building relationships in relational databases.</p>
+<p>Primary Key</p>
+<p>A primary key is like a unique identification number for each row in a table. It&#39;s a column or set of columns that guarantees every record is distinct.</p>
+<pre><code>Uniqueness: A primary key value must be unique across all rows in a table. No two rows can have the same primary key.
+
+Not Null: A primary key cannot contain a null value. Every record must have a valid identifier.
+
+One per Table: A table can only have one primary key, although that key can consist of multiple columns (known as a composite key).
+</code></pre>
+<p>For example, in a Students table, StudentID is a perfect primary key because it uniquely identifies each student and is never null.</p>
+<h3 id="foreign-key">Foreign Key</h3>
+<p>A foreign key is a column (or columns) in one table that refers to the primary key of another table. It&#39;s the connector that establishes a relationship between two tables, ensuring that data is consistent and valid across them.</p>
+<pre><code>Links Tables: It creates a parent-child relationship between tables. The table with the foreign key is the &quot;child&quot; table, and the table it references is the &quot;parent&quot; table.
+
+Referential Integrity: A foreign key ensures that a value in the child table corresponds to an existing value in the parent table&#39;s primary key. This prevents &quot;orphan records&quot; from being created (e.g., an order record that references a customer who doesn&#39;t exist).
+
+Can be Null or Duplicates: Unlike a primary key, a foreign key can contain duplicate values and can be null (if the relationship is optional).
+</code></pre>
+<p>For example, imagine a Courses table where you want to know which student is enrolled in which course. You would add a StudentID column to the Courses table as a foreign key that references the StudentID primary key in the Students table. This setup ensures that you can only assign a course to a student who already exists in the Students table.</p>
+<h2 id="concurrency-in-databse">concurrency in DATABSE</h2>
+<p>Concurrency in a database means that multiple transactions are happening at the same time. The transactions can be either individual or interdependent, and the database must manage them all to prevent conflicts and maintain data integrity.</p>
+<p>Individual Transactions</p>
+<p>Individual, or independent, transactions are separate from one another and don&#39;t share any data. They can be executed concurrently without any risk of interfering with each other. For example:</p>
+<pre><code>A user updates their personal information (name, address, etc.).
+
+Another user updates their profile picture.
+Since these operations affect different data, they are not interdependent. The database can handle them in parallel without needing special coordination.
+
+
+Interdependent Transactions
+</code></pre>
+<p>Interdependent transactions, also known as conflicting transactions, are those that try to access or modify the same piece of data at the same time. This is where concurrency becomes a problem that the database must solve. If not managed properly, these transactions can lead to issues like:</p>
+<pre><code>Lost Updates: One transaction&#39;s changes are overwritten by another.
+
+    Example: Two users simultaneously try to update the same bank account balance. If they both read the initial balance, perform their calculations, and then write their new balance back, one of their updates will be lost.
+
+Dirty Reads: A transaction reads data that has been modified by another transaction but has not yet been committed. If the first transaction then fails and rolls back, the data read by the second transaction is now invalid.
+
+Non-Repeatable Reads: A transaction reads the same data item twice and gets different values because another transaction has modified and committed changes in between the two reads.
+
+
+Concurrency Control
+</code></pre>
+<p>To prevent these problems, database management systems (DBMS) use concurrency control mechanisms. These are protocols and techniques designed to manage interdependent transactions and ensure that the database remains in a consistent state. The main goal is to achieve serializability, which means that even though transactions are executed concurrently, the final result is the same as if they had been executed one after another, in some sequential order.</p>
+<p>Common concurrency control methods include:</p>
+<pre><code>Locking: The most common approach. Transactions acquire locks on data they need to access. A shared (read) lock allows multiple transactions to read the data, while an exclusive (write) lock prevents others from reading or writing until the lock is released.
+
+Timestamping: Each transaction is assigned a unique timestamp. The DBMS uses these timestamps to determine the order of operations, ensuring that later transactions don&#39;t overwrite changes made by earlier ones.
+
+Multi-version Concurrency Control (MVCC): This method allows multiple versions of data to exist at once. When a transaction needs to read data, it gets a consistent snapshot of the data from when the transaction began, preventing it from being affected by concurrent writes. This reduces the need for locking and can improve performance.
+</code></pre>
+<h2 id=""></h2>
+<p>Serializability is the highest level of isolation for concurrent transactions in a database. It ensures that even when multiple transactions are executed at the same time, the final state of the database is the same as if the transactions had been executed one after the other in some sequential order. </p>
+<h3 id="why-its-important">Why It&#39;s Important</h3>
+<p>Without serializability, concurrent transactions can lead to data inconsistencies and anomalies, such as:</p>
+<ul>
+<li><strong>Lost Updates</strong>: The changes made by one transaction are overwritten by another.</li>
+<li><strong>Dirty Reads</strong>: A transaction reads uncommitted changes from another transaction.</li>
+<li><strong>Non-Repeatable Reads</strong>: A transaction reads the same data item twice and gets different values because another transaction has modified the data in between the two reads.</li>
+</ul>
+<p>Serializability prevents these issues by enforcing strict rules on how concurrent transactions can interact with shared data.</p>
+<h3 id="how-its-achieved">How It&#39;s Achieved</h3>
+<p>Database management systems use various concurrency control mechanisms to achieve serializability. The most common methods include:</p>
+<ul>
+<li><strong>Two-Phase Locking (2PL)</strong>: This is a classic method where transactions acquire locks on data they need to access. It has two phases: a &quot;growing&quot; phase where the transaction can acquire new locks, and a &quot;shrinking&quot; phase where it can only release locks. This ensures that transactions don&#39;t release a lock and then try to acquire another one, which could lead to inconsistencies.</li>
+<li><strong>Timestamp-Based Protocols</strong>: Each transaction is assigned a unique timestamp. The database uses these timestamps to determine the order of operations, ensuring that older transactions are always processed before newer ones when conflicts arise.</li>
+<li><strong>Serializable Snapshot Isolation (SSI)</strong>: This is a more modern approach that combines the benefits of Snapshot Isolation (allowing transactions to operate on a consistent snapshot of the data) with additional checks to ensure that the final result is serializable.</li>
+</ul>
+<p>These mechanisms ensure that even though transactions are interleaved to improve performance, their combined effect on the database is equivalent to a serial execution.</p>
+<hr>
+
+      <div class="page-footer">
+        <span>Section: Database</span>
+        <span>Source: <code>mislanious-terms.md</code></span>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+  const t = document.getElementById('menuToggle');
+  const s = document.getElementById('sidebar');
+  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+</script>
+
+</body>
+</html>

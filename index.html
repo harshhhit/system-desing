@@ -21,11 +21,16 @@
 
   /* per-topic accent colors */
   --c-frontend: #2563eb;   --c-frontend-bg: #eaf1ff;
+  --c-k8s:      #326ce5;   --c-k8s-bg:      #eaf0ff;
   --c-database: #16a34a;   --c-database-bg: #e9f9ef;
   --c-auth:     #a855f7;   --c-auth-bg:     #f6ecff;
   --c-dist:     #0891b2;   --c-dist-bg:     #e6f8fb;
   --c-msg:      #ea580c;   --c-msg-bg:      #fff1e6;
   --c-storage:  #db2777;   --c-storage-bg:  #ffe9f4;
+  --c-caching:  #0284c7;   --c-caching-bg:  #e5f4ff;
+  --c-traffic:  #ea4335;   --c-traffic-bg:  #ffeceb;
+  --c-net:      #059669;   --c-net-bg:      #e6faf1;
+  --c-obs:      #a16207;   --c-obs-bg:      #fef3c7;
   --c-web:      #4f46e5;   --c-web-bg:      #edecff;
   --c-dev:      #0d9488;   --c-dev-bg:      #e2fbf7;
   --c-plan:     #dc2626;   --c-plan-bg:     #ffecec;
@@ -40,8 +45,8 @@
     --sidebar-bg:#0d1117; --card-bg:#161b22; --shadow: 0 2px 10px rgba(0,0,0,0.45);
     --shadow-hover: 0 10px 24px rgba(0,0,0,0.55);
     --frontend-bg:#0d1117;
-    --c-frontend-bg:#0e1f3d; --c-database-bg:#0d2417; --c-auth-bg:#26123d; --c-dist-bg:#062a31;
-    --c-msg-bg:#33190a; --c-storage-bg:#33081d; --c-web-bg:#181240; --c-dev-bg:#052e28;
+    --c-frontend-bg:#0e1f3d; --c-k8s-bg:#101b33;--c-database-bg:#0d2417; --c-auth-bg:#26123d; --c-dist-bg:#062a31;
+    --c-msg-bg:#33190a; --c-storage-bg:#33081d; --c-caching-bg:#062338; --c-traffic-bg:#330d0a; --c-net-bg:#052a1e; --c-obs-bg:#2e2205; --c-web-bg:#181240; --c-dev-bg:#052e28;
     --c-plan-bg:#320a0a; --c-proj-bg:#301c05; --c-misc-bg:#1e1140; --c-overview-bg:#1b2027;
   }
 }
@@ -131,6 +136,30 @@ a:hover { text-decoration: underline; }
   background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .stat span { font-size: 0.74rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
 
+/* ---- weekly reading target (standalone port of docs/assets/site-header.js's
+   renderWeeklyTarget(), scoped to this page — see CLAUDE.md "Weekly reading
+   target"). Shares localStorage keys with docs/ pages (siteId "docs"), so
+   checking an item here also shows as covered on the real page and vice versa. ---- */
+[data-weekly-target] { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 1.4rem; }
+.sd-weekly {
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 1.3rem 1.5rem; box-shadow: var(--shadow);
+}
+.sd-weekly-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap; }
+.sd-weekly-head h2 { margin: 0; font-size: 1.1rem; font-weight: 800; }
+.sd-weekly-countdown { font-size: 0.82rem; font-weight: 600; color: var(--c-auth); white-space: nowrap; }
+.sd-weekly-meter { margin-top: 0.7rem; height: 7px; border-radius: 999px; background: color-mix(in srgb, #10b981 16%, transparent); overflow: hidden; }
+.sd-weekly-meter span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #10b981, #34d399); transition: width 0.25s var(--ease); }
+.sd-weekly-stat { display: block; margin-top: 0.35rem; font-size: 0.78rem; font-weight: 600; color: var(--muted); }
+.sd-weekly-list { list-style: none; margin: 0.9rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.sd-weekly-item label { display: flex; align-items: center; gap: 0.55em; font-size: 0.92rem; cursor: pointer; }
+.sd-weekly-item input { width: 1.05rem; height: 1.05rem; cursor: pointer; accent-color: #10b981; flex-shrink: 0; }
+.sd-weekly-item a { color: var(--fg); font-weight: 600; }
+.sd-weekly-item a:hover { color: var(--c-auth); }
+.sd-weekly-item:has(input:checked) a { color: var(--muted); text-decoration: line-through; font-weight: 500; }
+.sd-weekly-section { margin-left: auto; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+@media (max-width: 860px) { [data-weekly-target] { padding-left: 1.2rem; padding-right: 1.2rem; } }
+
 .section-title { max-width: 1100px; margin: 0 auto; padding: 1.5rem 2.5rem 0.9rem; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.2rem; max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 1rem; }
 .card {
@@ -182,104 +211,138 @@ a:hover { text-decoration: underline; }
   <aside class="sidebar" id="sidebar">
     <a class="brand" href="index.html">🦉 Infra <span>Owl</span></a>
     <nav>
+      <h3>☸️ Kubernetes</h3>
+      <ul>
+        <li><a href="docs/kubernetes/00-index.html">00. Control Plane Overview</a></li>
+        <li><a href="docs/kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li>
+        <li><a href="docs/kubernetes/02-etcd.html">02. etcd</a></li>
+        <li><a href="docs/kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li>
+        <li><a href="docs/kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li>
+        <li><a href="docs/kubernetes/05-api-request-flow.html">05. API Request Flow</a></li>
+        <li><a href="docs/kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li>
+        <li><a href="docs/kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li>
+        <li><a href="docs/kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li>
+        <li><a href="docs/kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li>
+        <li><a href="docs/kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li>
+        <li><a href="docs/kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li>
+      </ul>
       <h3>🖥️ Front-End</h3>
       <ul>
-        <li><a href="eat-that-elephant-1/01-front-end/frontend-roadmap.html">Front-End Roadmap</a></li>
-        <li><a href="eat-that-elephant-1/01-front-end/graphql/http/04-client-server-model.html">Client-Server Model, End to End</a></li>
-        <li><a href="eat-that-elephant-1/01-front-end/graphql/http/04.2-request-flow-interactive.html">Interactive Request Flow</a></li>
-        <li><a href="eat-that-elephant-1/01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a></li>
-        <li><a href="eat-that-elephant-1/01-front-end/graphql/http/01.02-rendering-types.html">Web Rendering &amp; Architecture</a></li>
-        <li><a href="eat-that-elephant-1/01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li>
-        <li><a href="eat-that-elephant-1/01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li>
-        <li><a href="eat-that-elephant-1/01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li>
-        <li><a href="eat-that-elephant-1/01-front-end/system-design-roadmap.html">System Design Roadmap</a></li>
+        <li><a href="docs/01-front-end/frontend-roadmap.html">Front-End Roadmap</a></li>
+        <li><a href="docs/01-front-end/graphql/http/04-client-server-model.html">Client-Server Model, End to End</a></li>
+        <li><a href="docs/01-front-end/graphql/http/04.2-request-flow-interactive.html">Interactive Request Flow</a></li>
+        <li><a href="docs/01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a></li>
+        <li><a href="docs/01-front-end/graphql/http/01.02-rendering-types.html">Web Rendering &amp; Architecture</a></li>
+        <li><a href="docs/01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li>
+        <li><a href="docs/01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li>
+        <li><a href="docs/01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li>
+        <li><a href="docs/01-front-end/system-design-roadmap.html">System Design Roadmap</a></li>
       </ul>
       <h3>🗄️ Database</h3>
       <ul>
-        <li><a href="eat-that-elephant-1/05-database/00-learning-path/00-index.html">Database Learning Path</a></li>
-        <li><a href="eat-that-elephant-1/05-database/01-foundations/mislanious-terms.html">Database Foundations</a></li>
-        <li><a href="eat-that-elephant-1/05-database/01a-sql-and-relational-fundamentals/index.html">SQL and Relational Fundamentals</a></li>
-        <li><a href="eat-that-elephant-1/05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">How to Choose the Database</a></li>
-        <li><a href="eat-that-elephant-1/05-database/02-data-modeling-and-selection/factors.html">Database Performance Factors</a></li>
-        <li><a href="eat-that-elephant-1/05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">Scratch Note: Polyglot Persistence</a></li>
-        <li><a href="eat-that-elephant-1/05-database/02a-schema-design-and-migrations/index.html">Schema Design and Migrations</a></li>
-        <li><a href="eat-that-elephant-1/05-database/03-querying-and-performance/01A-Database-basic.html">PostgreSQL Views Explained</a></li>
-        <li><a href="eat-that-elephant-1/05-database/03-querying-and-performance/08-indxing.html">Indexing</a></li>
-        <li><a href="eat-that-elephant-1/05-database/03a-transactions-and-concurrency/index.html">Transactions and Concurrency</a></li>
-        <li><a href="eat-that-elephant-1/05-database/03b-query-plans-and-optimization/index.html">Query Plans and Optimization</a></li>
-        <li><a href="eat-that-elephant-1/05-database/04-distributed-database-fundamentals/lecture-2.html">Distributed Database Fundamentals</a></li>
-        <li><a href="eat-that-elephant-1/05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">CAP Theorem Questions</a></li>
-        <li><a href="eat-that-elephant-1/05-database/04a-database-security-and-access-control/index.html">Database Security and Access Control</a></li>
-        <li><a href="eat-that-elephant-1/05-database/05-scaling-and-partitioning/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li>
-        <li><a href="eat-that-elephant-1/05-database/05-scaling-and-partitioning/02-partiontion.html">Partitioning</a></li>
-        <li><a href="eat-that-elephant-1/05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">Horizontal Scaling</a></li>
-        <li><a href="eat-that-elephant-1/05-database/05a-connection-management-and-database-proxies/index.html">Connection Management and Database Proxies</a></li>
-        <li><a href="eat-that-elephant-1/05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">PostgreSQL Connection Troubleshooting</a></li>
-        <li><a href="eat-that-elephant-1/05-database/06a-backup-recovery-and-disaster-recovery/index.html">Backup, Recovery, and Disaster Recovery</a></li>
-        <li><a href="eat-that-elephant-1/05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a></li>
-        <li><a class="resource" href="eat-that-elephant-1/05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides (PDF)</a></li>
-        <li><a class="resource" href="eat-that-elephant-1/05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.3 (PDF)</a></li>
-        <li><a class="resource" href="eat-that-elephant-1/05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.4 (PDF)</a></li>
-        <li><a class="resource" href="eat-that-elephant-1/05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.5 (PDF)</a></li>
-        <li><a class="resource" href="eat-that-elephant-1/05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive (PDF)</a></li>
+        <li><a href="docs/05-database/00-learning-path/00-index.html">Database Learning Path</a></li>
+        <li><a href="docs/05-database/01-foundations/mislanious-terms.html">Database Foundations</a></li>
+        <li><a href="docs/05-database/01a-sql-and-relational-fundamentals/index.html">SQL and Relational Fundamentals</a></li>
+        <li><a href="docs/05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">How to Choose the Database</a></li>
+        <li><a href="docs/05-database/02-data-modeling-and-selection/factors.html">Database Performance Factors</a></li>
+        <li><a href="docs/05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">Scratch Note: Polyglot Persistence</a></li>
+        <li><a href="docs/05-database/02a-schema-design-and-migrations/index.html">Schema Design and Migrations</a></li>
+        <li><a href="docs/05-database/03-querying-and-performance/01A-Database-basic.html">PostgreSQL Views Explained</a></li>
+        <li><a href="docs/05-database/03-querying-and-performance/08-indxing.html">Indexing</a></li>
+        <li><a href="docs/05-database/03a-transactions-and-concurrency/index.html">Transactions and Concurrency</a></li>
+        <li><a href="docs/05-database/03b-query-plans-and-optimization/index.html">Query Plans and Optimization</a></li>
+        <li><a href="docs/05-database/04-distributed-database-fundamentals/lecture-2.html">Distributed Database Fundamentals</a></li>
+        <li><a href="docs/05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">CAP Theorem Questions</a></li>
+        <li><a href="docs/05-database/04a-database-security-and-access-control/index.html">Database Security and Access Control</a></li>
+        <li><a href="docs/05-database/05-scaling-and-partitioning/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li>
+        <li><a href="docs/05-database/05-scaling-and-partitioning/02-partiontion.html">Partitioning</a></li>
+        <li><a href="docs/05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">Horizontal Scaling</a></li>
+        <li><a href="docs/05-database/05a-connection-management-and-database-proxies/index.html">Connection Management and Database Proxies</a></li>
+        <li><a href="docs/05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">PostgreSQL Connection Troubleshooting</a></li>
+        <li><a href="docs/05-database/06a-backup-recovery-and-disaster-recovery/index.html">Backup, Recovery, and Disaster Recovery</a></li>
+        <li><a href="docs/05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a></li>
+        <li><a class="resource" href="docs/05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides (PDF)</a></li>
+        <li><a class="resource" href="docs/05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.3 (PDF)</a></li>
+        <li><a class="resource" href="docs/05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.4 (PDF)</a></li>
+        <li><a class="resource" href="docs/05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.5 (PDF)</a></li>
+        <li><a class="resource" href="docs/05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive (PDF)</a></li>
       </ul>
       <h3>🔐 Authentication</h3>
       <ul>
-        <li><a href="eat-that-elephant-2/Authentication%20Notes.html">Authentication Master Guide</a></li>
-        <li><a href="eat-that-elephant-2/Authentication%20Notes.html">Authentication Master Guide (copy)</a></li>
-        <li><a href="eat-that-elephant-2/00-login-steps.html">Secure Login Implementation Steps</a></li>
-        <li><a href="eat-that-elephant-2/01-authentication/01-introduction.html">Authentication Engineering Roadmap</a></li>
-        <li><a href="eat-that-elephant-2/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li>
-        <li><a href="eat-that-elephant-2/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li>
-        <li><a href="eat-that-elephant-2/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li>
-        <li><a href="eat-that-elephant-2/02-social-login/google-key-task.html">Google Social Login Checklist</a></li>
-        <li><a href="eat-that-elephant-2/02-social-login/google-login.html">Google Sign-In PlantUML Diagram</a></li>
+        <li><a href="docs/authentication/00-login-steps.html">Secure Login Implementation Steps</a></li>
+        <li><a href="docs/authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li>
+        <li><a href="docs/authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li>
+        <li><a href="docs/authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li>
+        <li><a href="docs/authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li>
       </ul>
       <h3>🌐 Distributed Systems</h3>
-      <ul><li><a href="eat-that-elephant-1/distributed-system/distributed-systems.html">Distributed Systems</a></li></ul>
+      <ul>
+        <li><a href="docs/distributed-system/distributed-systems.html">Distributed Systems</a></li>
+        <li><a href="docs/distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li>
+        <li><a href="docs/distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li>
+      </ul>
       <h3>🧬 Distributed Database</h3>
       <ul>
-        <li><a href="eat-that-elephant-1/distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li>
-        <li><a href="eat-that-elephant-1/distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li>
-        <li><a href="eat-that-elephant-1/distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li>
-        <li><a href="eat-that-elephant-1/distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li>
-        <li><a href="eat-that-elephant-1/distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li>
+        <li><a href="docs/distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li>
+        <li><a href="docs/distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li>
+        <li><a href="docs/distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li>
+        <li><a href="docs/distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li>
+        <li><a href="docs/distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li>
       </ul>
       <h3>📨 Messaging &amp; Queues</h3>
       <ul>
-        <li><a href="eat-that-elephant-1/sqs/01-sqs.html">SQS Overview</a></li>
-        <li><a href="eat-that-elephant-1/sqs/02-queus-methord.html">Queue Methods</a></li>
-        <li><a href="eat-that-elephant-1/sqs/use-case.html">SQS Use Cases</a></li>
-        <li><a href="eat-that-elephant-1/sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li>
-        <li><a class="resource" href="eat-that-elephant-1/sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering (PDF)</a></li>
-        <li><a class="resource" href="eat-that-elephant-1/sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li>
+        <li><a href="docs/sqs/01-sqs.html">SQS Overview</a></li>
+        <li><a href="docs/sqs/02-queus-methord.html">Queue Methods</a></li>
+        <li><a href="docs/sqs/use-case.html">SQS Use Cases</a></li>
+        <li><a href="docs/sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li>
+        <li><a href="docs/sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li>
+        <li><a href="docs/sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li>
+        <li><a href="docs/sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li>
+        <li><a class="resource" href="docs/sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering (PDF)</a></li>
+        <li><a class="resource" href="docs/sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li>
       </ul>
       <h3>💾 Storage</h3>
-      <ul><li><a href="eat-that-elephant-1/storage/storage-type.html">Storage Types</a></li></ul>
+      <ul><li><a href="docs/storage/storage-type.html">Storage Types</a></li></ul>
+      <h3>🧊 Caching &amp; CDN</h3>
+      <ul><li><a href="docs/caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul>
+      <h3>🚦 Traffic Management</h3>
+      <ul>
+        <li><a href="docs/traffic/00-load-balancing.html">00. Load Balancing</a></li>
+        <li><a href="docs/traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li>
+      </ul>
+      <h3>🔌 Networking</h3>
+      <ul><li><a href="docs/networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul>
+      <h3>🛡️ Observability, Security &amp; Ops</h3>
+      <ul>
+        <li><a href="docs/observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li>
+        <li><a href="docs/observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li>
+        <li><a href="docs/observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li>
+      </ul>
       <h3>🖧 Web Servers</h3>
       <ul>
-        <li><a href="eat-that-elephant-1/web-servers/server.html">Web Servers</a></li>
-        <li><a href="eat-that-elephant-1/web-servers/wsgi.html">WSGI Explained</a></li>
+        <li><a href="docs/web-servers/server.html">Web Servers</a></li>
+        <li><a href="docs/web-servers/wsgi.html">WSGI Explained</a></li>
       </ul>
       <h3>🧭 Dev Principles</h3>
-      <ul><li><a href="eat-that-elephant-1/software-development-principles/01-sdp.html">Software Development Principles</a></li></ul>
+      <ul><li><a href="docs/software-development-principles/01-sdp.html">Software Development Principles</a></li></ul>
       <h3>🗺️ Planning &amp; Roadmap</h3>
       <ul>
-        <li><a href="eat-that-elephant-1/path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li>
-        <li><a href="eat-that-elephant-1/path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li>
-        <li><a href="eat-that-elephant-1/path/01-b-MVP.html">MVP Planning</a></li>
-        <li><a href="eat-that-elephant-1/path/02-apis.html">API Planning</a></li>
+        <li><a href="docs/path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li>
+        <li><a href="docs/path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li>
+        <li><a href="docs/path/01-b-MVP.html">MVP Planning</a></li>
+        <li><a href="docs/path/02-apis.html">API Planning</a></li>
+        <li><a href="docs/path/03-coverage-gap-analysis.html">Coverage Gap Analysis &amp; Prompts</a></li>
       </ul>
       <h3>🏗️ Project Walkthroughs</h3>
       <ul>
-        <li><a href="eat-that-elephant-1/project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li>
-        <li><a href="eat-that-elephant-1/project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li>
+        <li><a href="docs/project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li>
+        <li><a href="docs/project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li>
       </ul>
       <h3>🧩 Miscellaneous</h3>
       <ul>
-        <li><a href="eat-that-elephant-1/mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li>
-        <li><a href="eat-that-elephant-1/mislanious/Memory-Profiling.html">Memory Profiling</a></li>
-        <li><a href="eat-that-elephant-1/mislanious/query-string.html">Query Strings</a></li>
+        <li><a href="docs/mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li>
+        <li><a href="docs/mislanious/Memory-Profiling.html">Memory Profiling</a></li>
+        <li><a href="docs/mislanious/query-string.html">Query Strings</a></li>
       </ul>
       <h3>📄 Overview</h3>
       <ul>
@@ -306,128 +369,176 @@ a:hover { text-decoration: underline; }
       <h1>🦉 Infra Owl</h1>
       <p class="lede">A personal knowledge base covering authentication, databases, distributed systems, messaging, storage, and more — converted from raw notes into a browsable reference site.</p>
       <div class="stats">
-        <div class="stat"><b>63</b><span>Pages</span></div>
-        <div class="stat"><b>13</b><span>Topics</span></div>
+        <div class="stat"><b>83</b><span>Pages</span></div>
+        <div class="stat"><b>17</b><span>Topics</span></div>
         <div class="stat"><b>8</b><span>Downloads</span></div>
       </div>
     </div>
 
+    <!-- Filled at runtime by the inline script below (per-viewer random weekly
+         pick + progress, ported from docs/assets/site-header.js). -->
+    <div data-weekly-target></div>
+
     <div class="section-title">Browse by topic</div>
     <div class="grid">
+      <div class="card" style="--card-accent: var(--c-k8s); --card-accent-bg: var(--c-k8s-bg);">
+        <div class="icon-wrap">☸️</div><h2>Kubernetes</h2><p class="count">12 pages</p>
+        <ul>
+          <li><a href="docs/kubernetes/00-index.html">00. Control Plane Overview</a></li>
+          <li><a href="docs/kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li>
+          <li><a href="docs/kubernetes/02-etcd.html">02. etcd</a></li>
+          <li><a href="docs/kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li>
+          <li><a href="docs/kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li>
+          <li><a href="docs/kubernetes/05-api-request-flow.html">05. API Request Flow</a></li>
+          <li><a href="docs/kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li>
+          <li><a href="docs/kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li>
+          <li><a href="docs/kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li>
+          <li><a href="docs/kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li>
+          <li><a href="docs/kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li>
+          <li><a href="docs/kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li>
+        </ul>
+      </div>
       <div class="card" style="--card-accent: var(--c-frontend); --card-accent-bg: var(--c-frontend-bg);">
         <div class="icon-wrap">🖥️</div><h2>Front-End</h2><p class="count">9 pages</p>
         <ul>
-          <li><a href="eat-that-elephant-1/01-front-end/frontend-roadmap.html">Front-End Roadmap</a></li>
-          <li><a href="eat-that-elephant-1/01-front-end/graphql/http/04-client-server-model.html">Client-Server Model, End to End</a></li>
-          <li><a href="eat-that-elephant-1/01-front-end/graphql/http/04.2-request-flow-interactive.html">Interactive Request Flow</a></li>
-          <li><a href="eat-that-elephant-1/01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a></li>
-          <li><a href="eat-that-elephant-1/01-front-end/graphql/http/01.02-rendering-types.html">Web Rendering &amp; Architecture</a></li>
-          <li><a href="eat-that-elephant-1/01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li>
-          <li><a href="eat-that-elephant-1/01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li>
-          <li><a href="eat-that-elephant-1/01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li>
-          <li><a href="eat-that-elephant-1/01-front-end/system-design-roadmap.html">System Design Roadmap</a></li>
+          <li><a href="docs/01-front-end/frontend-roadmap.html">Front-End Roadmap</a></li>
+          <li><a href="docs/01-front-end/graphql/http/04-client-server-model.html">Client-Server Model, End to End</a></li>
+          <li><a href="docs/01-front-end/graphql/http/04.2-request-flow-interactive.html">Interactive Request Flow</a></li>
+          <li><a href="docs/01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a></li>
+          <li><a href="docs/01-front-end/graphql/http/01.02-rendering-types.html">Web Rendering &amp; Architecture</a></li>
+          <li><a href="docs/01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li>
+          <li><a href="docs/01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li>
+          <li><a href="docs/01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li>
+          <li><a href="docs/01-front-end/system-design-roadmap.html">System Design Roadmap</a></li>
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-database); --card-accent-bg: var(--c-database-bg);">
         <div class="icon-wrap">🗄️</div><h2>Database</h2><p class="count">21 pages</p>
         <ul>
-          <li><a href="eat-that-elephant-1/05-database/00-learning-path/00-index.html">Database Learning Path</a></li>
-          <li><a href="eat-that-elephant-1/05-database/01-foundations/mislanious-terms.html">Database Foundations</a></li>
-          <li><a href="eat-that-elephant-1/05-database/01a-sql-and-relational-fundamentals/index.html">SQL and Relational Fundamentals</a></li>
-          <li><a href="eat-that-elephant-1/05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">How to Choose the Database</a></li>
-          <li><a href="eat-that-elephant-1/05-database/02-data-modeling-and-selection/factors.html">Database Performance Factors</a></li>
-          <li><a href="eat-that-elephant-1/05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">Scratch Note: Polyglot Persistence</a></li>
-          <li><a href="eat-that-elephant-1/05-database/02a-schema-design-and-migrations/index.html">Schema Design and Migrations</a></li>
-          <li><a href="eat-that-elephant-1/05-database/03-querying-and-performance/01A-Database-basic.html">PostgreSQL Views Explained</a></li>
-          <li><a href="eat-that-elephant-1/05-database/03-querying-and-performance/08-indxing.html">Indexing</a></li>
-          <li><a href="eat-that-elephant-1/05-database/03a-transactions-and-concurrency/index.html">Transactions and Concurrency</a></li>
-          <li><a href="eat-that-elephant-1/05-database/03b-query-plans-and-optimization/index.html">Query Plans and Optimization</a></li>
-          <li><a href="eat-that-elephant-1/05-database/04-distributed-database-fundamentals/lecture-2.html">Distributed Database Fundamentals</a></li>
-          <li><a href="eat-that-elephant-1/05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">CAP Theorem Questions</a></li>
-          <li><a href="eat-that-elephant-1/05-database/04a-database-security-and-access-control/index.html">Database Security and Access Control</a></li>
-          <li><a href="eat-that-elephant-1/05-database/05-scaling-and-partitioning/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li>
-          <li><a href="eat-that-elephant-1/05-database/05-scaling-and-partitioning/02-partiontion.html">Partitioning</a></li>
-          <li><a href="eat-that-elephant-1/05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">Horizontal Scaling</a></li>
-          <li><a href="eat-that-elephant-1/05-database/05a-connection-management-and-database-proxies/index.html">Connection Management and Database Proxies</a></li>
-          <li><a href="eat-that-elephant-1/05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">PostgreSQL Connection Troubleshooting</a></li>
-          <li><a href="eat-that-elephant-1/05-database/06a-backup-recovery-and-disaster-recovery/index.html">Backup, Recovery, and Disaster Recovery</a></li>
-          <li><a href="eat-that-elephant-1/05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a></li>
+          <li><a href="docs/05-database/00-learning-path/00-index.html">Database Learning Path</a></li>
+          <li><a href="docs/05-database/01-foundations/mislanious-terms.html">Database Foundations</a></li>
+          <li><a href="docs/05-database/01a-sql-and-relational-fundamentals/index.html">SQL and Relational Fundamentals</a></li>
+          <li><a href="docs/05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">How to Choose the Database</a></li>
+          <li><a href="docs/05-database/02-data-modeling-and-selection/factors.html">Database Performance Factors</a></li>
+          <li><a href="docs/05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">Scratch Note: Polyglot Persistence</a></li>
+          <li><a href="docs/05-database/02a-schema-design-and-migrations/index.html">Schema Design and Migrations</a></li>
+          <li><a href="docs/05-database/03-querying-and-performance/01A-Database-basic.html">PostgreSQL Views Explained</a></li>
+          <li><a href="docs/05-database/03-querying-and-performance/08-indxing.html">Indexing</a></li>
+          <li><a href="docs/05-database/03a-transactions-and-concurrency/index.html">Transactions and Concurrency</a></li>
+          <li><a href="docs/05-database/03b-query-plans-and-optimization/index.html">Query Plans and Optimization</a></li>
+          <li><a href="docs/05-database/04-distributed-database-fundamentals/lecture-2.html">Distributed Database Fundamentals</a></li>
+          <li><a href="docs/05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">CAP Theorem Questions</a></li>
+          <li><a href="docs/05-database/04a-database-security-and-access-control/index.html">Database Security and Access Control</a></li>
+          <li><a href="docs/05-database/05-scaling-and-partitioning/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li>
+          <li><a href="docs/05-database/05-scaling-and-partitioning/02-partiontion.html">Partitioning</a></li>
+          <li><a href="docs/05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">Horizontal Scaling</a></li>
+          <li><a href="docs/05-database/05a-connection-management-and-database-proxies/index.html">Connection Management and Database Proxies</a></li>
+          <li><a href="docs/05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">PostgreSQL Connection Troubleshooting</a></li>
+          <li><a href="docs/05-database/06a-backup-recovery-and-disaster-recovery/index.html">Backup, Recovery, and Disaster Recovery</a></li>
+          <li><a href="docs/05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a></li>
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-auth); --card-accent-bg: var(--c-auth-bg);">
-        <div class="icon-wrap">🔐</div><h2>Authentication</h2><p class="count">9 pages</p>
+        <div class="icon-wrap">🔐</div><h2>Authentication</h2><p class="count">5 pages</p>
         <ul>
-          <li><a href="eat-that-elephant-2/Authentication%20Notes.html">Authentication Master Guide</a></li>
-          <li><a href="eat-that-elephant-2/Authentication%20Notes.html">Authentication Master Guide (copy)</a></li>
-          <li><a href="eat-that-elephant-2/00-login-steps.html">Secure Login Implementation Steps</a></li>
-          <li><a href="eat-that-elephant-2/01-authentication/01-introduction.html">Authentication Engineering Roadmap</a></li>
-          <li><a href="eat-that-elephant-2/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li>
-          <li><a href="eat-that-elephant-2/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li>
-          <li><a href="eat-that-elephant-2/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li>
-          <li><a href="eat-that-elephant-2/02-social-login/google-key-task.html">Google Social Login Checklist</a></li>
-          <li><a href="eat-that-elephant-2/02-social-login/google-login.html">Google Sign-In PlantUML Diagram</a></li>
+          <li><a href="docs/authentication/00-login-steps.html">Secure Login Implementation Steps</a></li>
+          <li><a href="docs/authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li>
+          <li><a href="docs/authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li>
+          <li><a href="docs/authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li>
+          <li><a href="docs/authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li>
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
-        <div class="icon-wrap">🌐</div><h2>Distributed Systems</h2><p class="count">1 page</p>
-        <ul><li><a href="eat-that-elephant-1/distributed-system/distributed-systems.html">Distributed Systems</a></li></ul>
+        <div class="icon-wrap">🌐</div><h2>Distributed Systems</h2><p class="count">3 pages</p>
+        <ul>
+          <li><a href="docs/distributed-system/distributed-systems.html">Distributed Systems</a></li>
+          <li><a href="docs/distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li>
+          <li><a href="docs/distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li>
+        </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
         <div class="icon-wrap">🧬</div><h2>Distributed Database</h2><p class="count">5 pages</p>
         <ul>
-          <li><a href="eat-that-elephant-1/distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li>
-          <li><a href="eat-that-elephant-1/distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li>
-          <li><a href="eat-that-elephant-1/distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li>
-          <li><a href="eat-that-elephant-1/distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li>
-          <li><a href="eat-that-elephant-1/distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li>
+          <li><a href="docs/distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li>
+          <li><a href="docs/distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li>
+          <li><a href="docs/distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li>
+          <li><a href="docs/distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li>
+          <li><a href="docs/distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li>
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-msg); --card-accent-bg: var(--c-msg-bg);">
-        <div class="icon-wrap">📨</div><h2>Messaging &amp; Queues</h2><p class="count">4 pages</p>
+        <div class="icon-wrap">📨</div><h2>Messaging &amp; Queues</h2><p class="count">7 pages</p>
         <ul>
-          <li><a href="eat-that-elephant-1/sqs/01-sqs.html">SQS Overview</a></li>
-          <li><a href="eat-that-elephant-1/sqs/02-queus-methord.html">Queue Methods</a></li>
-          <li><a href="eat-that-elephant-1/sqs/use-case.html">SQS Use Cases</a></li>
-          <li><a href="eat-that-elephant-1/sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li>
+          <li><a href="docs/sqs/01-sqs.html">SQS Overview</a></li>
+          <li><a href="docs/sqs/02-queus-methord.html">Queue Methods</a></li>
+          <li><a href="docs/sqs/use-case.html">SQS Use Cases</a></li>
+          <li><a href="docs/sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li>
+          <li><a href="docs/sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li>
+          <li><a href="docs/sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li>
+          <li><a href="docs/sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li>
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-storage); --card-accent-bg: var(--c-storage-bg);">
         <div class="icon-wrap">💾</div><h2>Storage</h2><p class="count">1 page</p>
-        <ul><li><a href="eat-that-elephant-1/storage/storage-type.html">Storage Types</a></li></ul>
+        <ul><li><a href="docs/storage/storage-type.html">Storage Types</a></li></ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-caching); --card-accent-bg: var(--c-caching-bg);">
+        <div class="icon-wrap">🧊</div><h2>Caching &amp; CDN</h2><p class="count">1 page</p>
+        <ul><li><a href="docs/caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-traffic); --card-accent-bg: var(--c-traffic-bg);">
+        <div class="icon-wrap">🚦</div><h2>Traffic Management</h2><p class="count">2 pages</p>
+        <ul>
+          <li><a href="docs/traffic/00-load-balancing.html">00. Load Balancing</a></li>
+          <li><a href="docs/traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li>
+        </ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-net); --card-accent-bg: var(--c-net-bg);">
+        <div class="icon-wrap">🔌</div><h2>Networking</h2><p class="count">1 page</p>
+        <ul><li><a href="docs/networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul>
+      </div>
+      <div class="card" style="--card-accent: var(--c-obs); --card-accent-bg: var(--c-obs-bg);">
+        <div class="icon-wrap">🛡️</div><h2>Observability, Security &amp; Ops</h2><p class="count">3 pages</p>
+        <ul>
+          <li><a href="docs/observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li>
+          <li><a href="docs/observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li>
+          <li><a href="docs/observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li>
+        </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-web); --card-accent-bg: var(--c-web-bg);">
         <div class="icon-wrap">🖧</div><h2>Web Servers</h2><p class="count">2 pages</p>
         <ul>
-          <li><a href="eat-that-elephant-1/web-servers/server.html">Web Servers</a></li>
-          <li><a href="eat-that-elephant-1/web-servers/wsgi.html">WSGI Explained</a></li>
+          <li><a href="docs/web-servers/server.html">Web Servers</a></li>
+          <li><a href="docs/web-servers/wsgi.html">WSGI Explained</a></li>
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-dev); --card-accent-bg: var(--c-dev-bg);">
         <div class="icon-wrap">🧭</div><h2>Dev Principles</h2><p class="count">1 page</p>
-        <ul><li><a href="eat-that-elephant-1/software-development-principles/01-sdp.html">Software Development Principles</a></li></ul>
+        <ul><li><a href="docs/software-development-principles/01-sdp.html">Software Development Principles</a></li></ul>
       </div>
       <div class="card" style="--card-accent: var(--c-plan); --card-accent-bg: var(--c-plan-bg);">
-        <div class="icon-wrap">🗺️</div><h2>Planning &amp; Roadmap</h2><p class="count">4 pages</p>
+        <div class="icon-wrap">🗺️</div><h2>Planning &amp; Roadmap</h2><p class="count">5 pages</p>
         <ul>
-          <li><a href="eat-that-elephant-1/path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li>
-          <li><a href="eat-that-elephant-1/path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li>
-          <li><a href="eat-that-elephant-1/path/01-b-MVP.html">MVP Planning</a></li>
-          <li><a href="eat-that-elephant-1/path/02-apis.html">API Planning</a></li>
+          <li><a href="docs/path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li>
+          <li><a href="docs/path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li>
+          <li><a href="docs/path/01-b-MVP.html">MVP Planning</a></li>
+          <li><a href="docs/path/02-apis.html">API Planning</a></li>
+          <li><a href="docs/path/03-coverage-gap-analysis.html">Coverage Gap Analysis &amp; Prompts</a></li>
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-proj); --card-accent-bg: var(--c-proj-bg);">
         <div class="icon-wrap">🏗️</div><h2>Project Walkthroughs</h2><p class="count">2 pages</p>
         <ul>
-          <li><a href="eat-that-elephant-1/project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li>
-          <li><a href="eat-that-elephant-1/project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li>
+          <li><a href="docs/project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li>
+          <li><a href="docs/project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li>
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-misc); --card-accent-bg: var(--c-misc-bg);">
         <div class="icon-wrap">🧩</div><h2>Miscellaneous</h2><p class="count">3 pages</p>
         <ul>
-          <li><a href="eat-that-elephant-1/mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li>
-          <li><a href="eat-that-elephant-1/mislanious/Memory-Profiling.html">Memory Profiling</a></li>
-          <li><a href="eat-that-elephant-1/mislanious/query-string.html">Query Strings</a></li>
+          <li><a href="docs/mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li>
+          <li><a href="docs/mislanious/Memory-Profiling.html">Memory Profiling</a></li>
+          <li><a href="docs/mislanious/query-string.html">Query Strings</a></li>
         </ul>
       </div>
       <div class="card" style="--card-accent: var(--c-overview); --card-accent-bg: var(--c-overview-bg);">
@@ -438,13 +549,13 @@ a:hover { text-decoration: underline; }
 
     <div class="section-title">Downloadable resources</div>
     <div class="resource-list">
-      <a href="eat-that-elephant-1/05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides (PDF)</a>
-      <a href="eat-that-elephant-1/05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.3 (PDF)</a>
-      <a href="eat-that-elephant-1/05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.4 (PDF)</a>
-      <a href="eat-that-elephant-1/05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.5 (PDF)</a>
-      <a href="eat-that-elephant-1/05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive (PDF)</a>
-      <a href="eat-that-elephant-1/sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering (PDF)</a>
-      <a href="eat-that-elephant-1/sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a>
+      <a href="docs/05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides (PDF)</a>
+      <a href="docs/05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.3 (PDF)</a>
+      <a href="docs/05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.4 (PDF)</a>
+      <a href="docs/05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.5 (PDF)</a>
+      <a href="docs/05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive (PDF)</a>
+      <a href="docs/sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering (PDF)</a>
+      <a href="docs/sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a>
     </div>
 
     <div class="section-title">Coming soon</div>
@@ -454,6 +565,153 @@ a:hover { text-decoration: underline; }
   </div>
 </div>
 
+<!-- Provides window.SITE_MAP (the page list) for the weekly-target widget below.
+     Defines data only — does not touch the DOM, so it's safe alongside this
+     page's own hand-authored markup. -->
+<script src="docs/assets/sitemap.js"></script>
+<script>
+  // ---- This week's reading target — standalone port of docs/assets/site-header.js's
+  // renderWeeklyTarget(), scoped to this page. Shares localStorage keys with docs/
+  // pages (siteId "docs"), so a page checked off here shows covered there too.
+  (function () {
+    var map = window.SITE_MAP;
+    var box = document.querySelector('[data-weekly-target]');
+    if (!map || !box) return;
+
+    var COVERED_KEY = 'sdnotes_covered_' + map.siteId;
+    var WEEKLY_KEY = 'sdnotes_weekly_' + map.siteId;
+    var WEEKLY_TARGET_COUNT = 3;
+    var HREF_PREFIX = 'docs/';
+
+    function readCovered() {
+      try { return JSON.parse(localStorage.getItem(COVERED_KEY) || '{}') || {}; }
+      catch (e) { return {}; }
+    }
+    function writeCovered(o) {
+      try { localStorage.setItem(COVERED_KEY, JSON.stringify(o)); } catch (e) {}
+    }
+    function allPages() {
+      var out = [];
+      map.sections.forEach(function (section) {
+        section.pages.forEach(function (p) {
+          out.push({ href: p.href, title: p.title, section: section.name });
+        });
+      });
+      return out;
+    }
+    function mondayOf(d) {
+      var m = new Date(d);
+      m.setHours(0, 0, 0, 0);
+      var day = m.getDay();
+      m.setDate(m.getDate() + (day === 0 ? -6 : 1) - day);
+      return m;
+    }
+    function dateKey(d) {
+      function pad(n) { return n < 10 ? '0' + n : '' + n; }
+      return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+    }
+    function readWeekly() {
+      try { return JSON.parse(localStorage.getItem(WEEKLY_KEY) || 'null'); }
+      catch (e) { return null; }
+    }
+    function writeWeekly(state) {
+      try { localStorage.setItem(WEEKLY_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+    function pickWeek() {
+      var list = allPages();
+      if (!list.length) return null;
+      var weekStart = dateKey(mondayOf(new Date()));
+      var state = readWeekly();
+      if (state && state.weekStart === weekStart && state.targets && state.targets.length) return state;
+
+      var cov = readCovered();
+      var pool = list.filter(function (p) { return cov[p.href] !== true; });
+      if (pool.length < WEEKLY_TARGET_COUNT) pool = list.slice();
+      var picks = [];
+      var n = Math.min(WEEKLY_TARGET_COUNT, pool.length);
+      for (var i = 0; i < n; i++) {
+        picks.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+      }
+      state = { weekStart: weekStart, targets: picks };
+      writeWeekly(state);
+      return state;
+    }
+
+    var state = pickWeek();
+    if (!state) return;
+
+    var sunday = mondayOf(new Date());
+    sunday.setDate(sunday.getDate() + 6);
+    sunday.setHours(23, 59, 59, 999);
+    var daysLeft = Math.max(0, Math.ceil((sunday - new Date()) / 86400000));
+
+    var card = document.createElement('div');
+    card.className = 'sd-weekly';
+
+    var head = document.createElement('div');
+    head.className = 'sd-weekly-head';
+    var h = document.createElement('h2');
+    h.textContent = '🎯 This week\'s reading target';
+    head.appendChild(h);
+    var countdown = document.createElement('span');
+    countdown.className = 'sd-weekly-countdown';
+    countdown.textContent = daysLeft === 0
+      ? 'Last day — resets Monday'
+      : daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' left · resets Monday';
+    head.appendChild(countdown);
+    card.appendChild(head);
+
+    var meter = document.createElement('div');
+    meter.className = 'sd-weekly-meter';
+    var fill = document.createElement('span');
+    meter.appendChild(fill);
+    card.appendChild(meter);
+
+    var stat = document.createElement('span');
+    stat.className = 'sd-weekly-stat';
+    card.appendChild(stat);
+
+    var list = document.createElement('ul');
+    list.className = 'sd-weekly-list';
+    card.appendChild(list);
+
+    function paint() {
+      var cov = readCovered();
+      var done = state.targets.filter(function (p) { return cov[p.href] === true; }).length;
+      var total = state.targets.length;
+      fill.style.width = (total ? (done / total * 100) : 0) + '%';
+      stat.textContent = done + ' / ' + total + ' done this week';
+      list.replaceChildren();
+      state.targets.forEach(function (p) {
+        var li = document.createElement('li');
+        li.className = 'sd-weekly-item';
+        var label = document.createElement('label');
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = cov[p.href] === true;
+        cb.addEventListener('change', function () {
+          var c = readCovered();
+          if (cb.checked) c[p.href] = true; else delete c[p.href];
+          writeCovered(c);
+          paint();
+        });
+        label.appendChild(cb);
+        var a = document.createElement('a');
+        a.href = HREF_PREFIX + p.href;
+        a.textContent = p.title;
+        label.appendChild(a);
+        var sec = document.createElement('span');
+        sec.className = 'sd-weekly-section';
+        sec.textContent = p.section;
+        label.appendChild(sec);
+        li.appendChild(label);
+        list.appendChild(li);
+      });
+    }
+    paint();
+    box.appendChild(card);
+  })();
+</script>
 <script>
   // mobile sidebar toggle
   const t = document.getElementById('menuToggle');
@@ -462,33 +720,46 @@ a:hover { text-decoration: underline; }
 
   // ---- Daily revision picker ----
   const REVISION_PAGES = [
-    { title: "GraphQL vs REST", url: "eat-that-elephant-1/01-front-end/graphql/http/03.1graphql-vs-rest.html" },
-    { title: "SSR vs CSR", url: "eat-that-elephant-1/01-front-end/graphql/http/02.1-ssr-vs-csr.html" },
-    { title: "Database Basics: Partitioning & Data Distribution", url: "eat-that-elephant-1/05-database/05-scaling-and-partitioning/01-Database-Basic.html" },
-    { title: "PostgreSQL Views Explained", url: "eat-that-elephant-1/05-database/03-querying-and-performance/01A-Database-basic.html" },
-    { title: "Horizontal Scaling", url: "eat-that-elephant-1/05-database/05-scaling-and-partitioning/03-horizintal-scaling.html" },
-    { title: "CAP Theorem Questions", url: "eat-that-elephant-1/05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html" },
-    { title: "Indexing", url: "eat-that-elephant-1/05-database/03-querying-and-performance/08-indxing.html" },
-    { title: "How to Choose the Database", url: "eat-that-elephant-1/05-database/02-data-modeling-and-selection/how-to-choose-the-database.html" },
-    { title: "Authentication Schemes: An Introduction", url: "eat-that-elephant-2/01-authentication/01-introduction.html" },
-    { title: "Secure Password Hashing Process", url: "eat-that-elephant-2/01-authentication/03-hashing-process.html" },
-    { title: "Google Sign-In with Credential Manager", url: "eat-that-elephant-2/02-social-login/google-login.html" },
-    { title: "Distributed Systems", url: "eat-that-elephant-1/distributed-system/distributed-systems.html" },
-    { title: "Replication & Distributed Data Roadmap", url: "eat-that-elephant-1/distributed-database/index.html" },
-    { title: "Replication Mechanism — The 4 Dimensions", url: "eat-that-elephant-1/distributed-database/02-replication-mechanism.html" },
-    { title: "PACELC — Senior Interview Masterclass", url: "eat-that-elephant-1/distributed-database/03-pacelc-interview-masterclass.html" },
-    { title: "WAL vs Binlog", url: "eat-that-elephant-1/distributed-database/04-wal-vs-binlog.html" },
-    { title: "Replication Lag — Causes, Measurement, Mitigation", url: "eat-that-elephant-1/distributed-database/05-replication-lag.html" },
-    { title: "SQS Overview", url: "eat-that-elephant-1/sqs/01-sqs.html" },
-    { title: "Queue Methods", url: "eat-that-elephant-1/sqs/02-queus-methord.html" },
-    { title: "Storage Types", url: "eat-that-elephant-1/storage/storage-type.html" },
-    { title: "Web Servers", url: "eat-that-elephant-1/web-servers/server.html" },
-    { title: "WSGI Explained", url: "eat-that-elephant-1/web-servers/wsgi.html" },
-    { title: "Software Development Principles", url: "eat-that-elephant-1/software-development-principles/01-sdp.html" },
-    { title: "System Design: EC2 Hosting Checklist", url: "eat-that-elephant-1/path/00-system-desing.html" },
-    { title: "MVP Planning", url: "eat-that-elephant-1/path/01-b-MVP.html" },
-    { title: "Pub/Sub and PubNub", url: "eat-that-elephant-1/mislanious/01-pubsub-and-pubnub.html" },
-    { title: "Memory Profiling", url: "eat-that-elephant-1/mislanious/Memory-Profiling.html" }
+    { title: "GraphQL vs REST", url: "docs/01-front-end/graphql/http/03.1graphql-vs-rest.html" },
+    { title: "SSR vs CSR", url: "docs/01-front-end/graphql/http/02.1-ssr-vs-csr.html" },
+    { title: "Database Basics: Partitioning & Data Distribution", url: "docs/05-database/05-scaling-and-partitioning/01-Database-Basic.html" },
+    { title: "PostgreSQL Views Explained", url: "docs/05-database/03-querying-and-performance/01A-Database-basic.html" },
+    { title: "Horizontal Scaling", url: "docs/05-database/05-scaling-and-partitioning/03-horizintal-scaling.html" },
+    { title: "CAP Theorem Questions", url: "docs/05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html" },
+    { title: "Indexing", url: "docs/05-database/03-querying-and-performance/08-indxing.html" },
+    { title: "How to Choose the Database", url: "docs/05-database/02-data-modeling-and-selection/how-to-choose-the-database.html" },
+    { title: "Authentication Schemes: An Introduction", url: "docs/authentication/01-authentication/01-introduction.html" },
+    { title: "Secure Password Hashing Process", url: "docs/authentication/01-authentication/03-hashing-process.html" },
+    { title: "Google Sign-In with Credential Manager", url: "docs/authentication/02-social-login/google-login.html" },
+    { title: "Distributed Systems", url: "docs/distributed-system/distributed-systems.html" },
+    { title: "Consensus Algorithms: Raft & Paxos", url: "docs/distributed-system/01-consensus-algorithms.html" },
+    { title: "Consistent Hashing", url: "docs/distributed-system/02-consistent-hashing.html" },
+    { title: "Replication & Distributed Data Roadmap", url: "docs/distributed-database/index.html" },
+    { title: "Replication Mechanism — The 4 Dimensions", url: "docs/distributed-database/02-replication-mechanism.html" },
+    { title: "PACELC — Senior Interview Masterclass", url: "docs/distributed-database/03-pacelc-interview-masterclass.html" },
+    { title: "WAL vs Binlog", url: "docs/distributed-database/04-wal-vs-binlog.html" },
+    { title: "Replication Lag — Causes, Measurement, Mitigation", url: "docs/distributed-database/05-replication-lag.html" },
+    { title: "SQS Overview", url: "docs/sqs/01-sqs.html" },
+    { title: "Queue Methods", url: "docs/sqs/02-queus-methord.html" },
+    { title: "Kafka Fundamentals", url: "docs/sqs/03-kafka-fundamentals.html" },
+    { title: "Event Sourcing & CQRS", url: "docs/sqs/04-event-sourcing-and-cqrs.html" },
+    { title: "Microservice Resilience Patterns", url: "docs/sqs/05-microservice-resilience-patterns.html" },
+    { title: "Storage Types", url: "docs/storage/storage-type.html" },
+    { title: "Caching & CDN Fundamentals", url: "docs/caching/00-caching-and-cdn-fundamentals.html" },
+    { title: "Load Balancing", url: "docs/traffic/00-load-balancing.html" },
+    { title: "Rate Limiting & Throttling", url: "docs/traffic/01-rate-limiting-and-throttling.html" },
+    { title: "Networking Fundamentals", url: "docs/networking/00-networking-fundamentals.html" },
+    { title: "Observability Fundamentals", url: "docs/observability-security/00-observability-fundamentals.html" },
+    { title: "Application Security Fundamentals", url: "docs/observability-security/01-application-security-fundamentals.html" },
+    { title: "CI/CD & Deployment Strategies", url: "docs/observability-security/02-cicd-and-deployment-strategies.html" },
+    { title: "Web Servers", url: "docs/web-servers/server.html" },
+    { title: "WSGI Explained", url: "docs/web-servers/wsgi.html" },
+    { title: "Software Development Principles", url: "docs/software-development-principles/01-sdp.html" },
+    { title: "System Design: EC2 Hosting Checklist", url: "docs/path/00-system-desing.html" },
+    { title: "MVP Planning", url: "docs/path/01-b-MVP.html" },
+    { title: "Coverage Gap Analysis & Prompts", url: "docs/path/03-coverage-gap-analysis.html" },
+    { title: "Pub/Sub and PubNub", url: "docs/mislanious/01-pubsub-and-pubnub.html" },
+    { title: "Memory Profiling", url: "docs/mislanious/Memory-Profiling.html" }
   ];
 
   (function initRevision() {

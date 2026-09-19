@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "03-horizintal-scaling" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horizontal Scaling · System Design Notes</title>
+
+<link rel="stylesheet" href="../../assets/site.css?v=5">
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/pages.js"></script><script src="../../assets/site-header.js?v=5" data-root="../../"></script>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><a class="brand" href="../../index.html">System Design Notes</a><nav><h3>☸️ Kubernetes</h3><ul><li><a href="../../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li><li><a href="../../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li><li><a href="../../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li><li><a href="../../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li><li><a href="../../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul><h3>🔐 Authentication</h3><ul><li><a href="../../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li><li><a href="../../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li><li><a href="../../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul><h3>🖥️ Front-End</h3><ul><li><a href="../../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li><li><a href="../../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a class="active" href="../../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li><li><a href="../../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../../web-servers/server.html">Web Servers</a></li><li><a href="../../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+  <div class="content-wrap">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <span class="brand">System Design Notes</span>
+    </div>
+    <main>
+      <p class="breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Database / Horizontal Scaling</p>
+      <h1 data-page-title>Horizontal Scaling</h1>
+      <p>Got it — since you’re in the <strong>top 1% tier</strong>, you probably want <strong>deep, practical notes</strong> that highlight not just the high-level tradeoffs, but also the <strong>real friction points</strong> that surface in production when choosing between <strong>horizontal vs. vertical scaling</strong> in databases.</p>
+<p>Here’s a <strong>comprehensive set of notes</strong> you can use for planning, architecture review, or even guiding teams:</p>
+<hr>
+<h1 id="📌-database-scaling-vertical-vs-horizontal--complete-notes">📌 Database Scaling: Vertical vs. Horizontal — Complete Notes</h1>
+<hr>
+<h2 id="🔹-1-vertical-scaling-scale-up">🔹 1. Vertical Scaling (Scale-Up)</h2>
+<h3 id="advantages">Advantages</h3>
+<ul>
+<li><strong>Simplicity</strong>: Single-node architecture, easy to manage and maintain.</li>
+<li><strong>Strong consistency</strong>: No distributed consensus, no replication lag.</li>
+<li><strong>Low latency</strong>: In-memory lookups and joins are faster than network hops.</li>
+<li><strong>Legacy compatibility</strong>: Many mature RDBMSs (Oracle, Postgres, MySQL) work best in single-node setups.</li>
+</ul>
+<h3 id="frictions">Frictions</h3>
+<ol>
+<li><strong>Hardware ceiling</strong>: CPU, memory, storage IO have hard physical/price limits.</li>
+<li><strong>Cost curve</strong>: Moving from 64 → 128 cores or 1 TB → 2 TB RAM gets exponentially expensive.</li>
+<li><strong>Single point of failure</strong>: Downtime risk unless paired with standby/failover.</li>
+<li><strong>Vendor lock-in</strong>: Proprietary vertical scaling solutions (e.g., Oracle Exadata, IBM Power systems) can trap you.</li>
+<li><strong>Diminishing returns</strong>: Beyond a certain threshold, more RAM/CPU doesn’t yield proportional performance gain (due to concurrency bottlenecks, locks, context switching).</li>
+</ol>
+<hr>
+<h2 id="🔹-2-horizontal-scaling-scale-out">🔹 2. Horizontal Scaling (Scale-Out)</h2>
+<h3 id="advantages-1">Advantages</h3>
+<ul>
+<li><strong>Elastic growth</strong>: Add commodity nodes as workload grows.</li>
+<li><strong>Fault tolerance</strong>: Redundancy across nodes, high availability.</li>
+<li><strong>Geographic distribution</strong>: Data can be closer to users, reducing latency.</li>
+<li><strong>Cost flexibility</strong>: Commodity hardware (or cloud instances) cheaper than high-end vertical nodes.</li>
+</ul>
+<h3 id="frictions-1">Frictions</h3>
+<ol>
+<li><p><strong>Data distribution (sharding/partitioning)</strong>:</p>
+<ul>
+<li>Non-trivial design; bad shard keys → hotspots, imbalance.</li>
+<li>Resharding at scale is painful.</li>
+</ul>
+</li>
+<li><p><strong>Consistency trade-offs (CAP theorem)</strong>:</p>
+<ul>
+<li>Strong consistency across distributed nodes = expensive (Paxos/Raft overhead).</li>
+<li>Many systems settle for eventual consistency.</li>
+</ul>
+</li>
+<li><p><strong>Complex joins/queries</strong>:</p>
+<ul>
+<li>Cross-shard joins are expensive and often require app-level denormalization.</li>
+<li>Analytics over distributed data adds latency.</li>
+</ul>
+</li>
+<li><p><strong>Operational complexity</strong>:</p>
+<ul>
+<li>Monitoring, debugging, backup, and restore across nodes is harder.</li>
+<li>Network partitions, clock skew, and replication lag create edge cases.</li>
+</ul>
+</li>
+<li><p><strong>Application coupling</strong>:</p>
+<ul>
+<li>The app often needs awareness of shard keys.</li>
+<li>Business logic leaks into partitioning scheme.</li>
+</ul>
+</li>
+<li><p><strong>Data movement</strong>:</p>
+<ul>
+<li>Rebalancing shards while keeping systems online is disruptive.</li>
+<li>Migration costs increase as dataset grows.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="🔹-3-workload-friction-factors">🔹 3. Workload Friction Factors</h2>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Vertical Scaling Friction</th>
+<th>Horizontal Scaling Friction</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Read-heavy</strong></td>
+<td>Memory/CPU ceiling</td>
+<td>Requires replicas, read-after-write consistency issues</td>
+</tr>
+<tr>
+<td><strong>Write-heavy</strong></td>
+<td>Lock contention, WAL bottlenecks, IOPS saturation</td>
+<td>Shard balancing, distributed consensus overhead</td>
+</tr>
+<tr>
+<td><strong>OLTP (transactions)</strong></td>
+<td>ACID is easy, but scaling limited</td>
+<td>Distributed transactions = complex, often avoided</td>
+</tr>
+<tr>
+<td><strong>OLAP (analytics)</strong></td>
+<td>Large queries hit memory/CPU limits</td>
+<td>Cross-node scans/aggregations costly</td>
+</tr>
+<tr>
+<td><strong>Low latency apps</strong></td>
+<td>Single-node is fast</td>
+<td>Network hops add latency</td>
+</tr>
+<tr>
+<td><strong>High availability</strong></td>
+<td>Failover only, downtime risk</td>
+<td>Replica redundancy, leader elections</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🔹-4-infrastructure--ops-frictions">🔹 4. Infrastructure &amp; Ops Frictions</h2>
+<ul>
+<li><p><strong>Backups</strong></p>
+<ul>
+<li>Vertical: Snapshot and restore straightforward.</li>
+<li>Horizontal: Coordinated, consistent snapshots across nodes = complex.</li>
+</ul>
+</li>
+<li><p><strong>Upgrades</strong></p>
+<ul>
+<li>Vertical: One box, downtime manageable with replicas.</li>
+<li>Horizontal: Rolling upgrades require careful orchestration (risk of version skew).</li>
+</ul>
+</li>
+<li><p><strong>Monitoring &amp; Observability</strong></p>
+<ul>
+<li>Vertical: Simple metrics (CPU, memory, IO).</li>
+<li>Horizontal: Need distributed tracing, consensus monitoring, shard health.</li>
+</ul>
+</li>
+<li><p><strong>Networking</strong></p>
+<ul>
+<li>Vertical: Internal to box.</li>
+<li>Horizontal: Latency, bandwidth, packet loss, partitions all matter.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="🔹-5-cost--economic-frictions">🔹 5. Cost &amp; Economic Frictions</h2>
+<ul>
+<li><p><strong>Vertical scaling</strong>:</p>
+<ul>
+<li>High-end hardware (NVMe SSD arrays, terabytes of RAM, multi-socket CPUs) → exponential cost.</li>
+<li>Power/cooling requirements grow disproportionately.</li>
+</ul>
+</li>
+<li><p><strong>Horizontal scaling</strong>:</p>
+<ul>
+<li>More nodes = more ops overhead (patching, monitoring, orchestration).</li>
+<li>Cloud cost surprises: inter-node traffic (egress fees), cross-region replication.</li>
+<li>Scaling down not always easy (shrinking cluster often means data reshuffling).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="🔹-6-future-proofing--strategic-frictions">🔹 6. Future-Proofing &amp; Strategic Frictions</h2>
+<ul>
+<li><strong>Migration risk</strong>: moving from vertical → horizontal is often a rewrite.</li>
+<li><strong>Technology mismatch</strong>: Some RDBMSs bolt on sharding poorly (vs. NoSQL systems built for scale-out).</li>
+<li><strong>Talent gap</strong>: Fewer engineers deeply skilled at operating large distributed DBs.</li>
+<li><strong>Ecosystem maturity</strong>: Postgres, MySQL scale up well; Cassandra, DynamoDB, Spanner scale out naturally.</li>
+<li><strong>Regulatory/data residency</strong>: Horizontal scaling across borders adds compliance friction (GDPR, HIPAA).</li>
+</ul>
+<hr>
+<h2 id="🔹-7-rules-of-thumb-from-the-field">🔹 7. Rules of Thumb from the Field</h2>
+<ul>
+<li><p><strong>Start vertical</strong> until hardware limits → simpler, fewer moving parts.</p>
+</li>
+<li><p><strong>Introduce horizontal</strong> when:</p>
+<ul>
+<li>Data size &gt; single machine storage.</li>
+<li>Write throughput exceeds vertical limits.</li>
+<li>99.99% uptime SLA required.</li>
+<li>Geo-distribution is business critical.</li>
+</ul>
+</li>
+<li><p><strong>Hybrid models</strong> are common:</p>
+<ul>
+<li>Vertical + replicas for read scale.</li>
+<li>Horizontal for partition-tolerant workloads (analytics, logging, IoT).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>✅ <strong>Key Insight</strong>:
+The biggest <strong>friction point is not tech, but organizational maturity</strong> — most failures in horizontal scaling happen because teams underestimate <strong>operational complexity, shard key design, and consistency trade-offs</strong>.</p>
+<hr>
+<p>Would you like me to <strong>condense this into a visual 2-page reference (PDF/cheatsheet)</strong> you could use with your team in architecture reviews, or keep it text-based like deep notes?</p>
+
+      <div class="page-footer">
+        <span>Section: Database</span>
+        <span>Source: <code>03-horizintal-scaling</code></span>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+  const t = document.getElementById('menuToggle');
+  const s = document.getElementById('sidebar');
+  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+</script>
+
+</body>
+</html>

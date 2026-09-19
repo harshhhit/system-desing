@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "01-rate-limiting-and-throttling" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rate Limiting &amp; Throttling · System Design Notes</title>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2>Why rate limit</h2>
+      <ul>
+      <li><strong>Protect the backend</strong> — cap how much load any one client can put on a shared resource, so one noisy caller can't degrade the service for everyone else.</li>
+      <li><strong>Fairness</strong> — enforce a per-user/per-key quota so usage is distributed roughly according to plan/tier rather than first-come-first-served.</li>
+      <li><strong>Abuse and cost control</strong> — stop credential-stuffing, scraping, or a runaway retry loop from turning into an incident or a surprise bill.</li>
+      <li><strong>Upstream protection</strong> — a service calling a third-party API (payment provider, SMS gateway) rate-limits its own outbound calls to stay under that provider's limit and avoid being cut off entirely.</li>
+      </ul>
+
+      <h2>Algorithms</h2>
+      <table>
+      <tr><th>Algorithm</th><th>How it works</th><th>Allows bursts?</th><th>Memory / accuracy</th></tr>
+      <tr><td>Fixed window counter</td><td>Count requests in the current clock window (e.g. per-minute); reset the counter when the window rolls over</td><td>Yes — a burst right at the boundary of two windows can let through nearly <strong>2×</strong> the limit (all at the end of one window, all at the start of the next)</td><td>Cheapest — one counter per key</td></tr>
+      <tr><td>Sliding window log</td><td>Store the timestamp of every request in the last window; count how many fall inside a rolling window ending "now"</td><td>No — exact, no boundary problem</td><td>Most accurate, but memory grows with request volume (one entry per request)</td></tr>
+      <tr><td>Sliding window counter</td><td>Approximates the log by weighting the previous fixed window's count by how much of it still overlaps the current rolling window</td><td>Mostly no — close approximation of the log, without storing every timestamp</td><td>One or two counters per key — the practical default</td></tr>
+      <tr><td>Token bucket</td><td>A bucket holds up to <em>N</em> tokens, refilling at a fixed rate; every request consumes one token, and requests are rejected once the bucket is empty</td><td>Yes, intentionally — a client that's been idle can burst up to the bucket size, then is limited to the refill rate</td><td>One counter + one timestamp per key — cheap, and the standard choice (AWS, Stripe, and most API gateways use it)</td></tr>
+      <tr><td>Leaky bucket</td><td>Requests queue into a bucket and are processed ("leak out") at a fixed rate; the bucket overflowing rejects new requests</td><td>No — smooths bursts into a constant output rate rather than allowing them through</td><td>Similar cost to token bucket; used when the goal is a steady <em>outbound</em> rate (e.g. calls to a downstream API), not just gatekeeping inbound</td></tr>
+      </table>
+      <div class="sd-study-note tip"><span class="sd-note-title">Token bucket vs. leaky bucket, in one line</span><p>Token bucket controls how much traffic you <em>let in</em> and is happy to allow bursts; leaky bucket controls how much traffic you <em>send out</em> and actively smooths bursts away. Rate-limiting an API's inbound requests → token bucket. Throttling your own outbound calls to a fragile downstream → leaky bucket.</p></div>
+
+      <h2>Where to enforce it</h2>
+      <ul>
+      <li><strong>Client-side</strong> — polite, but not a security boundary; a client can always skip its own throttle. Useful for UX (disable a submit button) not protection.</li>
+      <li><strong>Edge / API gateway</strong> — the common place for coarse, per-API-key or per-IP limits, before the request even reaches application servers; cheapest place to reject abusive traffic.</li>
+      <li><strong>Per-service</strong> — finer-grained limits close to an expensive specific operation (e.g. "3 password-reset emails per hour," distinct from the general API limit).</li>
+      <li><strong>Distributed rate limiting</strong> — once there's more than one instance enforcing the limit, they need a shared counter. The standard approach is Redis: an atomic <code>INCR</code> + <code>EXPIRE</code> (or a single Lua script so the check-and-increment is atomic and race-free) keyed by <code>user:&lt;id&gt;:&lt;window&gt;</code> — see <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a> for why Redis specifically (atomic ops, TTLs built in).</li>
+      </ul>
+      <div class="sd-study-note warning"><span class="sd-note-title">Two instances checking-then-incrementing separately is a race</span><p>If "read the counter" and "increment the counter" are two separate calls, two concurrent requests on two different app instances can both read the count just under the limit, both pass, and both increment — quietly letting one extra request through the limit. Use a single atomic operation (Redis <code>INCR</code>, or a Lua script for token-bucket logic) instead of read-then-write.</p></div>
+
+      <h2>Talking to the client about it</h2>
+      <ul>
+      <li><strong><code>429 Too Many Requests</code></strong> — the correct HTTP status for a rejected request, distinct from a 4xx client error like malformed input.</li>
+      <li><strong><code>Retry-After</code></strong> header — tells the client how many seconds (or a date) to wait before retrying, instead of making it guess.</li>
+      <li><strong><code>X-RateLimit-Limit</code> / <code>-Remaining</code> / <code>-Reset</code></strong> — conventional (non-standard but widely adopted) headers so well-behaved clients can self-throttle before they ever hit 429.</li>
+      <li>A client should back off with jitter on retry, not retry immediately — otherwise every rejected client retries at the same instant, recreating a self-inflicted <a href="../caching/00-caching-and-cdn-fundamentals.html">thundering herd</a>.</li>
+      </ul>
+
+      <h2>Related but distinct terms</h2>
+      <ul>
+      <li><strong>Throttling</strong> — often used interchangeably with rate limiting, but sometimes specifically means <em>slowing</em> a client down (delaying responses) rather than rejecting requests outright.</li>
+      <li><strong>Backpressure</strong> — a downstream component that's falling behind signals upstream to slow down (or upstream detects a growing queue and self-limits), as opposed to a rate limiter which enforces a policy regardless of actual downstream health.</li>
+      <li><strong>Circuit breaking</strong> — stops calling a dependency <em>at all</em> once it's clearly failing, rather than limiting the rate of calls to a healthy-but-finite one. A different tool for a different failure mode (dependency down vs. dependency at capacity).</li>
+      </ul>
+
+      <h2>Interview checklist</h2>
+      <ul>
+      <li>Name the algorithm and justify it: token bucket if bursts should be allowed, sliding window counter if precision at the window boundary matters more than a little memory.</li>
+      <li>Say where it's enforced (edge/gateway vs. per-service) and why — coarse abuse protection belongs at the edge, business-rule-specific limits belong near the operation they protect.</li>
+      <li>If there's more than one instance, say explicitly how the counter is shared and kept atomic (Redis + a single atomic op) — this is the detail that separates a real answer from a hand-wave.</li>
+      <li>Mention the client contract: <code>429</code> + <code>Retry-After</code>, and clients retrying with jittered backoff, not immediate retry.</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

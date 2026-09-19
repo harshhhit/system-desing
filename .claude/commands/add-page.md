@@ -1,25 +1,24 @@
 ---
-description: Add source content as a new page in eat-that-elephant-1/2, following the repo's README.md + CLAUDE.md procedure exactly, without dropping a single line.
-argument-hint: [source: pasted text, or a file path to read] [sub-site: e1/e2] [section] [slug]
+description: Add source content as a new page in docs/, following the repo's README.md + CLAUDE.md procedure exactly, without dropping a single line.
+argument-hint: [source: pasted text, or a file path to read] [section] [slug]
 ---
 
 You are adding **$ARGUMENTS** as a new page to this knowledge-base site. Follow the
 procedure below exactly — it is the documented process from
-`eat-that-elephant-1/README.md` (identical for `eat-that-elephant-2/`, per the
-root `CLAUDE.md`). Do not improvise a different structure.
+`docs/README.md` and the root `CLAUDE.md`. Do not improvise a different structure.
 
 ## 0. Read before writing
 
-- Re-read `CLAUDE.md` (root), `eat-that-elephant-1/CLAUDE.md` (or `-2/`), and
-  `eat-that-elephant-1/README.md` (or `-2/`) before touching any file — the
-  detailed depth/path table and the section-name list live there.
+- Re-read `CLAUDE.md` (root), `docs/CLAUDE.md`, and `docs/README.md` before
+  touching any file — the detailed depth/path table and the section-name list
+  live there.
 - If the source is a file path, `Read` the **entire** file — do not summarize
   or skip a "for large files" excerpt. If it's a large HTML export (e.g. a
   chat-tool snapshot with a huge `<head>`), the real content is almost always
   a small pasted block, not the boilerplate — read enough of the file to find
   where the actual authored content starts and ends, then use all of it.
-- If the sub-site, section, or slug isn't given in $ARGUMENTS, infer the most
-  sensible one from existing `assets/sitemap.js` sections and ask only if
+- If the section or slug isn't given in $ARGUMENTS, infer the most sensible
+  one from existing `docs/assets/sitemap.js` sections and ask only if
   genuinely ambiguous.
 
 ## 1. Zero content loss — this is the hard requirement
@@ -43,10 +42,8 @@ the source into HTML:
 ## 2. Copy the template
 
 ```
-cp eat-that-elephant-1/_TEMPLATE-page.html eat-that-elephant-1/<section-folder>/<slug>.html
+cp docs/_TEMPLATE-page.html docs/<section-folder>/<slug>.html
 ```
-
-(swap `eat-that-elephant-1` for `-2` per $ARGUMENTS).
 
 **Immediately strip every instructional HTML comment the template carries**
 (the `HOW TO USE THIS TEMPLATE` block and the `▼ THE ONLY LINE...` comment
@@ -74,7 +71,7 @@ per the table below):
 
 ## 3. Fix paths for depth
 
-The template is wired for one folder deep (`eat-that-elephant-1/<folder>/page.html`,
+The template is wired for one folder deep (`docs/<folder>/page.html`,
 prefix `../`). If the target is deeper or shallower, fix **all** of:
 the ACCESS GATE `location.replace(...)` + `<noscript>` refresh path to
 `login.html`, the `site.css` href, the three `<script src>` values, and
@@ -83,10 +80,10 @@ the ACCESS GATE `location.replace(...)` + `<noscript>` refresh path to
 
 | File depth | `login.html` path | asset prefix | `data-root` |
 |---|---|---|---|
-| `eat-that-elephant-1/page.html` | `../login.html` | `assets/…` | `""` |
-| `eat-that-elephant-1/a/page.html` | `../../login.html` | `../assets/…` | `"../"` |
-| `eat-that-elephant-1/a/b/page.html` | `../../../login.html` | `../../assets/…` | `"../../"` |
-| `eat-that-elephant-1/a/b/c/page.html` | `../../../../login.html` | `../../../assets/…` | `"../../../"` |
+| `docs/page.html` | `../login.html` | `assets/…` | `""` |
+| `docs/a/page.html` | `../../login.html` | `../assets/…` | `"../"` |
+| `docs/a/b/page.html` | `../../../login.html` | `../../assets/…` | `"../../"` |
+| `docs/a/b/c/page.html` | `../../../../login.html` | `../../../assets/…` | `"../../../"` |
 
 ## 4. Paste content
 

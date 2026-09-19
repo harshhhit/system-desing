@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "02-queus-methord" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Queue Methods · System Design Notes</title>
+
+<link rel="stylesheet" href="../assets/site.css?v=5">
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script><script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar"><a class="brand" href="../index.html">System Design Notes</a><nav><h3>☸️ Kubernetes</h3><ul><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul><h3>🔐 Authentication</h3><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul><h3>🖥️ Front-End</h3><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a class="active" href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+  <div class="content-wrap">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+      <span class="brand">System Design Notes</span>
+    </div>
+    <main>
+      <p class="breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Messaging &amp; Queues / Queue Methods</p>
+      <h1 data-page-title>Queue Methods</h1>
+      <p>Got it 🙂 You want to understand <strong>AMQP</strong> (Advanced Message Queuing Protocol), other messaging protocols, and how they’re used in <strong>message brokers</strong> and <strong>queue-based architectures (QA)</strong> like <strong>SQS, Kafka, RabbitMQ, and Azure Service Bus</strong>.</p>
+<p>I’ll explain:</p>
+<ol>
+<li><strong>What AMQP is</strong></li>
+<li><strong>How AMQP works in message brokers</strong></li>
+<li><strong>Other major messaging protocols</strong> (MQTT, STOMP, HTTP/S, gRPC, WebSockets, etc.)</li>
+<li><strong>How they’re used in message brokers &amp; QA architectures</strong></li>
+<li><strong>Comparison table between protocols</strong></li>
+<li><strong>Best practices for choosing the right one</strong></li>
+</ol>
+<hr>
+<h1 id="1-what-is-amqp"><strong>1. What is AMQP?</strong></h1>
+<p><strong>AMQP (Advanced Message Queuing Protocol)</strong> is an <strong>open standard messaging protocol</strong> designed for <strong>reliable, interoperable, and asynchronous communication</strong> between applications or services.</p>
+<ul>
+<li><strong>Used in</strong>: RabbitMQ, Azure Service Bus, Qpid, ActiveMQ</li>
+<li><strong>Focus</strong>: Message reliability, acknowledgments, routing, queues, and guaranteed delivery.</li>
+</ul>
+<h3 id="key-features-of-amqp"><strong>Key Features of AMQP</strong></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Protocol Type</strong></td>
+<td>Binary, wire-level protocol</td>
+</tr>
+<tr>
+<td><strong>Supports Queues</strong></td>
+<td>Yes, first-class citizen</td>
+</tr>
+<tr>
+<td><strong>Reliability</strong></td>
+<td>Built-in ACK/NACK, redelivery, and persistence</td>
+</tr>
+<tr>
+<td><strong>Routing</strong></td>
+<td>Exchanges + Queues (fanout, topic, direct, headers)</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>TLS/SSL, SASL authentication</td>
+</tr>
+<tr>
+<td><strong>Cross-Language</strong></td>
+<td>Works with Java, Python, Node.js, Go, etc.</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="2-how-amqp-works-in-message-brokers"><strong>2. How AMQP Works in Message Brokers</strong></h1>
+<p>Let&#39;s take <strong>RabbitMQ</strong> as an example since it&#39;s the most common AMQP-based broker.</p>
+<h3 id="basic-workflow"><strong>Basic Workflow</strong></h3>
+<pre><code>Producer → Exchange → Queue → Consumer
+</code></pre>
+<ol>
+<li><strong>Producer</strong> sends messages to an <strong>Exchange</strong>.</li>
+<li><strong>Exchange</strong> decides how to route messages based on <strong>routing keys</strong>.</li>
+<li>Messages are stored in a <strong>Queue</strong> until a <strong>Consumer</strong> processes them.</li>
+<li><strong>Acknowledgments (ACK/NACK)</strong> ensure messages aren’t lost.</li>
+<li><strong>DLQ (Dead Letter Queues)</strong> can store failed messages for debugging or replay.</li>
+</ol>
+<h3 id="example-use-case"><strong>Example Use Case</strong></h3>
+<ul>
+<li><strong>Banking System</strong>:
+A money transfer service sends a message → stored in RabbitMQ → processed by a fraud detection service → retried if failed → stored in DLQ if permanently failing.</li>
+</ul>
+<hr>
+<h1 id="3-other-messaging-protocols"><strong>3. Other Messaging Protocols</strong></h1>
+<p>Apart from AMQP, there are several <strong>alternative messaging protocols</strong> widely used in modern distributed systems and QA architectures.</p>
+<hr>
+<h2 id="a-mqtt-message-queuing-telemetry-transport"><strong>A. MQTT (Message Queuing Telemetry Transport)</strong></h2>
+<p><strong>Best for:</strong> IoT, lightweight apps, low-bandwidth environments.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>MQTT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Protocol Type</td>
+<td>Publish/Subscribe</td>
+</tr>
+<tr>
+<td>Message Size</td>
+<td>Lightweight (small packet overhead)</td>
+</tr>
+<tr>
+<td>Delivery Modes</td>
+<td>At most once, at least once, exactly once</td>
+</tr>
+<tr>
+<td>Uses</td>
+<td>IoT sensors, real-time updates, mobile messaging</td>
+</tr>
+<tr>
+<td>Brokers</td>
+<td><strong>EMQX, Mosquitto, HiveMQ, AWS IoT Core</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Example:</strong>
+A temperature sensor → MQTT broker → mobile app dashboard.</p>
+<hr>
+<h2 id="b-stomp-simple-text-oriented-messaging-protocol"><strong>B. STOMP (Simple Text Oriented Messaging Protocol)</strong></h2>
+<p><strong>Best for:</strong> WebSockets-based, text-based messaging.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>STOMP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Protocol Type</td>
+<td>Frame-based, text-oriented</td>
+</tr>
+<tr>
+<td>Use Case</td>
+<td>Simple pub-sub, chat apps, stock tickers</td>
+</tr>
+<tr>
+<td>Brokers</td>
+<td>RabbitMQ, ActiveMQ, Apollo</td>
+</tr>
+<tr>
+<td>Drawback</td>
+<td>Less efficient for binary &amp; high-throughput workloads</td>
+</tr>
+</tbody></table>
+<p><strong>Example:</strong>
+Stock price streaming using WebSockets over STOMP → Dashboard updates in real-time.</p>
+<hr>
+<h2 id="c-https-webhooks-rest-over-messaging"><strong>C. HTTP/S Webhooks (REST over Messaging)</strong></h2>
+<p><strong>Best for:</strong> Simple event-driven systems where polling is acceptable.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>HTTP/S Webhooks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Protocol Type</td>
+<td>REST or Webhook callbacks</td>
+</tr>
+<tr>
+<td>Delivery Guarantee</td>
+<td>Best effort, retries needed</td>
+</tr>
+<tr>
+<td>Uses</td>
+<td>Microservices integration, payment notifications</td>
+</tr>
+<tr>
+<td>Examples</td>
+<td>Stripe, GitHub Webhooks, AWS SNS</td>
+</tr>
+</tbody></table>
+<p><strong>Example:</strong>
+GitHub → Push event → Sends webhook → Your app receives notification.</p>
+<hr>
+<h2 id="d-grpc-google-remote-procedure-call"><strong>D. gRPC (Google Remote Procedure Call)</strong></h2>
+<p><strong>Best for:</strong> High-performance microservice communication.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>gRPC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Protocol Type</td>
+<td>HTTP/2-based, binary</td>
+</tr>
+<tr>
+<td>Messaging Mode</td>
+<td>Request/response + streaming</td>
+</tr>
+<tr>
+<td>Uses</td>
+<td>Microservices, AI inference APIs, real-time apps</td>
+</tr>
+<tr>
+<td>Libraries</td>
+<td>Native in many languages</td>
+</tr>
+<tr>
+<td>Drawback</td>
+<td>Not primarily a queue but used with brokers for RPC-style messaging</td>
+</tr>
+</tbody></table>
+<p><strong>Example:</strong>
+Microservice A → gRPC → Microservice B → Kafka → Processing service.</p>
+<hr>
+<h2 id="e-websockets"><strong>E. WebSockets</strong></h2>
+<p><strong>Best for:</strong> Real-time, bi-directional communication.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>WebSockets</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Protocol Type</td>
+<td>Full-duplex over TCP</td>
+</tr>
+<tr>
+<td>Uses</td>
+<td>Chat apps, multiplayer gaming, live dashboards</td>
+</tr>
+<tr>
+<td>Drawback</td>
+<td>No built-in retries, DLQs, or durability</td>
+</tr>
+<tr>
+<td>Brokers</td>
+<td>Can be combined with Kafka/RabbitMQ for reliability</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="4-message-broker--protocol-usage-in-qa-systems"><strong>4. Message Broker + Protocol Usage in QA Systems</strong></h1>
+<table>
+<thead>
+<tr>
+<th><strong>Broker</strong></th>
+<th><strong>Protocol(s) Supported</strong></th>
+<th><strong>Ideal Use Case</strong></th>
+<th><strong>Retry + DLQ Support</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>RabbitMQ</strong></td>
+<td><strong>AMQP</strong>, MQTT, STOMP</td>
+<td>Enterprise queues, microservices</td>
+<td>✅ Native DLQs</td>
+</tr>
+<tr>
+<td><strong>Apache Kafka</strong></td>
+<td>Kafka Protocol (binary TCP)</td>
+<td>Streaming, event sourcing</td>
+<td>✅ Retry + DLQ via topics</td>
+</tr>
+<tr>
+<td><strong>AWS SQS</strong></td>
+<td>Proprietary over HTTPS</td>
+<td>Serverless apps, decoupling</td>
+<td>✅ Built-in DLQs</td>
+</tr>
+<tr>
+<td><strong>Azure Service Bus</strong></td>
+<td><strong>AMQP 1.0</strong></td>
+<td>Cloud-first enterprise apps</td>
+<td>✅ DLQs + Retry policies</td>
+</tr>
+<tr>
+<td><strong>ActiveMQ</strong></td>
+<td><strong>AMQP</strong>, STOMP, MQTT</td>
+<td>Legacy enterprise systems</td>
+<td>✅ DLQs</td>
+</tr>
+<tr>
+<td><strong>NATS</strong></td>
+<td>NATS Protocol, gRPC</td>
+<td>High-performance microservices</td>
+<td>❌ DLQs need manual config</td>
+</tr>
+<tr>
+<td><strong>MQTT Brokers</strong></td>
+<td>MQTT</td>
+<td>IoT, mobile notifications</td>
+<td>❌ Usually manual DLQ setup</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="5-retry--dlq-handling-across-protocols"><strong>5. Retry + DLQ Handling Across Protocols</strong></h1>
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>Native Retry</th>
+<th>DLQ Support</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>AMQP</strong></td>
+<td>✅ Yes</td>
+<td>✅ Yes</td>
+<td>Enterprise apps, RabbitMQ, Azure Service Bus</td>
+</tr>
+<tr>
+<td><strong>Kafka Protocol</strong></td>
+<td>✅ Yes</td>
+<td>✅ Yes (via retry + DLQ topics)</td>
+<td>Streaming, event-driven apps</td>
+</tr>
+<tr>
+<td><strong>MQTT</strong></td>
+<td>❌ Limited</td>
+<td>❌ Manual</td>
+<td>IoT, telemetry</td>
+</tr>
+<tr>
+<td><strong>STOMP</strong></td>
+<td>❌ Manual</td>
+<td>❌ Manual</td>
+<td>WebSockets pub/sub</td>
+</tr>
+<tr>
+<td><strong>HTTP/S Webhooks</strong></td>
+<td>❌ Manual retries needed</td>
+<td>❌ No native DLQ</td>
+<td>Webhooks, microservices</td>
+</tr>
+<tr>
+<td><strong>gRPC</strong></td>
+<td>❌ No native queueing</td>
+<td>❌ Needs Kafka/RabbitMQ</td>
+<td>RPC-style APIs</td>
+</tr>
+<tr>
+<td><strong>WebSockets</strong></td>
+<td>❌ Manual</td>
+<td>❌ Manual</td>
+<td>Live updates</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="6-best-practices-for-choosing-protocols"><strong>6. Best Practices for Choosing Protocols</strong></h1>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Best Protocol</th>
+<th>Recommended Broker</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Microservices with retries &amp; DLQs</td>
+<td><strong>AMQP</strong></td>
+<td>RabbitMQ, Azure Service Bus</td>
+</tr>
+<tr>
+<td>Event-driven architecture</td>
+<td><strong>Kafka Protocol</strong></td>
+<td>Apache Kafka</td>
+</tr>
+<tr>
+<td>IoT &amp; sensor data</td>
+<td><strong>MQTT</strong></td>
+<td>EMQX, Mosquitto</td>
+</tr>
+<tr>
+<td>Real-time dashboards</td>
+<td><strong>WebSockets + STOMP</strong></td>
+<td>RabbitMQ, ActiveMQ</td>
+</tr>
+<tr>
+<td>Payment notifications</td>
+<td><strong>HTTP/S Webhooks</strong></td>
+<td>AWS SNS, Stripe Webhooks</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="key-takeaways"><strong>Key Takeaways</strong></h1>
+<ul>
+<li><strong>AMQP</strong> → Best for <strong>reliable queues</strong> and retry + DLQ handling</li>
+<li><strong>Kafka Protocol</strong> → Best for <strong>event-driven streaming</strong> + replayability</li>
+<li><strong>MQTT</strong> → Best for <strong>IoT + constrained environments</strong></li>
+<li><strong>STOMP/WebSockets</strong> → Best for <strong>real-time push</strong> scenarios</li>
+<li><strong>HTTP/gRPC</strong> → Great for <strong>simple APIs</strong>, but you usually combine them with a queue</li>
+</ul>
+<hr>
+<p>If you want, I can create a <strong>Docker-based Django project</strong> where we implement <strong>RabbitMQ (AMQP)</strong> <strong>+ Kafka (binary)</strong> <strong>+ DLQs</strong> together and show how to integrate <strong>multiple protocols</strong> in one microservice system.</p>
+<p>Do you want me to build such a <strong>multi-protocol message broker project</strong>?
+It’ll demonstrate <strong>AMQP vs Kafka vs HTTP retries &amp; DLQs</strong> in action. Should I?</p>
+
+      <div class="page-footer">
+        <span>Section: Messaging &amp; Queues</span>
+        <span>Source: <code>02-queus-methord.md</code></span>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+  const t = document.getElementById('menuToggle');
+  const s = document.getElementById('sidebar');
+  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+</script>
+
+</body>
+</html>
