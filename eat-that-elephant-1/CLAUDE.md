@@ -86,7 +86,7 @@ the user exactly what's inconsistent) before considering the task done.
 
 ## Section names — use one of these verbatim for `section` / the sitemap section
 
-`Front-End` · `Database` · `Distributed Systems` · `Distributed Database` ·
+`Kubernetes` · `Front-End` · `Database` · `Distributed Systems` · `Distributed Database` ·
 `Messaging & Queues` · `Storage` · `Web Servers` · `Dev Principles` ·
 `Planning & Roadmap` · `Project Walkthroughs` · `Miscellaneous`
 
@@ -162,3 +162,25 @@ they're simply dropped and a fresh random batch is picked (no carry-over, by des
 `eat-that-elephant-2/`, copy the whole "weekly reading target" block (and its CSS in
 `site.css`) into that sub-site's own `assets/site-header.js` / `assets/site.css` copies —
 it hasn't been added there yet.
+
+## Inline notes — a "🗒️+" marker on every paragraph and list item
+
+`site-header.js` also injects a small **"🗒️+" marker** next to every `<p>` inside the
+content container (`.sd-study-main` / `main` / `.layout` / `article`, the same container
+read-aloud uses), and next to any `<li>` substantial enough to be its own sentence — a
+paragraph is the base unit, not every line, so short one-word/one-phrase list items (e.g.
+`Pods`, `kubectl`) are skipped (`LI_MIN_LEN` in `renderNotes()`, currently 40 chars).
+Clicking a marker opens a textarea; saving pins an amber note card (with Edit/Delete)
+right after that block — **anywhere on the page, not just the bottom.**
+State lives in `localStorage` (`sdnotes_notes_<siteId>`), per-viewer only — there is no
+server, so a note exists only in the browser it was written in. A note is keyed by the
+page's href plus the block's index-in-page and a hash of its own text (`renderNotes()`'s
+`idFor`/`hashStr`), so it stays attached to the right block even as unrelated content is
+added elsewhere on the page; editing the exact wording of that specific block will orphan
+its note (rare, and not destructive — the old entry just stops rendering).
+
+**It is fully automatic — no per-page markup**, exactly like the coverage tracker and
+read-aloud bar. `renderNotes()` runs after `renderReadAloud()` specifically so its
+markers/cards are never picked up as text for the "Listen" feature to speak. It hasn't
+been ported to `eat-that-elephant-2/` yet — same porting process as the weekly-target
+widget above (copy the "inline notes" block in `site-header.js` + its CSS in `site.css`).
