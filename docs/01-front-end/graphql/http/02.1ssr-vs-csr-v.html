@@ -11,7 +11,7 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SSR vs CSR (v2) · System Design Notes</title>
-
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="../../../assets/site.css?v=5">
 </head>
 <body>
@@ -20,7 +20,7 @@
 <script src="../../../assets/pages.js"></script><script src="../../../assets/site-header.js?v=5" data-root="../../../"></script>
 
 <div class="layout">
-  <aside class="sidebar" id="sidebar"><a class="brand" href="../../../index.html">System Design Notes</a><nav><h3>☸️ Kubernetes</h3><ul><li><a href="../../../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../../../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../../../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../../../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../../../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li><li><a href="../../../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../../../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../../../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../../../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li><li><a href="../../../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li><li><a href="../../../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li><li><a href="../../../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul><h3>🔐 Authentication</h3><ul><li><a href="../../../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../../../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li><li><a href="../../../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li><li><a href="../../../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../../../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul><h3>🖥️ Front-End</h3><ul><li><a href="../../../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../../../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../../../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../../../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../../../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../../../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a class="active" href="../../../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li><li><a href="../../../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../../../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul><h3>🗄️ Database</h3><ul><li><a href="../../../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../../../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../../../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li><li><a href="../../../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../../../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../../../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../../../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li><li><a href="../../../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../../../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../../../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../../../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li><li><a href="../../../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../../../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li><li><a href="../../../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../../../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../../../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../../../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../../../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../../../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li><li><a href="../../../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../../../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../../../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../../../distributed-system/distributed-systems.html">Distributed Systems</a></li></ul><h3>🧬 Distributed Database</h3><ul><li><a href="../../../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../../../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li><li><a href="../../../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li><li><a href="../../../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../../../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul><h3>📨 Messaging &amp; Queues</h3><ul><li><a href="../../../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../../../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../../../sqs/use-case.html">SQS Use Cases</a></li><li><a href="../../../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li><li><a class="resource" href="../../../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../../../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../../../storage/storage-type.html">Storage Types</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../../../web-servers/server.html">Web Servers</a></li><li><a href="../../../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../../../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><ul><li><a href="../../../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../../../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../../../path/01-b-MVP.html">MVP Planning</a></li><li><a href="../../../path/02-apis.html">API Planning</a></li></ul><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../../../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../../../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../../../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../../../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../../../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+  <aside class="sidebar" id="sidebar"><a class="brand" href="../../../index.html">System Design Notes</a><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../../../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../../../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../../../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../../../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../../../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../../../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../../../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../../../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../../../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../../../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../../../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../../../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../../../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../../../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../../../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../../../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../../../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../../../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../../../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../../../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../../../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../../../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../../../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../../../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../../../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../../../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../../../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li></ul></details><details class="sd-nav-group" open><summary>Rendering &amp; Architecture</summary><ul><li><a href="../../../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../../../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a class="active" href="../../../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../../../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../../../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../../../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../../../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../../../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../../../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../../../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../../../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../../../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../../../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../../../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../../../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../../../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../../../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../../../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../../../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../../../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../../../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../../../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../../../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../../../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../../../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../../../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../../../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../../../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../../../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../../../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../../../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../../../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../../../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../../../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../../../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../../../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../../../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../../../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../../../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../../../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../../../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../../../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../../../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../../../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../../../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../../../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../../../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><ul><li><a href="../../../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul><h3>🚦 Traffic Management</h3><ul><li><a href="../../../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../../../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../../../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../../../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../../../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../../../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../../../web-servers/server.html">Web Servers</a></li><li><a href="../../../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../../../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../../../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../../../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../../../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../../../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../../../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../../../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../../../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../../../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../../../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../../../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
   <div class="content-wrap">
     <div class="topbar">
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
@@ -29,14 +29,19 @@
     <main>
       <p class="breadcrumb" data-breadcrumb><a href="../../../index.html">Home</a> / Front-End / SSR vs CSR (v2)</p>
       <h1 data-page-title>SSR vs CSR (v2)</h1>
-      <p>S3 (Storage)           Browser (Client)           API Server (EC2/Lambda)
-┌─────────┐           ┌──────────────┐           ┌──────────────────┐
-│ index.html│────────→│ 1. Load React│           │                  │
-│ bundle.js │         │ 2. Run useEffect │       │ 4. Query DB      │
-│ style.css │         │ 3. fetch()    │────────→│ 5. Process data  │
-└─────────┘           │              │←────────│ 6. Return JSON   │
-                      │ 7. Render UI │           └──────────────────┘
-                      └──────────────┘</p>
+      <div class="mermaid">sequenceDiagram
+    participant S3 as S3 (Storage)
+    participant B as Browser (Client)
+    participant A as API Server (EC2/Lambda)
+    S3-->>B: index.html, bundle.js, style.css
+    Note over B: 1. Load React
+    Note over B: 2. Run useEffect
+    B->>A: 3. fetch()
+    Note over A: 4. Query DB
+    Note over A: 5. Process data
+    A-->>B: 6. Return JSON
+    Note over B: 7. Render UI
+</div>
 <h1 id="complete-theoretical-foundation">COMPLETE THEORETICAL FOUNDATION</h1>
 <h2 id="web-rendering--infrastructure-architecture">Web Rendering &amp; Infrastructure Architecture</h2>
 <h3 id="academicprofessional-reference-document">Academic/Professional Reference Document</h3>
@@ -44,18 +49,20 @@
 <h1 id="part-1-fundamental-computing-paradigms">PART 1: FUNDAMENTAL COMPUTING PARADIGMS</h1>
 <h2 id="11-the-client-server-computational-model">1.1 The Client-Server Computational Model</h2>
 <p>The foundation of all web architecture rests on the <strong>distributed computing paradigm</strong>, where computational tasks are divided between two distinct entities:</p>
-<pre><code>┌─────────────────────────────────────────────────────────────────────┐
-│                    DISTRIBUTED COMPUTING MODEL                      │
-├─────────────────────────┬───────────────────────────────────────────┤
-│         SERVER          │                 CLIENT                   │
-├─────────────────────────┼───────────────────────────────────────────┤
-│ • Centralized compute   │ • Distributed compute                    │
-│ • Trusted environment   │ • Untrusted environment                  │
-│ • Persistent runtime    │ • Ephemeral runtime                      │
-│ • Controlled hardware   │ • Variable hardware                      │
-│ • Secure data access    │ • Isolated data access                   │
-└─────────────────────────┴───────────────────────────────────────────┘
-</code></pre>
+<div class="mermaid">flowchart TD
+    TITLE["DISTRIBUTED COMPUTING MODEL"] --> SRV["SERVER"]
+    TITLE --> CLI["CLIENT"]
+    SRV --> SRV1["Centralized compute"]
+    SRV --> SRV2["Trusted environment"]
+    SRV --> SRV3["Persistent runtime"]
+    SRV --> SRV4["Controlled hardware"]
+    SRV --> SRV5["Secure data access"]
+    CLI --> CLI1["Distributed compute"]
+    CLI --> CLI2["Untrusted environment"]
+    CLI --> CLI3["Ephemeral runtime"]
+    CLI --> CLI4["Variable hardware"]
+    CLI --> CLI5["Isolated data access"]
+</div>
 <h3 id="111-server-characteristics">1.1.1 Server Characteristics</h3>
 <ul>
 <li><strong>Always-on availability</strong>: Continuous operation regardless of client state</li>
@@ -100,20 +107,18 @@ Data validation              | SHARED*
 <h2 id="21-definition-and-core-principles">2.1 Definition and Core Principles</h2>
 <p><strong>Client-Side Rendering</strong> is an architectural pattern where the browser assumes full responsibility for generating the user interface from JavaScript code, with the server providing only static assets and data APIs.</p>
 <h3 id="211-the-csr-contract">2.1.1 The CSR Contract</h3>
-<pre><code>SERVER OBLIGATIONS:
-├── Serve minimal HTML shell
-├── Serve JavaScript bundles
-├── Serve CSS assets
-└── Provide JSON API endpoints
-
-CLIENT OBLIGATIONS:
-├── Download and parse JavaScript
-├── Execute framework runtime
-├── Fetch data from APIs
-├── Generate DOM elements
-├── Apply styles
-└── Manage application state
-</code></pre>
+<div class="mermaid">flowchart TD
+    SO["SERVER OBLIGATIONS"] --> SO1["Serve minimal HTML shell"]
+    SO --> SO2["Serve JavaScript bundles"]
+    SO --> SO3["Serve CSS assets"]
+    SO --> SO4["Provide JSON API endpoints"]
+    CO["CLIENT OBLIGATIONS"] --> CO1["Download and parse JavaScript"]
+    CO --> CO2["Execute framework runtime"]
+    CO --> CO3["Fetch data from APIs"]
+    CO --> CO4["Generate DOM elements"]
+    CO --> CO5["Apply styles"]
+    CO --> CO6["Manage application state"]
+</div>
 <h3 id="212-theoretical-foundation">2.1.2 Theoretical Foundation</h3>
 <p>The CSR model is built on three fundamental premises:</p>
 <ol>
@@ -122,110 +127,81 @@ CLIENT OBLIGATIONS:
 <li><strong>API-First Backend</strong>: Servers expose data endpoints, not view endpoints</li>
 </ol>
 <h2 id="22-detailed-request-response-cycle">2.2 Detailed Request-Response Cycle</h2>
-<pre><code>THEORETICAL FLOW OF CSR
-
-PHASE 1: ASSET ACQUISITION
-═══════════════════════════════════════════════════════════════════
-
-t0:    User initiates navigation
-       ↓
-t1:    DNS resolution completes
-       ↓
-t2:    TCP/TLS handshake
-       ↓
-t3:    HTTP GET index.html
-       ↓
-t4:    Server responds with HTML shell
-       └── Contains &lt;div id=&quot;root&quot;&gt;
-       └── Contains &lt;script src=&quot;bundle.js&quot;&gt;
-       ↓
-t5:    Browser begins parsing HTML
-       ↓
-t6:    Encountered script tag → suspend parsing
-       ↓
-t7:    HTTP GET bundle.js
-       ↓
-t8:    Server responds with JavaScript bundle
-       └── Contains framework (React/Vue)
-       └── Contains application code
-       └── Contains dependencies
-
-PHASE 2: EXECUTION
-═══════════════════════════════════════════════════════════════════
-
-t9:    Browser executes JavaScript
-       ↓
-t10:   Framework initializes
-       ↓
-t11:   Application mounts to DOM root
-       ↓
-t12:   useEffect/onMounted triggers
-       ↓
-t13:   HTTP GET API endpoint(s)
-       ↓
-t14:   Server processes request
-       └── Authentication
-       └── Database queries
-       └── Business logic
-       └── Response serialization
-       ↓
-t15:   Browser receives JSON
-       ↓
-t16:   State update triggered
-       ↓
-t17:   Virtual DOM diffing
-       ↓
-t18:   DOM patching
-       ↓
-t19:   User sees final interface
-
-Total time to interactive: t19 - t0
-</code></pre>
+<div class="mermaid">flowchart TD
+    subgraph P1["PHASE 1: ASSET ACQUISITION"]
+      T0["t0: User initiates navigation"] --> T1["t1: DNS resolution completes"]
+      T1 --> T2["t2: TCP/TLS handshake"]
+      T2 --> T3["t3: HTTP GET index.html"]
+      T3 --> T4["t4: Server responds with HTML shell"]
+      T4 --> T4a["Contains &lt;div id=&quot;root&quot;&gt;"]
+      T4 --> T4b["Contains &lt;script src=&quot;bundle.js&quot;&gt;"]
+      T4 --> T5["t5: Browser begins parsing HTML"]
+      T5 --> T6["t6: Encountered script tag → suspend parsing"]
+      T6 --> T7["t7: HTTP GET bundle.js"]
+      T7 --> T8["t8: Server responds with JavaScript bundle"]
+      T8 --> T8a["Contains framework (React/Vue)"]
+      T8 --> T8b["Contains application code"]
+      T8 --> T8c["Contains dependencies"]
+    end
+    subgraph P2["PHASE 2: EXECUTION"]
+      T9["t9: Browser executes JavaScript"] --> T10["t10: Framework initializes"]
+      T10 --> T11["t11: Application mounts to DOM root"]
+      T11 --> T12["t12: useEffect/onMounted triggers"]
+      T12 --> T13["t13: HTTP GET API endpoint(s)"]
+      T13 --> T14["t14: Server processes request"]
+      T14 --> T14a["Authentication"]
+      T14 --> T14b["Database queries"]
+      T14 --> T14c["Business logic"]
+      T14 --> T14d["Response serialization"]
+      T14 --> T15["t15: Browser receives JSON"]
+      T15 --> T16["t16: State update triggered"]
+      T16 --> T17["t17: Virtual DOM diffing"]
+      T17 --> T18["t18: DOM patching"]
+      T18 --> T19["t19: User sees final interface"]
+    end
+    P1 --> P2
+    T19 --> TOTAL["Total time to interactive: t19 - t0"]
+</div>
 <h3 id="221-critical-path-analysis">2.2.1 Critical Path Analysis</h3>
-<pre><code>CSR CRITICAL RENDERING PATH
-═══════════════════════════════════════════════════════════════════
-
-BLOCKING RESOURCES:
-├── HTML (minimal blocking)
-├── JavaScript (fully blocking without async/defer)
-├── CSS (render blocking)
-└── Fonts (text invisible until loaded)
-
-NON-BLOCKING RESOURCES:
-├── Images (layout shift possible)
-├── Analytics scripts
-└── Non-critical JavaScript
-
-TIME TO FIRST BYTE (TTFB):    t4 - t0
-TIME TO FIRST PAINT (TFP):    t10 - t0
-TIME TO FIRST CONTENTFUL PAINT (FCP): t12 - t0
-TIME TO INTERACTIVE (TTI):    t19 - t0
-</code></pre>
+<div class="mermaid">flowchart TD
+    TITLE["CSR CRITICAL RENDERING PATH"] --> BLOCK["BLOCKING RESOURCES"]
+    TITLE --> NONBLOCK["NON-BLOCKING RESOURCES"]
+    TITLE --> METRICS["Timing Metrics"]
+    BLOCK --> B1["HTML (minimal blocking)"]
+    BLOCK --> B2["JavaScript (fully blocking without async/defer)"]
+    BLOCK --> B3["CSS (render blocking)"]
+    BLOCK --> B4["Fonts (text invisible until loaded)"]
+    NONBLOCK --> N1["Images (layout shift possible)"]
+    NONBLOCK --> N2["Analytics scripts"]
+    NONBLOCK --> N3["Non-critical JavaScript"]
+    METRICS --> M1["TIME TO FIRST BYTE (TTFB): t4 - t0"]
+    METRICS --> M2["TIME TO FIRST PAINT (TFP): t10 - t0"]
+    METRICS --> M3["TIME TO FIRST CONTENTFUL PAINT (FCP): t12 - t0"]
+    METRICS --> M4["TIME TO INTERACTIVE (TTI): t19 - t0"]
+</div>
 <h2 id="23-csr-advantages---theoretical-justification">2.3 CSR Advantages - Theoretical Justification</h2>
 <h3 id="231-computational-offloading">2.3.1 Computational Offloading</h3>
-<pre><code>SERVER WORK REDUCTION:
-Traditional SSR:    100% of rendering computation on server
-Modern CSR:         0% of rendering computation on server
-                    ↓
-Server scaling requirements reduced by rendering factor R
-where R = average rendering time × requests per second
-
-Cost savings = (R × server_cost) - (bandwidth_cost)
-</code></pre>
+<div class="mermaid">flowchart TD
+    A["Traditional SSR: 100% of rendering computation on server"]
+    B["Modern CSR: 0% of rendering computation on server"]
+    A --> C["Server scaling requirements reduced by rendering factor R<br/>where R = average rendering time × requests per second"]
+    B --> C
+    C --> D["Cost savings = (R × server_cost) - (bandwidth_cost)"]
+</div>
 <h3 id="232-network-efficiency-post-initial-load">2.3.2 Network Efficiency Post-Initial Load</h3>
-<pre><code>Subsequent navigation:
-SSR:    Full HTML document (40-100KB) + assets
-CSR:    JSON data (1-10KB) only
-        ↓
-Bandwidth reduction factor: 4x to 100x
-</code></pre>
+<div class="mermaid">flowchart TD
+    A["SSR: Full HTML document (40-100KB) + assets"]
+    B["CSR: JSON data (1-10KB) only"]
+    A --> C["Bandwidth reduction factor: 4x to 100x"]
+    B --> C
+</div>
 <h3 id="233-user-experience-continuity">2.3.3 User Experience Continuity</h3>
-<pre><code>State persistence across navigation:
-SSR:    State lost, full reinitialization
-CSR:    State preserved, no context switching
-        ↓
-Cognitive load reduction: User maintains mental model
-</code></pre>
+<div class="mermaid">flowchart TD
+    A["SSR: State lost, full reinitialization"]
+    B["CSR: State preserved, no context switching"]
+    A --> C["Cognitive load reduction: User maintains mental model"]
+    B --> C
+</div>
 <h2 id="24-csr-disadvantages---theoretical-analysis">2.4 CSR Disadvantages - Theoretical Analysis</h2>
 <h3 id="241-the-blank-screen-problem">2.4.1 The Blank Screen Problem</h3>
 <pre><code>First Paint Delay Analysis:
@@ -247,64 +223,54 @@ API: 300ms
 Total: 1,400ms blank screen
 </code></pre>
 <h3 id="242-search-engine-visibility">2.4.2 Search Engine Visibility</h3>
-<pre><code>Crawler Interpretation Problem:
-
-Googlebot (renders JavaScript):
-└── Can index CSR content
-└── Additional cost: Must execute JavaScript
-└── Delay: Content indexed hours/days later
-
-Other crawlers (no JavaScript):
-└── See only: &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
-└── Content effectively invisible
-└── SEO impact: Significant for non-Google search
-
-Social media crawlers:
-└── Need Open Graph meta tags
-└── CSR alone cannot provide them
-└── Result: No link previews
-</code></pre>
+<div class="mermaid">flowchart TD
+    TITLE["Crawler Interpretation Problem"] --> G["Googlebot (renders JavaScript)"]
+    TITLE --> O["Other crawlers (no JavaScript)"]
+    TITLE --> S["Social media crawlers"]
+    G --> G1["Can index CSR content"]
+    G --> G2["Additional cost: Must execute JavaScript"]
+    G --> G3["Delay: Content indexed hours/days later"]
+    O --> O1["See only: &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;"]
+    O --> O2["Content effectively invisible"]
+    O --> O3["SEO impact: Significant for non-Google search"]
+    S --> S1["Need Open Graph meta tags"]
+    S --> S2["CSR alone cannot provide them"]
+    S --> S3["Result: No link previews"]
+</div>
 <h3 id="243-performance-inequality">2.4.3 Performance Inequality</h3>
-<pre><code>Device Capability Variance:
-
-High-end device (iPhone 15, M3 Mac):
-└── JS parse: 50ms
-└── JS execute: 100ms
-└── Experience: Smooth
-
-Budget Android device:
-└── JS parse: 400ms
-└── JS execute: 800ms
-└── Experience: Janky, slow
-
-Mid-tier network (4G):
-└── Download: 500ms
-└── Experience: Acceptable
-
-2G network:
-└── Download: 8,000ms
-└── Experience: Timeout, abandonment
-
-CSR amplifies device/network inequality
-</code></pre>
+<div class="mermaid">flowchart TD
+    TITLE["Device Capability Variance"] --> HI["High-end device (iPhone 15, M3 Mac)"]
+    TITLE --> BUD["Budget Android device"]
+    TITLE --> MID["Mid-tier network (4G)"]
+    TITLE --> G2N["2G network"]
+    HI --> HI1["JS parse: 50ms"]
+    HI --> HI2["JS execute: 100ms"]
+    HI --> HI3["Experience: Smooth"]
+    BUD --> BUD1["JS parse: 400ms"]
+    BUD --> BUD2["JS execute: 800ms"]
+    BUD --> BUD3["Experience: Janky, slow"]
+    MID --> MID1["Download: 500ms"]
+    MID --> MID2["Experience: Acceptable"]
+    G2N --> G2a["Download: 8,000ms"]
+    G2N --> G2b["Experience: Timeout, abandonment"]
+    TITLE --> SUM["CSR amplifies device/network inequality"]
+</div>
 <hr>
 <h1 id="part-3-server-side-rendering-ssr-theory">PART 3: SERVER-SIDE RENDERING (SSR) THEORY</h1>
 <h2 id="31-definition-and-core-principles">3.1 Definition and Core Principles</h2>
 <p><strong>Server-Side Rendering</strong> is an architectural pattern where the server generates complete HTML documents by executing application code, sending fully-formed pages to the client.</p>
 <h3 id="311-the-ssr-contract">3.1.1 The SSR Contract</h3>
-<pre><code>SERVER OBLIGATIONS:
-├── Execute application code
-├── Fetch required data
-├── Generate HTML string
-├── Send complete document
-└── Serialize state for hydration
-
-CLIENT OBLIGATIONS:
-├── Display received HTML immediately
-├── Download hydration JavaScript
-├── Reconcile event handlers
-└── Assume interactive control
-</code></pre>
+<div class="mermaid">flowchart TD
+    SO["SERVER OBLIGATIONS"] --> SO1["Execute application code"]
+    SO --> SO2["Fetch required data"]
+    SO --> SO3["Generate HTML string"]
+    SO --> SO4["Send complete document"]
+    SO --> SO5["Serialize state for hydration"]
+    CO["CLIENT OBLIGATIONS"] --> CO1["Display received HTML immediately"]
+    CO --> CO2["Download hydration JavaScript"]
+    CO --> CO3["Reconcile event handlers"]
+    CO --> CO4["Assume interactive control"]
+</div>
 <h3 id="312-theoretical-foundation">3.1.2 Theoretical Foundation</h3>
 <p>The SSR model is built on three fundamental premises:</p>
 <ol>
@@ -313,82 +279,53 @@ CLIENT OBLIGATIONS:
 <li><strong>Progressive Enhancement</strong>: Basic functionality works without JavaScript</li>
 </ol>
 <h2 id="32-detailed-request-response-cycle">3.2 Detailed Request-Response Cycle</h2>
-<pre><code>THEORETICAL FLOW OF SSR
-
-PHASE 1: SERVER-SIDE COMPUTATION
-═══════════════════════════════════════════════════════════════════
-
-t0:    User initiates navigation
-       ↓
-t1:    DNS + TCP/TLS
-       ↓
-t2:    HTTP GET /page
-       ↓
-t3:    Server receives request
-       ↓
-t4:    Router matches route
-       ↓
-t5:    Loader/getServerSideProps executes
-       ↓
-t6:    Database queries
-       ↓
-t7:    Data transformation
-       ↓
-t8:    Component rendering
-       └── ReactDOMServer.renderToString()
-       └── Creates HTML string
-       ↓
-t9:    State serialization
-       └── window.__INITIAL_STATE__ = {...}
-       ↓
-t10:   Full document assembly
-       ↓
-t11:   HTTP Response with HTML
-
-PHASE 2: CLIENT-SIDE RECEPTION
-═══════════════════════════════════════════════════════════════════
-
-t12:   Browser receives first byte
-       ↓
-t13:   Browser receives full HTML
-       ↓
-t14:   First Paint (content visible)
-       ↓
-t15:   Browser encounters &lt;script&gt;
-       ↓
-t16:   Download hydration JS
-       ↓
-t17:   Framework initializes
-       ↓
-t18:   Hydration process
-       └── Attach event listeners
-       └── Reconcile server/client state
-       └── Make page interactive
-       ↓
-t19:   Time to Interactive
-
-Total time to content: t14 - t0
-Total time to interactive: t19 - t0
-</code></pre>
+<div class="mermaid">flowchart TD
+    subgraph P1["PHASE 1: SERVER-SIDE COMPUTATION"]
+      SS0["t0: User initiates navigation"] --> SS1["t1: DNS + TCP/TLS"]
+      SS1 --> SS2["t2: HTTP GET /page"]
+      SS2 --> SS3["t3: Server receives request"]
+      SS3 --> SS4["t4: Router matches route"]
+      SS4 --> SS5["t5: Loader/getServerSideProps executes"]
+      SS5 --> SS6["t6: Database queries"]
+      SS6 --> SS7["t7: Data transformation"]
+      SS7 --> SS8["t8: Component rendering"]
+      SS8 --> SS8a["ReactDOMServer.renderToString()"]
+      SS8 --> SS8b["Creates HTML string"]
+      SS8 --> SS9["t9: State serialization"]
+      SS9 --> SS9a["window.__INITIAL_STATE__ = {...}"]
+      SS9 --> SS10["t10: Full document assembly"]
+      SS10 --> SS11["t11: HTTP Response with HTML"]
+    end
+    subgraph P2["PHASE 2: CLIENT-SIDE RECEPTION"]
+      SS12["t12: Browser receives first byte"] --> SS13["t13: Browser receives full HTML"]
+      SS13 --> SS14["t14: First Paint (content visible)"]
+      SS14 --> SS15["t15: Browser encounters &lt;script&gt;"]
+      SS15 --> SS16["t16: Download hydration JS"]
+      SS16 --> SS17["t17: Framework initializes"]
+      SS17 --> SS18["t18: Hydration process"]
+      SS18 --> SS18a["Attach event listeners"]
+      SS18 --> SS18b["Reconcile server/client state"]
+      SS18 --> SS18c["Make page interactive"]
+      SS18 --> SS19["t19: Time to Interactive"]
+    end
+    P1 --> P2
+    SS19 --> TOTAL["Total time to content: t14 - t0<br/>Total time to interactive: t19 - t0"]
+</div>
 <h3 id="321-critical-path-analysis">3.2.1 Critical Path Analysis</h3>
-<pre><code>SSR CRITICAL RENDERING PATH
-═══════════════════════════════════════════════════════════════════
-
-SERVER-SIDE BLOCKING:
-├── Data fetching (database latency)
-├── Component rendering (CPU time)
-└── HTML serialization (memory/string operations)
-
-CLIENT-SIDE BLOCKING:
-├── HTML parsing (minimal)
-├── CSS (render blocking)
-└── Hydration JavaScript (interactivity blocking)
-
-KEY METRIC DIFFERENCES FROM CSR:
-├── First Contentful Paint: Significantly earlier
-├── Time to Interactive: Similar or slightly later
-└── Total Blocking Time: Lower during initial phase
-</code></pre>
+<div class="mermaid">flowchart TD
+    TITLE["SSR CRITICAL RENDERING PATH"] --> SRVB["SERVER-SIDE BLOCKING"]
+    TITLE --> CLIB["CLIENT-SIDE BLOCKING"]
+    TITLE --> DIFF["KEY METRIC DIFFERENCES FROM CSR"]
+    SRVB --> SB1["Data fetching (database latency)"]
+    SRVB --> SB2["Component rendering (CPU time)"]
+    SRVB --> SB3["HTML serialization (memory/string operations)"]
+    CLIB --> CB1["HTML parsing (minimal)"]
+    CLIB --> CB2["CSS (render blocking)"]
+    CLIB --> CB3["Hydration JavaScript (interactivity blocking)"]
+    DIFF --> D1["First Contentful Paint: Significantly earlier"]
+    DIFF --> D2["Time to Interactive: Similar or slightly later"]
+    DIFF --> D3["Total Blocking Time: Lower during initial phase"]
+</div>
 <h2 id="33-ssr-advantages---theoretical-justification">3.3 SSR Advantages - Theoretical Justification</h2>
 <h3 id="331-perceived-performance">3.3.1 Perceived Performance</h3>
 <pre><code>Perceived Load Time Theory:
@@ -477,275 +414,200 @@ Same work, done twice
 Hydration overhead = 40-60% of initial JS execution time
 </code></pre>
 <h3 id="343-time-to-interactive-gap">3.4.3 Time to Interactive Gap</h3>
-<pre><code>The SSR Gap Problem:
-
-Timeline:
-├── FCP: 300ms  (User sees content)
-├── TTI: 1500ms (Can actually click)
-└── Gap: 1200ms (Frustration window)
-
-During gap:
-- Buttons visible but unresponsive
-- Links appear clickable but don&#39;t work
-- Forms look interactive but don&#39;t submit
-- User repeatedly clicks → nothing happens
-- User reloads page → cycle repeats
-
-This is the &quot;flashing before interactive&quot; anti-pattern
-</code></pre>
+<div class="mermaid">flowchart TD
+    TITLE["The SSR Gap Problem: Timeline"] --> FCP["FCP: 300ms (User sees content)"]
+    FCP --> TTI["TTI: 1500ms (Can actually click)"]
+    TTI --> GAP["Gap: 1200ms (Frustration window)"]
+    GAP --> D1["Buttons visible but unresponsive"]
+    GAP --> D2["Links appear clickable but don't work"]
+    GAP --> D3["Forms look interactive but don't submit"]
+    D3 --> D4["User repeatedly clicks → nothing happens"]
+    D4 --> D5["User reloads page → cycle repeats"]
+    D5 --> RESULT["This is the &quot;flashing before interactive&quot; anti-pattern"]
+</div>
 <hr>
 <h1 id="part-4-static-site-generation-ssg-theory">PART 4: STATIC SITE GENERATION (SSG) THEORY</h1>
 <h2 id="41-definition-and-core-principles">4.1 Definition and Core Principles</h2>
 <p><strong>Static Site Generation</strong> is an architectural pattern where HTML pages are pre-built at deployment time, combining the performance of static hosting with the development model of component frameworks.</p>
 <h3 id="411-the-ssg-contract">4.1.1 The SSG Contract</h3>
-<pre><code>BUILD TIME OBLIGATIONS:
-├── Execute build script
-├── Fetch all required data
-├── Generate all HTML pages
-├── Optimize assets
-└── Output to dist directory
-
-RUNTIME OBLIGATIONS:
-├── Serve pre-built HTML
-├── No per-request computation
-└── Optional client-side hydration
-
-HOSTING REQUIREMENTS:
-├── Static file server
-├── CDN distribution
-└── No application server needed
-</code></pre>
+<div class="mermaid">flowchart TD
+    BT["BUILD TIME OBLIGATIONS"] --> BT1["Execute build script"]
+    BT --> BT2["Fetch all required data"]
+    BT --> BT3["Generate all HTML pages"]
+    BT --> BT4["Optimize assets"]
+    BT --> BT5["Output to dist directory"]
+    RT["RUNTIME OBLIGATIONS"] --> RT1["Serve pre-built HTML"]
+    RT --> RT2["No per-request computation"]
+    RT --> RT3["Optional client-side hydration"]
+    HR["HOSTING REQUIREMENTS"] --> HR1["Static file server"]
+    HR --> HR2["CDN distribution"]
+    HR --> HR3["No application server needed"]
+</div>
 <h2 id="42-ssg-vs-ssr-vs-csr-theoretical-comparison">4.2 SSG vs SSR vs CSR Theoretical Comparison</h2>
-<pre><code>RENDERING MODE DECISION MATRIX
-═══════════════════════════════════════════════════════════════════════
-
-ATTRIBUTE                    | SSG      | SSR      | CSR
-────────────────────────────┼──────────┼──────────┼──────────
-Per-request compute cost     | 0        | High     | 0
-Per-request data freshness   | Stale*   | Live     | Live
-Build time                   | High     | 0        | Medium
-Server requirements          | None     | Required | None
-Scalability ceiling          | Infinite | CPU-bound| Infinite
-SEO capability               | Perfect  | Perfect  | Partial
-Time to First Paint          | Instant  | Fast     | Slow
-Personalization capability   | Low**    | High     | High
-
-* With ISR: Freshness configurable
-** With client-side augmentation: Possible
-</code></pre>
+<div class="mermaid">flowchart TD
+    TITLE["RENDERING MODE DECISION MATRIX"] --> SSGN["SSG"]
+    TITLE --> SSRN["SSR"]
+    TITLE --> CSRN["CSR"]
+    SSGN --> SSG1["Per-request compute cost: 0"]
+    SSGN --> SSG2["Per-request data freshness: Stale*"]
+    SSGN --> SSG3["Build time: High"]
+    SSGN --> SSG4["Server requirements: None"]
+    SSGN --> SSG5["Scalability ceiling: Infinite"]
+    SSGN --> SSG6["SEO capability: Perfect"]
+    SSGN --> SSG7["Time to First Paint: Instant"]
+    SSGN --> SSG8["Personalization capability: Low**"]
+    SSRN --> SSR1["Per-request compute cost: High"]
+    SSRN --> SSR2["Per-request data freshness: Live"]
+    SSRN --> SSR3["Build time: 0"]
+    SSRN --> SSR4["Server requirements: Required"]
+    SSRN --> SSR5["Scalability ceiling: CPU-bound"]
+    SSRN --> SSR6["SEO capability: Perfect"]
+    SSRN --> SSR7["Time to First Paint: Fast"]
+    SSRN --> SSR8["Personalization capability: High"]
+    CSRN --> CSR1["Per-request compute cost: 0"]
+    CSRN --> CSR2["Per-request data freshness: Live"]
+    CSRN --> CSR3["Build time: Medium"]
+    CSRN --> CSR4["Server requirements: None"]
+    CSRN --> CSR5["Scalability ceiling: Infinite"]
+    CSRN --> CSR6["SEO capability: Partial"]
+    CSRN --> CSR7["Time to First Paint: Slow"]
+    CSRN --> CSR8["Personalization capability: High"]
+    TITLE --> NOTES["* With ISR: Freshness configurable<br/>** With client-side augmentation: Possible"]
+</div>
 <hr>
 <h1 id="part-5-infrastructure-theory">PART 5: INFRASTRUCTURE THEORY</h1>
 <h2 id="51-web-server-theory">5.1 Web Server Theory</h2>
 <h3 id="511-the-reverse-proxy-pattern">5.1.1 The Reverse Proxy Pattern</h3>
-<pre><code>REVERSE PROXY ARCHITECTURE
-═══════════════════════════════════════════════════════════════════
-
-CLIENT → [INTERNET] → REVERSE PROXY → APPLICATION SERVERS
-                            │
-                    ┌───────┴───────┐
-                    │   FUNCTIONS    │
-                    ├───────────────┤
-                    │ SSL Termination│
-                    │ Load Balancing │
-                    │ Caching        │
-                    │ Compression    │
-                    │ Rate Limiting  │
-                    │ Header Rewrite │
-                    │ Request Filter │
-                    └───────────────┘
-</code></pre>
+<div class="mermaid">flowchart TD
+    CLIENT["CLIENT"] --> INTERNET["INTERNET"]
+    INTERNET --> PROXY["REVERSE PROXY"]
+    PROXY --> APP["APPLICATION SERVERS"]
+    PROXY --> FUNC["FUNCTIONS"]
+    FUNC --> F1["SSL Termination"]
+    FUNC --> F2["Load Balancing"]
+    FUNC --> F3["Caching"]
+    FUNC --> F4["Compression"]
+    FUNC --> F5["Rate Limiting"]
+    FUNC --> F6["Header Rewrite"]
+    FUNC --> F7["Request Filter"]
+</div>
 <h3 id="512-nginx-theoretical-role">5.1.2 Nginx Theoretical Role</h3>
-<pre><code>NGINX ARCHITECTURAL POSITIONING
-
-Scenario A: Static Hosting
-┌─────────┐    ┌─────────┐    ┌─────────┐
-│ Client  │───▶│   CDN   │───▶│   S3    │
-└─────────┘    └─────────┘    └─────────┘
-No Nginx - Static files only
-
-Scenario B: Direct Node.js
-┌─────────┐    ┌─────────┐
-│ Client  │───▶│  Node   │
-└─────────┘    └─────────┘
-No Nginx - Simple, but exposed
-
-Scenario C: Production Node.js
-┌─────────┐    ┌─────────┐    ┌─────────┐
-│ Client  │───▶│ Nginx   │───▶│  Node   │
-└─────────┘    └─────────┘    └─────────┘
-                    │
-                    ▼
-               ┌─────────┐
-               │ Static  │
-               │ Files   │
-               └─────────┘
-Nginx present - Enterprise ready
-
-Scenario D: Legacy/PHP
-┌─────────┐    ┌─────────┐    ┌─────────┐
-│ Client  │───▶│ Nginx   │───▶│ PHP-FPM │
-└─────────┘    └─────────┘    └─────────┘
-                    │
-                    ▼
-               ┌─────────┐
-               │ Static  │
-               │ Files   │
-               └─────────┘
-Nginx required - PHP cannot serve directly
-</code></pre>
+<div class="mermaid">flowchart TD
+    subgraph SA["Scenario A: Static Hosting"]
+      SA1["Client"] --> SA2["CDN"] --> SA3["S3"]
+      SA3 --> SAn["No Nginx - Static files only"]
+    end
+    subgraph SB["Scenario B: Direct Node.js"]
+      SB1["Client"] --> SB2["Node"]
+      SB2 --> SBn["No Nginx - Simple, but exposed"]
+    end
+    subgraph SC["Scenario C: Production Node.js"]
+      SC1["Client"] --> SC2["Nginx"] --> SC3["Node"]
+      SC2 --> SC4["Static Files"]
+      SC3 --> SCn["Nginx present - Enterprise ready"]
+    end
+    subgraph SD["Scenario D: Legacy/PHP"]
+      SD1["Client"] --> SD2["Nginx"] --> SD3["PHP-FPM"]
+      SD2 --> SD4["Static Files"]
+      SD3 --> SDn["Nginx required - PHP cannot serve directly"]
+    end
+</div>
 <h3 id="513-when-nginx-is-mandatory">5.1.3 When Nginx is Mandatory</h3>
-<pre><code>NGINX REQUIREMENT ANALYSIS
-
-Case 1: Multiple Applications on One Server
-┌─────────────────────────────────┐
-│         SINGLE SERVER           │
-├─────────────────────────────────┤
-│ Port 80: Nginx                 │
-│   ├── /blog/*    → Node:3001   │
-│   ├── /api/*     → Java:8080   │
-│   ├── /          → Static:9000 │
-│   └── /admin/*   → Python:5000 │
-└─────────────────────────────────┘
-Nginx REQUIRED - Port multiplexing
-
-Case 2: SSL Termination
-Without Nginx:
-├── Each app manages own SSL
-├── Certificate duplication
-├── Multiple ports exposed
-├── Complex renewal
-└── Security risk
-
-With Nginx:
-├── Single SSL management
-├── Centralized certificates
-├── Port 443 only exposed
-├── Automated renewal
-└── Hardened security
-
-Case 3: Rate Limiting &amp; DDoS Protection
-Without Nginx:
-└── Application must implement rate limiting
-└── Consumes application CPU
-└── Difficult to scale
-
-With Nginx:
-└── Kernel-level connection limiting
-└── Zero application overhead
-└── Distributed rate limiting
-</code></pre>
+<div class="mermaid">flowchart TD
+    subgraph C1["Case 1: Multiple Applications on One Server"]
+      SRV1["SINGLE SERVER<br/>Port 80: Nginx"] --> R1["/blog/* → Node:3001"]
+      SRV1 --> R2["/api/* → Java:8080"]
+      SRV1 --> R3["/ → Static:9000"]
+      SRV1 --> R4["/admin/* → Python:5000"]
+      SRV1 --> C1n["Nginx REQUIRED - Port multiplexing"]
+    end
+    subgraph C2["Case 2: SSL Termination"]
+      W1["Without Nginx"] --> W1a["Each app manages own SSL"]
+      W1 --> W1b["Certificate duplication"]
+      W1 --> W1c["Multiple ports exposed"]
+      W1 --> W1d["Complex renewal"]
+      W1 --> W1e["Security risk"]
+      W2["With Nginx"] --> W2a["Single SSL management"]
+      W2 --> W2b["Centralized certificates"]
+      W2 --> W2c["Port 443 only exposed"]
+      W2 --> W2d["Automated renewal"]
+      W2 --> W2e["Hardened security"]
+    end
+    subgraph C3["Case 3: Rate Limiting &amp; DDoS Protection"]
+      X1["Without Nginx"] --> X1a["Application must implement rate limiting"]
+      X1 --> X1b["Consumes application CPU"]
+      X1 --> X1c["Difficult to scale"]
+      X2["With Nginx"] --> X2a["Kernel-level connection limiting"]
+      X2 --> X2b["Zero application overhead"]
+      X2 --> X2c["Distributed rate limiting"]
+    end
+</div>
 <h2 id="52-s3static-hosting-theory">5.2 S3/Static Hosting Theory</h2>
 <h3 id="521-the-s3-contract">5.2.1 The S3 Contract</h3>
-<pre><code>S3 IS NOT A SERVER - THEORETICAL DISTINCTION
-
-Traditional Server:
-├── Accepts connections
-├── Executes code
-├── Maintains state
-├── Processes requests
-└── Returns computed responses
-
-S3 Object Storage:
-├── Accepts connections
-├── NO code execution
-├── NO state (except files)
-├── NO request processing
-└── Returns stored files
-
-Therefore:
-S3 = Hard drive with HTTP interface
-S3 ≠ Web server
-S3 ≠ Application server
-</code></pre>
+<div class="mermaid">flowchart TD
+    TITLE["S3 IS NOT A SERVER - THEORETICAL DISTINCTION"] --> TS["Traditional Server"]
+    TITLE --> S3O["S3 Object Storage"]
+    TS --> TS1["Accepts connections"]
+    TS --> TS2["Executes code"]
+    TS --> TS3["Maintains state"]
+    TS --> TS4["Processes requests"]
+    TS --> TS5["Returns computed responses"]
+    S3O --> S3O1["Accepts connections"]
+    S3O --> S3O2["NO code execution"]
+    S3O --> S3O3["NO state (except files)"]
+    S3O --> S3O4["NO request processing"]
+    S3O --> S3O5["Returns stored files"]
+    TITLE --> CONCL["Therefore: S3 = Hard drive with HTTP interface<br/>S3 ≠ Web server<br/>S3 ≠ Application server"]
+</div>
 <h3 id="522-the-api-gateway-pattern">5.2.2 The API Gateway Pattern</h3>
-<pre><code>JAMSTACK ARCHITECTURAL THEORY
-═══════════════════════════════════════════════════════════════════
-
-J - JavaScript:    Browser runtime
-A - APIs:          Serverless/Cloud functions
-M - Markup:        Pre-built HTML/CDN
-
-┌─────────────────────────────────────────────────────┐
-│                  PRESENTATION LAYER                 │
-│           Static Hosting (S3/CDN)                  │
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐           │
-│  │ index   │  │ about   │  │ product │           │
-│  │ .html   │  │ .html   │  │ .html   │           │
-│  └─────────┘  └─────────┘  └─────────┘           │
-└─────────────────────────────────────────────────────┘
-                          │
-                          ▼
-┌─────────────────────────────────────────────────────┐
-│                   APPLICATION LAYER                 │
-│              Browser/Client Runtime                │
-│  ┌─────────────────────────────────────────────┐   │
-│  │  React/Vue/Angular Application             │   │
-│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐    │   │
-│  │  │ State   │  │ Effects │  │ Events  │    │   │
-│  │  │ Mgmt    │  │ Hooks   │  │ Handlers│    │   │
-│  │  └─────────┘  └─────────┘  └─────────┘    │   │
-│  └─────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
-                          │
-                          ▼
-┌─────────────────────────────────────────────────────┐
-│                     API LAYER                       │
-│           Serverless/Cloud Functions               │
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐           │
-│  │ Auth    │  │ Data    │  │ Payment │           │
-│  │ API     │  │ API     │  │ API     │           │
-│  └─────────┘  └─────────┘  └─────────┘           │
-└─────────────────────────────────────────────────────┘
-                          │
-                          ▼
-┌─────────────────────────────────────────────────────┐
-│                    DATA LAYER                       │
-│              Databases/Services                    │
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐           │
-│  │ Postgres│  │  Redis  │  │ Stripe  │           │
-│  └─────────┘  └─────────┘  └─────────┘           │
-└─────────────────────────────────────────────────────┘
-</code></pre>
+<div class="mermaid">flowchart TD
+    JAM["JAMSTACK<br/>J - JavaScript: Browser runtime<br/>A - APIs: Serverless/Cloud functions<br/>M - Markup: Pre-built HTML/CDN"]
+    subgraph PRES["PRESENTATION LAYER — Static Hosting (S3/CDN)"]
+      IDX["index.html"]
+      ABOUT["about.html"]
+      PROD["product.html"]
+    end
+    subgraph APP["APPLICATION LAYER — Browser/Client Runtime"]
+      REACTAPP["React/Vue/Angular Application"]
+      REACTAPP --> STATE["State Mgmt"]
+      REACTAPP --> EFFECTS["Effects Hooks"]
+      REACTAPP --> EVENTS["Events Handlers"]
+    end
+    subgraph APIL["API LAYER — Serverless/Cloud Functions"]
+      AUTHAPI["Auth API"]
+      DATAAPI["Data API"]
+      PAYAPI["Payment API"]
+    end
+    subgraph DATAL["DATA LAYER — Databases/Services"]
+      PG["Postgres"]
+      REDIS["Redis"]
+      STRIPE["Stripe"]
+    end
+    JAM --> PRES
+    PRES --> APP
+    APP --> APIL
+    APIL --> DATAL
+</div>
 <hr>
 <h1 id="part-6-modern-framework-theory">PART 6: MODERN FRAMEWORK THEORY</h1>
 <h2 id="61-the-island-architecture-theory">6.1 The Island Architecture Theory</h2>
 <h3 id="611-partial-hydration">6.1.1 Partial Hydration</h3>
-<pre><code>ISLAND ARCHITECTURE (Astro/Qwik)
-═══════════════════════════════════════════════════════════════════
-
-Traditional SSR Hydration:
-┌─────────────────────────────────────────────────┐
-│           ENTIRE PAGE HYDRATED                  │
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐        │
-│  │ Header  │  │ Content │  │ Footer  │        │
-│  │(Hydrate)│  │(Hydrate)│  │(Hydrate)│        │
-│  └─────────┘  └─────────┘  └─────────┘        │
-└─────────────────────────────────────────────────┘
-All components hydrate - Even static ones
-
-Island Architecture:
-┌─────────────────────────────────────────────────┐
-│  ┌─────────┐                                    │
-│  │ Header  │  STATIC HTML (No JS)              │
-│  │ (Static)│                                    │
-│  └─────────┘                                    │
-│  ┌─────────────────────────┐  ┌─────────────┐  │
-│  │    Interactive Carousel │  │  Like       │  │
-│  │      (Hydrated Island)  │  │  Button     │  │
-│  │                         │  │  (Island)   │  │
-│  └─────────────────────────┘  └─────────────┘  │
-│  ┌─────────┐                                    │
-│  │ Footer  │  STATIC HTML (No JS)              │
-│  │ (Static)│                                    │
-│  └─────────┘                                    │
-└─────────────────────────────────────────────────┘
-Only interactive islands hydrate
-
-Theoretical Impact:
-- JavaScript reduction: 60-90%
-- TTI improvement: 2-4x
-- Mobile performance: Dramatic
-</code></pre>
+<div class="mermaid">flowchart TD
+    subgraph TRAD["Traditional SSR Hydration — ENTIRE PAGE HYDRATED"]
+      TH["Header (Hydrate)"]
+      TC["Content (Hydrate)"]
+      TF["Footer (Hydrate)"]
+    end
+    TRAD --> TRADN["All components hydrate - Even static ones"]
+    subgraph ISLAND["Island Architecture"]
+      IH["Header (Static) — STATIC HTML (No JS)"]
+      IC["Interactive Carousel (Hydrated Island)"]
+      IL["Like Button (Island)"]
+      IF["Footer (Static) — STATIC HTML (No JS)"]
+    end
+    ISLAND --> ISLN["Only interactive islands hydrate"]
+    ISLN --> IMPACT["Theoretical Impact:<br/>JavaScript reduction: 60-90%<br/>TTI improvement: 2-4x<br/>Mobile performance: Dramatic"]
+</div>
 <h2 id="62-the-resumability-theory-qwik">6.2 The Resumability Theory (Qwik)</h2>
 <h3 id="621-serialization-of-state-and-listeners">6.2.1 Serialization of State and Listeners</h3>
 <pre><code>RESUMABILITY VS HYDRATION
@@ -777,38 +639,12 @@ Resumability: O(1) constant time
 </code></pre>
 <h2 id="63-the-react-server-components-theory">6.3 The React Server Components Theory</h2>
 <h3 id="631-zero-bundle-size-components">6.3.1 Zero-Bundle-Size Components</h3>
-<pre><code>SERVER COMPONENT ARCHITECTURE
-═══════════════════════════════════════════════════════════════════
-
-Client Component:
-┌─────────────────────────────────────────────┐
-│ import heavyLib from &#39;heavy-lib&#39;           │
-│                                            │
-│ function Component() {                    │
-│   const data = heavyLib.process()         │
-│   return &lt;div&gt;{data}&lt;/div&gt;                │
-│ }                                          │
-└─────────────────────────────────────────────┘
-          ↓
-Bundle includes: component + heavyLib (500KB)
-
-Server Component:
-┌─────────────────────────────────────────────┐
-│ import heavyLib from &#39;heavy-lib&#39; // Server │
-│                                            │
-│ async function Component() {              │
-│   const data = await heavyLib.process()   │
-│   return &lt;div&gt;{data}&lt;/div&gt;                │
-│ }                                          │
-└─────────────────────────────────────────────┘
-          ↓
-Bundle includes: NOTHING (runs on server)
-Client receives: &lt;div&gt;Processed Result&lt;/div&gt;
-
-Theoretical Impact:
-Server Components = 0 bytes added to bundle
-Infinite dependency trees with zero cost
-</code></pre>
+<div class="mermaid">flowchart TD
+    CC["Client Component:<br/>import heavyLib from 'heavy-lib'<br/>function Component() {<br/>&nbsp;&nbsp;const data = heavyLib.process()<br/>&nbsp;&nbsp;return &lt;div&gt;{data}&lt;/div&gt;<br/>}"] --> CCB["Bundle includes: component + heavyLib (500KB)"]
+    SC["Server Component:<br/>import heavyLib from 'heavy-lib' // Server<br/>async function Component() {<br/>&nbsp;&nbsp;const data = await heavyLib.process()<br/>&nbsp;&nbsp;return &lt;div&gt;{data}&lt;/div&gt;<br/>}"] --> SCB["Bundle includes: NOTHING (runs on server)<br/>Client receives: &lt;div&gt;Processed Result&lt;/div&gt;"]
+    CCB --> IMPACT["Theoretical Impact:<br/>Server Components = 0 bytes added to bundle<br/>Infinite dependency trees with zero cost"]
+    SCB --> IMPACT
+</div>
 <hr>
 <h1 id="part-7-decision-theory">PART 7: DECISION THEORY</h1>
 <h2 id="71-the-rendering-mode-selection-theorem">7.1 The Rendering Mode Selection Theorem</h2>
@@ -964,6 +800,9 @@ SSR cheaper when: Personalization_value &gt; infrastructure_cost_delta
   const t = document.getElementById('menuToggle');
   const s = document.getElementById('sidebar');
   if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+</script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
 </script>
 
 </body>

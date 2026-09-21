@@ -58,6 +58,80 @@ window.SITE_MAP = {
         {
           "href": "kubernetes/11-leader-election.html",
           "title": "11. Leader Election: HA for Controller Manager & Scheduler"
+        },
+        {
+          "href": "kubernetes/12-networking-roadmap.html",
+          "title": "12. Networking Roadmap"
+        },
+        {
+          "href": "kubernetes/13-control-plane-roadmap.html",
+          "title": "13. Control Plane Roadmap"
+        },
+        {
+          "href": "kubernetes/14-request-access-roadmap.html",
+          "title": "14. Request & Access Flow Roadmap"
+        },
+        {
+          "href": "kubernetes/15-workload-storage-roadmap.html",
+          "title": "15. Workload Config & Storage Roadmap"
+        },
+        {
+          "href": "kubernetes/16-high-availability-roadmap.html",
+          "title": "16. High Availability Roadmap"
+        },
+        {
+          "href": "kubernetes/17-data-plane-roadmap.html",
+          "title": "17. Data Plane Roadmap"
+        }
+      ],
+      "groups": [
+        {
+          "name": "Control Plane Components",
+          "hrefs": [
+            "kubernetes/13-control-plane-roadmap.html",
+            "kubernetes/00-index.html",
+            "kubernetes/01-kube-apiserver.html",
+            "kubernetes/02-etcd.html",
+            "kubernetes/03-kube-scheduler.html",
+            "kubernetes/04-kube-controller-manager.html"
+          ]
+        },
+        {
+          "name": "Request & Access Flow",
+          "hrefs": [
+            "kubernetes/14-request-access-roadmap.html",
+            "kubernetes/05-api-request-flow.html",
+            "kubernetes/06-rbac-namespace-scope.html",
+            "kubernetes/10-api-request-lifecycle.html"
+          ]
+        },
+        {
+          "name": "Workload Config & Storage",
+          "hrefs": [
+            "kubernetes/15-workload-storage-roadmap.html",
+            "kubernetes/07-persistent-storage.html",
+            "kubernetes/08-configmap-secret.html"
+          ]
+        },
+        {
+          "name": "Data Plane",
+          "hrefs": [
+            "kubernetes/17-data-plane-roadmap.html",
+            "kubernetes/09-data-plane.html"
+          ]
+        },
+        {
+          "name": "High Availability",
+          "hrefs": [
+            "kubernetes/16-high-availability-roadmap.html",
+            "kubernetes/11-leader-election.html"
+          ]
+        },
+        {
+          "name": "Networking",
+          "hrefs": [
+            "kubernetes/12-networking-roadmap.html"
+          ]
         }
       ]
     },
@@ -84,6 +158,28 @@ window.SITE_MAP = {
         {
           "href": "authentication/02-social-login/google-login.html",
           "title": "Google Sign-In with Credential Manager"
+        }
+      ],
+      "groups": [
+        {
+          "name": "Login & Sessions",
+          "hrefs": [
+            "authentication/00-login-steps.html",
+            "authentication/01-authentication/01-introduction.html"
+          ]
+        },
+        {
+          "name": "Password Security",
+          "hrefs": [
+            "authentication/01-authentication/03-hashing-process.html"
+          ]
+        },
+        {
+          "name": "Social Login (OAuth)",
+          "hrefs": [
+            "authentication/02-social-login/google-key-task.html",
+            "authentication/02-social-login/google-login.html"
+          ]
         }
       ]
     },
@@ -126,6 +222,32 @@ window.SITE_MAP = {
         {
           "href": "01-front-end/system-design-roadmap.html",
           "title": "04. System Design Roadmap"
+        }
+      ],
+      "groups": [
+        {
+          "name": "Fundamentals",
+          "hrefs": [
+            "01-front-end/frontend-roadmap.html",
+            "01-front-end/graphql/http/04-client-server-model.html",
+            "01-front-end/graphql/http/04.2-request-flow-interactive.html",
+            "01-front-end/graphql/http/04.1-cookies-sessions-jwt.html"
+          ]
+        },
+        {
+          "name": "Rendering & Architecture",
+          "hrefs": [
+            "01-front-end/graphql/http/01.02-rendering-types.html",
+            "01-front-end/graphql/http/02.1-ssr-vs-csr.html",
+            "01-front-end/graphql/http/02.1ssr-vs-csr-v.html"
+          ]
+        },
+        {
+          "name": "APIs & System Design",
+          "hrefs": [
+            "01-front-end/graphql/http/03.1graphql-vs-rest.html",
+            "01-front-end/system-design-roadmap.html"
+          ]
         }
       ]
     },
@@ -224,6 +346,59 @@ window.SITE_MAP = {
         { "href": "05-database/06-replication/system-desing-4.pdf", "title": "Replication Slides Pt. 4" },
         { "href": "05-database/06-replication/system-desing-5.pdf", "title": "Replication Slides Pt. 5" },
         { "href": "05-database/06-replication/replication-1.pdf", "title": "Replication Deep-Dive" }
+      ],
+      "groups": [
+        {
+          "name": "Foundations",
+          "hrefs": [
+            "05-database/00-learning-path/00-index.html",
+            "05-database/01-foundations/mislanious-terms.html",
+            "05-database/01a-sql-and-relational-fundamentals/index.html"
+          ]
+        },
+        {
+          "name": "Modeling & Schema Design",
+          "hrefs": [
+            "05-database/02-data-modeling-and-selection/how-to-choose-the-database.html",
+            "05-database/02-data-modeling-and-selection/factors.html",
+            "05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html",
+            "05-database/02a-schema-design-and-migrations/index.html"
+          ]
+        },
+        {
+          "name": "Querying & Transactions",
+          "hrefs": [
+            "05-database/03-querying-and-performance/01A-Database-basic.html",
+            "05-database/03-querying-and-performance/08-indxing.html",
+            "05-database/03a-transactions-and-concurrency/index.html",
+            "05-database/03b-query-plans-and-optimization/index.html"
+          ]
+        },
+        {
+          "name": "Distributed Databases",
+          "hrefs": [
+            "05-database/04-distributed-database-fundamentals/lecture-2.html",
+            "05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html"
+          ]
+        },
+        {
+          "name": "Scaling & Connection Management",
+          "hrefs": [
+            "05-database/05-scaling-and-partitioning/01-Database-Basic.html",
+            "05-database/05-scaling-and-partitioning/02-partiontion.html",
+            "05-database/05-scaling-and-partitioning/03-horizintal-scaling.html",
+            "05-database/05a-connection-management-and-database-proxies/index.html",
+            "05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html"
+          ]
+        },
+        {
+          "name": "Security, Backup & Operations",
+          "hrefs": [
+            "05-database/04a-database-security-and-access-control/index.html",
+            "05-database/06a-backup-recovery-and-disaster-recovery/index.html",
+            "05-database/07-observability-capacity-and-operations/index.html"
+          ]
+        }
       ]
     },
     {
@@ -268,6 +443,28 @@ window.SITE_MAP = {
           "href": "distributed-database/05-replication-lag.html",
           "title": "Replication Lag — Causes, Measurement, Mitigation"
         }
+      ],
+      "groups": [
+        {
+          "name": "Replication Fundamentals",
+          "hrefs": [
+            "distributed-database/index.html",
+            "distributed-database/02-replication-mechanism.html"
+          ]
+        },
+        {
+          "name": "Consistency Models",
+          "hrefs": [
+            "distributed-database/03-pacelc-interview-masterclass.html"
+          ]
+        },
+        {
+          "name": "Replication Internals",
+          "hrefs": [
+            "distributed-database/04-wal-vs-binlog.html",
+            "distributed-database/05-replication-lag.html"
+          ]
+        }
       ]
     },
     {
@@ -306,6 +503,30 @@ window.SITE_MAP = {
       "resources": [
         { "href": "sqs/message-retries-and-dead-lettering.pdf", "title": "Retries & Dead-Lettering" },
         { "href": "sqs/project/multiprotocol-messaging-starter.zip", "title": "Starter Project (.zip)" }
+      ],
+      "groups": [
+        {
+          "name": "Queue Fundamentals",
+          "hrefs": [
+            "sqs/01-sqs.html",
+            "sqs/02-queus-methord.html",
+            "sqs/use-case.html"
+          ]
+        },
+        {
+          "name": "Streaming & Event-Driven Patterns",
+          "hrefs": [
+            "sqs/03-kafka-fundamentals.html",
+            "sqs/04-event-sourcing-and-cqrs.html"
+          ]
+        },
+        {
+          "name": "Resilience & Practice",
+          "hrefs": [
+            "sqs/05-microservice-resilience-patterns.html",
+            "sqs/project/project.html"
+          ]
+        }
       ]
     },
     {
@@ -417,6 +638,28 @@ window.SITE_MAP = {
         {
           "href": "path/03-coverage-gap-analysis.html",
           "title": "03. Coverage Gap Analysis & Prompts"
+        }
+      ],
+      "groups": [
+        {
+          "name": "Requirements & Planning",
+          "hrefs": [
+            "path/01-requirements-and-planning.html",
+            "path/01-b-MVP.html"
+          ]
+        },
+        {
+          "name": "Architecture & APIs",
+          "hrefs": [
+            "path/00-system-desing.html",
+            "path/02-apis.html"
+          ]
+        },
+        {
+          "name": "Review",
+          "hrefs": [
+            "path/03-coverage-gap-analysis.html"
+          ]
         }
       ]
     },

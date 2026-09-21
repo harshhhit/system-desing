@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "k8s-ha-roadmap" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control Plane High Availability Roadmap · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+<style>
+  .sd-study-main h3 { margin-top: 1.3rem; font-size: 1rem; }
+  .stage-note { color: var(--muted); font-size: 0.92rem; margin-top: -0.2rem; }
+</style>
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group" open><summary>High Availability</summary><ul><li><a class="active" href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><ul><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Kubernetes / Control Plane High Availability Roadmap</p>
+      <h1 data-page-title>Control Plane High Availability Roadmap</h1>
+      <p class="sd-study-prompt" data-page-subtitle>A concept-first map of how the control plane itself survives failures — HA kube-apiserver, HA etcd, and Lease-based leader election for the scheduler and controller manager. Tick each stage as you cover it; progress is saved in this browser.</p>
+
+      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+
+      <p>A concept-first map of how the control plane <em>itself</em> survives failure — not the
+        workloads it schedules, but the brain doing the scheduling. This roadmap covers HA
+        <code>kube-apiserver</code>, HA <code>etcd</code>, and Lease-based leader election for
+        <code>kube-scheduler</code> and <code>kube-controller-manager</code>. Follow top to bottom —
+        each stage assumes the one before it. Tick a stage's box once you've genuinely covered it;
+        progress is saved in this browser. For the full mechanics, tuning parameters, and
+        failure-timeline detail behind Stage 3, see the companion deep dive:
+        <a href="11-leader-election.html">Leader Election: HA for Controller Manager &amp; Scheduler</a>.</p>
+
+      <div class="sd-progress" id="haProgress">
+        <div class="sd-progress-bar"><span id="haBar"></span></div>
+        <p class="sd-progress-text"><strong id="haCount">0</strong> / <span id="haTotal">5</span> stages covered
+          &nbsp;·&nbsp; <button type="button" class="sd-progress-reset" id="haReset">reset</button></p>
+      </div>
+
+      <h2 id="stage-0"><input type="checkbox" data-stage="0"> Stage 0 — Why Control-Plane HA Matters at All</h2>
+      <p>The <strong>data plane</strong> (the Nodes actually running your Pods) keeps serving traffic
+        even if the entire control plane disappears — kubelet, the running containers, and
+        <code>kube-proxy</code>'s already-programmed rules don't need to talk to
+        <code>kube-apiserver</code> every second to keep existing Pods alive. The
+        <strong>control plane</strong> is different: it is the single place where scheduling
+        decisions, API reads/writes, and reconciliation loops happen. If it goes down as a whole,
+        the cluster doesn't crash outright, but it freezes — no new Pods get scheduled, no failed
+        Pod gets replaced, no <code>kubectl</code> command works, and no controller notices or
+        fixes drift, cluster-wide, until it comes back.</p>
+      <p>Why this matters: a single-node control plane is a single point of failure for the entire
+        cluster's ability to <em>change state</em>, even though existing workloads on the data
+        plane keep running for a while. That's the gap this whole roadmap closes — not by making
+        any one component "unbreakable," but by making sure enough replicas of each control-plane
+        piece exist that losing one (a crashed process, a rebooted node, a lost zone) never leaves
+        zero working copies behind. Background on the components themselves is in
+        <a href="00-index.html">Control Plane Overview</a>.</p>
+      <div class="mermaid">flowchart TD
+    subgraph CP["Control Plane — single node (no HA)"]
+      API["kube-apiserver"]
+      ETCD["etcd"]
+      SCHED["kube-scheduler"]
+      CM["kube-controller-manager"]
+    end
+    subgraph DP["Data Plane"]
+      N1["Node 1 — Pods keep running"]
+      N2["Node 2 — Pods keep running"]
+    end
+    CP -.->|"node dies → whole control plane gone"| X["No scheduling, no reconciliation,\nno kubectl — cluster-wide"]
+    DP -->|"unaffected, briefly"| OK["Existing Pods keep serving traffic"]
+</div>
+      <p class="stage-note">The data plane's short-term resilience is exactly why control-plane HA
+        is worth the extra infrastructure — it buys you the same "keeps working through a failure"
+        property for the part of the cluster that otherwise has none.</p>
+
+      <h2 id="stage-1"><input type="checkbox" data-stage="1"> Stage 1 — HA kube-apiserver: The Easy Part</h2>
+      <p><code>kube-apiserver</code> is <strong>stateless</strong> — every request it handles is
+        either read from or written to <code>etcd</code>, and the API server itself keeps no
+        durable state of its own between requests. That statelessness is what makes this stage the
+        easiest piece of control-plane HA: you simply run <strong>multiple identical replicas</strong>
+        of <code>kube-apiserver</code> (typically one per control-plane node) behind a
+        <strong>load balancer</strong>, and any replica can answer any request. There's no leader
+        election here and no coordination needed between replicas — unlike Stage 3, API server
+        replicas run <strong>active-active</strong>.</p>
+      <ul>
+        <li>The load balancer's job is simple but essential: distribute traffic across all healthy
+          replicas and TCP-health-check port <code>6443</code> so a crashed or unreachable replica
+          is taken out of rotation automatically.</li>
+        <li>Every other control-plane component (scheduler, controller manager, kubelets) and every
+          <code>kubectl</code> user talks to the load balancer's stable address — never to one
+          API server node directly — so an individual replica's failure is invisible to clients.</li>
+        <li><code>kubeadm</code> HA setups make this explicit via <code>--control-plane-endpoint</code>,
+          which must point at a stable DNS name resolving through the load balancer, not at any one
+          node's own IP.</li>
+      </ul>
+      <div class="mermaid">flowchart TD
+    Clients["kubectl / kubelets / scheduler / controller-manager"] --> LB["Load Balancer<br/>:6443"]
+    LB --> A1["kube-apiserver #1"]
+    LB --> A2["kube-apiserver #2"]
+    LB --> A3["kube-apiserver #3"]
+    A1 --> ETCD[("etcd cluster")]
+    A2 --> ETCD
+    A3 --> ETCD
+</div>
+      <p class="stage-note">Because every replica is interchangeable and none holds unique state,
+        losing any one of them just means the load balancer stops sending it traffic — nothing else
+        in the cluster needs to know or care which replica served a given request. Since v1.26,
+        each running API server also publishes its own identity as a Lease object in
+        <code>kube-system</code> (the same Lease mechanism used for leader election in Stage 3),
+        purely so clients and tooling can discover how many API server instances are currently up —
+        it plays no role in routing.</p>
+
+      <h2 id="stage-2"><input type="checkbox" data-stage="2"> Stage 2 — HA etcd: Clustered Quorum</h2>
+      <p><code>etcd</code> is where Stage 1's statelessness stops applying — it's the cluster's
+        single source of truth, so making <em>it</em> durable is the hard part of control-plane HA.
+        etcd achieves this by running as a <strong>cluster of its own</strong> (typically 3 or 5
+        members) that replicates every write via the Raft consensus protocol and requires a
+        <strong>quorum</strong> — a strict majority of members — to agree before any write is
+        committed. That's a deliberate trade-off: a write isn't acknowledged until most members
+        have it durably, so the cluster can lose a minority of members and keep serving both reads
+        and writes with zero data loss.</p>
+      <table>
+        <tr><th>Cluster size</th><th>Quorum (majority) needed</th><th>Failures tolerated</th></tr>
+        <tr><td>1</td><td>1</td><td>0</td></tr>
+        <tr><td>3</td><td>2</td><td>1</td></tr>
+        <tr><td>4</td><td>3</td><td>1</td></tr>
+        <tr><td>5</td><td>3</td><td>2</td></tr>
+        <tr><td>6</td><td>4</td><td>2</td></tr>
+        <tr><td>7</td><td>4</td><td>3</td></tr>
+      </table>
+      <p><strong>Why an even number of members is a bad idea:</strong> the table above shows the
+        pattern directly — a 4-member cluster needs 3 votes for quorum and still only tolerates 1
+        failure, exactly like a 3-member cluster, but for the cost of a 4th machine that adds no
+        extra fault tolerance at all. A 6-member cluster tolerates the same 2 failures as a
+        5-member one, again for a wasted extra member. Odd-sized clusters get the same tolerance
+        for less infrastructure, which is why the official guidance is explicit: run etcd with an
+        odd number of members, and a 5-member cluster is the standard production recommendation.</p>
+      <p>There are two ways to place the etcd cluster relative to the rest of the control plane:</p>
+      <ul>
+        <li><strong>Stacked etcd</strong> — each etcd member runs on the same machine as a
+          control-plane node (co-located with that node's <code>kube-apiserver</code>). Simpler,
+          needs fewer machines (3+ control-plane/etcd nodes total), but couples the two failure
+          domains: losing a control-plane node also removes one etcd member.</li>
+        <li><strong>External etcd</strong> — the etcd cluster runs on entirely separate machines
+          from the control-plane nodes (3+ control-plane nodes <em>plus</em> 3+ dedicated etcd
+          nodes). More infrastructure, but the two layers fail independently — losing a
+          control-plane node doesn't touch etcd's quorum, and vice versa.</li>
+      </ul>
+      <div class="mermaid">flowchart TD
+    subgraph Stacked["Stacked etcd topology"]
+      direction LR
+      S1["CP Node 1<br/>apiserver + etcd"]
+      S2["CP Node 2<br/>apiserver + etcd"]
+      S3["CP Node 3<br/>apiserver + etcd"]
+    end
+    subgraph External["External etcd topology"]
+      direction LR
+      C1["CP Node 1<br/>apiserver"] --- E1["etcd 1"]
+      C2["CP Node 2<br/>apiserver"] --- E2["etcd 2"]
+      C3["CP Node 3<br/>apiserver"] --- E3["etcd 3"]
+    end
+</div>
+      <p class="stage-note">Same odd-number-and-quorum math applies to control-plane node counts
+        too: kubeadm's own HA guidance notes that an odd number of control-plane nodes similarly
+        helps with leader-selection behavior on node or zone failure — the same underlying
+        majority-vote reasoning as etcd's quorum.</p>
+
+      <h2 id="stage-3"><input type="checkbox" data-stage="3"> Stage 3 — Leader Election: kube-scheduler &amp; kube-controller-manager</h2>
+      <p>Stage 1 showed why <code>kube-apiserver</code> can safely run active-active: it's
+        stateless, so two replicas answering requests simultaneously never conflict. The
+        scheduler and controller manager are different — both run reconciliation loops that
+        <em>make decisions and take action</em> (assigning a Pod to a Node, creating a replacement
+        Pod, issuing a certificate). If two copies of either ran active-active, they could both
+        act on the same object at once — e.g. two schedulers racing to bind the same Pod to two
+        different Nodes. So instead they run <strong>active-standby</strong>: several replicas
+        are started, but only one is ever active as <strong>leader</strong> at a time; the rest
+        sit idle, watching, ready to take over.</p>
+      <p>The mechanism behind "only one leader at a time" is a <strong>Lease</strong> object (API
+        group <code>coordination.k8s.io</code>) — a small, general-purpose distributed-locking
+        primitive stored in etcd like any other API object. Leader election reduces to a simple
+        cycle:</p>
+      <ul>
+        <li><strong>Acquire</strong> — every replica races to create (or claim) the same named
+          Lease; whichever one succeeds first writes its own identity into
+          <code>spec.holderIdentity</code> and becomes leader.</li>
+        <li><strong>Renew</strong> — the leader periodically refreshes <code>spec.renewTime</code>
+          on that Lease, well before it would expire, as a heartbeat proving it's still alive and
+          still wants to hold leadership.</li>
+        <li><strong>Expire</strong> — if the leader stops renewing (crash, node loss, network
+          partition), the Lease's <code>leaseDurationSeconds</code> eventually runs out with no
+          fresh renewal.</li>
+        <li><strong>Re-acquire</strong> — every standby replica is watching the same Lease; once
+          it observes the lease has expired, one of them wins the next race to acquire it and
+          becomes the new leader.</li>
+      </ul>
+      <p>Why it matters, concretely: whichever replica is currently the leader is the <em>only</em>
+        one actually scheduling Pods or running controllers at that moment — the standby replicas
+        of <code>kube-scheduler</code>/<code>kube-controller-manager</code> are running processes
+        that are deliberately doing nothing but watching a Lease. This is the same trade-off as
+        etcd's quorum in Stage 2, just applied to decision-making instead of storage: correctness
+        (never two conflicting actors) is chosen over throughput (only one of N replicas is doing
+        useful work at any instant). The full mechanics — exact default timing parameters, tuning
+        trade-offs, and a step-by-step failure timeline — live in the deep dive:
+        <a href="11-leader-election.html">Leader Election: HA for Controller Manager &amp; Scheduler</a>;
+        this stage is the concept-first summary of the same mechanism.</p>
+      <div class="mermaid">sequenceDiagram
+    participant L as Replica A (leader)
+    participant S as Replica B (standby)
+    participant Lease as Lease object (etcd)
+    L->>Lease: acquire (create/claim, set holderIdentity=A)
+    loop every renew period
+      L->>Lease: renew (update renewTime)
+    end
+    S->>Lease: watch renewTime
+    Note over L: Replica A crashes — renewals stop
+    S->>Lease: observe leaseDurationSeconds elapsed, no renewal
+    S->>Lease: acquire (set holderIdentity=B)
+    Note over S: Replica B is now leader — resumes scheduling/reconciling
+</div>
+
+      <h2 id="stage-4"><input type="checkbox" data-stage="4"> Stage 4 — Failure-Recovery Timeline &amp; Split-Brain Prevention</h2>
+      <p>Putting Stages 1–3 together end-to-end: what actually happens, in order, when a leader
+        control-plane process dies.</p>
+      <ol>
+        <li>The leader (say, <code>kube-controller-manager</code> replica A) crashes or its node
+          is partitioned from the network. It stops renewing its Lease.</li>
+        <li>Every standby replica is already watching that same Lease object via the API server
+          (Stage 1's HA API server is what makes this watch reliable even while individual nodes
+          fail) — they simply see no new <code>renewTime</code> come in.</li>
+        <li>Once <code>leaseDurationSeconds</code> elapses past the last renewal with no update,
+          the standbys treat the leader as dead and race to acquire the Lease themselves.</li>
+        <li>One standby (replica B) wins the race, writes its own identity as
+          <code>holderIdentity</code>, and becomes the new leader — it immediately begins
+          scheduling Pods / running controller loops from wherever cluster state (in etcd) says
+          things stand.</li>
+        <li>There is a real, bounded gap between step 1 and step 4 — no scheduling or
+          reconciliation for that component happens during it. This is the cost of active-standby:
+          it trades a short recovery pause for the guarantee that two leaders are never active
+          simultaneously.</li>
+      </ol>
+      <p><strong>Split-brain prevention</strong> — the guarantee that step 5's trade-off protects —
+        is why this design leans on quorum-backed storage rather than, say, a simple timeout each
+        replica judges for itself. The Lease lives in etcd, and etcd itself only ever commits a
+        write when a quorum (Stage 2) agrees on it; a minority partition of etcd members (and
+        anything talking only to them) can't accept new writes at all, so it cannot also elect and
+        run a rogue "leader" writing conflicting state. Two control-plane replicas can only both
+        believe they're leader if they each hold a Lease acquired against a quorum-agreeing store —
+        and quorum guarantees at most one side of any partition has that majority. That's the same
+        principle protecting etcd's own data from Stage 2, reused to protect leadership state too.</p>
+      <p class="stage-note">Caveat worth stating plainly: none of this makes recovery instantaneous.
+        Tuning the Lease's duration and renewal timing shorter shrinks the failover gap but raises
+        the risk of a false failover from a merely slow (not dead) leader under load or network
+        jitter — see the deep dive's tuning-parameters section in
+        <a href="11-leader-election.html">Leader Election: HA for Controller Manager &amp; Scheduler</a>
+        for the actual trade-off numbers.</p>
+
+      <h2 id="learning-order">Suggested Learning Order</h2>
+      <ol>
+        <li><strong>Stage 0</strong> (why HA matters) — grounds every later stage in a concrete
+          failure mode instead of abstract "best practice."</li>
+        <li><strong>Stage 1</strong> (HA API server) — the simplest case, and a useful contrast for
+          Stage 3's active-standby model later.</li>
+        <li><strong>Stage 2</strong> (HA etcd) — the hard state-durability problem underneath
+          everything else; understand quorum here before Stage 4 leans on it again.</li>
+        <li><strong>Stage 3</strong> (leader election) — the mechanism for the two components that
+          can't run active-active; read the linked deep dive (<a href="11-leader-election.html">Leader
+          Election</a>) alongside this stage for the full tuning detail.</li>
+        <li><strong>Stage 4</strong> (failure timeline + split-brain) — ties Stages 1–3 together
+          into one end-to-end story and names the guarantee the whole design is protecting.</li>
+      </ol>
+      <p>Each stage answers a <em>why</em> before a <em>how</em> — that's intentional. See also
+        <a href="00-index.html">Control Plane Overview</a> for how these HA'd components fit into
+        the control plane as a whole, and <a href="12-networking-roadmap.html">Networking Roadmap</a>
+        for the equivalent concept-first map of the cluster's networking layer.</p>
+
+      <!-- ═══════════  END CONTENT  ═══════════ -->
+
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = "k8s_ha_roadmap_covered";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-stage]'));
+  var total = boxes.length;
+  var countEl = document.getElementById('haCount');
+  var totalEl = document.getElementById('haTotal');
+  var barEl = document.getElementById('haBar');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  if (totalEl) totalEl.textContent = String(total);
+
+  function render() {
+    var n = 0;
+    boxes.forEach(function (b) {
+      if (b.checked) n++;
+      var h = b.closest('h2');
+      if (h) h.classList.toggle('done', b.checked);
+    });
+    if (countEl) countEl.textContent = String(n);
+    if (barEl) barEl.style.width = (total ? (n / total * 100) : 0) + "%";
+  }
+
+  boxes.forEach(function (b) {
+    var k = b.getAttribute('data-stage');
+    b.checked = saved[k] === true;
+    b.addEventListener('change', function () {
+      saved[k] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      render();
+    });
+  });
+
+  var reset = document.getElementById('haReset');
+  if (reset) reset.addEventListener('click', function () {
+    saved = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    boxes.forEach(function (b) { b.checked = false; });
+    render();
+  });
+
+  render();
+})();
+</script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+</body>
+</html>

@@ -34,6 +34,43 @@ tiny redirect stubs remain at the old sub-site homepage paths (`docs/index.html`
 
 ## Conventions
 
+- **Explain concepts the way AWS documentation does.** When writing or rewriting page
+  content, follow AWS's explanation pattern (this is about the writing, not the CSS):
+  - **Define first, mechanics second.** State plainly what the thing is and the
+    problem it solves *before* describing how it works internally.
+  - **Say why it exists.** Every concept should be motivated — what breaks or gets
+    harder without it — not just described in isolation.
+  - **Walk cause → effect explicitly.** When explaining a mechanism ("what happens
+    when X changes"), spell out the chain of consequences step by step instead of
+    stating only the end result.
+  - **Ground the abstract in a concrete example** immediately after introducing a
+    general concept — prefer this repo's real setup (an actual ConfigMap key, an
+    actual header name) over a generic placeholder.
+  - **Name the distinction when two things are easily confused** ("X vs. Y — the
+    difference is …") instead of describing them separately and leaving the reader
+    to infer the contrast.
+  - **State limits, gotchas, and "this does NOT mean…" caveats plainly**, right next
+    to the claim they qualify, rather than burying them in a separate section.
+  - **Introduce a term once, define it in one sentence, then reuse that exact term** —
+    never silently switch to a synonym for a concept already named.
+
+- **Give each page's core concept an "Interview Answer" block.** Right after the page's
+  intro/subtitle (before the deep-dive sections), add a section titled
+  `Interview Answer — What is <the concept>?` in this exact three-part shape:
+  1. A full explanatory answer (2–4 paragraphs) — the concept, why it exists, and how it
+     fits into the surrounding system, following the AWS-doc-style rules above.
+  2. A **"Simple interview version"** — one quoted paragraph a candidate could say out
+     loud, condensed to the essentials, in a `<div class="sd-study-note">` note box with
+     a `<span class="sd-note-title">Simple interview version</span>` title.
+  3. **"One important interview follow-up"** — a Q&A pair naming the single most common
+     gotcha or misconception about the concept (e.g. "does X store the full history?",
+     "is Y actually encrypted?"), with the answer fully written out — never leave the
+     answer blank or as a placeholder.
+  This block is a companion to the page's existing deep-dive sections, not a
+  replacement — cross-reference the fuller section further down the page (an anchor
+  link is fine) rather than duplicating it. See `docs/kubernetes/02-etcd.html`'s
+  "Interview Answer — What Is etcd?" section for a worked example.
+
 - **All CSS lives in `assets/site.css`** (one copy per sub-site). It has three
   layers: design tokens + base element rules (global), the verbose two-column
   note layout scoped under `.layout`, and the `.sd-study-*` learning-path shell.
