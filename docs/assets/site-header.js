@@ -166,39 +166,66 @@
     if (!nav) { nav = document.createElement("nav"); sidebar.appendChild(nav); }
     nav.replaceChildren();
 
+    function isActivePage(page) {
+      var target = root + page.href;
+      var p = null;
+      try { p = new URL(target, window.location.href).pathname; } catch (e) {}
+      return (activePath && p === activePath) || p === window.location.pathname;
+    }
+
+    function renderPageList(pages) {
+      var list = document.createElement("ul");
+      pages.forEach(function (page) {
+        var item = document.createElement("li");
+        var link = document.createElement("a");
+        link.href = root + page.href;
+        link.textContent = page.title;
+        link.dataset.href = page.href;
+        if (isActivePage(page)) link.className = "active";
+        item.appendChild(link);
+        list.appendChild(item);
+      });
+      return list;
+    }
+
     map.sections.forEach(function (section) {
       var heading = document.createElement("h3");
       heading.textContent = (section.icon ? section.icon + " " : "") + section.name;
       nav.appendChild(heading);
 
-      var list = document.createElement("ul");
-      section.pages.forEach(function (page) {
-        var item = document.createElement("li");
-        var link = document.createElement("a");
-        var target = root + page.href;
-        link.href = target;
-        link.textContent = page.title;
-        link.dataset.href = page.href;
-        var p = null;
-        try { p = new URL(target, window.location.href).pathname; } catch (e) {}
-        if ((activePath && p === activePath) || p === window.location.pathname) {
-          link.className = "active";
-        }
-        item.appendChild(link);
-        list.appendChild(item);
-      });
-      (section.resources || []).forEach(function (resource) {
-        var item = document.createElement("li");
-        var link = document.createElement("a");
-        link.className = "resource";
-        link.href = root + resource.href;
-        link.target = "_blank";
-        link.rel = "noopener";
-        link.textContent = "📎 " + resource.title;
-        item.appendChild(link);
-        list.appendChild(item);
-      });
-      nav.appendChild(list);
+      if (section.groups && section.groups.length) {
+        var byHref = {};
+        section.pages.forEach(function (p) { byHref[p.href] = p; });
+        section.groups.forEach(function (group) {
+          var groupPages = group.hrefs.map(function (h) { return byHref[h]; }).filter(Boolean);
+          var details = document.createElement("details");
+          details.className = "sd-nav-group";
+          var summary = document.createElement("summary");
+          summary.textContent = group.name;
+          details.appendChild(summary);
+          details.appendChild(renderPageList(groupPages));
+          if (groupPages.some(isActivePage)) details.open = true;
+          nav.appendChild(details);
+        });
+      } else {
+        nav.appendChild(renderPageList(section.pages));
+      }
+
+      if (section.resources && section.resources.length) {
+        var resList = document.createElement("ul");
+        section.resources.forEach(function (resource) {
+          var item = document.createElement("li");
+          var link = document.createElement("a");
+          link.className = "resource";
+          link.href = root + resource.href;
+          link.target = "_blank";
+          link.rel = "noopener";
+          link.textContent = "📎 " + resource.title;
+          item.appendChild(link);
+          resList.appendChild(item);
+        });
+        nav.appendChild(resList);
+      }
     });
   }
 

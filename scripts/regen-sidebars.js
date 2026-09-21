@@ -58,21 +58,42 @@ function loadSite(dir) {
   return { MAP, PAGES, byHref };
 }
 
+function buildPageLi(dir, root, relPath, p) {
+  const target = path.posix.normalize(path.posix.join(dir, root + p.href));
+  const active = target === relPath ? ` class="active"` : "";
+  return `<li><a${active} href="${root}${p.href}">${esc(p.title)}</a></li>`;
+}
+
 function buildNav(relPath, MAP) {
   const dir = path.posix.dirname(relPath);
   const root = "../".repeat(relPath.split("/").length - 1);
   let h = "";
   for (const sec of MAP.sections) {
-    h += `<h3>${sec.icon ? sec.icon + " " : ""}${esc(sec.name)}</h3><ul>`;
-    for (const p of sec.pages) {
-      const target = path.posix.normalize(path.posix.join(dir, root + p.href));
-      const active = target === relPath ? ` class="active"` : "";
-      h += `<li><a${active} href="${root}${p.href}">${esc(p.title)}</a></li>`;
+    h += `<h3>${sec.icon ? sec.icon + " " : ""}${esc(sec.name)}</h3>`;
+    if (sec.groups && sec.groups.length) {
+      const byHref = {};
+      for (const p of sec.pages) byHref[p.href] = p;
+      for (const group of sec.groups) {
+        const groupPages = group.hrefs.map(href => byHref[href]).filter(Boolean);
+        const hasActive = groupPages.some(p =>
+          path.posix.normalize(path.posix.join(dir, root + p.href)) === relPath);
+        let ul = "<ul>";
+        for (const p of groupPages) ul += buildPageLi(dir, root, relPath, p);
+        ul += "</ul>";
+        h += `<details class="sd-nav-group"${hasActive ? " open" : ""}><summary>${esc(group.name)}</summary>${ul}</details>`;
+      }
+    } else {
+      h += "<ul>";
+      for (const p of sec.pages) h += buildPageLi(dir, root, relPath, p);
+      h += "</ul>";
     }
-    for (const r of sec.resources || []) {
-      h += `<li><a class="resource" href="${root}${r.href}" target="_blank" rel="noopener">📎 ${esc(r.title)}</a></li>`;
+    if (sec.resources && sec.resources.length) {
+      h += "<ul>";
+      for (const r of sec.resources) {
+        h += `<li><a class="resource" href="${root}${r.href}" target="_blank" rel="noopener">📎 ${esc(r.title)}</a></li>`;
+      }
+      h += "</ul>";
     }
-    h += `</ul>`;
   }
   return "<nav>" + h + "</nav>";
 }

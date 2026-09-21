@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "k8s-request-access-roadmap" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request &amp; Access Flow Roadmap · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+<style>
+  .sd-study-main h3 { margin-top: 1.3rem; font-size: 1rem; }
+  .stage-note { color: var(--muted); font-size: 0.92rem; margin-top: -0.2rem; }
+</style>
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group" open><summary>Request &amp; Access Flow</summary><ul><li><a class="active" href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><ul><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Kubernetes / Request &amp; Access Flow Roadmap</p>
+      <h1 data-page-title>Request &amp; Access Flow Roadmap</h1>
+      <p class="sd-study-prompt" data-page-subtitle>A concept-first map of how a request reaches the Kubernetes API and clears authentication, authorization, and admission control before it's allowed to change cluster state. Tick each stage as you cover it; progress is saved in this browser.</p>
+
+      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+
+      <p>A concept-first map of how a single request — a <code>kubectl</code> command, a controller's API
+        call, anything — reaches the Kubernetes API server and gets cleared to actually change cluster
+        state. Every request, no matter who sends it, walks the same sequential pipeline: prove who you
+        are, prove you're allowed to do this, survive admission control, then get validated and persisted.
+        Follow top to bottom — each stage assumes the one before it. Tick a stage's box once you've
+        genuinely covered it; progress is saved in this browser.</p>
+
+      <div class="sd-progress" id="raProgress">
+        <div class="sd-progress-bar"><span id="raBar"></span></div>
+        <p class="sd-progress-text"><strong id="raCount">0</strong> / <span id="raTotal">6</span> stages covered
+          &nbsp;·&nbsp; <button type="button" class="sd-progress-reset" id="raReset">reset</button></p>
+      </div>
+
+      <h2 id="stage-0"><input type="checkbox" data-stage="0"> Stage 0 — The Big Picture: One Pipeline, Every Request</h2>
+      <p>The kube-apiserver is the only component that talks to etcd, and it is the single front door for
+        every request in the cluster — whether that request comes from a human running <code>kubectl</code>,
+        a CI pipeline, a controller reconciling desired state, or kubelet reporting node status. Every one
+        of those requests, without exception, passes through the same sequential pipeline before it's
+        allowed to touch anything:</p>
+      <div class="mermaid">flowchart TD
+    A["Request arrives<br/>(kubectl / controller / kubelet / …)"] --> B["Authentication<br/>Who are you?"]
+    B --> C["Authorization<br/>Are you allowed to do this?"]
+    C --> D["Admission Control<br/>Should this specific change be allowed?"]
+    D --> E["API validation<br/>Is the object well-formed?"]
+    E --> F["etcd<br/>Persist the new state"]
+</div>
+      <p>Why it matters that this is a strict, sequential pipeline rather than one big permission check:
+        each stage answers a different question and fails independently. An expired certificate fails at
+        Authentication with an HTTP 401, before Kubernetes has even considered <em>what</em> you were trying
+        to do. A validly-authenticated user asking for something they don't have a Role for fails at
+        Authorization with an HTTP 403, before any object is inspected. A well-authorized request for a Pod
+        that violates a resource quota fails at Admission Control, after Kubernetes already knows who you
+        are and that you're generally allowed to create Pods. Knowing which stage rejected a request is
+        usually enough to know what to fix.</p>
+      <ul>
+        <li><strong>Read requests</strong> (<code>get</code>, <code>list</code>, <code>watch</code>) still
+          pass through Authentication and Authorization, but skip Admission Control — admission only acts on
+          requests that create, modify, delete, or proxy an object.</li>
+        <li><strong>Write requests</strong> (<code>create</code>, <code>update</code>, <code>patch</code>,
+          <code>delete</code>) pass through all four gates before the API server ever writes to etcd.</li>
+      </ul>
+      <p class="stage-note">This roadmap is a checklist framing of three existing deep-dive pages, not a
+        replacement for them: <a href="05-api-request-flow.html">05. API Request Flow</a> walks a concrete
+        <code>kubectl</code> call through this pipeline end to end,
+        <a href="06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a> works through a real
+        namespace-restricted user, and <a href="10-api-request-lifecycle.html">10. API Request Lifecycle: The
+        Four Gates</a> gives the short diagram-only version of Stages 1, 2, 4, and etcd below.</p>
+
+      <h2 id="stage-1"><input type="checkbox" data-stage="1"> Stage 1 — Authentication: Who Are You?</h2>
+      <p>Authentication answers exactly one question — <strong>which identity is making this request?</strong>
+        Kubernetes does not store "user" objects the way it stores Pods or Deployments; a normal user is
+        just a name that some external system (a certificate authority, an identity provider) vouches for.
+        The API server runs its configured authenticator modules in sequence, and the first one that
+        successfully authenticates the request wins — the rest are skipped. If none of them succeed, the
+        request fails immediately with <strong>HTTP 401</strong> and never reaches Authorization.</p>
+      <table>
+        <tr><th>Method</th><th>How identity is established</th><th>Typical use</th></tr>
+        <tr><td>X.509 client certificates</td><td>Client presents a certificate signed by the cluster's CA; the username comes from the certificate's <code>CN</code> (subject Common Name) and groups from its <code>O</code> fields.</td><td>Admin/operator access, <code>kubectl</code> via <code>kubeconfig</code>.</td></tr>
+        <tr><td>Bearer tokens (static/bootstrap)</td><td>An opaque token string sent in the <code>Authorization: Bearer &lt;token&gt;</code> header, matched against a configured token file.</td><td>Simple setups, cluster bootstrap.</td></tr>
+        <tr><td>Service account tokens (JWT)</td><td>A JSON Web Token, automatically mounted into every Pod as a Secret/projected volume, identifying the Pod as a specific ServiceAccount.</td><td>In-cluster processes (controllers, apps) calling the API server from inside a Pod.</td></tr>
+        <tr><td>OIDC tokens</td><td>A JWT issued by an external OpenID Connect provider (e.g. your company SSO), verified against that provider's public keys.</td><td>Human users authenticating with existing corporate identity.</td></tr>
+        <tr><td>Webhook token authentication</td><td>The API server delegates the token-validity check to an external HTTP service instead of validating it itself.</td><td>Integrating a custom or third-party identity system.</td></tr>
+        <tr><td>Anonymous / unauthenticated</td><td>If no method succeeds and anonymous auth is enabled, the request is attributed to <code>system:anonymous</code> in the <code>system:unauthenticated</code> group instead of being rejected outright.</td><td>Usually disabled in production (<code>--anonymous-auth=false</code>).</td></tr>
+      </table>
+      <p>On success, the request carries a fixed bundle of attributes into every later stage: a
+        <strong>username</strong>, a <strong>UID</strong>, a list of <strong>groups</strong> (every
+        authenticated identity is also automatically added to <code>system:authenticated</code>), and
+        optional <strong>extra fields</strong>. Authorization in Stage 2 never re-derives identity — it only
+        ever consumes this bundle.</p>
+      <p class="stage-note">Concrete worked example of a service-account token authenticating an in-cluster
+        client, and of a client certificate authenticating <code>kubectl</code>, in
+        <a href="05-api-request-flow.html">05. API Request Flow</a>.</p>
+
+      <h2 id="stage-2"><input type="checkbox" data-stage="2"> Stage 2 — Authorization: Can You Do This?</h2>
+      <p>Authorization takes the identity Stage 1 established and answers a second, separate question —
+        <strong>is this specific identity allowed to perform this specific action on this specific
+        object?</strong> A request only reaches this stage already knowing <em>who</em> is asking; it still
+        has to earn the right to act. Kubernetes evaluates every configured authorization module in
+        sequence against the request's attributes (user, group, verb, resource, namespace, API group,
+        subresource):</p>
+      <ul>
+        <li>If <strong>any</strong> module explicitly <strong>allows</strong> the request, it proceeds
+          immediately — later modules are not consulted.</li>
+        <li>If <strong>any</strong> module explicitly <strong>denies</strong> it, the request is rejected
+          immediately with <strong>HTTP 403</strong>.</li>
+        <li>If every module has no opinion, the request is denied by default — access is deny-by-default,
+          not allow-by-default.</li>
+      </ul>
+      <table>
+        <tr><th>Mode</th><th>What it does</th></tr>
+        <tr><td><strong>RBAC</strong></td><td>Grants permissions via Roles/ClusterRoles bound to users, groups, or ServiceAccounts. The modern default — see Stage 3.</td></tr>
+        <tr><td>ABAC</td><td>Attribute-based rules in a static policy file evaluated per-request (e.g. "user bob can read pods in namespace projectCaribou"). Largely superseded by RBAC — inflexible to update without restarting the API server.</td></tr>
+        <tr><td>Node</td><td>A special-purpose authorizer that grants each kubelet permission only for the API objects it needs for the Node it runs on (its own Pods, Secrets, ConfigMaps, etc.) — the mechanism that stops one compromised kubelet from reading every Secret in the cluster.</td></tr>
+        <tr><td>Webhook</td><td>Delegates the allow/deny decision to an external HTTP service, for integrating a custom policy engine.</td></tr>
+        <tr><td>AlwaysAllow / AlwaysDeny</td><td>Trivial modules that allow or deny everything — testing only, never production.</td></tr>
+      </table>
+      <p>A production cluster commonly configures more than one mode together, e.g.
+        <code>--authorization-mode=Node,RBAC</code> — Node handles kubelet's own narrow needs, RBAC handles
+        everyone and everything else. One caveat worth stating plainly: identities in the
+        <code>system:masters</code> group bypass authorization entirely and are treated as full cluster
+        admins — that group should never be handed out casually.</p>
+      <p class="stage-note">RBAC is covered as its own stage next because it's the mode almost every real
+        cluster actually runs, and because "namespace scoping" — restricting a user to one namespace — is
+        entirely an RBAC-shaped answer to this stage's question.</p>
+
+      <h2 id="stage-3"><input type="checkbox" data-stage="3"> Stage 3 — RBAC Mechanics: Namespace vs. Cluster Scope</h2>
+      <p>RBAC grants permissions through two pairs of objects that differ only in scope. Getting the scope
+        of each one right is the entire game — the most common real-world RBAC mistake is reaching for the
+        cluster-wide pair when the namespaced pair would have been enough, silently widening access to every
+        namespace including ones created later.</p>
+      <table>
+        <tr><th>Object</th><th>Scope</th><th>What it does</th></tr>
+        <tr><td><code>Role</code></td><td>One namespace</td><td>Defines a set of permission <em>rules</em> (apiGroups + resources + verbs) that only apply inside the namespace it's created in.</td></tr>
+        <tr><td><code>ClusterRole</code></td><td>Whole cluster</td><td>The same kind of rules, but not tied to a namespace — can grant access to cluster-scoped resources (Nodes, PersistentVolumes, Namespaces themselves) or to a namespaced resource across every namespace at once.</td></tr>
+        <tr><td><code>RoleBinding</code></td><td>One namespace</td><td>Attaches a Role — or even a ClusterRole — to a user/group/ServiceAccount, but the grant only takes effect within that one namespace.</td></tr>
+        <tr><td><code>ClusterRoleBinding</code></td><td>Whole cluster</td><td>Attaches a ClusterRole to a subject across every namespace, with no boundary.</td></tr>
+      </table>
+      <p>A rule inside a Role or ClusterRole is always the same three-part shape:</p>
+      <pre><code>rules:
+- apiGroups: [""]                     # "" = the core API group
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]</code></pre>
+      <p><strong>apiGroups</strong> picks the API family the resource belongs to, <strong>resources</strong>
+        picks the resource type within it, and <strong>verbs</strong> picks the allowed actions
+        (<code>get</code>/<code>list</code>/<code>watch</code>/<code>create</code>/<code>update</code>/<code>patch</code>/<code>delete</code>/<code>deletecollection</code>).
+        RBAC rules are purely <strong>additive</strong> — there is no "deny" rule type. A subject's effective
+        permissions are the union of every Role/ClusterRole bound to it, so revoking access means removing a
+        binding, never adding a negative rule.</p>
+      <div class="mermaid">flowchart TD
+    Alice["👤 alice"] --> RB["RoleBinding<br/>(namespace: frontend)"]
+    RB --> Role["Role: frontend-user<br/>(namespace: frontend)"]
+    Role --> Allowed["Pods / Services / Deployments<br/>— frontend namespace only"]
+    Bob["👤 bob"] --> CRB["ClusterRoleBinding"]
+    CRB --> CRole["ClusterRole: viewer"]
+    CRole --> AllowedAll["Same resources —<br/>every namespace"]
+</div>
+      <p>Binding a ClusterRole with a per-namespace RoleBinding is a common, deliberate pattern — define one
+        reusable ClusterRole (e.g. a generic "edit" role) once, then grant it namespace-by-namespace via
+        separate RoleBindings, instead of duplicating an identical Role in every namespace. Kubernetes also
+        ships four built-in aggregated ClusterRoles — <code>view</code>, <code>edit</code>, <code>admin</code>,
+        and <code>cluster-admin</code> — of increasing scope, the last of which is effectively root.</p>
+      <p class="stage-note">Full worked example — creating a namespace, a Role, a RoleBinding, testing the
+        result with <code>kubectl auth can-i</code>, and the common pitfalls (wildcard rules, the
+        auto-mounted <code>default</code> ServiceAccount, reaching for ClusterRoleBinding too eagerly) — in
+        <a href="06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a>.</p>
+
+      <h2 id="stage-4"><input type="checkbox" data-stage="4"> Stage 4 — Admission Control: Should This Change Be Allowed?</h2>
+      <p>By the time a request reaches Admission Control, Kubernetes already knows who's asking (Stage 1)
+        and that they're generally permitted to do this kind of thing (Stages 2–3). Admission control asks a
+        narrower, more specific question: <strong>should this particular object, exactly as submitted, be
+        allowed to exist?</strong> It runs only on write operations (create, update, delete, connect) —
+        never on reads — and it sits after authorization but before the object is validated and persisted to
+        etcd.</p>
+      <div class="mermaid">flowchart LR
+    Authn["Authentication"] --> Authz["Authorization"]
+    Authz --> M["Mutating admission<br/>(may rewrite the object)"]
+    M --> V["Validating admission<br/>(accept or reject, no changes)"]
+    V --> Persist["API validation → etcd"]
+</div>
+      <p>Admission runs in two ordered phases, and the order is deliberate — anything mutation adds must
+        still pass validation afterward:</p>
+      <ul>
+        <li><strong>Mutating admission controllers/webhooks</strong> run first and can rewrite the incoming
+          object — inject a sidecar container, set a default StorageClass, stamp on a label, apply a
+          default resource request. Examples: <code>MutatingAdmissionWebhook</code>, the
+          <code>ServiceAccount</code> controller, <code>DefaultStorageClass</code>.</li>
+        <li><strong>Validating admission controllers/webhooks</strong> run second, see the already-mutated
+          object, and can only accept or reject it — never change it further. Examples:
+          <code>ResourceQuota</code> (rejects if a namespace's aggregate limits would be exceeded),
+          <code>LimitRanger</code> (enforces min/max per-object resource constraints),
+          <code>PodSecurity</code> (enforces Pod Security Standards),
+          <code>ValidatingAdmissionWebhook</code>.</li>
+      </ul>
+      <p>Any single rejection at either phase fails the whole request immediately — admission controllers
+        are evaluated in a chain, and one "no" is final. This is also the layer that makes custom policy
+        enforcement possible without forking Kubernetes itself: writing your own mutating or validating
+        webhook (or, on newer clusters, a declarative CEL-based <code>ValidatingAdmissionPolicy</code> /
+        <code>MutatingAdmissionPolicy</code>) is the standard extension point for organization-specific
+        rules that RBAC has no vocabulary for — RBAC can say "alice may create Pods," but only admission
+        control can say "no Pod may run as root" or "every Pod must carry a <code>team</code> label."</p>
+      <p class="stage-note">This is the same admission layer referenced from the RBAC page's "Recommended
+        Architecture" table — <a href="06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a> — as the
+        mechanism for "prevent dangerous objects," a job RBAC's identity/verb model was never meant to do.</p>
+
+      <h2 id="stage-5"><input type="checkbox" data-stage="5"> Stage 5 — The Full Request Lifecycle, End to End</h2>
+      <p>Putting all four gates together against one concrete request —
+        <code>kubectl create -f pod.yaml -n frontend</code> — makes the sequencing and the short-circuit
+        behavior of each stage concrete:</p>
+      <div class="mermaid">sequenceDiagram
+    participant U as kubectl
+    participant A as kube-apiserver
+    participant E as etcd
+    U->>A: POST /pods (namespace=frontend)
+    A->>A: Authenticate — client cert → user "alice" (401 if it fails)
+    A->>A: Authorize — RBAC checks alice can create pods in frontend (403 if denied)
+    A->>A: Mutating admission — inject defaults/sidecars
+    A->>A: Validating admission — enforce quotas/policy (rejected if it fails)
+    A->>A: API validation — schema/object rules
+    A->>E: Persist Pod object
+    E-->>A: Ack
+    A-->>U: 201 Created
+</div>
+      <p>Two details worth stating plainly, because they're easy to blur together:</p>
+      <ul>
+        <li>A <strong>read</strong> request (<code>kubectl get pods -n frontend</code>) walks Authentication
+          and Authorization exactly the same way, but skips Admission Control entirely and returns the
+          current state straight from the API server — no etcd write, and for a <code>--watch</code>,
+          no per-request etcd read either (served from the API server's in-memory watch cache instead).</li>
+        <li>Rejection at any gate is <strong>final and immediate</strong> — a request that fails
+          Authentication never reaches Authorization; a request that fails Authorization never reaches
+          Admission Control. There's no partial credit and no fallback to a "looser" stage.</li>
+      </ul>
+      <p class="stage-note">The full step-by-step walkthrough of this exact example — including the
+        List+Watch pattern controllers use to stay in sync after the write lands — lives in
+        <a href="05-api-request-flow.html">05. API Request Flow</a>; the condensed four-box version of just
+        this diagram lives in <a href="10-api-request-lifecycle.html">10. API Request Lifecycle: The Four
+        Gates</a>.</p>
+
+      <h2 id="learning-order">Suggested Learning Order</h2>
+      <ol>
+        <li><strong>Stage 0</strong> (the big picture) — get the shape of the pipeline fixed first; every
+          later stage is "zoom in on one box" from this diagram.</li>
+        <li><strong>Stage 1–2</strong> (Authentication, Authorization) — the two questions every request must
+          clear before Kubernetes even looks at what it's asking for: who are you, and are you generally
+          allowed to do this.</li>
+        <li><strong>Stage 3</strong> (RBAC mechanics) — once Authorization's shape makes sense, go deep on
+          the mode that actually matters day to day: Role vs. ClusterRole, RoleBinding vs.
+          ClusterRoleBinding.</li>
+        <li><strong>Stage 4</strong> (Admission Control) — the layer that catches everything RBAC's
+          identity/verb model structurally can't express.</li>
+        <li><strong>Stage 5</strong> (full lifecycle) — put it all back together against one real request,
+          then read the three linked deep-dive pages for the parts you want more detail on.</li>
+      </ol>
+      <p>Each stage answers a <em>why</em> before a <em>how</em> — that's intentional. See also
+        <a href="00-index.html">Control Plane Overview</a> for where the API server sits relative to etcd,
+        the scheduler, and the controller manager.</p>
+
+      <!-- ═══════════  END CONTENT  ═══════════ -->
+
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = "k8s_ra_roadmap_covered";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-stage]'));
+  var total = boxes.length;
+  var countEl = document.getElementById('raCount');
+  var totalEl = document.getElementById('raTotal');
+  var barEl = document.getElementById('raBar');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  if (totalEl) totalEl.textContent = String(total);
+
+  function render() {
+    var n = 0;
+    boxes.forEach(function (b) {
+      if (b.checked) n++;
+      var h = b.closest('h2');
+      if (h) h.classList.toggle('done', b.checked);
+    });
+    if (countEl) countEl.textContent = String(n);
+    if (barEl) barEl.style.width = (total ? (n / total * 100) : 0) + "%";
+  }
+
+  boxes.forEach(function (b) {
+    var k = b.getAttribute('data-stage');
+    b.checked = saved[k] === true;
+    b.addEventListener('change', function () {
+      saved[k] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      render();
+    });
+  });
+
+  var reset = document.getElementById('raReset');
+  if (reset) reset.addEventListener('click', function () {
+    saved = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    boxes.forEach(function (b) { b.checked = false; });
+    render();
+  });
+
+  render();
+})();
+</script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+</body>
+</html>

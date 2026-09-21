@@ -105,6 +105,42 @@ window.SITE_PAGES = {
     title: "Leader Election: HA for Controller Manager & Scheduler",
     subtitle: "How Lease objects in etcd let multiple replicas of kube-controller-manager and kube-scheduler run without fighting over the same resources — election process, tuning, and failure scenarios."
   },
+  "k8s-networking-roadmap": {
+    href: "kubernetes/12-networking-roadmap.html",
+    section: "Kubernetes",
+    title: "Kubernetes Networking Roadmap",
+    subtitle: "A concept-first map of Pod networking, Services, kube-proxy, cluster DNS, Ingress, and NetworkPolicy — the ideas, why they exist, and how they connect. Tick each stage as you cover it; progress is saved in this browser."
+  },
+  "k8s-control-plane-roadmap": {
+    href: "kubernetes/13-control-plane-roadmap.html",
+    section: "Kubernetes",
+    title: "Kubernetes Control Plane Roadmap",
+    subtitle: "A concept-first map of the four control-plane components — kube-apiserver, etcd, kube-scheduler, kube-controller-manager — how they fit together and why each one exists. Tick each stage as you cover it; progress is saved in this browser."
+  },
+  "k8s-request-access-roadmap": {
+    href: "kubernetes/14-request-access-roadmap.html",
+    section: "Kubernetes",
+    title: "Request & Access Flow Roadmap",
+    subtitle: "A concept-first map of how a request reaches the Kubernetes API and clears authentication, authorization, and admission control before it's allowed to change cluster state. Tick each stage as you cover it; progress is saved in this browser."
+  },
+  "k8s-workload-storage-roadmap": {
+    href: "kubernetes/15-workload-storage-roadmap.html",
+    section: "Kubernetes",
+    title: "Workload Config & Storage Roadmap",
+    subtitle: "A concept-first map of how workloads get configuration and storage without baking either into the container image — Volumes, PersistentVolumeClaims, ConfigMaps, and Secrets. Tick each stage as you cover it; progress is saved in this browser."
+  },
+  "k8s-ha-roadmap": {
+    href: "kubernetes/16-high-availability-roadmap.html",
+    section: "Kubernetes",
+    title: "Control Plane High Availability Roadmap",
+    subtitle: "A concept-first map of how the control plane itself survives failures — HA kube-apiserver, HA etcd, and Lease-based leader election for the scheduler and controller manager. Tick each stage as you cover it; progress is saved in this browser."
+  },
+  "k8s-data-plane-roadmap": {
+    href: "kubernetes/17-data-plane-roadmap.html",
+    section: "Kubernetes",
+    title: "Kubernetes Data Plane Roadmap",
+    subtitle: "A concept-first map of the worker-node layer that actually runs workloads — kubelet, CRI, CNI, CSI, kube-proxy, and how the control plane knows a Node is still healthy. Tick each stage as you cover it; progress is saved in this browser."
+  },
   "frontend-roadmap": {
     href: "01-front-end/frontend-roadmap.html",
     section: "Front-End",

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "k8s-data-plane-roadmap" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubernetes Data Plane Roadmap · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+<style>
+  .sd-study-main h3 { margin-top: 1.3rem; font-size: 1rem; }
+  .stage-note { color: var(--muted); font-size: 0.92rem; margin-top: -0.2rem; }
+</style>
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group" open><summary>Data Plane</summary><ul><li><a class="active" href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><ul><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Kubernetes / Kubernetes Data Plane Roadmap</p>
+      <h1 data-page-title>Kubernetes Data Plane Roadmap</h1>
+      <p class="sd-study-prompt" data-page-subtitle>A concept-first map of the worker-node layer that actually runs workloads — kubelet, CRI, CNI, CSI, kube-proxy, and how the control plane knows a Node is still healthy. Tick each stage as you cover it; progress is saved in this browser.</p>
+
+      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+
+      <p>A concept-first map of the worker-node layer that actually runs your workloads: the kubelet,
+        the container runtime (via CRI), Pod networking (via CNI), storage attachment (via CSI),
+        kube-proxy, and how the control plane knows a Node is still healthy at all. Follow top to
+        bottom — each stage assumes the one before it. Tick a stage's box once you've genuinely
+        covered it; progress is saved in this browser. For the full narrative walkthrough of one Pod's
+        journey through all of these pieces, see <a href="09-data-plane.html">Data Plane Deep Dive</a> —
+        this roadmap is the checklist companion to it, not a replacement.</p>
+
+      <div class="sd-progress" id="dpProgress">
+        <div class="sd-progress-bar"><span id="dpBar"></span></div>
+        <p class="sd-progress-text"><strong id="dpCount">0</strong> / <span id="dpTotal">8</span> stages covered
+          &nbsp;·&nbsp; <button type="button" class="sd-progress-reset" id="dpReset">reset</button></p>
+      </div>
+
+      <h2 id="stage-0"><input type="checkbox" data-stage="0"> Stage 0 — Data Plane vs. Control Plane</h2>
+      <p class="stage-note">One sentence, since the deep-dive page covers this in full: the control
+        plane decides <em>what should run and where</em>; the data plane is every component that
+        actually carries that decision out, running once <strong>per worker node</strong>, not once per
+        cluster.</p>
+      <ul>
+        <li>kubelet, the container runtime, and kube-proxy are the three components every Node runs (per
+          the official Kubernetes docs' Node-components list).</li>
+        <li>CNI and CSI plugins are also per-node, invoked by the kubelet rather than running as
+          independent control-plane-facing services.</li>
+        <li>None of these make cluster-wide scheduling or reconciliation decisions — that's the control
+          plane's job (see the <a href="13-control-plane-roadmap.html">Control Plane Roadmap</a>).</li>
+      </ul>
+
+      <h2 id="stage-1"><input type="checkbox" data-stage="1"> Stage 1 — kubelet: The Node Agent</h2>
+      <p>The kubelet is the agent that runs on every Node and, in the Kubernetes project's own words,
+        "ensures that Pods are running, including their containers." It watches the API Server for Pods
+        assigned to its own Node, and continuously works to make sure the containers described in each
+        Pod's spec actually exist and are healthy — restarting a container that crashes, for example.</p>
+      <p>Why it matters: the kubelet is the only data-plane component with a direct line back to the API
+        Server for Pod state. It doesn't create containers, wire up networking, or mount storage itself —
+        it delegates each of those to a separate interface (CRI, CNI, CSI respectively, covered next),
+        which is what lets Kubernetes support many different runtimes, network plugins, and storage
+        backends without changing the kubelet's own code.</p>
+
+      <h2 id="stage-2"><input type="checkbox" data-stage="2"> Stage 2 — Container Runtime &amp; CRI</h2>
+      <p>The <strong>Container Runtime Interface (CRI)</strong> is a gRPC API that lets the kubelet talk
+        to any compliant container runtime — containerd, CRI-O, and others — without Kubernetes itself
+        needing to know which one is installed. The kubelet acts as a CRI client with two endpoints: a
+        Container Service (start/stop containers) and an Image Service (pull/manage images); the runtime
+        on the other end actually pulls the image layers and starts the container processes using
+        Linux namespaces and cgroups.</p>
+      <p>Why it matters: before CRI existed, Kubernetes had specific runtimes wired directly into its own
+        code. Standardizing this interface is what let the ecosystem move away from one runtime (Docker)
+        without forking Kubernetes itself — cluster operators can pick containerd, CRI-O, or a
+        sandboxed runtime like Kata Containers or gVisor, and the kubelet talks to all of them the same
+        way.</p>
+
+      <h2 id="stage-3"><input type="checkbox" data-stage="3"> Stage 3 — CNI: Pod Networking</h2>
+      <p>Once a container exists, it still has no network identity — that's what the
+        <strong>Container Network Interface (CNI)</strong> provides. When the kubelet (via the CRI)
+        creates a new Pod sandbox, it calls the configured CNI plugin (Calico, Flannel, Cilium, etc.),
+        which creates a virtual network interface, assigns the Pod an IP address, and adds the routing
+        rules needed for that IP to be reachable from other Pods and Nodes.</p>
+      <p>Why it matters: this is the mechanism that actually implements the flat, NAT-free Pod network
+        model every Kubernetes networking concept assumes — see
+        <a href="12-networking-roadmap.html">Stage 0–1 of the Networking Roadmap</a> for the rules CNI
+        plugins are required to uphold.</p>
+
+      <h2 id="stage-4"><input type="checkbox" data-stage="4"> Stage 4 — CSI: Storage Attachment</h2>
+      <p>The <strong>Container Storage Interface (CSI)</strong> is the storage equivalent of CNI: a
+        standard interface that lets storage vendors (AWS EBS, GCE Persistent Disk, NetApp, and others)
+        ship their own drivers instead of Kubernetes maintaining "in-tree" support for every storage
+        backend itself. When a Pod's volume is backed by a PersistentVolumeClaim, the kubelet calls the
+        CSI driver to attach the underlying disk to the Node and mount it, which the kubelet then
+        bind-mounts into the container's filesystem.</p>
+      <p class="stage-note">This is the mechanical "last mile" of the PV/PVC binding covered conceptually
+        in the <a href="15-workload-storage-roadmap.html">Workload Config &amp; Storage Roadmap</a> — that
+        roadmap explains the supply/demand binding model; this stage is about what physically happens on
+        the Node once a claim is bound.</p>
+
+      <h2 id="stage-5"><input type="checkbox" data-stage="5"> Stage 5 — kube-proxy: Service Traffic</h2>
+      <p>Unlike the kubelet/CRI/CNI/CSI chain, kube-proxy doesn't run as part of that delegation flow —
+        it watches the API Server directly for Services and EndpointSlices, on every Node independently,
+        and programs that Node's own packet-forwarding rules so traffic sent to a Service's virtual IP
+        gets redirected (DNAT'ed) to one of the real Pod IPs behind it.</p>
+      <ul>
+        <li><strong>iptables mode</strong> — the long-time default: a chain of iptables rules per
+          Service, picking a backend Pod essentially at random per new connection.</li>
+        <li><strong>IPVS mode</strong> — uses the Linux kernel's IPVS load balancer for O(1) lookup and
+          more load-balancing algorithm choices, built for clusters with very large numbers of
+          Services.</li>
+        <li><strong>nftables mode</strong> — the newer kernel subsystem Kubernetes is migrating toward as
+          the eventual default, replacing iptables.</li>
+      </ul>
+      <div class="mermaid">flowchart LR
+    Pkt["Packet to Service VIP"] --> KP["kube-proxy rules on this Node<br/>(iptables / IPVS / nftables)"]
+    KP -->|DNAT| Pod["Real Pod IP:port"]
+</div>
+      <p class="stage-note">Full mechanics and DNS in <a href="12-networking-roadmap.html">Stages 2–4 of
+        the Networking Roadmap</a> — this stage is just where kube-proxy fits among the other data-plane
+        components.</p>
+
+      <h2 id="stage-6"><input type="checkbox" data-stage="6"> Stage 6 — Node Health: Status, Heartbeats &amp; Eviction</h2>
+      <p>A Node reports its own health back to the control plane rather than being polled — the kubelet
+        periodically updates the Node object's <strong>status</strong> (conditions like <code>Ready</code>,
+        <code>MemoryPressure</code>, <code>DiskPressure</code>, plus capacity/allocatable resources), and
+        separately renews a lightweight <strong>Lease</strong> object in the <code>kube-node-lease</code>
+        namespace as a fast, cheap heartbeat — the same Lease mechanism used for leader election (see the
+        <a href="16-high-availability-roadmap.html">High Availability Roadmap</a>), applied here per-Node
+        instead of per-controller.</p>
+      <p>When a Node stops renewing its lease and updating its status, the <strong>Node Controller</strong>
+        (part of kube-controller-manager, not the data plane itself) waits out a grace period, marks the
+        Node <code>NotReady</code>, and eventually evicts its Pods so they can be rescheduled elsewhere.
+        This eviction is deliberately rate-limited (a fraction of nodes per unit time, slowing down
+        further if a large share of the cluster looks unhealthy at once) specifically so a control-plane
+        blip or a network partition doesn't cause a mass eviction stampede across the whole cluster.</p>
+      <p class="stage-note">This is the data-plane-facing half of a fact from the
+        <a href="13-control-plane-roadmap.html">Control Plane Roadmap</a>: the Node Controller is a
+        control-plane component, but everything it's reacting to — the kubelet's own status/lease
+        updates — originates here, on the data plane.</p>
+
+      <h2 id="stage-7"><input type="checkbox" data-stage="7"> Stage 7 — Putting It Together: A Pod's Full Journey</h2>
+      <p>Tying every stage above into one sequence: a Pod gets assigned to a Node → the kubelet asks the
+        CRI to pull the image and start the container → the kubelet asks the CNI plugin to attach
+        networking and assign an IP → the kubelet asks the CSI driver to mount any requested storage →
+        independently, kube-proxy notices any Service pointing at this Pod and updates its own
+        forwarding rules → the kubelet keeps reporting Node/Pod status and renewing its Lease the whole
+        time, which is what lets the control plane trust that everything above is still actually
+        running.</p>
+      <p>For the fully worked example — an actual <code>kubectl create deployment</code> and
+        <code>kubectl expose</code> walked step by step, plus a sequence diagram — see
+        <a href="09-data-plane.html">Data Plane Deep Dive</a>.</p>
+
+      <h2 id="learning-order">Suggested Learning Order</h2>
+      <ol>
+        <li><strong>Stage 0–1</strong> (the framing + kubelet) — the non-negotiable foundation; every
+          later stage is something the kubelet delegates to.</li>
+        <li><strong>Stage 2–4</strong> (CRI, CNI, CSI) — the three delegation interfaces, in the order the
+          kubelet actually calls them when starting a new Pod.</li>
+        <li><strong>Stage 5</strong> (kube-proxy) — a parallel, independent path rather than part of that
+          delegation chain, so it's worth learning as its own piece.</li>
+        <li><strong>Stage 6</strong> (Node health) — how the control plane finds out any of this stopped
+          working.</li>
+        <li><strong>Stage 7</strong> (the full journey) — only after the individual pieces are solid,
+          since it assumes you already know what each one does.</li>
+      </ol>
+      <p>Each stage answers a <em>why</em> before a <em>how</em> — that's intentional. See also
+        <a href="00-index.html">Control Plane Overview</a> for how the control plane and this data plane
+        divide responsibility.</p>
+
+      <!-- ═══════════  END CONTENT  ═══════════ -->
+
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = "k8s_dp_roadmap_covered";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-stage]'));
+  var total = boxes.length;
+  var countEl = document.getElementById('dpCount');
+  var totalEl = document.getElementById('dpTotal');
+  var barEl = document.getElementById('dpBar');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  if (totalEl) totalEl.textContent = String(total);
+
+  function render() {
+    var n = 0;
+    boxes.forEach(function (b) {
+      if (b.checked) n++;
+      var h = b.closest('h2');
+      if (h) h.classList.toggle('done', b.checked);
+    });
+    if (countEl) countEl.textContent = String(n);
+    if (barEl) barEl.style.width = (total ? (n / total * 100) : 0) + "%";
+  }
+
+  boxes.forEach(function (b) {
+    var k = b.getAttribute('data-stage');
+    b.checked = saved[k] === true;
+    b.addEventListener('change', function () {
+      saved[k] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      render();
+    });
+  });
+
+  var reset = document.getElementById('dpReset');
+  if (reset) reset.addEventListener('click', function () {
+    saved = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    boxes.forEach(function (b) { b.checked = false; });
+    render();
+  });
+
+  render();
+})();
+</script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+</body>
+</html>

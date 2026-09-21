@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "k8s-control-plane-roadmap" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubernetes Control Plane Roadmap · System Design Notes</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="stylesheet" href="../assets/site.css?v=5">
+<style>
+  .sd-study-main h3 { margin-top: 1.3rem; font-size: 1rem; }
+  .stage-note { color: var(--muted); font-size: 0.92rem; margin-top: -0.2rem; }
+</style>
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=5" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group" open><summary>Control Plane Components</summary><ul><li><a class="active" href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><ul><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Kubernetes / Kubernetes Control Plane Roadmap</p>
+      <h1 data-page-title>Kubernetes Control Plane Roadmap</h1>
+      <p class="sd-study-prompt" data-page-subtitle>A concept-first map of the four control-plane components — kube-apiserver, etcd, kube-scheduler, kube-controller-manager — how they fit together and why each one exists. Tick each stage as you cover it; progress is saved in this browser.</p>
+
+      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+
+      <p>A concept-first map of the four Control Plane components: <strong>kube-apiserver</strong>,
+        <strong>etcd</strong>, <strong>kube-scheduler</strong>, and <strong>kube-controller-manager</strong> —
+        what each one is, why it exists, and how they depend on each other to turn a
+        declarative YAML file into running Pods. This page is a companion to
+        <a href="00-index.html">Control Plane Overview</a>, not a replacement for it: the
+        overview page gives you the map at a glance, this page walks it stage by stage with
+        the mechanics spelled out. Follow top to bottom — each stage assumes the one before
+        it. Tick a stage's box once you've genuinely covered it; progress is saved in this
+        browser.</p>
+
+      <div class="sd-progress" id="cpProgress">
+        <div class="sd-progress-bar"><span id="cpBar"></span></div>
+        <p class="sd-progress-text"><strong id="cpCount">0</strong> / <span id="cpTotal">6</span> stages covered
+          &nbsp;·&nbsp; <button type="button" class="sd-progress-reset" id="cpReset">reset</button></p>
+      </div>
+
+      <h2 id="stage-0"><input type="checkbox" data-stage="0"> Stage 0 — What Is the Control Plane, and Why Does It Exist?</h2>
+      <p>A Kubernetes cluster is two tiers: a <strong>control plane</strong> that makes global
+        decisions about the cluster (scheduling, detecting and responding to cluster events),
+        and a set of <strong>worker nodes</strong> that actually run your containers. Every
+        one of the four components on this page runs on the control plane; none of them run
+        your application code directly.</p>
+      <p>Why it exists: without a control plane, "desired state" would just be a YAML file
+        sitting on someone's laptop — nothing would compare it against what's actually
+        running, and nothing would act when a Pod crashed or a Node died. The control plane's
+        entire job is to close that loop continuously: read what you <em>declared</em> you
+        want, compare it to what's <em>actually</em> running, and take action to close the
+        gap. This is the <strong>reconciliation model</strong>, and it is the single most
+        important idea in Kubernetes — every one of the next four stages is a piece of the
+        machinery that makes reconciliation possible.</p>
+      <div class="mermaid">flowchart LR
+    D["Desired state<br/>(what you declared)"] --> CMP{"Compare"}
+    A["Actual state<br/>(what's really running)"] --> CMP
+    CMP -->|"gap found"| ACT["Take action"]
+    ACT -.->|"loop forever"| A
+</div>
+      <p class="stage-note">Kubernetes never "finishes" — it doesn't reach a stable end-state and stop. It keeps watching and reconciling indefinitely; that's a deliberate design choice, not a limitation.</p>
+      <ul>
+        <li><strong>kube-apiserver</strong> — the single door every read and write goes through (Stage 1).</li>
+        <li><strong>etcd</strong> — where "desired state" and "actual state" both actually live (Stage 2).</li>
+        <li><strong>kube-scheduler</strong> — decides <em>where</em> a new Pod should run (Stage 3).</li>
+        <li><strong>kube-controller-manager</strong> — runs the loops that notice a gap and act on it (Stage 4).</li>
+      </ul>
+      <p class="stage-note">Kubernetes also ships an optional <strong>cloud-controller-manager</strong> for cloud-provider-specific integration (provisioning load balancers, labeling Nodes with cloud metadata, etc.). It isn't one of this page's four core components, but you'll see it named alongside them in the official docs.</p>
+
+      <h2 id="stage-1"><input type="checkbox" data-stage="1"> Stage 1 — kube-apiserver: The Single Entry Point</h2>
+      <p>The official reference describes it plainly: kube-apiserver "validates and configures
+        data for the api objects... and provides the frontend to the cluster's shared state
+        through which all other components interact." In plain terms: it is a REST API server
+        sitting in front of etcd, and it is the <strong>only</strong> component allowed to
+        read or write cluster state directly. <code>kubectl</code>, Helm, the scheduler, every
+        controller, every kubelet on every Node — none of them ever talk to etcd themselves;
+        they all go through kube-apiserver.</p>
+      <p>Why it exists: if every component could write to etcd directly, there would be no
+        single place to enforce authentication, authorization, validation, or admission
+        rules — any client with network access to etcd could corrupt cluster state with no
+        checks at all. Centralizing all reads and writes behind one API server is what makes
+        it possible to apply one consistent set of gates (authn → authz → admission →
+        validation) to every single change, no matter which client made it. See
+        <a href="10-api-request-lifecycle.html">API Request Lifecycle: The Four Gates</a> and
+        <a href="05-api-request-flow.html">API Request Flow</a> for that gate sequence in
+        detail.</p>
+      <div class="mermaid">flowchart TD
+    K["kubectl"] --> API["kube-apiserver"]
+    H["Helm"] --> API
+    C["Controllers"] --> API
+    S["Scheduler"] --> API
+    KL["kubelets"] --> API
+    API --> ETCD[("etcd")]
+</div>
+      <p class="stage-note">Concrete example: run <code>kubectl apply -f pod.yaml</code> and the YAML goes to kube-apiserver, not to etcd. Only after the API server has authenticated you, authorized the action, run it through admission control, and validated the object does it get persisted to etcd. Full depth: <a href="01-kube-apiserver.html">kube-apiserver Deep Dive</a>.</p>
+
+      <h2 id="stage-2"><input type="checkbox" data-stage="2"> Stage 2 — etcd: The Source of Truth</h2>
+      <p><strong>etcd</strong> is the "consistent and highly-available key-value store used as
+        Kubernetes' backing store for all cluster data," in the official description. Every
+        object you've ever created — every Pod spec, every Service, every ConfigMap, every
+        Secret, the current status of every Node — lives here as a key-value entry. Nothing in
+        Kubernetes is "remembered" anywhere else; if it isn't in etcd, as far as the cluster is
+        concerned it doesn't exist.</p>
+      <p>Why it exists: the reconciliation loop from Stage 0 needs both halves of its
+        comparison — desired state <em>and</em> actual state — to persist somewhere durable
+        and consistent, or a control-plane restart would simply forget the cluster. etcd is
+        that durable store, and because it's built on the Raft consensus algorithm, it stays
+        consistent even when several of its own nodes are running as a replicated cluster (see
+        <a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a>).
+        What breaks without it: no etcd means no cluster state at all — kube-apiserver would
+        have nothing to read or write, and every other component would have nothing to watch.</p>
+      <ul>
+        <li>Only kube-apiserver talks to etcd directly (Stage 1) — no other component, and no
+          user, is meant to touch it.</li>
+        <li>etcd exposes a <strong>watch</strong> API: a client can subscribe to a key prefix
+          and get streamed every change to it, instead of polling. This is exactly the
+          mechanism kube-controller-manager and kube-scheduler build on in Stages 3 and 4.</li>
+      </ul>
+      <div class="mermaid">flowchart LR
+    API["kube-apiserver"] -->|"read / write"| ETCD[("etcd<br/>(key-value store)")]
+    ETCD -->|"watch stream"| API
+</div>
+      <p class="stage-note">Because etcd is the single source of truth, its backup and restore practices are one of the highest-stakes operational concerns in running Kubernetes. Full depth: <a href="02-etcd.html">etcd Deep Dive</a>.</p>
+
+      <h2 id="stage-3"><input type="checkbox" data-stage="3"> Stage 3 — kube-scheduler: Placing Pods</h2>
+      <p><strong>kube-scheduler</strong> watches kube-apiserver for Pods that exist in etcd but
+        have no Node assigned yet, and picks a Node for each one. It does not run anything
+        itself — its entire output is one decision, written back through the API server:
+        "this Pod belongs on that Node."</p>
+      <p>Why it exists: without it, a newly created Pod would sit forever with an empty
+        <code>nodeName</code> field — nothing else in the system is responsible for choosing
+        placement. The scheduler's decision has to account for resource requests, hardware
+        and policy constraints, and affinity/anti-affinity rules, which is enough
+        combinatorial complexity that it needs a dedicated component rather than being folded
+        into, say, kube-apiserver itself.</p>
+      <p>The official mechanics are a two-step pipeline per unscheduled Pod:</p>
+      <ol>
+        <li><strong>Filtering</strong> — find the set of <em>feasible</em> Nodes: ones that
+          satisfy the Pod's resource requests and constraints. If this set comes up empty, the
+          Pod stays unscheduled until something changes (e.g. another Pod is evicted, or a new
+          Node joins).</li>
+        <li><strong>Scoring</strong> — rank every feasible Node and pick the highest-scoring
+          one; ties are broken randomly.</li>
+      </ol>
+      <p>Once a Node is chosen, the scheduler performs <strong>binding</strong>: it writes that
+        decision back to kube-apiserver (never to the Node directly). Only then does the
+        kubelet on the winning Node notice the assignment and actually start the containers —
+        placement and execution are two separate concerns, handled by two separate
+        components.</p>
+      <div class="mermaid">flowchart TD
+    Pod["Unscheduled Pod<br/>(nodeName empty)"] --> Filter["Filtering:<br/>which Nodes are feasible?"]
+    Filter --> Score["Scoring:<br/>rank feasible Nodes"]
+    Score --> Bind["Binding:<br/>write decision to API server"]
+    Bind --> Kubelet["kubelet on chosen Node<br/>starts the containers"]
+</div>
+      <p class="stage-note">The scheduler decides placement, not execution — a distinction worth stating explicitly, since it's easy to assume the scheduler itself "runs" the Pod. Full depth: <a href="03-kube-scheduler.html">kube-scheduler Deep Dive</a>.</p>
+
+      <h2 id="stage-4"><input type="checkbox" data-stage="4"> Stage 4 — kube-controller-manager: The Watch-Reconcile Loop</h2>
+      <p>A <strong>controller</strong>, per the official docs, is "a control loop that watches
+        the state of your cluster, then makes or requests changes where needed... trying to
+        move the current cluster state closer to the desired state." <strong>kube-controller-manager</strong>
+        is the process that bundles many of these built-in controllers together and runs them
+        as one binary — the Deployment controller, the ReplicaSet controller, the Node
+        controller, the Endpoint/EndpointSlice controller, and others, each responsible for
+        one narrow slice of cluster behavior.</p>
+      <p>Why they're bundled rather than shipped as one monolithic loop: the docs are explicit
+        that "it's useful to have simple controllers rather than one, monolithic set of
+        control loops that are interlinked" — if one controller has a bug or crashes, the
+        others keep running unaffected, and each one stays easy to reason about because it
+        only watches and reconciles one type of object.</p>
+      <p>The pattern every controller follows is the same three-step loop:</p>
+      <ol>
+        <li><strong>Watch</strong> — subscribe (via kube-apiserver, never etcd directly) to one
+          resource type's <code>spec</code> field, e.g. "all Deployments."</li>
+        <li><strong>Reconcile</strong> — compare that spec (desired state) against the current
+          state (e.g. "spec says 3 replicas, only 2 Pods exist") and request whatever change
+          closes the gap — here, asking the API server to create one more Pod.</li>
+        <li><strong>Report</strong> — write the resulting status back through the API server so
+          it's visible in <code>kubectl get</code>/<code>describe</code>.</li>
+      </ol>
+      <p>Concrete example: delete a Pod that belongs to a Deployment with <code>replicas: 3</code>.
+        The ReplicaSet controller's watch fires almost immediately (it's watching Pods and
+        ReplicaSets), notices only 2 Pods now match the label selector against a desired count
+        of 3, and asks the API server to create a replacement — which then goes through
+        kube-scheduler (Stage 3) exactly like any other new Pod.</p>
+      <div class="mermaid">flowchart LR
+    Watch["Watch (via API server)<br/>Deployment: 3 replicas"] --> Cmp{"Current = 2 Pods.<br/>Gap found?"}
+    Cmp -->|yes| Act["Request: create 1 Pod"]
+    Act --> Report["Report new status"]
+    Report -.->|loop| Watch
+</div>
+      <p class="stage-note">This watch-reconcile loop is what people mean by "Kubernetes self-healing" — nobody manually restarts the crashed Pod; the controller loop already noticed and fixed it. Full depth: <a href="04-kube-controller-manager.html">kube-controller-manager Deep Dive</a>.</p>
+
+      <h2 id="stage-5"><input type="checkbox" data-stage="5"> Stage 5 — How It All Fits Together: A Request's Full Round Trip</h2>
+      <p>Each earlier stage looked at one component in isolation. This stage traces one
+        concrete action — <code>kubectl apply</code> on a new 3-replica Deployment — end to
+        end, through all four, to show how they depend on each other in practice.</p>
+      <ol>
+        <li><code>kubectl</code> sends the Deployment YAML to <strong>kube-apiserver</strong>
+          (Stage 1) — never to etcd, never to any other component directly.</li>
+        <li>kube-apiserver authenticates the request, authorizes it, runs admission control,
+          validates the object, then persists it to <strong>etcd</strong> (Stage 2) as the new
+          desired state.</li>
+        <li><strong>kube-controller-manager</strong>'s Deployment/ReplicaSet controllers
+          (Stage 4), which are watching kube-apiserver for Deployments, notice the new object,
+          see the current Pod count (0) doesn't match the desired count (3), and request 3 new
+          Pod objects through the API server — again written to etcd.</li>
+        <li>Those 3 Pods exist in etcd with no <code>nodeName</code> set yet.
+          <strong>kube-scheduler</strong> (Stage 3), watching for exactly that condition, runs
+          filtering and scoring for each one and binds each Pod to a chosen Node — once more,
+          by writing back through the API server.</li>
+        <li>The kubelet on each chosen Node — a <em>data-plane</em> component, not part of the
+          control plane — is itself watching kube-apiserver for Pods assigned to its own Node,
+          sees the new assignment, and tells the container runtime to actually start the
+          containers.</li>
+      </ol>
+      <div class="mermaid">flowchart TD
+    U["kubectl apply"] --> API["kube-apiserver<br/>(authn/authz/admission/validate)"]
+    API --> ETCD[("etcd — desired state<br/>written")]
+    ETCD -->|watch| CM["kube-controller-manager<br/>notices 0 of 3 Pods exist"]
+    CM -->|"create 3 Pods"| API
+    API --> ETCD2[("etcd — 3 unscheduled<br/>Pods written")]
+    ETCD2 -->|watch| SCHED["kube-scheduler<br/>filters + scores Nodes"]
+    SCHED -->|"bind decision"| API
+    API --> ETCD3[("etcd — nodeName set")]
+    ETCD3 -->|watch| KL["kubelet on chosen Node"]
+    KL --> RUN["Container runtime starts containers"]
+</div>
+      <p class="stage-note">Notice the pattern repeats three times: <em>write through the API server → land in etcd → get picked up by a watcher</em>. That single pattern, reused by every component, is the entire mechanism behind "declarative" Kubernetes — you never tell any component what to do directly, you only ever declare desired state and let the watch-reconcile loops (Stages 3 and 4) discover and close the gap.</p>
+      <p>A caveat worth stating plainly: this whole chain depends on every step succeeding. If
+        kube-apiserver is unreachable, nothing above can even start. If etcd loses quorum,
+        kube-apiserver can't durably persist anything, even though it may still serve reads
+        from a stale cache. If the scheduler is down, Pods pile up unscheduled but Deployments
+        and existing Pods keep running — the control plane degrades in pieces, not all at
+        once. See <a href="11-leader-election.html">Leader Election: HA for Controller Manager &amp; Scheduler</a>
+        for how a production cluster avoids any one of these being a single point of failure —
+        multiple kube-apiserver replicas sit behind a load balancer, etcd runs as a Raft
+        quorum, and the scheduler and controller manager each run several replicas that use a
+        <strong>Lease</strong> object in etcd to elect exactly one active leader at a time,
+        with a standby ready to take over the moment the leader's lease isn't renewed.</p>
+
+      <h2 id="learning-order">Suggested Learning Order</h2>
+      <ol>
+        <li><strong>Stage 0</strong> (the reconciliation model) — the idea every other stage is
+          in service of; skip it and the other four components look like arbitrary trivia.</li>
+        <li><strong>Stage 1–2</strong> (kube-apiserver, etcd) — the read/write path everything
+          else depends on: one gatekeeper, one durable store behind it.</li>
+        <li><strong>Stage 3</strong> (kube-scheduler) — the narrowest, most self-contained
+          component: one decision (which Node), made once per unscheduled Pod.</li>
+        <li><strong>Stage 4</strong> (kube-controller-manager) — the broadest component
+          conceptually, since it's really dozens of independent loops sharing one process;
+          understand the watch-reconcile pattern once and it explains all of them.</li>
+        <li><strong>Stage 5</strong> (the full round trip) — come back to this only once
+          Stages 1–4 are individually solid; it's the payoff stage that shows why the split
+          into four components exists at all, rather than one big program.</li>
+      </ol>
+      <p>See also <a href="00-index.html">Control Plane Overview</a> for the same material at a
+        glance, and <a href="05-api-request-flow.html">API Request Flow</a> plus
+        <a href="10-api-request-lifecycle.html">API Request Lifecycle: The Four Gates</a> for a
+        deeper look specifically at Stage 1's gatekeeping.</p>
+
+      <!-- ═══════════  END CONTENT  ═══════════ -->
+
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = "k8s_cp_roadmap_covered";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-stage]'));
+  var total = boxes.length;
+  var countEl = document.getElementById('cpCount');
+  var totalEl = document.getElementById('cpTotal');
+  var barEl = document.getElementById('cpBar');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  if (totalEl) totalEl.textContent = String(total);
+
+  function render() {
+    var n = 0;
+    boxes.forEach(function (b) {
+      if (b.checked) n++;
+      var h = b.closest('h2');
+      if (h) h.classList.toggle('done', b.checked);
+    });
+    if (countEl) countEl.textContent = String(n);
+    if (barEl) barEl.style.width = (total ? (n / total * 100) : 0) + "%";
+  }
+
+  boxes.forEach(function (b) {
+    var k = b.getAttribute('data-stage');
+    b.checked = saved[k] === true;
+    b.addEventListener('change', function () {
+      saved[k] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      render();
+    });
+  });
+
+  var reset = document.getElementById('cpReset');
+  if (reset) reset.addEventListener('click', function () {
+    saved = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    boxes.forEach(function (b) { b.checked = false; });
+    render();
+  });
+
+  render();
+})();
+</script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+</body>
+</html>
