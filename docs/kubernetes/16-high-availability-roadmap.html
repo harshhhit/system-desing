@@ -48,6 +48,19 @@
         failure-timeline detail behind Stage 3, see the companion deep dive:
         <a href="11-leader-election.html">Leader Election: HA for Controller Manager &amp; Scheduler</a>.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is Control Plane High Availability?</h2>
+      <p>Control plane high availability (HA) is running multiple copies of each control-plane component, usually across three or more control-plane Nodes, so that the cluster can still accept changes and heal itself when one of them fails. It exists because a single control-plane Node is a single point of failure: running Pods would keep running, but nothing could be deployed, scaled, rescheduled, or repaired until it came back (<a href="#stage-0">Stage 0</a>).</p>
+      <p>Each component becomes highly available in a different way. <strong>kube-apiserver</strong> is stateless, so every replica serves traffic at once (active-active) behind a load balancer (<a href="#stage-1">Stage 1</a>). <strong>etcd</strong> is stateful, so it runs as a Raft cluster that needs a <strong>quorum</strong> — a majority of members — to accept writes; three members tolerate one failure and five tolerate two (<a href="#stage-2">Stage 2</a>). etcd can be <strong>stacked</strong> (an etcd member runs on each control-plane Node) or <strong>external</strong> (etcd runs on its own dedicated machines) — stacked is simpler, external isolates failures (<a href="#stage-2">Stage 2</a>). If etcd loses quorum, the API server cannot serve writes (and generally not consistent reads), so the control plane is effectively down — while Pods already running on worker Nodes keep running. <strong>kube-scheduler</strong> and <strong>kube-controller-manager</strong> run as several replicas but only one is active at a time (active-passive); they use a <strong>Lease</strong> object in the API for <strong>leader election</strong> (<a href="#stage-3">Stage 3</a>).</p>
+      <p>The cause → effect chain when a leader dies is: the leader stops renewing its Lease (a healthy leader renews every <code>retryPeriod</code> of 2s and gives up leadership if it cannot renew within <code>renewDeadline</code> of 10s) → the Lease expires once <code>leaseDuration</code> (15s by default) passes without a renewal → a standby replica, which retries every 2s, acquires the Lease and becomes leader → it resumes scheduling or reconciling. Because Lease updates use optimistic concurrency (<code>resourceVersion</code>) on top of etcd's consistent writes, only one replica can win the update, which prevents two schedulers from making conflicting decisions (split-brain) (<a href="#stage-4">Stage 4</a>).</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Control plane HA means running the control plane on several Nodes, typically three. The API servers are stateless, so they all run active-active behind a load balancer. etcd runs as a Raft cluster and needs a majority quorum, so three members survive one failure. The scheduler and controller manager run multiple copies but use Lease-based leader election so only one is active, and a standby takes over when the leader's Lease expires."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Does adding more etcd members (for example going from 3 to 4) make the cluster more available?</strong></p>
+      <p><strong>A:</strong> No. Quorum is a majority of members, so 3 members need 2 and tolerate 1 failure, while 4 members need 3 and still tolerate only 1 failure — the fourth member adds no fault tolerance, adds one more machine that can fail, and makes every write wait for one more acknowledgement. That is why etcd clusters use an odd size (3 or 5). Adding members also does not scale write throughput, because every write still goes through the single Raft leader. See <a href="#stage-2">Stage 2 — HA etcd</a>.</p>
+
       <div class="sd-progress" id="haProgress">
         <div class="sd-progress-bar"><span id="haBar"></span></div>
         <p class="sd-progress-text"><strong id="haCount">0</strong> / <span id="haTotal">5</span> stages covered
@@ -125,6 +138,8 @@
         <code>kube-system</code> (the same Lease mechanism used for leader election in Stage 3),
         purely so clients and tooling can discover how many API server instances are currently up —
         it plays no role in routing.</p>
+
+      <p class="stage-note"><strong>How kubelets and clients reach an HA API server.</strong> Kubelets, <code>kubectl</code>, and in-cluster components must not point at one API server's own address, or losing that Node would disconnect them even though other replicas are healthy. Instead they use one stable endpoint — a load balancer or a virtual IP (for example, keepalived + HAProxy on-prem, or a cloud load balancer) — configured as <code>controlPlaneEndpoint</code> in kubeadm. Every API server's serving certificate must list that endpoint's DNS name and IP in its <strong>Subject Alternative Names (SANs)</strong>; otherwise TLS verification fails for clients connecting through the load balancer. During upgrades, the version-skew policy sets the order: upgrade the API servers first (they may be at most one minor version apart during the rollout), then kube-controller-manager and kube-scheduler, then the kubelets — a kubelet must never be newer than the API server it talks to (it may be up to three minor versions older, since v1.28).</p>
 
       <h2 id="stage-2"><input type="checkbox" data-stage="2"> Stage 2 — HA etcd: Clustered Quorum</h2>
       <p><code>etcd</code> is where Stage 1's statelessness stops applying — it's the cluster's
@@ -269,6 +284,17 @@
         jitter — see the deep dive's tuning-parameters section in
         <a href="11-leader-election.html">Leader Election: HA for Controller Manager &amp; Scheduler</a>
         for the actual trade-off numbers.</p>
+
+      <h3 id="etcd-backup">Backup &amp; disaster recovery: etcd snapshot/restore</h3>
+      <p>An <strong>etcd snapshot</strong> is a point-in-time copy of etcd's entire keyspace — every Kubernetes object in the cluster — written to a single file. Backups exist because HA and backup solve different problems. HA protects against <em>losing a member</em>: if one of three etcd Nodes dies, the other two still hold every write. HA does NOT protect against <em>bad data</em>: if someone runs <code>kubectl delete namespace prod</code>, or a buggy controller overwrites objects, or the data is corrupted, Raft faithfully replicates that write to every member within milliseconds. The only way back to the state before the bad write is a snapshot taken before it.</p>
+      <p>Taking a snapshot (run against one healthy member, with the etcd client certificates):</p>
+      <pre><code>ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key snapshot save /backup/etcd-snap.db</code></pre>
+      <p>Restoring is done offline with <code>etcdutl</code> (older docs use <code>etcdctl snapshot restore</code>, now deprecated):</p>
+      <pre><code>etcdutl snapshot restore /backup/etcd-snap.db --data-dir /var/lib/etcd-restored</code></pre>
+      <p>For a multi-member cluster, run the restore on every member with that member's own <code>--name</code>, <code>--initial-cluster</code>, <code>--initial-cluster-token</code> and <code>--initial-advertise-peer-urls</code>, so all members form the same new cluster.</p>
+      <p>The cause → effect chain of a restore is: stop the API servers (so nothing writes during the restore) → restore the snapshot on each member into a new data directory → point etcd at that directory and start it → restart the API servers. A restore does not rejoin the old cluster; it creates a <strong>new</strong> etcd cluster (new cluster ID and member IDs) whose content is the snapshot. Everything written after the snapshot is lost, and controllers then reconcile the real Nodes back toward the restored desired state.</p>
+      <p class="stage-note"><strong>What the backup must also include:</strong> the snapshot alone is not enough. You also need the cluster's PKI (<code>/etc/kubernetes/pki</code>: CA and etcd certificates) and, if encryption at rest is enabled, the <code>EncryptionConfiguration</code> key — without that key, every Secret in the restored snapshot is unreadable ciphertext.</p>
+      <p class="stage-note"><strong>Space quota and defragmentation:</strong> etcd keeps old revisions until they are compacted, and compaction frees space logically but does not shrink the database file — <strong>defragmentation</strong> (<code>etcdctl defrag</code>) does. etcd also enforces a storage quota (2 GiB by default, configurable with <code>--quota-backend-bytes</code>). If the database reaches it, etcd raises a <code>NOSPACE</code> alarm and rejects writes with <code>mvcc: database space exceeded</code> — the cluster becomes effectively read-only until you compact, defragment, and disarm the alarm.</p>
 
       <h2 id="learning-order">Suggested Learning Order</h2>
       <ol>

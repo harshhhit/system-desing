@@ -108,9 +108,11 @@ a:hover { text-decoration: underline; }
 
 /* ---- revision banner ---- */
 .revision-banner {
-  display: none; align-items: center; gap: 0.8rem; margin: 1.2rem 2.5rem 0; padding: 0.9rem 1.2rem;
+  display: none; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem;
+  /* same column as .hero / .block: 1200px max, 2.5rem inner gutter */
+  margin: 1.2rem max(2.5rem, calc((100% - 1200px) / 2 + 2.5rem)) 0;
   background: linear-gradient(135deg, var(--accent-bg), var(--card-bg)); border: 1px solid var(--accent);
-  border-radius: var(--radius); box-shadow: var(--shadow); max-width: 1100px; margin-left: auto; margin-right: auto;
+  border-radius: var(--radius); box-shadow: var(--shadow);
 }
 .revision-banner.show { display: flex; }
 .revision-banner .rb-icon { font-size: 1.6rem; }
@@ -127,7 +129,7 @@ a:hover { text-decoration: underline; }
 }
 
 /* ---- homepage ---- */
-.hero { position: relative; padding: 4rem 2.5rem 1.7rem; max-width: 1100px; margin: 0 auto; overflow: hidden; isolation: isolate; }
+.hero { position: relative; padding: 3rem 2.5rem 2rem; max-width: 1200px; margin: 0 auto; overflow: hidden; isolation: isolate; }
 .hero::before, .hero::after {
   content: ""; position: absolute; z-index: -1; border-radius: 50%; pointer-events: none;
   filter: blur(60px); opacity: 0.32;
@@ -171,10 +173,15 @@ a:hover { text-decoration: underline; }
 .sd-weekly-item a:hover { color: var(--c-auth); }
 .sd-weekly-item:has(input:checked) a { color: var(--muted); text-decoration: line-through; font-weight: 500; }
 .sd-weekly-section { margin-left: auto; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
-@media (max-width: 860px) { [data-weekly-target] { padding-left: 1.2rem; padding-right: 1.2rem; } }
+@media (max-width: 860px) {
+  [data-weekly-target] { padding-left: 1rem; padding-right: 1rem; }
+  .sd-weekly { padding: 1.1rem 1.1rem; }
+  .sd-weekly-item label { flex-wrap: wrap; }
+  .sd-weekly-section { flex-basis: 100%; margin-left: 1.6rem; white-space: normal; }
+}
 
 .section-title { max-width: 1100px; margin: 0 auto; padding: 1.5rem 2.5rem 0.9rem; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.2rem; max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 1rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(270px, 100%), 1fr)); gap: 1.2rem; max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 1rem; }
 .card {
   position: relative; background: var(--card-bg); border: 1px solid var(--border);
   border-radius: var(--radius-lg); padding: 1.5rem 1.5rem 1.3rem; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 0.6rem;
@@ -192,7 +199,13 @@ a:hover { text-decoration: underline; }
 }
 .card h2 { margin: 0; font-size: 1.14rem; font-weight: 700; border: none; padding: 0; letter-spacing: -0.005em; }
 .card p.count { margin: 0; color: var(--card-accent, var(--accent)); font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
-.card ul { margin: 0.3em 0 0; padding-left: 1.1em; font-size: 0.87rem; max-height: 220px; overflow-y: auto; }
+.card ul { margin: 0.3em 0 0; padding-left: 1.1em; font-size: 0.87rem; }
+.card ul.collapsed li:nth-child(n+6) { display: none; }
+.card .more {
+  align-self: flex-start; margin-top: 0.2rem; background: none; border: none; padding: 0; cursor: pointer;
+  color: var(--card-accent, var(--accent)); font: inherit; font-size: 0.83rem; font-weight: 700;
+}
+.card .more:hover { text-decoration: underline; }
 .card ul a { color: var(--fg); }
 .card ul a:hover { color: var(--card-accent, var(--link)); }
 .card li { margin: 0.3em 0; }
@@ -210,17 +223,132 @@ a:hover { text-decoration: underline; }
   border-radius: 999px; padding: 0.4em 0.9em; font-size: 0.83rem; color: var(--muted);
 }
 
+/* ---- roomier homepage shell (topbar + collapsible sidebar + blocks) ---- */
+.topbar { display: flex; backdrop-filter: saturate(1.4) blur(8px); background: color-mix(in srgb, var(--bg) 88%, transparent); padding: 0.7rem 2.5rem; }
+.menu-toggle { display: flex; }
+.topbar .brand { font-family: "Lexend", "Inter", sans-serif; }
+.topbar .brand span { color: var(--accent); }
+@media (min-width: 861px) {
+  .layout.nav-hidden .sidebar { display: none; }
+}
+.search { position: relative; margin-left: auto; flex: 0 1 420px; min-width: 0; }
+.search input {
+  width: 100%; padding: 0.55rem 2.2rem 0.55rem 0.9rem; border: 1px solid var(--border); border-radius: 999px;
+  background: var(--bg-alt); color: var(--fg); font: inherit; font-size: 0.9rem; outline: none;
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease), background 0.15s var(--ease);
+}
+.search input:focus { border-color: var(--accent); background: var(--bg); box-shadow: 0 0 0 4px var(--accent-bg); }
+.search-kbd {
+  position: absolute; right: 0.7rem; top: 50%; transform: translateY(-50%); font-size: 0.72rem; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 5px; padding: 0 0.35em; background: var(--bg); pointer-events: none;
+}
+.search input:focus + .search-kbd { display: none; }
+.search-results {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; max-height: 60vh; overflow-y: auto; z-index: 30;
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-hover); padding: 0.35rem;
+}
+.search-results a { display: block; padding: 0.55rem 0.7rem; border-radius: var(--radius-sm); color: var(--fg); }
+.search-results a:hover, .search-results a.sel { background: var(--accent-bg); text-decoration: none; }
+.search-results .sr-title { font-weight: 600; font-size: 0.9rem; }
+.search-results .sr-meta { display: block; font-size: 0.75rem; color: var(--muted); }
+.search-results .sr-snip { display: block; font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.search-results mark { background: #fef08a; color: inherit; border-radius: 2px; }
+.search-results .sr-empty { padding: 0.8rem; color: var(--muted); font-size: 0.88rem; }
+
+.jump { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+.jump a {
+  padding: 0.4em 0.9em; border-radius: 999px; font-size: 0.85rem; font-weight: 600; color: var(--fg);
+  background: var(--card-bg); border: 1px solid var(--border); box-shadow: var(--shadow);
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease), transform 0.15s var(--ease);
+}
+.jump a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; transform: translateY(-1px); }
+
+.block { max-width: 1200px; margin: 0 auto; padding: 2.8rem 2.5rem 0.5rem; scroll-margin-top: 84px; }
+.block + .block { border-top: 1px solid var(--border); margin-top: 2rem; }
+.block-head h2 { margin: 0; font-size: 1.45rem; font-weight: 800; font-family: "Lexend", "Inter", sans-serif; letter-spacing: -0.01em; }
+.block-head p { margin: 0.4rem 0 0; color: var(--muted); max-width: 720px; font-size: 0.95rem; }
+.hero, [data-weekly-target] { max-width: 1200px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 1.2rem 0 0; }
+.chip {
+  border: 1px solid var(--border); background: var(--card-bg); color: var(--fg); border-radius: 999px;
+  padding: 0.38em 0.9em; font: inherit; font-size: 0.84rem; font-weight: 600; cursor: pointer;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease), border-color 0.15s var(--ease);
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.chip:focus-visible, .btn:focus-visible, .jump a:focus-visible, .menu-toggle:focus-visible, .card .more:focus-visible,
+.rev-reveal:focus-visible, .rev-open:focus-visible, .search-results a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn {
+  border: 1px solid var(--border); background: var(--card-bg); color: var(--fg); border-radius: var(--radius-sm);
+  padding: 0.45em 0.95em; font: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer; box-shadow: var(--shadow);
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.toggle { display: inline-flex; align-items: center; gap: 0.45em; font-size: 0.85rem; font-weight: 600; cursor: pointer; user-select: none; }
+.toggle input { accent-color: var(--accent); width: 1rem; height: 1rem; }
+
+/* revision cards */
+.rev-toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 0.8rem; }
+.rev-actions { display: flex; align-items: center; gap: 1rem; }
+.rev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 1.2rem; margin-top: 1.4rem; }
+.rev-card {
+  position: relative; display: flex; flex-direction: column; gap: 0.55rem; padding: 1.3rem 1.4rem 1.2rem;
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow);
+  border-left: 4px solid var(--card-accent, var(--accent));
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.rev-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+.rev-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--card-accent, var(--accent)); }
+.rev-src { color: var(--muted); font-weight: 600; text-transform: none; letter-spacing: 0; }
+.rev-card h3 { margin: 0; font-size: 1.05rem; line-height: 1.35; }
+.rev-text { margin: 0; font-size: 0.9rem; color: var(--fg); line-height: 1.6; flex: 1; transition: filter 0.2s var(--ease); }
+.rev-card .rev-open { font-size: 0.85rem; font-weight: 700; color: var(--card-accent, var(--link)); align-self: flex-start; }
+.rev-reveal { display: none; }
+.quiz .rev-card:not(.revealed) .rev-text { filter: blur(6px); user-select: none; cursor: pointer; }
+.quiz .rev-card:not(.revealed) .rev-reveal {
+  display: inline-block; position: absolute; left: 50%; top: 55%; transform: translate(-50%, -50%);
+  background: var(--fg); color: var(--bg); border: none; border-radius: 999px; padding: 0.45em 1em;
+  font: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; box-shadow: var(--shadow-hover);
+}
+.rev-more { display: flex; align-items: center; gap: 1rem; margin-top: 1.4rem; }
+.rev-more span { color: var(--muted); font-size: 0.85rem; }
+.rev-empty { color: var(--muted); }
+
+/* categories */
+.cat-group { margin-top: 2.2rem; scroll-margin-top: 84px; }
+.cat-group[hidden] { display: none; }
+.cat-head { display: flex; gap: 0.9rem; align-items: flex-start; margin-bottom: 1.1rem; }
+.cat-icon { font-size: 1.6rem; line-height: 1; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); flex-shrink: 0; }
+.cat-head h3 { margin: 0; font-size: 1.15rem; }
+.cat-head p { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.9rem; max-width: 760px; }
+.block .grid { max-width: none; padding: 0; gap: 1.3rem; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+.two-col .resource-list, .two-col .soon-list { max-width: none; padding: 1rem 0 0; margin: 0; }
+.two-col .soon-list { padding-bottom: 4rem; }
 @media (max-width: 860px) {
-  .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; box-shadow: 4px 0 16px rgba(0,0,0,0.25); transition: left 0.2s ease; }
-  .sidebar.open { left: 0; }
-  .topbar, .menu-toggle { display: flex; }
-  .hero, .grid, .resource-list, .soon-list, .section-title { padding-left: 1.2rem; padding-right: 1.2rem; }
-  .revision-banner { margin-left: 1.2rem; margin-right: 1.2rem; flex-wrap: wrap; }
+  .topbar { padding: 0.7rem 1rem; }
+  .topbar .brand { display: none; }
+  .block { padding: 2rem 1rem 0.5rem; }
+  .two-col { grid-template-columns: 1fr; gap: 1rem; }
+  .rev-grid { grid-template-columns: 1fr; }
+  .search-kbd { display: none; }
+}
+
+@media (max-width: 860px) {
+  .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; box-shadow: 4px 0 16px rgba(0,0,0,0.25);
+    visibility: hidden; transition: left 0.2s ease, visibility 0s linear 0.2s; }
+  .sidebar.open { left: 0; visibility: visible; transition: left 0.2s ease, visibility 0s; }
+  .hero, .grid, .resource-list, .soon-list, .section-title { padding-left: 1rem; padding-right: 1rem; }
+  .revision-banner { margin-left: 1rem; margin-right: 1rem; flex-wrap: wrap; }
 }
 </style>
 </head>
 <body>
-<div class="layout">
+<div class="layout nav-hidden">
   <aside class="sidebar" id="sidebar">
     <a class="brand" href="index.html">🦉 Infra <span>Owl</span></a>
     <nav>
@@ -417,8 +545,14 @@ a:hover { text-decoration: underline; }
 
   <div class="content-wrap">
     <div class="topbar">
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
-      <span class="brand">🦉 Infra Owl</span>
+      <button class="menu-toggle" id="menuToggle" aria-label="Show all pages" aria-controls="sidebar" aria-expanded="false">☰</button>
+      <span class="brand">🦉 Infra <span>Owl</span></span>
+      <div class="search" role="search">
+        <input id="siteSearch" type="search" placeholder="Search pages and notes…" autocomplete="off" aria-label="Search pages and notes"
+          aria-controls="searchResults" aria-expanded="false" aria-autocomplete="list">
+        <kbd class="search-kbd" aria-hidden="true">/</kbd>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
     </div>
 
     <!-- Daily revision banner -->
@@ -433,192 +567,261 @@ a:hover { text-decoration: underline; }
       <h1>🦉 Infra Owl</h1>
       <p class="lede">A personal knowledge base covering authentication, databases, distributed systems, messaging, storage, and more — converted from raw notes into a browsable reference site.</p>
       <div class="stats">
-        <div class="stat"><b>83</b><span>Pages</span></div>
-        <div class="stat"><b>17</b><span>Topics</span></div>
-        <div class="stat"><b>8</b><span>Downloads</span></div>
+        <div class="stat"><b id="statPages">83</b><span>Pages</span></div>
+        <div class="stat"><b id="statTopics">17</b><span>Topics</span></div>
+        <div class="stat"><b id="statCards">—</b><span>Revision cards</span></div>
+        <div class="stat"><b id="statDownloads">8</b><span>Downloads</span></div>
       </div>
+      <nav class="jump" aria-label="Jump to">
+        <a href="#revise">🃏 Revise</a>
+        <a href="#cat-infra">🏗️ Infra &amp; Ops</a>
+        <a href="#cat-data">🗃️ Data</a>
+        <a href="#cat-app">💻 App &amp; Code</a>
+        <a href="#cat-plan">🗺️ Planning</a>
+        <a href="#resources">📎 Downloads</a>
+      </nav>
     </div>
 
     <!-- Filled at runtime by the inline script below (per-viewer random weekly
          pick + progress, ported from docs/assets/site-header.js). -->
     <div data-weekly-target></div>
 
-    <div class="section-title">Browse by topic</div>
-    <div class="grid">
-      <div class="card" style="--card-accent: var(--c-k8s); --card-accent-bg: var(--c-k8s-bg);">
-        <div class="icon-wrap">☸️</div><h2>Kubernetes</h2><p class="count">18 pages</p>
-        <ul>
-          <li><a href="docs/kubernetes/00-index.html">00. Control Plane Overview</a></li>
-          <li><a href="docs/kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li>
-          <li><a href="docs/kubernetes/02-etcd.html">02. etcd</a></li>
-          <li><a href="docs/kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li>
-          <li><a href="docs/kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li>
-          <li><a href="docs/kubernetes/05-api-request-flow.html">05. API Request Flow</a></li>
-          <li><a href="docs/kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li>
-          <li><a href="docs/kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li>
-          <li><a href="docs/kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li>
-          <li><a href="docs/kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li>
-          <li><a href="docs/kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li>
-          <li><a href="docs/kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li>
-          <li><a href="docs/kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li>
-          <li><a href="docs/kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li>
-          <li><a href="docs/kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li>
-          <li><a href="docs/kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li>
-          <li><a href="docs/kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li>
-          <li><a href="docs/kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li>
-        </ul>
+    <!-- Revision cards: one short paragraph pulled from each docs/ page by
+         scripts/build-revision-cards.js (docs/assets/revision-cards.js). -->
+    <section class="block" id="revise">
+      <div class="block-head">
+        <h2>🃏 Revision cards</h2>
+        <p>One short paragraph pulled from each page — the page's interview answer when it has one, otherwise its lead line or the paragraph that best defines the topic. Turn on <b>Quiz mode</b> to hide the answer until you've recalled it.</p>
       </div>
-      <div class="card" style="--card-accent: var(--c-frontend); --card-accent-bg: var(--c-frontend-bg);">
-        <div class="icon-wrap">🖥️</div><h2>Front-End</h2><p class="count">9 pages</p>
-        <ul>
-          <li><a href="docs/01-front-end/frontend-roadmap.html">Front-End Roadmap</a></li>
-          <li><a href="docs/01-front-end/graphql/http/04-client-server-model.html">Client-Server Model, End to End</a></li>
-          <li><a href="docs/01-front-end/graphql/http/04.2-request-flow-interactive.html">Interactive Request Flow</a></li>
-          <li><a href="docs/01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a></li>
-          <li><a href="docs/01-front-end/graphql/http/01.02-rendering-types.html">Web Rendering &amp; Architecture</a></li>
-          <li><a href="docs/01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li>
-          <li><a href="docs/01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li>
-          <li><a href="docs/01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li>
-          <li><a href="docs/01-front-end/system-design-roadmap.html">System Design Roadmap</a></li>
-        </ul>
+      <div class="rev-toolbar">
+      <div class="chips" id="revChips" role="group" aria-label="Filter by category">
+        <button class="chip active" type="button" data-cat="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-cat="infra" aria-pressed="false">🏗️ Infrastructure &amp; Ops</button>
+        <button class="chip" type="button" data-cat="data" aria-pressed="false">🗃️ Data &amp; Distributed Systems</button>
+        <button class="chip" type="button" data-cat="app" aria-pressed="false">💻 Application &amp; Code</button>
+        <button class="chip" type="button" data-cat="plan" aria-pressed="false">🗺️ Planning &amp; Projects</button>
       </div>
-      <div class="card" style="--card-accent: var(--c-database); --card-accent-bg: var(--c-database-bg);">
-        <div class="icon-wrap">🗄️</div><h2>Database</h2><p class="count">21 pages</p>
-        <ul>
-          <li><a href="docs/05-database/00-learning-path/00-index.html">Database Learning Path</a></li>
-          <li><a href="docs/05-database/01-foundations/mislanious-terms.html">Database Foundations</a></li>
-          <li><a href="docs/05-database/01a-sql-and-relational-fundamentals/index.html">SQL and Relational Fundamentals</a></li>
-          <li><a href="docs/05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">How to Choose the Database</a></li>
-          <li><a href="docs/05-database/02-data-modeling-and-selection/factors.html">Database Performance Factors</a></li>
-          <li><a href="docs/05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">Scratch Note: Polyglot Persistence</a></li>
-          <li><a href="docs/05-database/02a-schema-design-and-migrations/index.html">Schema Design and Migrations</a></li>
-          <li><a href="docs/05-database/03-querying-and-performance/01A-Database-basic.html">PostgreSQL Views Explained</a></li>
-          <li><a href="docs/05-database/03-querying-and-performance/08-indxing.html">Indexing</a></li>
-          <li><a href="docs/05-database/03a-transactions-and-concurrency/index.html">Transactions and Concurrency</a></li>
-          <li><a href="docs/05-database/03b-query-plans-and-optimization/index.html">Query Plans and Optimization</a></li>
-          <li><a href="docs/05-database/04-distributed-database-fundamentals/lecture-2.html">Distributed Database Fundamentals</a></li>
-          <li><a href="docs/05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">CAP Theorem Questions</a></li>
-          <li><a href="docs/05-database/04a-database-security-and-access-control/index.html">Database Security and Access Control</a></li>
-          <li><a href="docs/05-database/05-scaling-and-partitioning/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li>
-          <li><a href="docs/05-database/05-scaling-and-partitioning/02-partiontion.html">Partitioning</a></li>
-          <li><a href="docs/05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">Horizontal Scaling</a></li>
-          <li><a href="docs/05-database/05a-connection-management-and-database-proxies/index.html">Connection Management and Database Proxies</a></li>
-          <li><a href="docs/05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">PostgreSQL Connection Troubleshooting</a></li>
-          <li><a href="docs/05-database/06a-backup-recovery-and-disaster-recovery/index.html">Backup, Recovery, and Disaster Recovery</a></li>
-          <li><a href="docs/05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a></li>
-        </ul>
+        <div class="rev-actions">
+          <label class="toggle"><input type="checkbox" id="quizMode"> Quiz mode</label>
+          <button class="btn" id="revShuffle" type="button">🔀 Shuffle</button>
+        </div>
       </div>
-      <div class="card" style="--card-accent: var(--c-auth); --card-accent-bg: var(--c-auth-bg);">
-        <div class="icon-wrap">🔐</div><h2>Authentication</h2><p class="count">5 pages</p>
-        <ul>
-          <li><a href="docs/authentication/00-login-steps.html">Secure Login Implementation Steps</a></li>
-          <li><a href="docs/authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li>
-          <li><a href="docs/authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li>
-          <li><a href="docs/authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li>
-          <li><a href="docs/authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li>
-        </ul>
+      <div class="rev-grid" id="revGrid"></div>
+      <div class="rev-more">
+        <button class="btn" id="revMore" type="button">Show more cards</button>
+        <span id="revCount"></span>
       </div>
-      <div class="card" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
-        <div class="icon-wrap">🌐</div><h2>Distributed Systems</h2><p class="count">3 pages</p>
-        <ul>
-          <li><a href="docs/distributed-system/distributed-systems.html">Distributed Systems</a></li>
-          <li><a href="docs/distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li>
-          <li><a href="docs/distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li>
-        </ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
-        <div class="icon-wrap">🧬</div><h2>Distributed Database</h2><p class="count">5 pages</p>
-        <ul>
-          <li><a href="docs/distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li>
-          <li><a href="docs/distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li>
-          <li><a href="docs/distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li>
-          <li><a href="docs/distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li>
-          <li><a href="docs/distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li>
-        </ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-msg); --card-accent-bg: var(--c-msg-bg);">
-        <div class="icon-wrap">📨</div><h2>Messaging &amp; Queues</h2><p class="count">7 pages</p>
-        <ul>
-          <li><a href="docs/sqs/01-sqs.html">SQS Overview</a></li>
-          <li><a href="docs/sqs/02-queus-methord.html">Queue Methods</a></li>
-          <li><a href="docs/sqs/use-case.html">SQS Use Cases</a></li>
-          <li><a href="docs/sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li>
-          <li><a href="docs/sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li>
-          <li><a href="docs/sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li>
-          <li><a href="docs/sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li>
-        </ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-storage); --card-accent-bg: var(--c-storage-bg);">
-        <div class="icon-wrap">💾</div><h2>Storage</h2><p class="count">1 page</p>
-        <ul><li><a href="docs/storage/storage-type.html">Storage Types</a></li></ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-caching); --card-accent-bg: var(--c-caching-bg);">
-        <div class="icon-wrap">🧊</div><h2>Caching &amp; CDN</h2><p class="count">1 page</p>
-        <ul><li><a href="docs/caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-traffic); --card-accent-bg: var(--c-traffic-bg);">
-        <div class="icon-wrap">🚦</div><h2>Traffic Management</h2><p class="count">2 pages</p>
-        <ul>
-          <li><a href="docs/traffic/00-load-balancing.html">00. Load Balancing</a></li>
-          <li><a href="docs/traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li>
-        </ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-net); --card-accent-bg: var(--c-net-bg);">
-        <div class="icon-wrap">🔌</div><h2>Networking</h2><p class="count">1 page</p>
-        <ul><li><a href="docs/networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-obs); --card-accent-bg: var(--c-obs-bg);">
-        <div class="icon-wrap">🛡️</div><h2>Observability, Security &amp; Ops</h2><p class="count">3 pages</p>
-        <ul>
-          <li><a href="docs/observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li>
-          <li><a href="docs/observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li>
-          <li><a href="docs/observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li>
-        </ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-web); --card-accent-bg: var(--c-web-bg);">
-        <div class="icon-wrap">🖧</div><h2>Web Servers</h2><p class="count">2 pages</p>
-        <ul>
-          <li><a href="docs/web-servers/server.html">Web Servers</a></li>
-          <li><a href="docs/web-servers/wsgi.html">WSGI Explained</a></li>
-        </ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-dev); --card-accent-bg: var(--c-dev-bg);">
-        <div class="icon-wrap">🧭</div><h2>Dev Principles</h2><p class="count">1 page</p>
-        <ul><li><a href="docs/software-development-principles/01-sdp.html">Software Development Principles</a></li></ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-plan); --card-accent-bg: var(--c-plan-bg);">
-        <div class="icon-wrap">🗺️</div><h2>Planning &amp; Roadmap</h2><p class="count">5 pages</p>
-        <ul>
-          <li><a href="docs/path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li>
-          <li><a href="docs/path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li>
-          <li><a href="docs/path/01-b-MVP.html">MVP Planning</a></li>
-          <li><a href="docs/path/02-apis.html">API Planning</a></li>
-          <li><a href="docs/path/03-coverage-gap-analysis.html">Coverage Gap Analysis &amp; Prompts</a></li>
-        </ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-proj); --card-accent-bg: var(--c-proj-bg);">
-        <div class="icon-wrap">🏗️</div><h2>Project Walkthroughs</h2><p class="count">3 pages</p>
-        <ul>
-          <li><a href="docs/project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li>
-          <li><a href="docs/project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li>
-          <li><a href="docs/project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li>
-        </ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-misc); --card-accent-bg: var(--c-misc-bg);">
-        <div class="icon-wrap">🧩</div><h2>Miscellaneous</h2><p class="count">3 pages</p>
-        <ul>
-          <li><a href="docs/mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li>
-          <li><a href="docs/mislanious/Memory-Profiling.html">Memory Profiling</a></li>
-          <li><a href="docs/mislanious/query-string.html">Query Strings</a></li>
-        </ul>
-      </div>
-      <div class="card" style="--card-accent: var(--c-overview); --card-accent-bg: var(--c-overview-bg);">
-        <div class="icon-wrap">📄</div><h2>Overview</h2><p class="count">1 page</p>
-        <ul><li><a href="index.html">Notes Overview</a></li></ul>
-      </div>
-    </div>
+    </section>
 
-    <div class="section-title">Downloadable resources</div>
+    <section class="block" id="browse">
+      <div class="block-head">
+        <h2>📚 Browse by category</h2>
+        <p>Topics grouped by what they're about: infrastructure notes live under <b>Infrastructure &amp; Ops</b>, databases and queues under <b>Data</b>, and code-level topics under <b>Application &amp; Code</b>.</p>
+      </div>
+      <div class="chips" id="catChips" role="group" aria-label="Filter by category">
+        <button class="chip active" type="button" data-cat="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-cat="infra" aria-pressed="false">🏗️ Infrastructure &amp; Ops</button>
+        <button class="chip" type="button" data-cat="data" aria-pressed="false">🗃️ Data &amp; Distributed Systems</button>
+        <button class="chip" type="button" data-cat="app" aria-pressed="false">💻 Application &amp; Code</button>
+        <button class="chip" type="button" data-cat="plan" aria-pressed="false">🗺️ Planning &amp; Projects</button>
+      </div>
+      <div class="cat-group" id="cat-infra" data-cat="infra">
+        <div class="cat-head"><span class="cat-icon">🏗️</span><div><h3>Infrastructure &amp; Ops</h3><p>Where code runs and how traffic reaches it — clusters, networks, load balancers, caches, storage, servers, and the tooling that keeps them observable and deployable.</p></div></div>
+        <div class="grid">
+          <div class="card" style="--card-accent: var(--c-k8s); --card-accent-bg: var(--c-k8s-bg);">
+            <div class="icon-wrap">☸️</div><h2>Kubernetes</h2><p class="count">18 pages</p>
+            <ul>
+              <li><a href="docs/kubernetes/00-index.html">00. Control Plane Overview</a></li>
+              <li><a href="docs/kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li>
+              <li><a href="docs/kubernetes/02-etcd.html">02. etcd</a></li>
+              <li><a href="docs/kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li>
+              <li><a href="docs/kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li>
+              <li><a href="docs/kubernetes/05-api-request-flow.html">05. API Request Flow</a></li>
+              <li><a href="docs/kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li>
+              <li><a href="docs/kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li>
+              <li><a href="docs/kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li>
+              <li><a href="docs/kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li>
+              <li><a href="docs/kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li>
+              <li><a href="docs/kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li>
+              <li><a href="docs/kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li>
+              <li><a href="docs/kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li>
+              <li><a href="docs/kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li>
+              <li><a href="docs/kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li>
+              <li><a href="docs/kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li>
+              <li><a href="docs/kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li>
+            </ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-net); --card-accent-bg: var(--c-net-bg);">
+            <div class="icon-wrap">🔌</div><h2>Networking</h2><p class="count">1 page</p>
+            <ul><li><a href="docs/networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-traffic); --card-accent-bg: var(--c-traffic-bg);">
+            <div class="icon-wrap">🚦</div><h2>Traffic Management</h2><p class="count">2 pages</p>
+            <ul>
+              <li><a href="docs/traffic/00-load-balancing.html">00. Load Balancing</a></li>
+              <li><a href="docs/traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li>
+            </ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-caching); --card-accent-bg: var(--c-caching-bg);">
+            <div class="icon-wrap">🧊</div><h2>Caching &amp; CDN</h2><p class="count">1 page</p>
+            <ul><li><a href="docs/caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-storage); --card-accent-bg: var(--c-storage-bg);">
+            <div class="icon-wrap">💾</div><h2>Storage</h2><p class="count">1 page</p>
+            <ul><li><a href="docs/storage/storage-type.html">Storage Types</a></li></ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-web); --card-accent-bg: var(--c-web-bg);">
+            <div class="icon-wrap">🖧</div><h2>Web Servers</h2><p class="count">2 pages</p>
+            <ul>
+              <li><a href="docs/web-servers/server.html">Web Servers</a></li>
+              <li><a href="docs/web-servers/wsgi.html">WSGI Explained</a></li>
+            </ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-obs); --card-accent-bg: var(--c-obs-bg);">
+            <div class="icon-wrap">🛡️</div><h2>Observability, Security &amp; Ops</h2><p class="count">3 pages</p>
+            <ul>
+              <li><a href="docs/observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li>
+              <li><a href="docs/observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li>
+              <li><a href="docs/observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="cat-group" id="cat-data" data-cat="data">
+        <div class="cat-head"><span class="cat-icon">🗃️</span><div><h3>Data &amp; Distributed Systems</h3><p>How state is stored, replicated, partitioned, and moved between services — databases, consistency models, consensus, and message queues.</p></div></div>
+        <div class="grid">
+          <div class="card" style="--card-accent: var(--c-database); --card-accent-bg: var(--c-database-bg);">
+            <div class="icon-wrap">🗄️</div><h2>Database</h2><p class="count">21 pages</p>
+            <ul>
+              <li><a href="docs/05-database/00-learning-path/00-index.html">Database Learning Path</a></li>
+              <li><a href="docs/05-database/01-foundations/mislanious-terms.html">Database Foundations</a></li>
+              <li><a href="docs/05-database/01a-sql-and-relational-fundamentals/index.html">SQL and Relational Fundamentals</a></li>
+              <li><a href="docs/05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">How to Choose the Database</a></li>
+              <li><a href="docs/05-database/02-data-modeling-and-selection/factors.html">Database Performance Factors</a></li>
+              <li><a href="docs/05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">Scratch Note: Polyglot Persistence</a></li>
+              <li><a href="docs/05-database/02a-schema-design-and-migrations/index.html">Schema Design and Migrations</a></li>
+              <li><a href="docs/05-database/03-querying-and-performance/01A-Database-basic.html">PostgreSQL Views Explained</a></li>
+              <li><a href="docs/05-database/03-querying-and-performance/08-indxing.html">Indexing</a></li>
+              <li><a href="docs/05-database/03a-transactions-and-concurrency/index.html">Transactions and Concurrency</a></li>
+              <li><a href="docs/05-database/03b-query-plans-and-optimization/index.html">Query Plans and Optimization</a></li>
+              <li><a href="docs/05-database/04-distributed-database-fundamentals/lecture-2.html">Distributed Database Fundamentals</a></li>
+              <li><a href="docs/05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">CAP Theorem Questions</a></li>
+              <li><a href="docs/05-database/04a-database-security-and-access-control/index.html">Database Security and Access Control</a></li>
+              <li><a href="docs/05-database/05-scaling-and-partitioning/01-Database-Basic.html">Database Basics: Partitioning &amp; Data Distribution</a></li>
+              <li><a href="docs/05-database/05-scaling-and-partitioning/02-partiontion.html">Partitioning</a></li>
+              <li><a href="docs/05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">Horizontal Scaling</a></li>
+              <li><a href="docs/05-database/05a-connection-management-and-database-proxies/index.html">Connection Management and Database Proxies</a></li>
+              <li><a href="docs/05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">PostgreSQL Connection Troubleshooting</a></li>
+              <li><a href="docs/05-database/06a-backup-recovery-and-disaster-recovery/index.html">Backup, Recovery, and Disaster Recovery</a></li>
+              <li><a href="docs/05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a></li>
+            </ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
+            <div class="icon-wrap">🧬</div><h2>Distributed Database</h2><p class="count">5 pages</p>
+            <ul>
+              <li><a href="docs/distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li>
+              <li><a href="docs/distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li>
+              <li><a href="docs/distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li>
+              <li><a href="docs/distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li>
+              <li><a href="docs/distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li>
+            </ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
+            <div class="icon-wrap">🌐</div><h2>Distributed Systems</h2><p class="count">3 pages</p>
+            <ul>
+              <li><a href="docs/distributed-system/distributed-systems.html">Distributed Systems</a></li>
+              <li><a href="docs/distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li>
+              <li><a href="docs/distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li>
+            </ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-msg); --card-accent-bg: var(--c-msg-bg);">
+            <div class="icon-wrap">📨</div><h2>Messaging &amp; Queues</h2><p class="count">7 pages</p>
+            <ul>
+              <li><a href="docs/sqs/01-sqs.html">SQS Overview</a></li>
+              <li><a href="docs/sqs/02-queus-methord.html">Queue Methods</a></li>
+              <li><a href="docs/sqs/use-case.html">SQS Use Cases</a></li>
+              <li><a href="docs/sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li>
+              <li><a href="docs/sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li>
+              <li><a href="docs/sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li>
+              <li><a href="docs/sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="cat-group" id="cat-app" data-cat="app">
+        <div class="cat-head"><span class="cat-icon">💻</span><div><h3>Application &amp; Code</h3><p>What you write on top of the platform — front-end rendering and HTTP, login and auth flows, design principles, and small coding concepts.</p></div></div>
+        <div class="grid">
+          <div class="card" style="--card-accent: var(--c-frontend); --card-accent-bg: var(--c-frontend-bg);">
+            <div class="icon-wrap">🖥️</div><h2>Front-End</h2><p class="count">9 pages</p>
+            <ul>
+              <li><a href="docs/01-front-end/frontend-roadmap.html">Front-End Roadmap</a></li>
+              <li><a href="docs/01-front-end/graphql/http/04-client-server-model.html">Client-Server Model, End to End</a></li>
+              <li><a href="docs/01-front-end/graphql/http/04.2-request-flow-interactive.html">Interactive Request Flow</a></li>
+              <li><a href="docs/01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a></li>
+              <li><a href="docs/01-front-end/graphql/http/01.02-rendering-types.html">Web Rendering &amp; Architecture</a></li>
+              <li><a href="docs/01-front-end/graphql/http/02.1-ssr-vs-csr.html">SSR vs CSR</a></li>
+              <li><a href="docs/01-front-end/graphql/http/02.1ssr-vs-csr-v.html">SSR vs CSR (v2)</a></li>
+              <li><a href="docs/01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a></li>
+              <li><a href="docs/01-front-end/system-design-roadmap.html">System Design Roadmap</a></li>
+            </ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-auth); --card-accent-bg: var(--c-auth-bg);">
+            <div class="icon-wrap">🔐</div><h2>Authentication</h2><p class="count">5 pages</p>
+            <ul>
+              <li><a href="docs/authentication/00-login-steps.html">Secure Login Implementation Steps</a></li>
+              <li><a href="docs/authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li>
+              <li><a href="docs/authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li>
+              <li><a href="docs/authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li>
+              <li><a href="docs/authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li>
+            </ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-dev); --card-accent-bg: var(--c-dev-bg);">
+            <div class="icon-wrap">🧭</div><h2>Dev Principles</h2><p class="count">1 page</p>
+            <ul><li><a href="docs/software-development-principles/01-sdp.html">Software Development Principles</a></li></ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-misc); --card-accent-bg: var(--c-misc-bg);">
+            <div class="icon-wrap">🧩</div><h2>Miscellaneous</h2><p class="count">3 pages</p>
+            <ul>
+              <li><a href="docs/mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li>
+              <li><a href="docs/mislanious/Memory-Profiling.html">Memory Profiling</a></li>
+              <li><a href="docs/mislanious/query-string.html">Query Strings</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="cat-group" id="cat-plan" data-cat="plan">
+        <div class="cat-head"><span class="cat-icon">🗺️</span><div><h3>Planning &amp; Projects</h3><p>Putting it together — requirements, MVP and API planning, gap analysis, and end-to-end project walkthroughs.</p></div></div>
+        <div class="grid">
+          <div class="card" style="--card-accent: var(--c-plan); --card-accent-bg: var(--c-plan-bg);">
+            <div class="icon-wrap">🗺️</div><h2>Planning &amp; Roadmap</h2><p class="count">5 pages</p>
+            <ul>
+              <li><a href="docs/path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li>
+              <li><a href="docs/path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li>
+              <li><a href="docs/path/01-b-MVP.html">MVP Planning</a></li>
+              <li><a href="docs/path/02-apis.html">API Planning</a></li>
+              <li><a href="docs/path/03-coverage-gap-analysis.html">Coverage Gap Analysis &amp; Prompts</a></li>
+            </ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-proj); --card-accent-bg: var(--c-proj-bg);">
+            <div class="icon-wrap">🏗️</div><h2>Project Walkthroughs</h2><p class="count">3 pages</p>
+            <ul>
+              <li><a href="docs/project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li>
+              <li><a href="docs/project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li>
+              <li><a href="docs/project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li>
+            </ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-overview); --card-accent-bg: var(--c-overview-bg);">
+            <div class="icon-wrap">📄</div><h2>Overview</h2><p class="count">1 page</p>
+            <ul><li><a href="index.html">Notes Overview</a></li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="resources">
+      <div class="two-col">
+        <div>
+          <div class="block-head"><h2>📎 Downloadable resources</h2></div>
     <div class="resource-list">
       <a href="docs/05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides (PDF)</a>
       <a href="docs/05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt.3 (PDF)</a>
@@ -629,10 +832,15 @@ a:hover { text-decoration: underline; }
       <a href="docs/sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a>
     </div>
 
-    <div class="section-title">Coming soon</div>
+        </div>
+        <div>
+          <div class="block-head"><h2>🚧 Coming soon</h2></div>
     <div class="soon-list">
       <span>🚧 Networking</span><span>🚧 Backend</span><span>🚧 Storage Fundamentals</span><span>🚧 API Design</span>
     </div>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
 
@@ -640,6 +848,8 @@ a:hover { text-decoration: underline; }
      Defines data only — does not touch the DOM, so it's safe alongside this
      page's own hand-authored markup. -->
 <script src="docs/assets/sitemap.js"></script>
+<!-- window.REVISION_CARDS — generated by scripts/build-revision-cards.js -->
+<script src="docs/assets/revision-cards.js"></script>
 <script>
   // ---- This week's reading target — standalone port of docs/assets/site-header.js's
   // renderWeeklyTarget(), scoped to this page. Shares localStorage keys with docs/
@@ -784,10 +994,247 @@ a:hover { text-decoration: underline; }
   })();
 </script>
 <script>
-  // mobile sidebar toggle
+  // ---- sidebar toggle: drawer on mobile, collapsible column on desktop.
+  // The homepage has its own category navigation, so the full page list starts
+  // hidden on desktop; the choice is remembered per viewer.
   const t = document.getElementById('menuToggle');
   const s = document.getElementById('sidebar');
-  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
+  const layout = document.querySelector('.layout');
+  const NAV_KEY = 'infraowl_home_nav';
+  const mobileMQ = window.matchMedia('(max-width: 860px)');
+  const isMobile = () => mobileMQ.matches;
+  function navOpen() { return isMobile() ? s.classList.contains('open') : !layout.classList.contains('nav-hidden'); }
+  function syncToggle() { if (t) t.setAttribute('aria-expanded', String(navOpen())); }
+  function closeDrawer() { s.classList.remove('open'); syncToggle(); }
+  // markup starts with .nav-hidden (no flash of the sidebar on load); reopen if remembered
+  try { if (localStorage.getItem(NAV_KEY) === 'shown') layout.classList.remove('nav-hidden'); } catch (e) {}
+  if (t) t.addEventListener('click', () => {
+    if (isMobile()) s.classList.toggle('open');
+    else {
+      layout.classList.toggle('nav-hidden');
+      try { localStorage.setItem(NAV_KEY, layout.classList.contains('nav-hidden') ? 'hidden' : 'shown'); } catch (e) {}
+    }
+    syncToggle();
+  });
+  // crossing the 860px breakpoint: drop a leftover drawer state and re-sync aria-expanded
+  const onBreakpoint = () => { if (!isMobile()) s.classList.remove('open'); syncToggle(); };
+  if (mobileMQ.addEventListener) mobileMQ.addEventListener('change', onBreakpoint);
+  else if (mobileMQ.addListener) mobileMQ.addListener(onBreakpoint);
+  // mobile drawer: tap outside or Esc closes it
+  document.addEventListener('click', e => {
+    if (isMobile() && s.classList.contains('open') && !e.target.closest('#sidebar, #menuToggle')) closeDrawer();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && isMobile() && s.classList.contains('open')) { closeDrawer(); if (t) t.focus(); }
+  });
+  syncToggle();
+
+  // ---- categories: which top-level group each SITE_MAP section belongs to ----
+  const CATEGORY = {
+    'Kubernetes': 'infra', 'Networking': 'infra', 'Traffic Management': 'infra', 'Caching & CDN': 'infra',
+    'Storage': 'infra', 'Web Servers': 'infra', 'Observability, Security & Ops': 'infra',
+    'Database': 'data', 'Distributed Database': 'data', 'Distributed Systems': 'data', 'Messaging & Queues': 'data',
+    'Front-End': 'app', 'Authentication': 'app', 'Dev Principles': 'app', 'Miscellaneous': 'app',
+    'Planning & Roadmap': 'plan', 'Project Walkthroughs': 'plan', 'Overview': 'plan'
+  };
+  const ACCENT = {
+    'Kubernetes': 'k8s', 'Front-End': 'frontend', 'Database': 'database', 'Authentication': 'auth',
+    'Distributed Systems': 'dist', 'Distributed Database': 'dist', 'Messaging & Queues': 'msg', 'Storage': 'storage',
+    'Caching & CDN': 'caching', 'Traffic Management': 'traffic', 'Networking': 'net',
+    'Observability, Security & Ops': 'obs', 'Web Servers': 'web', 'Dev Principles': 'dev',
+    'Planning & Roadmap': 'plan', 'Project Walkthroughs': 'proj', 'Miscellaneous': 'misc'
+  };
+  const SOURCE_LABEL = { interview: 'Interview answer', lead: 'Summary', intro: 'Key note' };
+  const esc = str => String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  // sitemap hrefs are plain paths; decode first so an already-encoded one isn't double-encoded
+  const pageUrl = href => { try { return 'docs/' + encodeURI(decodeURI(href)); } catch (e) { return 'docs/' + href; } };
+  function wireChips(box, onPick) {
+    if (!box) return;
+    box.addEventListener('click', e => {
+      const b = e.target.closest('.chip');
+      if (!b) return;
+      box.querySelectorAll('.chip').forEach(c => {
+        c.classList.toggle('active', c === b);
+        c.setAttribute('aria-pressed', String(c === b));
+      });
+      onPick(b.dataset.cat);
+    });
+  }
+
+  // ---- live stats from the site data ----
+  (function stats() {
+    const map = window.SITE_MAP, cards = window.REVISION_CARDS;
+    if (map) {
+      const hrefs = new Set();
+      map.sections.forEach(sec => sec.pages.forEach(p => { if (/\.html$/i.test(p.href)) hrefs.add(p.href); }));
+      document.getElementById('statPages').textContent = hrefs.size;
+      document.getElementById('statTopics').textContent = map.sections.length;
+      const res = map.sections.reduce((n, sec) => n + (sec.resources || []).length, 0);
+      if (res) document.getElementById('statDownloads').textContent = res;
+    }
+    if (cards) document.getElementById('statCards').textContent = cards.length;
+  })();
+
+  // ---- revision deck ----
+  (function revisionDeck() {
+    const grid = document.getElementById('revGrid');
+    const all = (window.REVISION_CARDS || []).slice();
+    const PAGE = 6;
+    const QUIZ_KEY = 'infraowl_quiz';
+    let cat = 'all', shown = PAGE, order = [];
+
+    // today's deck: a date-seeded shuffle, so the order is stable for the day
+    function seeded(seed) { return () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }; }
+    function shuffle(rand) {
+      order = all.slice();
+      for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+    }
+    const now = new Date();
+    shuffle(seeded(now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate())); // viewer-local day
+
+    function render() {
+      const list = order.filter(c => cat === 'all' || CATEGORY[c.section] === cat);
+      grid.innerHTML = list.slice(0, shown).map(c =>
+        `<article class="rev-card" style="--card-accent: var(--c-${ACCENT[c.section] || 'overview'})">
+          <div class="rev-meta"><span>${esc(c.icon)} ${esc(c.section)}</span><span class="rev-src">${SOURCE_LABEL[c.source] || ''}</span></div>
+          <h3>${esc(c.title)}</h3>
+          <p class="rev-text">${esc(c.text)}</p>
+          <button class="rev-reveal" type="button">Reveal answer</button>
+          <a class="rev-open" href="${esc(pageUrl(c.href))}">Open page →</a>
+        </article>`).join('') || '<p class="rev-empty">No revision cards in this category yet.</p>';
+      const more = document.getElementById('revMore');
+      more.hidden = shown >= list.length;
+      document.getElementById('revCount').textContent = `Showing ${Math.min(shown, list.length)} of ${list.length}`;
+    }
+    grid.addEventListener('click', e => {
+      const card = e.target.closest('.rev-card');
+      if (!card || !grid.classList.contains('quiz') || card.classList.contains('revealed')) return;
+      const btn = e.target.closest('.rev-reveal');
+      if (btn || e.target.closest('.rev-text')) {
+        card.classList.add('revealed');
+        // the button disappears once revealed — keep keyboard focus on the card
+        if (btn) card.querySelector('.rev-open').focus();
+      }
+    });
+    wireChips(document.getElementById('revChips'), c => { cat = c; shown = PAGE; render(); });
+    document.getElementById('revMore').addEventListener('click', () => { shown += PAGE; render(); });
+    document.getElementById('revShuffle').addEventListener('click', () => { shuffle(Math.random); shown = PAGE; render(); });
+    const quiz = document.getElementById('quizMode');
+    try { quiz.checked = localStorage.getItem(QUIZ_KEY) === '1'; } catch (e) {}
+    const applyQuiz = () => {
+      grid.classList.toggle('quiz', quiz.checked);
+      grid.querySelectorAll('.rev-card.revealed').forEach(c => c.classList.remove('revealed'));
+      try { localStorage.setItem(QUIZ_KEY, quiz.checked ? '1' : '0'); } catch (e) {}
+    };
+    quiz.addEventListener('change', applyQuiz);
+    render();
+    applyQuiz();
+  })();
+
+  // ---- browse by category: filter chips + collapse long topic lists ----
+  (function browse() {
+    const groups = document.querySelectorAll('.cat-group');
+    wireChips(document.getElementById('catChips'), c => {
+      groups.forEach(g => { g.hidden = c !== 'all' && g.dataset.cat !== c; });
+    });
+    // "Jump to" links should always land on a visible group
+    document.querySelectorAll('.jump a[href^="#cat-"]').forEach(a => a.addEventListener('click', () => {
+      const all = document.querySelector('#catChips .chip[data-cat="all"]');
+      if (all && !all.classList.contains('active')) all.click();
+    }));
+    document.querySelectorAll('.cat-group .card ul').forEach(ul => {
+      const n = ul.children.length;
+      if (n <= 6) return;
+      ul.classList.add('collapsed');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'more';
+      btn.textContent = `Show all ${n} ▾`;
+      btn.setAttribute('aria-expanded', 'false');
+      btn.addEventListener('click', () => {
+        const collapsed = ul.classList.toggle('collapsed');
+        btn.textContent = collapsed ? `Show all ${n} ▾` : 'Show less ▴';
+        btn.setAttribute('aria-expanded', String(!collapsed));
+      });
+      ul.after(btn);
+    });
+  })();
+
+  // ---- search: page titles, section names and revision-card text ----
+  (function search() {
+    const input = document.getElementById('siteSearch');
+    const box = document.getElementById('searchResults');
+    const map = window.SITE_MAP;
+    if (!input || !map) return;
+    const snip = {};
+    (window.REVISION_CARDS || []).forEach(c => { snip[c.href] = c.text; });
+    const index = [], seen = new Set();
+    map.sections.forEach(sec => sec.pages.forEach(p => {
+      if (seen.has(p.href)) return;
+      seen.add(p.href);
+      index.push({ href: p.href, title: p.title, section: sec.name, icon: sec.icon || '', text: snip[p.href] || '' });
+    }));
+    let sel = -1;
+    // highlight on the raw text, escaping each piece — matching after esc() would put
+    // <mark> inside entities (a search for "amp" or "lt" broke "&amp;" / "&lt;")
+    const hl = (str, q) => String(str).split(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'i'))
+      .map((part, i) => i % 2 ? '<mark>' + esc(part) + '</mark>' : esc(part)).join('');
+    function show(open) {
+      box.hidden = !open;
+      input.setAttribute('aria-expanded', String(open));
+      if (!open) input.removeAttribute('aria-activedescendant');
+    }
+    function run() {
+      const q = input.value.trim();
+      sel = -1;
+      if (!q) { box.replaceChildren(); show(false); return; }
+      const terms = q.toLowerCase().split(/\s+/);
+      const hits = index.map(p => {
+        const t = p.title.toLowerCase(), all = (p.title + ' ' + p.section + ' ' + p.text).toLowerCase();
+        if (!terms.every(w => all.includes(w))) return null;
+        return { p, score: terms.reduce((n, w) => n + (t.includes(w) ? 3 : 0) + (p.section.toLowerCase().includes(w) ? 1 : 0), 0) };
+      }).filter(Boolean).sort((a, b) => b.score - a.score).slice(0, 12);
+      const first = terms[0];
+      box.innerHTML = hits.length ? hits.map(({ p }, n) => {
+        let s = '';
+        const i = p.text.toLowerCase().indexOf(first);
+        if (i >= 0) {
+          const from = Math.max(0, i - 40), to = i + 110;
+          s = (from > 0 ? '…' : '') + p.text.slice(from, to) + (to < p.text.length ? '…' : '');
+        }
+        return `<a id="sr-${n}" href="${esc(pageUrl(p.href))}"><span class="sr-title">${hl(p.title, first)}</span>` +
+          `<span class="sr-meta">${esc(p.icon)} ${esc(p.section)}</span>` +
+          (s ? `<span class="sr-snip">${hl(s, first)}</span>` : '') + '</a>';
+      }).join('') : '<div class="sr-empty">No pages match “' + esc(q) + '”.</div>';
+      show(true);
+    }
+    input.addEventListener('input', run);
+    input.addEventListener('focus', run);
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { input.value = ''; run(); input.blur(); return; }
+      const links = box.hidden ? [] : box.querySelectorAll('a');
+      if (!links.length) return;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const down = e.key === 'ArrowDown';
+        sel = sel < 0 ? (down ? 0 : links.length - 1) : (sel + (down ? 1 : -1) + links.length) % links.length;
+        links.forEach((a, i) => a.classList.toggle('sel', i === sel));
+        input.setAttribute('aria-activedescendant', links[sel].id);
+        links[sel].scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        location.href = links[Math.max(sel, 0)].href;
+      }
+    });
+    document.addEventListener('click', e => { if (!e.target.closest('.search')) show(false); });
+    document.addEventListener('keydown', e => {
+      const a = document.activeElement;
+      if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (a && (/INPUT|TEXTAREA|SELECT/.test(a.tagName) || a.isContentEditable)) return;
+      e.preventDefault();
+      input.focus();
+    });
+  })();
 
   // ---- Daily revision picker ----
   const REVISION_PAGES = [
@@ -835,7 +1282,9 @@ a:hover { text-decoration: underline; }
 
   (function initRevision() {
     const today = new Date().toISOString().slice(0, 10);
-    const stored = JSON.parse(localStorage.getItem('sdRevision') || '{}');
+    let stored;
+    // blocked / corrupt storage: skip the banner instead of throwing
+    try { stored = JSON.parse(localStorage.getItem('sdRevision') || '{}') || {}; } catch (e) { return; }
 
     // dismissed today? don't show again
     if (stored.date === today && stored.dismissed) return;
@@ -851,7 +1300,7 @@ a:hover { text-decoration: underline; }
       pick = pool[Math.floor(Math.random() * pool.length)];
 
       const recent = (stored.recent || []).concat(pick.url).slice(-Math.min(10, REVISION_PAGES.length - 1));
-      localStorage.setItem('sdRevision', JSON.stringify({ date: today, pageUrl: pick.url, recent, dismissed: false }));
+      try { localStorage.setItem('sdRevision', JSON.stringify({ date: today, pageUrl: pick.url, recent, dismissed: false })); } catch (e) {}
     }
 
     const banner = document.getElementById('revisionBanner');
@@ -860,10 +1309,12 @@ a:hover { text-decoration: underline; }
     banner.classList.add('show');
 
     document.getElementById('revisionClose').addEventListener('click', () => {
-      const cur = JSON.parse(localStorage.getItem('sdRevision') || '{}');
-      cur.dismissed = true;
-      localStorage.setItem('sdRevision', JSON.stringify(cur));
       banner.classList.remove('show');
+      try {
+        const cur = JSON.parse(localStorage.getItem('sdRevision') || '{}') || {};
+        cur.dismissed = true;
+        localStorage.setItem('sdRevision', JSON.stringify(cur));
+      } catch (e) {}
     });
   })();
 </script>

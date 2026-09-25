@@ -46,6 +46,19 @@
         Follow top to bottom — each stage assumes the one before it. Tick a stage's box once you've
         genuinely covered it; progress is saved in this browser.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is the Kubernetes Request &amp; Access Flow?</h2>
+      <p>The Kubernetes request and access flow is the fixed, sequential pipeline that every API request passes through inside kube-apiserver before it can read or change cluster state: <strong>authentication → authorization → mutating admission → schema validation → validating admission → persistence to etcd</strong>. It exists because the API server is the only way to change the cluster — without a gate at that one door, any client that can reach the API could create privileged Pods, read Secrets, or delete workloads.</p>
+      <p><strong>Authentication</strong> answers "who are you?" using client certificates, bearer tokens (such as ServiceAccount tokens), or OIDC; a request carrying an invalid credential is rejected with <code>401</code>, while a request with no credential that any authenticator recognises is treated as <code>system:anonymous</code> (group <code>system:unauthenticated</code>) if anonymous auth is enabled, or rejected with <code>401</code> if it is not (<a href="#stage-1">Stage 1</a>). <strong>Authorization</strong> answers "are you allowed to do this verb on this resource?" — usually through RBAC, where Roles/ClusterRoles list permissions and RoleBindings/ClusterRoleBindings grant them; a denial returns <code>403</code> (<a href="#stage-2">Stage 2</a>, <a href="#stage-3">Stage 3</a>). RBAC is deny-by-default and additive only — there are no deny rules; a request is allowed if any binding grants it.</p>
+      <p><strong>Admission control</strong> answers "should this particular change be allowed, and does it need adjusting?" Mutating admission runs first and may change the object (for example, injecting a sidecar or default values); validating admission runs next and can only accept or reject (for example, Pod Security Admission blocking a privileged Pod). Between the two, the mutated object is schema-validated; after validating admission passes, it is written to etcd (<a href="#stage-4">Stage 4</a>, <a href="#stage-5">Stage 5</a>). This does NOT apply to reads: admission runs only on writes (create, update, delete, connect), never on get, list, or watch.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Every request to the Kubernetes API goes through the same pipeline in the API server. First authentication works out who the caller is, then authorization — usually RBAC — checks whether that identity may perform that verb on that resource, then mutating admission controllers can change the object, the object is schema-validated, validating admission controllers can reject it, and finally it is saved to etcd. Admission only runs on writes, not reads. Failing authentication gives a 401, failing authorization gives a 403."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Does Kubernetes have a User object that stores users and passwords?</strong></p>
+      <p><strong>A:</strong> No. Kubernetes has no User resource for normal human users — it trusts an external identity source. A user is just the name the authenticator extracts from the credential, such as the Common Name in a client certificate signed by the cluster CA, or a claim in an OIDC token. RBAC then binds permissions to that name as a string. The only accounts Kubernetes stores itself are <strong>ServiceAccounts</strong>, which are meant for workloads inside the cluster, not for people. See <a href="#stage-1">Stage 1 — Authentication</a>.</p>
+
       <div class="sd-progress" id="raProgress">
         <div class="sd-progress-bar"><span id="raBar"></span></div>
         <p class="sd-progress-text"><strong id="raCount">0</strong> / <span id="raTotal">6</span> stages covered
@@ -111,6 +124,8 @@
       <p class="stage-note">Concrete worked example of a service-account token authenticating an in-cluster
         client, and of a client certificate authenticating <code>kubectl</code>, in
         <a href="05-api-request-flow.html">05. API Request Flow</a>.</p>
+
+      <p class="stage-note"><strong>How a Pod authenticates: projected ServiceAccount tokens.</strong> A workload proves its identity to the API server with a <strong>ServiceAccount token</strong>. On current clusters, the kubelet requests this token through the <code>TokenRequest</code> API and mounts it into every container (unless disabled) as a projected volume at <code>/var/run/secrets/kubernetes.io/serviceaccount/token</code>. The token is a signed JWT that is <em>short-lived</em> (about an hour by default — the kubelet requests about 1 hour and refreshes at 80% of the lifetime, but by default the API server silently extends these kubelet-issued tokens to 1 year (<code>--service-account-extend-token-expiration</code>) so old clients that never re-read the file keep working), <em>audience-bound</em> (valid only for the intended audience, the API server by default), and bound to the Pod — when the Pod is deleted, the token stops being valid. The kubelet rotates it before it expires, so client libraries must re-read the file rather than cache it forever. Projected vs. legacy tokens is the distinction to name: before v1.24, Kubernetes auto-created a long-lived, never-expiring token in a Secret for every ServiceAccount; since v1.24 those Secrets are no longer auto-created (you can still create one by hand, but shouldn't need to). The authenticated identity is <code>system:serviceaccount:&lt;namespace&gt;:&lt;name&gt;</code> — for example <code>system:serviceaccount:frontend:default</code> — and that exact string is what an RBAC RoleBinding subject refers to.</p>
 
       <h2 id="stage-2"><input type="checkbox" data-stage="2"> Stage 2 — Authorization: Can You Do This?</h2>
       <p>Authorization takes the identity Stage 1 established and answers a second, separate question —
@@ -185,19 +200,23 @@
         auto-mounted <code>default</code> ServiceAccount, reaching for ClusterRoleBinding too eagerly) — in
         <a href="06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a>.</p>
 
+      <p class="stage-note"><strong>Auditing &amp; RBAC privilege-escalation gotchas.</strong> <strong>Audit logging</strong> is the API server's record of who did what: when configured with an audit policy (<code>--audit-policy-file</code>), it writes one event per request stage with the user, verb, resource, and response code — this, not etcd, is where you answer "who deleted that Deployment?". RBAC also has well-known indirect paths to more privilege: permission to <code>create pods</code> in a namespace effectively grants read access to every Secret in that namespace, because a Pod can mount any Secret there (or run as any ServiceAccount there). The verbs <code>escalate</code> (edit a Role to include permissions you don't have), <code>bind</code> (bind a Role you don't hold), and <code>impersonate</code> (act as another user, group, or ServiceAccount) are effectively admin-level and should be granted rarely. To check what an identity can actually do, use impersonation from an admin account:</p>
+      <pre><code>kubectl auth can-i list secrets -n frontend --as=system:serviceaccount:frontend:default</code></pre>
+
       <h2 id="stage-4"><input type="checkbox" data-stage="4"> Stage 4 — Admission Control: Should This Change Be Allowed?</h2>
       <p>By the time a request reaches Admission Control, Kubernetes already knows who's asking (Stage 1)
         and that they're generally permitted to do this kind of thing (Stages 2–3). Admission control asks a
         narrower, more specific question: <strong>should this particular object, exactly as submitted, be
         allowed to exist?</strong> It runs only on write operations (create, update, delete, connect) —
         never on reads — and it sits after authorization but before the object is validated and persisted to
-        etcd.</p>
+        etcd (more precisely, schema validation runs between mutating and validating admission).</p>
       <div class="mermaid">flowchart LR
     Authn["Authentication"] --> Authz["Authorization"]
     Authz --> M["Mutating admission<br/>(may rewrite the object)"]
     M --> V["Validating admission<br/>(accept or reject, no changes)"]
     V --> Persist["API validation → etcd"]
 </div>
+      <p class="stage-note"><strong>Order clarification:</strong> this diagram simplifies the sequence. In kube-apiserver, schema (object) validation actually runs <em>between</em> the two admission phases: authentication → authorization → mutating admission → schema validation → validating admission → persist to etcd. So validating admission always sees an object that is already schema-valid.</p>
       <p>Admission runs in two ordered phases, and the order is deliberate — anything mutation adds must
         still pass validation afterward:</p>
       <ul>
@@ -241,6 +260,7 @@
     E-->>A: Ack
     A-->>U: 201 Created
 </div>
+      <p class="stage-note"><strong>Order clarification:</strong> the "API validation — schema/object rules" step above actually happens right after mutating admission and before validating admission; the real order is authenticate → authorize → mutating admission → schema validation → validating admission → persist.</p>
       <p>Two details worth stating plainly, because they're easy to blur together:</p>
       <ul>
         <li>A <strong>read</strong> request (<code>kubectl get pods -n frontend</code>) walks Authentication

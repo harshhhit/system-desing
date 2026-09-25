@@ -47,6 +47,19 @@
         journey through all of these pieces, see <a href="09-data-plane.html">Data Plane Deep Dive</a> —
         this roadmap is the checklist companion to it, not a replacement.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is the Kubernetes Data Plane?</h2>
+      <p>The Kubernetes data plane is the set of worker Nodes, and the agents running on each of them, that actually run containers and carry their traffic. It exists because the control plane only makes decisions and records state — something on every machine has to turn "this Pod is bound to this Node" into running processes, network interfaces, and mounted disks (<a href="#stage-0">Stage 0</a>).</p>
+      <p>The central agent is the <strong>kubelet</strong>, which watches the API server for Pods bound to its Node and makes them real (<a href="#stage-1">Stage 1</a>). It does not do the low-level work itself; it works through three plug-in interfaces. The kubelet uses the <strong>CRI</strong> (Container Runtime Interface) to have a runtime such as containerd pull images, create the Pod sandbox, and start containers (<a href="#stage-2">Stage 2</a>) — the runtime in turn invokes the <strong>CNI</strong> (Container Network Interface) plugin to give the Pod an IP address (<a href="#stage-3">Stage 3</a>) — and the kubelet uses the <strong>CSI</strong> (Container Storage Interface) node plugin to mount volumes the control plane has already attached to the Node (<a href="#stage-4">Stage 4</a>). Alongside it, <strong>kube-proxy</strong> programs each Node's iptables/IPVS (or nftables) rules so Service IPs reach the right Pods (<a href="#stage-5">Stage 5</a>).</p>
+      <p>The kubelet also reports back: it updates the Node's status and renews a Node heartbeat Lease. If those heartbeats stop, the node controller marks the Node <code>NotReady</code>, taints it, and after a grace period the Pods on it are evicted and recreated elsewhere by their controllers (<a href="#stage-6">Stage 6</a>, <a href="#stage-7">Stage 7</a>).</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"The data plane is the worker Nodes that actually run workloads. On each Node the kubelet watches for Pods assigned to it and runs them by calling the container runtime through CRI, setting up networking through CNI, and mounting storage through CSI. kube-proxy makes Service IPs route to the right Pods. The kubelet sends heartbeats back to the control plane, and if a Node stops reporting, its Pods are eventually evicted and rescheduled elsewhere."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If a worker Node loses contact with the control plane, are its Pods immediately moved to another Node?</strong></p>
+      <p><strong>A:</strong> No. First the node controller must notice missed heartbeats (<code>node-monitor-grace-period</code>, about 40–50 seconds by default — 40s before v1.32, 50s since) and mark the Node <code>NotReady</code>/<code>Unreachable</code>, which adds a taint; Pods by default tolerate that taint for 300 seconds, so eviction starts roughly 5–6 minutes later. Meanwhile the containers on that Node usually keep running, because the kubelet and runtime do not need the control plane to keep them alive. Also, "moved" is not quite right: Pods are never migrated — the old Pod objects are deleted and the owning controller (for example a ReplicaSet) creates brand-new Pods that the scheduler places elsewhere. Bare Pods with no controller are not recreated at all. See <a href="#stage-6">Stage 6 — Node Health</a>.</p>
+
       <div class="sd-progress" id="dpProgress">
         <div class="sd-progress-bar"><span id="dpBar"></span></div>
         <p class="sd-progress-text"><strong id="dpCount">0</strong> / <span id="dpTotal">8</span> stages covered
@@ -77,6 +90,16 @@
         it delegates each of those to a separate interface (CRI, CNI, CSI respectively, covered next),
         which is what lets Kubernetes support many different runtimes, network plugins, and storage
         backends without changing the kubelet's own code.</p>
+
+      <h3 id="probes">Probes: liveness vs. readiness vs. startup</h3>
+      <p>A <strong>probe</strong> is a periodic health check that the kubelet runs against a container — an HTTP GET, a TCP connect, a gRPC health call, or a command run inside the container. Probes exist because "the process is running" is not the same as "the application is working": a web server can be deadlocked with its process still alive, or still warming a cache and not yet able to answer requests. Kubernetes defines three probes, and the difference between them is <em>what the kubelet does when one fails</em>:</p>
+      <ul>
+        <li><strong>Liveness probe</strong> — "is this container broken beyond recovery?" On failure (after <code>failureThreshold</code> consecutive failures), the kubelet kills and restarts the container. If it keeps failing, the restarts back off exponentially and the Pod shows <code>CrashLoopBackOff</code>.</li>
+        <li><strong>Readiness probe</strong> — "should this container receive traffic right now?" On failure, the kubelet marks the Pod not Ready, so the EndpointSlice controller removes it from its Services' endpoints and kube-proxy stops sending it traffic. The container is <em>not</em> restarted; once the probe passes again, the Pod is added back.</li>
+        <li><strong>Startup probe</strong> — "has this slow-starting container finished starting?" While it is configured and has not yet succeeded, the liveness and readiness probes are held off. This lets a legacy app take, say, two minutes to boot without a short liveness timeout killing it mid-start.</li>
+      </ul>
+      <p>Concrete example: a Java service with a readiness probe on <code>/ready</code> and a liveness probe on <code>/healthz</code>. During a rolling update, the new Pod receives no traffic until <code>/ready</code> returns 200; if the JVM later deadlocks and <code>/healthz</code> times out three times in a row, the kubelet restarts that one container.</p>
+      <p class="stage-note"><strong>Gotcha — liveness vs. readiness is not interchangeable:</strong> a liveness probe that checks a shared dependency (for example, "can I reach the database?") is dangerous. If the database has a brief outage, every Pod's liveness probe fails at once, the kubelet restarts every container at the same moment, and a short DB blip becomes a full outage plus a restart storm. Dependency checks belong in the readiness probe (or nowhere); the liveness probe should check only the container's own health.</p>
 
       <h2 id="stage-2"><input type="checkbox" data-stage="2"> Stage 2 — Container Runtime &amp; CRI</h2>
       <p>The <strong>Container Runtime Interface (CRI)</strong> is a gRPC API that lets the kubelet talk
@@ -155,6 +178,8 @@
         control-plane component, but everything it's reacting to — the kubelet's own status/lease
         updates — originates here, on the data plane.</p>
 
+      <p class="stage-note"><strong>Resource requests/limits, QoS &amp; node-pressure eviction.</strong> A container's <strong>request</strong> is the amount of CPU/memory the scheduler reserves for it — it is used for placement. Its <strong>limit</strong> is the ceiling the kubelet enforces through Linux cgroups at run time. Requests vs. limits is the distinction: requests decide <em>where</em> a Pod can run, limits decide <em>how much</em> it may use once running. Exceeding the limit has different effects per resource: over the memory limit, the kernel kills the process and the container shows <code>OOMKilled</code>; over the CPU limit, the container is only <em>throttled</em> (slowed down), never killed. From requests and limits, Kubernetes derives a <strong>QoS class</strong>: <code>Guaranteed</code> (every container has requests equal to limits for CPU and memory), <code>Burstable</code> (some requests or limits set), and <code>BestEffort</code> (none set). When a Node runs low on a resource and crosses an eviction threshold such as <code>memory.available&lt;100Mi</code>, the kubelet evicts Pods to protect the Node, ranking them first by whether their usage exceeds their requests, then by Pod priority, then by how far usage is above requests — in practice BestEffort and over-request Burstable Pods go first, and Guaranteed Pods (whose usage can never exceed their requests) go last. Related, and often confused: <strong>cordon vs. drain</strong> — <code>kubectl cordon</code> only marks a Node unschedulable (existing Pods keep running), while <code>kubectl drain</code> cordons it and then evicts its Pods through the Eviction API, which respects PodDisruptionBudgets (a drain waits rather than violate a PDB).</p>
+
       <h2 id="stage-7"><input type="checkbox" data-stage="7"> Stage 7 — Putting It Together: A Pod's Full Journey</h2>
       <p>Tying every stage above into one sequence: a Pod gets assigned to a Node → the kubelet asks the
         CRI to pull the image and start the container → the kubelet asks the CNI plugin to attach
@@ -163,6 +188,7 @@
         forwarding rules → the kubelet keeps reporting Node/Pod status and renewing its Lease the whole
         time, which is what lets the control plane trust that everything above is still actually
         running.</p>
+      <p class="stage-note"><strong>Precision note:</strong> the sequence above says "the kubelet asks the CNI plugin" as shorthand. Strictly, the kubelet asks the container runtime (via CRI) to create the Pod sandbox, and it is the <em>runtime</em> (e.g. containerd) that invokes the CNI plugin to set up networking and assign the IP. Likewise, remote disks are attached by the control plane (attach/detach controller + CSI external-attacher) first; the kubelet then asks the CSI node plugin to mount them.</p>
       <p>For the fully worked example — an actual <code>kubectl create deployment</code> and
         <code>kubectl expose</code> walked step by step, plus a sequence diagram — see
         <a href="09-data-plane.html">Data Plane Deep Dive</a>.</p>
