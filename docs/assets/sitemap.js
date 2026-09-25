@@ -2,8 +2,8 @@
    and by index.html to render the topic-card grid. */
 window.SITE_MAP = {
   "siteId": "e1",
-  "siteName": "System Design Notes",
-  "siteIcon": "📚",
+  "siteName": "Infra Owl",
+  "siteIcon": "🦉",
   "home": "index.html",
   "parentHome": "index.html",
   "sections": [

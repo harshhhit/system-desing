@@ -16,6 +16,9 @@
      [data-resource-list]   -> downloadable-resource chips (index pages)
      [data-stat-topics] / [data-stat-pages] -> counts (index pages)
      [data-weekly-target]   -> "this week's reading target" widget (homepage)
+     .sidebar               -> a search box that filters the nav
+     content <h2>s (3+)     -> an "On this page" contents list
+     end of the content     -> previous / next page cards
      every <p> (and every substantial <li>) in the content area -> a "🗒️+"
                                             note marker, or the note you already saved there
 
@@ -98,6 +101,27 @@
     try { activePath = new URL(root + entry.href, window.location.href).pathname; } catch (e) {}
   }
 
+  /* ---- sticky strip: the coverage tracker and Listen bar live in here.
+     It sits right AFTER #site-header-root (not inside it) so that
+     position: sticky is bounded by <body> and the strip stays pinned while
+     the page scrolls — a sticky child of the short header mount would scroll
+     away with it. Its measured height is published as --sd-sticky-h so the
+     desktop sidebar, anchor jumps and page-level sticky boxes sit below it. ---- */
+  var stickyStrip = null;
+  if (mount) {
+    stickyStrip = document.createElement("div");
+    stickyStrip.className = "sd-sticky";
+    mount.insertAdjacentElement("afterend", stickyStrip);
+  }
+  function syncStickyHeight() {
+    var h = stickyStrip ? stickyStrip.offsetHeight : 0;
+    document.documentElement.style.setProperty("--sd-sticky-h", h + "px");
+  }
+  if (stickyStrip) {
+    if (typeof window.ResizeObserver === "function") new window.ResizeObserver(syncStickyHeight).observe(stickyStrip);
+    else window.addEventListener("resize", syncStickyHeight);
+  }
+
   /* ---- top band: brand + home + today's revision ---- */
   function renderTopBand() {
     if (!mount) return;
@@ -109,7 +133,7 @@
     var brand = document.createElement("a");
     brand.className = "sd-brand";
     brand.href = root + (map.home || "index.html");
-    brand.textContent = (map.siteIcon || "📚") + " " + (map.siteName || "System Design Notes");
+    brand.textContent = (map.siteIcon || "📚") + " " + (map.siteName || "Notes");
     band.appendChild(brand);
 
     var home = document.createElement("a");
@@ -160,7 +184,7 @@
       sidebar.insertBefore(sidebarBrand, sidebar.firstChild);
     }
     sidebarBrand.href = root + (map.home || "index.html");
-    sidebarBrand.textContent = map.siteName || "System Design Notes";
+    sidebarBrand.textContent = map.siteName || "Notes";
 
     var nav = sidebar.querySelector("nav");
     if (!nav) { nav = document.createElement("nav"); sidebar.appendChild(nav); }
@@ -229,6 +253,55 @@
     });
   }
 
+  /* ---- mobile nav drawer: below 860px the .sd-study-sidebar becomes an
+     off-canvas drawer (CSS) opened by a floating "☰ Menu" button, so the
+     page content comes first instead of ~100 sidebar links. Legacy .layout
+     pages already have their own top-bar ☰ toggle, so they're left alone. ---- */
+  function renderNavDrawer() {
+    // the sidebar comes after this script in the page, so wait for it
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", renderNavDrawer, { once: true });
+      return;
+    }
+    var sidebar = document.querySelector(".sd-study-sidebar");
+    if (!sidebar) return;
+    var body = document.body;
+
+    var fab = document.createElement("button");
+    fab.type = "button";
+    fab.className = "sd-nav-fab";
+    fab.setAttribute("aria-label", "Open navigation");
+    fab.setAttribute("aria-expanded", "false");
+    fab.textContent = "☰ Menu";
+
+    var backdrop = document.createElement("div");
+    backdrop.className = "sd-nav-backdrop";
+
+    function setOpen(open) {
+      body.classList.toggle("sd-nav-open", open);
+      fab.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) {
+        var active = sidebar.querySelector("nav a.active");
+        if (active) { try { active.scrollIntoView({ block: "center" }); } catch (e) {} }
+      }
+    }
+    fab.addEventListener("click", function () { setOpen(!body.classList.contains("sd-nav-open")); });
+    backdrop.addEventListener("click", function () { setOpen(false); });
+    sidebar.addEventListener("click", function (ev) { if (ev.target.closest("a")) setOpen(false); });
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape" && body.classList.contains("sd-nav-open")) { setOpen(false); fab.focus(); }
+    });
+    if (window.matchMedia) {
+      var mq = window.matchMedia("(min-width: 861px)");
+      var onWide = function () { if (mq.matches) setOpen(false); };
+      if (mq.addEventListener) mq.addEventListener("change", onWide);
+      else if (mq.addListener) mq.addListener(onWide);
+    }
+
+    body.appendChild(backdrop);
+    body.appendChild(fab);
+  }
+
   /* ---- coverage tracker: a sticky "mark covered" bar on every SITE_MAP page,
      plus ✓ marks in the sidebar. State is per-viewer in localStorage. ---- */
   var COVERED_KEY = "sdnotes_covered_" + map.siteId;
@@ -248,8 +321,14 @@
   }
   function markCoveredLinks() {
     var cov = readCovered();
-    document.querySelectorAll(".sidebar nav a[data-href]").forEach(function (a) {
-      a.classList.toggle("covered", cov[a.dataset.href] === true);
+    // baked sidebar links carry no data-href, so match them by resolved path
+    var byPath = {};
+    allMapPages().forEach(function (p) {
+      try { byPath[new URL(root + p.href, window.location.href).pathname] = p.href; } catch (e) {}
+    });
+    document.querySelectorAll(".sidebar nav a").forEach(function (a) {
+      var href = a.dataset.href || byPath[a.pathname];
+      if (href) a.classList.toggle("covered", cov[href] === true);
     });
   }
   function currentSection() {
@@ -261,7 +340,7 @@
     return found;
   }
   function renderCoverageTracker() {
-    if (!mount || !entry) return;
+    if (!stickyStrip || !entry) return;
     var sec = currentSection();
     var all = allMapPages();
 
@@ -306,7 +385,8 @@
       paint();
     });
     paint();
-    mount.appendChild(box);
+    stickyStrip.appendChild(box);
+    syncStickyHeight();
   }
 
   /* ---- weekly reading target: a homepage-only widget ([data-weekly-target]).
@@ -470,6 +550,7 @@
     var out = [];
     Array.prototype.forEach.call(container.querySelectorAll(sel), function (el) {
       if (el.closest("[data-breadcrumb]")) return;               // skip the nav trail
+      if (el.closest("[data-sd-ui]")) return;                    // injected UI (contents, pager)
       for (var k = 0; k < taken.length; k++) {
         if (taken[k].contains(el)) return;                       // already inside a chunk
       }
@@ -487,7 +568,7 @@
       document.addEventListener("DOMContentLoaded", renderReadAloud, { once: true });
       return;
     }
-    if (!mount) return;
+    if (!stickyStrip) return;
     var synth = window.speechSynthesis;
     if (!synth || typeof window.SpeechSynthesisUtterance === "undefined") return;
 
@@ -591,7 +672,8 @@
       activeEl = el;
       el.classList.add("sd-tts-active");
       var r = el.getBoundingClientRect();
-      if (r.top < 60 || r.bottom > (window.innerHeight || 0) - 20) {
+      var top = (stickyStrip ? stickyStrip.offsetHeight : 0) + 20;
+      if (r.top < top || r.bottom > (window.innerHeight || 0) - 20) {
         try { el.scrollIntoView({ block: "center", behavior: "smooth" }); }
         catch (e) { el.scrollIntoView(); }
       }
@@ -651,7 +733,8 @@
     window.addEventListener("pagehide", function () { try { synth.cancel(); } catch (e) {} });
 
     setLabel();
-    mount.appendChild(bar);
+    stickyStrip.appendChild(bar);
+    syncStickyHeight();
   }
 
   /* ---- inline notes: a "🗒️+" marker next to every <p> in the content
@@ -659,10 +742,12 @@
      (short one-line items like "Pods" or "kubectl" don't get one — the
      paragraph is the base unit, not every line). Click it to write a note;
      it's pinned right after that block until edited or deleted. Notes are
-     keyed by page href + a fingerprint of the block's own text (its index in
-     the page plus a hash of its text), so
-     a note stays attached to the right spot even as other content is added
-     elsewhere on the page. Purely per-viewer, localStorage only — there is
+     keyed by page href + a hash of the block's own text (plus "#2", "#3"…
+     when the same text appears more than once on the page), so a note stays
+     attached to the right block even as other content is added or removed
+     elsewhere on the page. Older notes were keyed "<index>|<hash>" — which
+     broke whenever a block was inserted above them — and are migrated to
+     the new key the first time their page is opened. Purely per-viewer, localStorage only — there is
      no server, so notes live only in the browser they were written in.
      Runs after renderReadAloud() so its markers/cards are never picked up as
      text to speak. ---- */
@@ -693,6 +778,7 @@
     var blocks = [];
     Array.prototype.forEach.call(container.querySelectorAll("p,li"), function (el) {
       if (el.closest("[data-breadcrumb]") || el.closest("[data-page-subtitle]")) return;
+      if (el.closest("[data-sd-ui]")) return;
       if (el.closest(".sd-note-card") || el.closest(".sd-note-form")) return;
       var text = (el.textContent || "").replace(/\s+/g, " ").trim();
       if (text.length < 2) return;
@@ -775,11 +861,279 @@
 
     var store = readNotes();
     var pageNotes = store[pageKey] || {};
+    var LEGACY_ID = /^\d+\|/;
+    var seen = {};
+    var migrated = false;
+    function legacyFor(i, h) {
+      if (pageNotes[i + "|" + h]) return i + "|" + h;           // block hasn't moved
+      var suffix = "|" + h, found = null;
+      Object.keys(pageNotes).forEach(function (k) {            // block moved: same text, other index
+        if (!found && LEGACY_ID.test(k) && k.slice(-suffix.length) === suffix) found = k;
+      });
+      return found;
+    }
+    var ids = blocks.map(function (block) {
+      var h = hashStr(block.text);
+      seen[h] = (seen[h] || 0) + 1;
+      return seen[h] === 1 ? h : h + "#" + seen[h];
+    });
     blocks.forEach(function (block, i) {
-      var id = i + "|" + hashStr(block.text);
+      var id = ids[i];
+      if (pageNotes[id]) return;
+      var old = legacyFor(i, hashStr(block.text));
+      if (old) { pageNotes[id] = pageNotes[old]; delete pageNotes[old]; migrated = true; }
+    });
+    if (migrated) { store[pageKey] = pageNotes; writeNotes(store); }
+    blocks.forEach(function (block, i) {
+      var id = ids[i];
       var node = pageNotes[id] ? buildCard(block.el, id, pageNotes) : buildMarker(block.el, id, pageNotes);
       place(block.el, node);
     });
+  }
+
+  /* ---- sidebar search: a filter box above the sidebar nav. Typing narrows
+     the nav to links whose title — or section / group name — contains every
+     typed word, opening the groups that hold a match and hiding empty
+     sections. Enter opens the first match, Esc clears; "/" anywhere on the
+     page focuses the box (opening the mobile drawer first). Runtime-only:
+     the box sits outside the baked <nav>, so regen-sidebars.js never sees it. ---- */
+  function renderNavSearch() {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", renderNavSearch, { once: true });
+      return;
+    }
+    var sidebar = document.querySelector(".sidebar");
+    var nav = sidebar && sidebar.querySelector("nav");
+    if (!nav) return;
+
+    var box = document.createElement("div");
+    box.className = "sd-nav-search";
+    var input = document.createElement("input");
+    input.type = "search";
+    input.placeholder = "Search pages…   /";
+    input.setAttribute("aria-label", "Search pages");
+    input.autocomplete = "off";
+    box.appendChild(input);
+    var empty = document.createElement("p");
+    empty.className = "sd-nav-empty";
+    empty.textContent = "No pages match.";
+    empty.hidden = true;
+    box.appendChild(empty);
+    sidebar.insertBefore(box, nav);
+
+    // split the nav into per-section segments: an <h3> plus the blocks under it
+    var segs = [], cur = null;
+    Array.prototype.forEach.call(nav.children, function (ch) {
+      if (ch.tagName === "H3") { cur = { h3: ch, blocks: [] }; segs.push(cur); return; }
+      if (!cur) { cur = { h3: null, blocks: [] }; segs.push(cur); }
+      cur.blocks.push(ch);
+    });
+    function norm(s) { return (s || "").toLowerCase().replace(/\s+/g, " "); }
+
+    function filter(q) {
+      var words = norm(q).split(" ").filter(Boolean);
+      var on = words.length > 0;
+      var total = 0;
+      segs.forEach(function (seg) {
+        var segText = seg.h3 ? norm(seg.h3.textContent) : "";
+        var segHits = 0;
+        seg.blocks.forEach(function (block) {
+          var isGroup = block.tagName === "DETAILS";
+          if (isGroup && block.dataset.sdOpen == null) block.dataset.sdOpen = block.open ? "1" : "0";
+          var groupText = isGroup ? norm((block.querySelector("summary") || {}).textContent) : "";
+          var hits = 0;
+          Array.prototype.forEach.call(block.querySelectorAll("li"), function (li) {
+            var hay = segText + " " + groupText + " " + norm(li.textContent);
+            var match = !on || words.every(function (w) { return hay.indexOf(w) !== -1; });
+            li.hidden = !match;
+            if (match) hits++;
+          });
+          block.hidden = on && hits === 0;
+          if (isGroup) block.open = on ? hits > 0 : block.dataset.sdOpen === "1";
+          segHits += hits;
+        });
+        if (seg.h3) seg.h3.hidden = on && segHits === 0;
+        total += segHits;
+      });
+      empty.hidden = !on || total > 0;
+    }
+    input.addEventListener("input", function () { filter(input.value); });
+    input.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter") {
+        var first = Array.prototype.find.call(nav.querySelectorAll("li:not([hidden]) > a"),
+          function (a) { return !a.closest("[hidden]"); });
+        if (first) { ev.preventDefault(); first.click(); }
+      } else if (ev.key === "Escape" && input.value) {
+        ev.stopPropagation();          // clear first; a second Esc closes the drawer
+        input.value = ""; filter("");
+      }
+    });
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key !== "/" || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+      var t = ev.target;
+      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+      ev.preventDefault();
+      var fab = document.querySelector(".sd-nav-fab");
+      if (fab && fab.offsetParent !== null && !document.body.classList.contains("sd-nav-open")) fab.click();
+      input.focus();
+    });
+  }
+
+  /* ---- reading order: SITE_MAP pages in the order the sidebar shows them
+     (grouped sections follow their groups' order). Shared by the pager. ---- */
+  function readingOrder() {
+    var out = [];
+    map.sections.forEach(function (s) {
+      var list = s.pages;
+      if (s.groups && s.groups.length) {
+        var byHref = {};
+        s.pages.forEach(function (p) { byHref[p.href] = p; });
+        list = [];
+        s.groups.forEach(function (g) {
+          g.hrefs.forEach(function (h) { if (byHref[h]) list.push(byHref[h]); });
+        });
+      }
+      list.forEach(function (p) { out.push({ href: p.href, title: p.title, section: s.name }); });
+    });
+    return out;
+  }
+
+  /* ---- previous / next: two cards at the end of the content, following the
+     sidebar's reading order across sections, so finishing a page isn't a
+     dead end. Only on pages that are in SITE_MAP. ---- */
+  function renderPager() {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", renderPager, { once: true });
+      return;
+    }
+    if (!entry) return;
+    var container = findReadableEl();
+    if (!container) return;
+    var order = readingOrder();
+    var at = -1;
+    order.forEach(function (p, i) { if (p.href === entry.href) at = i; });
+    if (at === -1) return;
+    var prev = order[at - 1], next = order[at + 1];
+    if (!prev && !next) return;
+
+    var pager = document.createElement("nav");
+    pager.className = "sd-pager";
+    pager.setAttribute("aria-label", "Previous and next page");
+    pager.setAttribute("data-sd-ui", "");
+    function card(p, dir) {
+      var a = document.createElement("a");
+      a.className = "sd-pager-link sd-pager-" + dir;
+      a.href = root + p.href;
+      a.rel = dir;
+      var k = document.createElement("span");
+      k.className = "sd-pager-kicker";
+      k.textContent = (dir === "prev" ? "← Previous" : "Next →") + (p.section !== entry.section ? " · " + p.section : "");
+      var t = document.createElement("span");
+      t.className = "sd-pager-title";
+      t.textContent = p.title;
+      a.appendChild(k); a.appendChild(t);
+      return a;
+    }
+    pager.appendChild(prev ? card(prev, "prev") : document.createElement("span"));
+    if (next) pager.appendChild(card(next, "next"));
+
+    var footer = container.querySelector(":scope > .page-footer");
+    if (footer) container.insertBefore(pager, footer); else container.appendChild(pager);
+  }
+
+  /* ---- "On this page": a contents list built from the content's <h2>s
+     (only when there are 3+). On wide screens (≥1400px) it sits in a sticky
+     rail to the right of the text and highlights the section being read; on
+     narrower screens it's a collapsed box just above the content. Headings
+     without an id get one (slug of their text) so the links can target them;
+     existing ids are never changed. ---- */
+  function renderToc() {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", renderToc, { once: true });
+      return;
+    }
+    var container = findReadableEl();
+    if (!container) return;
+    var heads = Array.prototype.filter.call(container.querySelectorAll("h2"), function (h) {
+      return !h.closest("[data-sd-ui]") && (h.textContent || "").trim();
+    });
+    if (heads.length < 3) return;
+
+    var used = {};
+    Array.prototype.forEach.call(document.querySelectorAll("[id]"), function (el) { used[el.id] = true; });
+    function slug(s) {
+      var base = s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "section";
+      var id = base, n = 2;
+      while (used[id]) id = base + "-" + n++;
+      used[id] = true;
+      return id;
+    }
+
+    var toc = document.createElement("details");
+    toc.className = "sd-toc";
+    toc.setAttribute("data-sd-ui", "");
+    var sum = document.createElement("summary");
+    sum.textContent = "On this page";
+    toc.appendChild(sum);
+    var list = document.createElement("ol");
+    var links = [];
+    heads.forEach(function (h) {
+      if (!h.id) h.id = slug(h.textContent.trim());
+      var li = document.createElement("li");
+      var a = document.createElement("a");
+      a.href = "#" + h.id;
+      a.textContent = h.textContent.replace(/\s+/g, " ").trim();
+      li.appendChild(a);
+      list.appendChild(li);
+      links.push(a);
+    });
+    toc.appendChild(list);
+
+    // inline spot: after the lead line / title, before the content proper
+    var anchor = container.querySelector("[data-page-subtitle]") || container.querySelector("[data-page-title]");
+    function placeInline() {
+      if (anchor) anchor.insertAdjacentElement("afterend", toc);
+      else container.insertBefore(toc, container.firstChild);
+      toc.open = false;
+    }
+    // rail spot: next to the content column, only when it's a real column
+    var railHost = /^(MAIN)$/.test(container.tagName) || container.classList.contains("sd-study-main")
+      ? container.parentElement : null;
+    var mq = window.matchMedia ? window.matchMedia("(min-width: 1400px)") : null;
+    function place() {
+      if (railHost && mq && mq.matches) {
+        railHost.classList.add("sd-has-toc-rail");
+        container.insertAdjacentElement("afterend", toc);
+        toc.open = true;
+      } else {
+        if (railHost) railHost.classList.remove("sd-has-toc-rail");
+        placeInline();
+      }
+    }
+    place();
+    if (mq) {
+      if (mq.addEventListener) mq.addEventListener("change", place);
+      else if (mq.addListener) mq.addListener(place);
+    }
+    // the rail stays open; clicking its title shouldn't collapse it
+    sum.addEventListener("click", function (ev) {
+      if (railHost && railHost.classList.contains("sd-has-toc-rail")) ev.preventDefault();
+    });
+
+    // highlight the section currently at the top of the reading area
+    var ticking = false;
+    function spy() {
+      ticking = false;
+      var line = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--sd-sticky-h")) || 0;
+      line += 90;
+      var cur = -1;
+      heads.forEach(function (h, i) { if (h.getBoundingClientRect().top <= line) cur = i; });
+      links.forEach(function (a, i) { a.classList.toggle("active", i === cur); });
+    }
+    window.addEventListener("scroll", function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(spy); }
+    }, { passive: true });
+    spy();
   }
 
   /* ---- page <title> / <h1> / subtitle / breadcrumb, from SITE_PAGES ---- */
@@ -940,10 +1294,16 @@
 
   renderTopBand();
   renderSidebar();
+  renderNavDrawer();
+  renderNavSearch();
   renderCoverageTracker();
   renderReadAloud();
   renderNotes();
+  renderToc();
+  renderPager();
   markCoveredLinks();
+  // the baked sidebar is parsed after this script runs, so re-mark it once it exists
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", markCoveredLinks, { once: true });
   applyPageMeta();
   renderTopicGrid();
   renderResourceList();
