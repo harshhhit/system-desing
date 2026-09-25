@@ -355,6 +355,18 @@ for (const site of SITES) {
   }
 }
 
+// ---- revision cards for the homepage (docs/assets/revision-cards.js) ----
+{
+  const rc = require("./build-revision-cards.js");
+  const out = rc.build();
+  const cur = fs.existsSync(rc.OUT) ? fs.readFileSync(rc.OUT, "utf8") : "";
+  if (out !== cur) {
+    if (CHECK) err("docs/assets/revision-cards.js is STALE — run: node scripts/regen-sidebars.js");
+    else if (DRY) console.log("[dry-run] would rewrite docs/assets/revision-cards.js");
+    else { fs.writeFileSync(rc.OUT, out); console.log("revision-cards.js rewritten"); }
+  }
+}
+
 // ---- root-level checks + report ----
 if (CHECK) {
   for (const f of ["index.html", "login.html", "hash-tool.html"]) {

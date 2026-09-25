@@ -97,6 +97,20 @@ tiny redirect stubs remain at the old sub-site homepage paths (`docs/index.html`
   or the homepage cards — re-run the script. Files named `_*` (e.g.
   `docs/_TEMPLATE-page.html`) are skipped by the script.
 
+- **Homepage revision cards** (`index.html` → "Revision cards") read
+  `docs/assets/revision-cards.js`, which is **generated** by
+  `scripts/build-revision-cards.js`: one short paragraph per sitemap page (the
+  "Simple interview version" note if the page has one, else its `pages.js` subtitle,
+  else the body paragraph that best stands alone — chat filler like "Got it 👍", dangling
+  "These …" openers, "…:" lead-ins and heading-like fragments are skipped or repaired).
+  `regen-sidebars.js` rebuilds it on every run and
+  `--check` fails if it's stale, so never hand-edit it — improving a page's Interview
+  Answer block is the best way to improve its card. The homepage's topic cards are
+  grouped into four categories (Infrastructure & Ops / Data & Distributed Systems /
+  Application & Code / Planning & Projects); when you add a new `SITE_MAP` section,
+  add it to the `CATEGORY` and `ACCENT` maps in `index.html`'s inline script and put
+  its card in the matching `.cat-group`.
+
 - **New page / moving a page:** follow `docs/CLAUDE.md` (procedure) and `docs/README.md`
   (detail). In short: copy `_TEMPLATE-page.html`, set `window.PAGE_CONFIG = { id }`, add
   matching entries to `pages.js` and (for the sidebar) `sitemap.js`, run
