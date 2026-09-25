@@ -49,6 +49,19 @@
         it. Tick a stage's box once you've genuinely covered it; progress is saved in this
         browser.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is the Kubernetes Control Plane?</h2>
+      <p>The Kubernetes control plane is the set of components that store the cluster's desired state and continuously work to make the actual state match it. It exists because Kubernetes is declarative: you say "I want three replicas of this Pod," not "start a container on Node 2" — something has to remember that intent, decide where things run, and keep correcting drift when Pods crash or Nodes disappear.</p>
+      <p>It has four core components (managed/cloud clusters also run a <strong>cloud-controller-manager</strong> for cloud-specific work such as load balancers). <strong>kube-apiserver</strong> is the single entry point — every read and write, from <code>kubectl</code> or from another component, goes through it (<a href="#stage-1">Stage 1</a>). <strong>etcd</strong> is the consistent key-value store where the API server persists all objects; it is the source of truth (<a href="#stage-2">Stage 2</a>). <strong>kube-scheduler</strong> watches for Pods with no Node assigned and picks a Node for each one (<a href="#stage-3">Stage 3</a>). <strong>kube-controller-manager</strong> runs the controllers — Deployment, ReplicaSet, Node, and others — each running a watch-reconcile loop (<a href="#stage-4">Stage 4</a>).</p>
+      <p>The cause → effect chain for <code>kubectl apply</code> of a Deployment is: the API server authenticates, authorizes, admits, and stores the Deployment in etcd → the Deployment controller sees it and creates a ReplicaSet → the ReplicaSet controller creates Pod objects → the scheduler binds each Pod to a Node → the kubelet on that Node (data plane, not control plane) starts the containers and reports status back through the API server. Apart from the API server itself, no component talks to etcd, and the scheduler and controllers never talk to each other — they all coordinate by watching and writing objects through the API server (<a href="#stage-5">Stage 5</a>). The one direction where the API server reaches out is to kubelets, for operations such as <code>kubectl logs</code>, <code>exec</code>, and <code>port-forward</code>.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"The control plane is the brain of Kubernetes. kube-apiserver is the front door every request goes through, etcd stores the desired and current state, kube-scheduler assigns new Pods to Nodes, and kube-controller-manager runs controllers that keep comparing desired state to actual state and fixing the difference. They all coordinate through the API server, and the kubelets on worker Nodes actually run the containers."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Does the scheduler start the Pod on the Node it picks?</strong></p>
+      <p><strong>A:</strong> No. The scheduler only makes a placement decision: it writes a binding that sets the Pod's <code>spec.nodeName</code> through the API server, and that is all. The kubelet on the chosen Node is watching for Pods bound to it; it is the kubelet that pulls the image and starts the containers through the container runtime. This also means that if the control plane goes down, containers that are already running keep running — no new scheduling or self-healing happens until it comes back. See <a href="#stage-3">Stage 3 — kube-scheduler</a> and <a href="#stage-5">Stage 5</a>.</p>
+
       <div class="sd-progress" id="cpProgress">
         <div class="sd-progress-bar"><span id="cpBar"></span></div>
         <p class="sd-progress-text"><strong id="cpCount">0</strong> / <span id="cpTotal">6</span> stages covered
@@ -172,6 +185,15 @@
 </div>
       <p class="stage-note">The scheduler decides placement, not execution — a distinction worth stating explicitly, since it's easy to assume the scheduler itself "runs" the Pod. Full depth: <a href="03-kube-scheduler.html">kube-scheduler Deep Dive</a>.</p>
 
+      <h3 id="scheduler-decisions">How the scheduler decides: filter → score, taints/tolerations, affinity</h3>
+      <p>For each unscheduled Pod, kube-scheduler runs two phases. <strong>Filtering</strong> removes every Node that cannot run the Pod at all; <strong>scoring</strong> ranks the Nodes that are left, and the highest-scoring Node wins. The distinction matters: filtering is a hard yes/no, scoring is a soft preference.</p>
+      <ul>
+        <li><strong>Filter</strong> removes a Node if its unreserved capacity is smaller than the Pod's resource <em>requests</em> (not limits), if the Node has a taint the Pod does not tolerate, if the Node's labels don't match the Pod's <code>nodeSelector</code> or required node affinity, or if required Pod anti-affinity or port conflicts rule it out.</li>
+        <li><strong>Score</strong> ranks the survivors using preferences — preferred node affinity, spreading Pods across Nodes and zones (topology spread), balancing resource usage, and whether the image is already on the Node.</li>
+      </ul>
+      <p><strong>Taints vs. tolerations vs. affinity</strong> — a <strong>taint</strong> is set on a Node and repels Pods (for example, control-plane Nodes carry <code>node-role.kubernetes.io/control-plane:NoSchedule</code>); a <strong>toleration</strong> is set on a Pod and only <em>permits</em> it onto a tainted Node — it does NOT attract the Pod there. <strong>Node affinity</strong> is the attracting mechanism: it pulls a Pod toward Nodes with certain labels. To dedicate Nodes to a team you need both — a taint to keep others off, and affinity to pull that team's Pods on.</p>
+      <p>Cause → effect when nothing fits: every Node is filtered out → the Pod stays <code>Pending</code> → the scheduler records a <code>FailedScheduling</code> event such as <code>0/3 nodes are available: 3 Insufficient cpu</code> (visible in <code>kubectl describe pod</code>) → it retries when the cluster changes. If the Pod has a higher <strong>PriorityClass</strong> than Pods already running, the scheduler may <strong>preempt</strong> — evict lower-priority Pods from a Node to make room — and then place the Pod there.</p>
+
       <h2 id="stage-4"><input type="checkbox" data-stage="4"> Stage 4 — kube-controller-manager: The Watch-Reconcile Loop</h2>
       <p>A <strong>controller</strong>, per the official docs, is "a control loop that watches
         the state of your cluster, then makes or requests changes where needed... trying to
@@ -207,6 +229,10 @@
     Report -.->|loop| Watch
 </div>
       <p class="stage-note">This watch-reconcile loop is what people mean by "Kubernetes self-healing" — nobody manually restarts the crashed Pod; the controller loop already noticed and fixed it. Full depth: <a href="04-kube-controller-manager.html">kube-controller-manager Deep Dive</a>.</p>
+
+      <h3 id="extending">Extending the control plane: CRDs, operators, ownerReferences &amp; finalizers</h3>
+      <p>A <strong>CustomResourceDefinition (CRD)</strong> adds a new resource type to the API server — for example <code>Certificate</code> from cert-manager — which is then stored in etcd and served, authenticated, and authorized exactly like a built-in type. A CRD by itself only stores data; an <strong>operator</strong> is a custom controller that watches those objects and runs the same watch-reconcile loop as the built-in controllers, encoding operational knowledge ("to upgrade this database, do these steps") in code. CRD vs. operator: the CRD is the schema, the operator is the behavior.</p>
+      <p>Two metadata fields drive object lifecycles. An <strong>ownerReference</strong> records which object owns this one — a ReplicaSet owns its Pods — so the garbage collector deletes dependents when the owner is deleted (cascading deletion). A <strong>finalizer</strong> is a key in <code>metadata.finalizers</code> that blocks deletion: when you delete an object that has finalizers, the API server only sets <code>deletionTimestamp</code>, the object enters <code>Terminating</code>, and it is actually removed only after every controller responsible for a finalizer finishes its cleanup and removes its key. This is why objects get stuck in <code>Terminating</code>: the controller that should remove the finalizer (for example, an uninstalled operator, or a PV protection controller waiting for a Pod to stop using a PVC) never does. Removing the finalizer by hand unblocks the delete but skips whatever cleanup it was guarding.</p>
 
       <h2 id="stage-5"><input type="checkbox" data-stage="5"> Stage 5 — How It All Fits Together: A Request's Full Round Trip</h2>
       <p>Each earlier stage looked at one component in isolation. This stage traces one

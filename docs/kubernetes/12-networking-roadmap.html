@@ -45,6 +45,20 @@
         the one before it. Tick a stage's box once you've genuinely covered it; progress is saved in this
         browser.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is Kubernetes Networking?</h2>
+      <p>Kubernetes networking is the set of rules and components that let Pods, Services, and outside clients reach each other inside a cluster. It exists because Pods are short-lived and get rescheduled onto different Nodes with new IP addresses — without a networking model, every application would have to discover and track those changing addresses itself, and traffic between Nodes would need hand-built routes.</p>
+      <p>The foundation is the <strong>Kubernetes networking model</strong>: every Pod gets its own IP address, and every Pod can reach every other Pod directly without NAT, no matter which Node it runs on. Kubernetes does not implement this itself — a <strong>CNI plugin</strong> (such as Calico, Cilium, or Flannel) assigns the IPs and wires up the routes (see <a href="#stage-0">Stage 0</a> and <a href="#stage-1">Stage 1</a>).</p>
+      <p>On top of that flat Pod network, a <strong>Service</strong> gives a changing set of Pods one stable virtual IP and DNS name. The chain of cause and effect is: a Pod is replaced → the EndpointSlice for its Service is updated with the new Pod IP — but only once the new Pod passes its readiness probe; a Pod that isn't Ready is not an active endpoint and gets no Service traffic → <strong>kube-proxy</strong> on every Node rewrites its iptables/IPVS rules (or nftables; some CNIs such as Cilium replace kube-proxy entirely with eBPF) → traffic sent to the unchanged Service IP now lands on the new Pod. <strong>CoreDNS</strong> maps a name like <code>my-svc.my-namespace.svc.cluster.local</code> to that Service IP (<a href="#stage-2">Stage 2</a>–<a href="#stage-4">Stage 4</a>).</p>
+      <p>How far a Service is reachable depends on its <strong>Service type</strong>: <code>ClusterIP</code> (the default) is reachable only inside the cluster, <code>NodePort</code> additionally opens the same port on every Node, and <code>LoadBalancer</code> additionally asks the cloud provider for an external load balancer that forwards to those Node ports (some cloud load balancers can target Pod IPs directly, skipping NodePorts) (<a href="#stage-2">Stage 2</a>). For traffic from outside the cluster, an <strong>Ingress</strong> resource declares HTTP routing rules and an <strong>Ingress controller</strong> (for example ingress-nginx) actually implements them (<a href="#stage-5">Stage 5</a>). The newer <strong>Gateway API</strong> (Gateway, HTTPRoute, and related resources) is the successor to Ingress, with richer routing and a cleaner split between infrastructure owners and app teams. Finally, a <strong>NetworkPolicy</strong> restricts which Pods may talk to which — but only if the CNI plugin supports it (<a href="#stage-6">Stage 6</a>).</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Kubernetes networking gives every Pod its own IP and lets every Pod reach every other Pod without NAT; a CNI plugin implements that. Because Pod IPs change, a Service gives a group of Pods a stable virtual IP and DNS name, and kube-proxy on each Node programs the rules that forward Service traffic to the current Ready Pods. CoreDNS resolves Service names, Ingress brings external HTTP traffic in through an Ingress controller, and NetworkPolicy restricts which Pods can talk to each other."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If I create a NetworkPolicy, is traffic between Pods actually blocked?</strong></p>
+      <p><strong>A:</strong> Not necessarily. A NetworkPolicy is only a declaration stored in the API — Kubernetes itself does not enforce it. Enforcement is done by the CNI plugin, so on a plugin without NetworkPolicy support (for example plain Flannel) the object is accepted and silently ignored, and all traffic still flows. Also, Pods are non-isolated by default: traffic is only restricted once at least one policy selects a Pod, and from then on only the traffic that some policy explicitly allows is let through for that direction (ingress or egress). See <a href="#stage-6">Stage 6 — NetworkPolicy</a> for the full rules.</p>
+
       <div class="sd-progress" id="netProgress">
         <div class="sd-progress-bar"><span id="netBar"></span></div>
         <p class="sd-progress-text"><strong id="netCount">0</strong> / <span id="netTotal">8</span> stages covered
@@ -120,6 +134,8 @@
 </div>
       <p class="stage-note">The Service IP never changes even as the Pods behind it are replaced — clients only ever need to know that one stable address.</p>
 
+      <p class="stage-note"><strong>Headless Services &amp; StatefulSet DNS.</strong> A <strong>headless Service</strong> is a Service with <code>clusterIP: None</code>. ClusterIP vs. headless is the distinction: a normal ClusterIP Service gets one virtual IP, and kube-proxy load-balances across its Pods; a headless Service gets no virtual IP and no kube-proxy rules at all — instead, a DNS lookup of the Service name returns the IP addresses of the individual Ready Pods, and the client picks one itself. It exists for workloads where clients must reach a <em>specific</em> Pod rather than any Pod, such as database replicas. Paired with a StatefulSet, each Pod also gets a stable DNS name of the form <code>&lt;pod&gt;.&lt;service&gt;.&lt;namespace&gt;.svc.cluster.local</code> — for a StatefulSet <code>web</code> with headless Service <code>web</code> in namespace <code>ns</code>, that's <code>web-0.web.ns.svc.cluster.local</code>, <code>web-1.web.ns.svc.cluster.local</code>, and so on. Caveat: the name is stable across restarts, but the IP behind it is not — clients should resolve the name again rather than cache the IP.</p>
+
       <h2 id="stage-3"><input type="checkbox" data-stage="3"> Stage 3 — kube-proxy: How a Service IP Becomes Real Traffic</h2>
       <p>A Service's virtual IP isn't attached to any real network interface — nothing is "listening" on it.
         <strong>kube-proxy</strong>, running on every Node, is what makes it work: it watches the API Server
@@ -140,6 +156,8 @@
     Pkt["Packet to 10.96.0.55:80"] --> KP["kube-proxy rules<br/>(iptables/IPVS)"]
     KP -->|DNAT| Pod["Real Pod IP:port"]
 </div>
+
+      <p class="stage-note"><strong><code>externalTrafficPolicy</code>: Cluster vs. Local.</strong> For NodePort and LoadBalancer Services, this field decides what a Node does with external traffic arriving on its port. With <code>Cluster</code> (the default), any Node accepts the traffic and kube-proxy may forward it to a Pod on <em>another</em> Node — load is spread evenly, but the extra hop costs latency and the packet is SNATed, so the Pod sees a Node IP instead of the real client IP. With <code>Local</code>, a Node forwards only to Pods on itself — the client source IP is preserved and there is no second hop, but Nodes with no local Pod drop the traffic (the cloud load balancer's health check, on <code>healthCheckNodePort</code>, takes such Nodes out of rotation), and load can become uneven if Pods are unevenly spread across Nodes.</p>
 
       <h2 id="stage-4"><input type="checkbox" data-stage="4"> Stage 4 — Cluster DNS (CoreDNS)</h2>
       <p>Remembering Service IPs isn't practical, so every cluster runs <strong>CoreDNS</strong> as a
