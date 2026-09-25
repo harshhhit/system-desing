@@ -674,6 +674,10 @@ window.SITE_MAP = {
         {
           "href": "project-explaintion/instagram/major-tools.html",
           "title": "Instagram: Major Tools"
+        },
+        {
+          "href": "project-explaintion/chat-system/chat-architecture-review.html",
+          "title": "Chat Architecture Review (Postgres + PubNub)"
         }
       ]
     },
