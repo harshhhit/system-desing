@@ -214,3 +214,20 @@ Below 860px the `.sd-study-sidebar` becomes an off-canvas drawer opened by a flo
 "☰ Menu" button (`renderNavDrawer()`); legacy `.layout` pages keep their own top-bar ☰.
 When you change `site.css` or `site-header.js`, bump the `?v=` query on both across
 `docs/` so browsers don't mix a new stylesheet with a cached script.
+
+## Sidebar search, "On this page", previous / next — automatic, never hand-add
+
+- **Search** (`renderNavSearch()`): a box above the sidebar `<nav>` filters links by
+  page title plus section / group name (every typed word must match). Enter opens the
+  first match, Esc clears, `/` focuses it from anywhere. It sits outside the baked
+  `<nav>`, so `regen-sidebars.js` never touches it.
+- **On this page** (`renderToc()`): built from the content's `<h2>`s when there are 3 or
+  more. ≥1400px → sticky right-hand rail with the current section highlighted; narrower →
+  a collapsed box right after the lead line. `<h2>`s without an `id` get a slug id at
+  runtime; existing ids are never changed. Give an `<h2>` a stable `id` if you want to
+  link to it from other pages.
+- **Previous / Next** (`renderPager()`): two cards at the end of the content (before a
+  legacy `.page-footer`), following the sidebar's reading order across sections — so
+  page order in `sitemap.js` (and its `groups`) is also the "Next" order.
+- Injected UI carries `data-sd-ui`; the Listen bar and note markers skip anything
+  inside it. Mark any new injected widget the same way.
