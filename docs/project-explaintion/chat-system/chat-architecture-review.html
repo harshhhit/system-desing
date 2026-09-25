@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "chat-architecture-review" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Architecture Review: Postgres + PubNub · System Design Notes</title>
+<link rel="stylesheet" href="../../assets/site.css?v=5">
+
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+</style>
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/pages.js"></script>
+<script src="../../assets/site-header.js?v=5" data-root="../../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><ul><li><a href="../../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul><h3>🚦 Traffic Management</h3><ul><li><a href="../../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../../web-servers/server.html">Web Servers</a></li><li><a href="../../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a class="active" href="../../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Project Walkthroughs / Chat Architecture Review: Postgres + PubNub</p>
+      <h1 data-page-title>Chat Architecture Review: Postgres + PubNub</h1>
+      <p class="sd-study-prompt" data-page-subtitle>A design review of a chat app that stores messages in Postgres and uses PubNub for live delivery — plus a learning guide and references for every pattern it names: scoped tokens, transactional outbox, N+1 fan-out, idempotency keys, cursor pagination.</p>
+
+
+      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+
+      <h2>Interview Answer — What Is a "Database as Source of Truth + Pub/Sub for Delivery" Chat Architecture?</h2>
+      <p>This is a chat design where <strong>every message is first saved in a database</strong> (here, PostgreSQL) and a hosted <strong>publish/subscribe service</strong> (here, PubNub) is used <em>only</em> to push a notification of that change to the clients that are online. The database is the <strong>source of truth</strong> — the one copy of chat data that every other view is derived from. The pub/sub service is a <strong>delivery channel</strong> — a pipe that carries "something changed" events and holds no data you would be upset to lose.</p>
+      <p>It exists because the two jobs have opposite requirements. Storing messages needs durability, transactions, querying and history. Delivering messages in real time needs thousands of long-lived connections and very low latency. Running your own WebSocket servers to do the second job means managing connection state, sticky sessions, and horizontal fan-out; renting that from PubNub (or Ably, Pusher, etc.) lets a small team skip it. Splitting the jobs means an outage in the delivery channel degrades the app to "not live" instead of "data lost".</p>
+      <p>The design is only as good as the seams between the two systems. The five fixes on this page are all seam problems: who may subscribe to which channel (<a href="#p1-tokens">per-user tokens</a>), what happens if the database write succeeds but the publish fails (<a href="#p2-outbox">transactional outbox</a>), how much work one send does (<a href="#p3-fanout">N+1 queries and background jobs</a>), what happens when a client retries (<a href="#p4-idempotency">idempotency keys</a>), and how clients page through a list that keeps changing (<a href="#p5-cursor">cursor pagination</a>).</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"I save every message to Postgres first — that's the source of truth — and only after the commit do I publish a small event to PubNub so online clients update instantly. PubNub is just the delivery pipe, so if it goes down nobody loses messages; they just stop getting live updates until they reconnect and re-fetch from the API. To make that safe I give each user a scoped PubNub token, write the publish event into an outbox table in the same transaction, dedupe client retries with a client-generated message ID and a unique constraint, and page message history with a cursor instead of an offset."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If you write to the database first and then publish, aren't you guaranteed that every saved message reaches the clients?</strong></p>
+      <p><strong>A:</strong> No. Writing first only guarantees the opposite direction — clients never see an event for a message that <em>wasn't</em> saved. The database commit and the PubNub publish are two separate systems, so the process can crash, time out, or get a 5xx from PubNub in the gap between them; the message is then saved but no live event is ever sent. This is called the <strong>dual-write problem</strong>. You close it with the <strong>transactional outbox</strong> (save the event in the same database transaction as the message, and have a separate relay publish it with retries), and you back it up by having clients re-fetch from the API on reconnect. See <a href="#p2-outbox">Pattern 2 — Transactional Outbox</a> below.</p>
+
+      <!-- ─────────────── Original review (kept in full) ─────────────── -->
+
+      <h2 id="review">The Review</h2>
+      <p>Yes, the basic design is sound. Saving to Postgres and using PubNub only to push live updates is a common approach for apps at your scale, and it means you don't have to run your own WebSocket servers. The problems are in the details of how it's built, not in the overall design.</p>
+
+      <h2 id="done-well">What's done well</h2>
+      <ul>
+        <li><strong>The database is the only real copy of chat data.</strong> If PubNub goes down, no messages are lost; users just stop getting live updates.</li>
+        <li><strong>PubNub is only used to deliver updates.</strong> Chat history isn't split between two systems.</li>
+        <li><strong>The database is written before anything is published</strong>, so clients never receive an event for a message that wasn't saved.</li>
+      </ul>
+
+      <h2 id="fixes">What I'd fix</h2>
+      <ol>
+        <li><strong>Clients don't get their own PubNub tokens.</strong> This is the most important one, and it's the gap from my last answer. The backend should give each user a token limited to their own <code>chat:{id}</code> and <code>user:{id}:notifications</code> channels. The <code>grantAccessToken</code> function for this already exists but nothing calls it.</li>
+        <li><strong>Live updates can be lost without anyone knowing.</strong> If publishing fails after the database write, the error is only logged. The usual fixes are:
+          <ul>
+            <li>the <strong>transactional outbox</strong> pattern (saving the event in the database and publishing it separately), or at least</li>
+            <li>having clients re-fetch from the API when they reconnect, which covers any updates they missed.</li>
+          </ul>
+        </li>
+        <li><strong>Sending a message is slow.</strong> One send runs roughly 8–10 database/cache calls in sequence, plus one unread-count query per recipient (<code>apps/chat-api/src/services/message.service.ts#L525-L527</code>, i.e. <code>message.service.ts:525-527</code>). In a group chat of 200 people, that's 200 extra queries. The fix is to calculate the counts in one grouped query, or move the notifications to a background job.</li>
+        <li><strong>Retries can create duplicate messages.</strong> If a phone loses its connection and resends, the same message is saved twice. The usual fix is for the client to send its own message ID, with a unique constraint on it in the database.</li>
+        <li><strong>Paging by offset breaks in a busy chat.</strong> Message lists use <code>page</code>/<code>skip</code>, so new messages arriving while someone scrolls cause skipped or repeated messages. Chat apps normally page by position instead ("messages before ID X"), called cursor pagination.</li>
+      </ol>
+
+      <h2 id="reading">Reading on chat architecture</h2>
+
+      <h3>Overall design (start here)</h3>
+      <ul>
+        <li><a href="https://bytebytego.com/courses/system-design-interview/design-a-chat-system" target="_blank" rel="noopener">Design A Chat System – ByteByteGo</a>: the standard walkthrough of chat servers, presence, push notifications and storage</li>
+        <li><a href="https://newsletter.systemdesign.one/p/whatsapp-system-design" target="_blank" rel="noopener">WhatsApp System Design – systemdesign.one</a></li>
+        <li><a href="https://algomaster.io/learn/system-design-interviews/design-whatsapp" target="_blank" rel="noopener">Design WhatsApp – AlgoMaster</a></li>
+      </ul>
+
+      <h3>How large companies built theirs</h3>
+      <ul>
+        <li><a href="https://slack.engineering/real-time-messaging/" target="_blank" rel="noopener">Real-time Messaging – Slack Engineering</a>: their own WebSocket gateway and channel servers, the approach where you run your own servers instead of using PubNub</li>
+        <li><a href="https://discord.com/blog/how-discord-stores-trillions-of-messages" target="_blank" rel="noopener">How Discord Stores Trillions of Messages – Discord</a>: how their message storage changed as they grew (Cassandra, then ScyllaDB)</li>
+      </ul>
+
+      <h3>Fixes for items 1 and 2</h3>
+      <ul>
+        <li><a href="https://www.pubnub.com/docs/general/security/access-control" target="_blank" rel="noopener">PubNub Access Control</a> and the <a href="https://www.pubnub.com/docs/sdks/javascript/api-reference/access-manager" target="_blank" rel="noopener">JavaScript Access Manager API</a>: per-user grant tokens</li>
+        <li><a href="https://microservices.io/patterns/data/transactional-outbox.html" target="_blank" rel="noopener">Transactional Outbox – microservices.io</a> and <a href="https://developer.confluent.io/courses/microservices/the-transactional-outbox-pattern/" target="_blank" rel="noopener">Confluent's explanation</a></li>
+      </ul>
+
+      <h3>Main alternatives to your setup</h3>
+      <ul>
+        <li><strong>Run your own WebSocket servers</strong> (Socket.IO with a Redis adapter, or like Slack). This costs nothing per message but you have to run and scale it.</li>
+        <li><strong>Use another hosted service</strong> such as Ably, Stream or Sendbird. Stream and Sendbird also store the messages for you.</li>
+        <li><strong>Stay on PubNub.</strong> For your app, I'd keep it and fix items 1–4.</li>
+      </ul>
+      <p>I can start with item 1, having the backend issue per-user PubNub tokens, if you want.</p>
+
+      <!-- ─────────────── Pattern learning guide (added) ─────────────── -->
+
+      <h2 id="patterns">Pattern Learning Guide — Every Pattern in This Review</h2>
+      <p>The review names a pattern for each fix but does not teach it. This section takes each one in turn: what it is, why it exists (what breaks without it), how it works step by step, a concrete example from this chat app, the common gotcha, and where to learn it properly. Related notes already on this site are linked alongside the external references.</p>
+
+      <h3>Pattern map — at a glance</h3>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Pattern</th><th>Problem it solves here</th><th>Category</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td><a href="#p0-sot">Source of truth + pub/sub delivery channel</a></td><td>Keep chat data safe while still getting real-time updates</td><td>Architecture</td></tr>
+          <tr><td>1</td><td><a href="#p1-tokens">Per-user scoped access tokens (least privilege)</a></td><td>Any client can read/publish on any channel</td><td>Security</td></tr>
+          <tr><td>2</td><td><a href="#p2-outbox">Transactional outbox (+ reconnect catch-up)</a></td><td>Saved message whose live event is silently lost</td><td>Reliability / data consistency</td></tr>
+          <tr><td>3</td><td><a href="#p3-fanout">Avoid N+1 queries; move fan-out to a background job</a></td><td>A send to 200 people runs 200 extra queries</td><td>Performance</td></tr>
+          <tr><td>4</td><td><a href="#p4-idempotency">Idempotency key + unique constraint</a></td><td>Retries create duplicate messages</td><td>Reliability / API design</td></tr>
+          <tr><td>5</td><td><a href="#p5-cursor">Cursor (keyset) pagination</a></td><td>Skipped/repeated messages while scrolling a busy chat</td><td>API design / database</td></tr>
+          <tr><td>6</td><td><a href="#p6-alternatives">Build vs. buy for real-time delivery</a></td><td>Choosing PubNub vs. own WebSockets vs. other hosted chat</td><td>Architecture decision</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Suggested learning order</h3>
+      <ol>
+        <li>Pattern 0 first — every other fix only makes sense once "source of truth vs. delivery channel" is clear.</li>
+        <li>Pattern 4 (idempotency) and Pattern 5 (cursor pagination) next — they are small, self-contained, and you can implement each in an afternoon.</li>
+        <li>Pattern 1 (scoped tokens) — the highest-impact fix in the review, and it builds on basic token authentication.</li>
+        <li>Pattern 2 (outbox) — the deepest one; it needs idempotency (Pattern 4) on the consumer side, which is why that comes first.</li>
+        <li>Pattern 3 (N+1 / background jobs) — a performance fix; reuses the queue/worker ideas from Pattern 2.</li>
+        <li>Pattern 6 — read last, once you know what each option would have to do for you.</li>
+      </ol>
+
+      <!-- Pattern 0 -->
+      <h2 id="p0-sot">Pattern 0 — Source of Truth + Pub/Sub Delivery Channel</h2>
+      <p><strong>What it is.</strong> One system (PostgreSQL) holds the authoritative data; a second system (PubNub) only broadcasts change notifications. Clients render from the API, and use pub/sub events as a hint that something changed.</p>
+      <p><strong>Why it exists.</strong> If chat history lived partly in PubNub's history and partly in Postgres, you would have two systems that can disagree, and no rule for which one wins. Making the database the only source of truth means there is always a single answer to "what messages are in this chat?".</p>
+      <p><strong>How it works, cause → effect.</strong></p>
+      <ol>
+        <li>Client calls <code>POST /chats/{id}/messages</code>.</li>
+        <li>API inserts the row into Postgres and commits.</li>
+        <li>After commit, API publishes a small event to channel <code>chat:{id}</code>.</li>
+        <li>Every subscribed client receives the event and appends the message (or re-fetches).</li>
+        <li>If step 3 fails, the data is still correct in Postgres — only the "live" part is missing, which is exactly the gap Pattern 2 closes.</li>
+      </ol>
+      <p><strong>Source of truth vs. delivery channel — the difference is</strong> that losing the source of truth loses data, while losing the delivery channel only loses <em>timeliness</em>. This does NOT mean the delivery channel can be ignored: a lost event looks to the user like a missing message until they refresh.</p>
+      <p><strong>Learn it:</strong></p>
+      <ul>
+        <li>On this site: <a href="../../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a> · <a href="../../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a> (read models derived from one source of truth)</li>
+        <li><a href="https://bytebytego.com/courses/system-design-interview/design-a-chat-system" target="_blank" rel="noopener">ByteByteGo — Design A Chat System</a> (storage vs. chat-server split)</li>
+        <li><a href="https://www.pubnub.com/docs/general/basics/publish-subscribe" target="_blank" rel="noopener">PubNub — Publish/Subscribe basics</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/publisher-subscriber" target="_blank" rel="noopener">Azure Architecture Center — Publisher-Subscriber pattern</a></li>
+        <li>Book: <em>Designing Data-Intensive Applications</em> (Martin Kleppmann), Chapter 11 "Stream Processing" — "systems of record vs. derived data".</li>
+      </ul>
+
+      <!-- Pattern 1 -->
+      <h2 id="p1-tokens">Pattern 1 — Per-User Scoped Access Tokens (Least Privilege)</h2>
+      <p><strong>What it is.</strong> Instead of every client sharing one key that can subscribe to anything, the backend issues each logged-in user a short-lived token that grants access to <em>only</em> that user's channels — here, the <code>chat:{id}</code> channels they are a member of and <code>user:{id}:notifications</code>.</p>
+      <p><strong>Why it exists.</strong> A client-side key ships inside the app, so anyone can extract it. Without per-user grants, an attacker who knows (or guesses) a chat ID can subscribe to <code>chat:123</code> and read someone else's conversation, or publish fake events into it. Your API's authorization checks don't help, because the client is talking to PubNub directly, not to your API.</p>
+      <p><strong>How it works, cause → effect.</strong></p>
+      <ol>
+        <li>User logs in to your API (normal session/JWT).</li>
+        <li>Client asks your API for a PubNub token.</li>
+        <li>API looks up which chats the user belongs to and calls PubNub's Access Manager (<code>grantToken</code>, wrapped by the existing <code>grantAccessToken</code> function) with <code>read</code> on those channels and a TTL (e.g. 60 minutes). This call uses the <strong>secret key</strong>, which only the server holds.</li>
+        <li>Client initializes PubNub with that token; PubNub rejects subscribe/publish on any channel not in the grant.</li>
+        <li>Before the TTL runs out — or when the user joins/leaves a chat — the client requests a fresh token.</li>
+      </ol>
+      <pre><code>// server — sketch
+const token = await pubnub.grantToken({
+  ttl: 60,                           // minutes
+  authorized_uuid: user.id,
+  resources: {
+    channels: {
+      [`user:${user.id}:notifications`]: { read: true },
+      ...Object.fromEntries(user.chatIds.map(id =&gt; [`chat:${id}`, { read: true }]))
+    }
+  }
+});</code></pre>
+      <p><strong>Gotcha.</strong> Granting on a wildcard or pattern such as <code>chat:*</code> defeats the purpose. Also, a token is a snapshot: removing a user from a chat does NOT revoke access until the token expires or you call <code>revokeToken</code> — keep TTLs short.</p>
+      <p><strong>Learn it:</strong></p>
+      <ul>
+        <li>On this site: <a href="../../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a> · <a href="../../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a> · <a href="../../observability-security/01-application-security-fundamentals.html">Application Security Fundamentals</a></li>
+        <li><a href="https://www.pubnub.com/docs/general/security/access-control" target="_blank" rel="noopener">PubNub — Access Control</a> and <a href="https://www.pubnub.com/docs/sdks/javascript/api-reference/access-manager" target="_blank" rel="noopener">JavaScript Access Manager API</a></li>
+        <li><a href="https://ably.com/docs/auth/token" target="_blank" rel="noopener">Ably — Token authentication</a> (same pattern in another provider, well explained)</li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" target="_blank" rel="noopener">OWASP — Authorization Cheat Sheet</a> (least privilege, deny by default)</li>
+        <li><a href="https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/" target="_blank" rel="noopener">OWASP API Security Top 10 — Broken Object Level Authorization</a> (what happens without it)</li>
+      </ul>
+
+      <!-- Pattern 2 -->
+      <h2 id="p2-outbox">Pattern 2 — Transactional Outbox (and Reconnect Catch-Up)</h2>
+      <p><strong>What it is.</strong> A way to reliably "save data <em>and</em> publish an event" when the database and the message broker are different systems. You write the event into an <code>outbox</code> table in the <em>same transaction</em> as the message; a separate relay process reads the outbox and publishes to PubNub, retrying until it succeeds.</p>
+      <p><strong>Why it exists — the dual-write problem.</strong> You cannot commit to Postgres and PubNub atomically. With "insert, then publish":</p>
+      <ol>
+        <li>Insert commits.</li>
+        <li>Process crashes, deploy restarts the pod, or PubNub returns an error.</li>
+        <li>The error is only logged, so nothing retries.</li>
+        <li>Recipients never get the live event; the message only appears after a manual refresh. Nobody is alerted.</li>
+      </ol>
+      <p><strong>How the outbox fixes it.</strong></p>
+      <pre><code>BEGIN;
+  INSERT INTO messages (id, chat_id, sender_id, body) VALUES (...);
+  INSERT INTO outbox (id, channel, payload, created_at)
+       VALUES (gen_random_uuid(), 'chat:42', '{"type":"message.created","id":"..."}', now());
+COMMIT;
+
+-- relay worker, in a loop
+SELECT * FROM outbox WHERE published_at IS NULL
+ ORDER BY created_at LIMIT 100
+ FOR UPDATE SKIP LOCKED;
+-- publish each to PubNub, then:
+UPDATE outbox SET published_at = now() WHERE id = ANY($1);</code></pre>
+      <p>Both rows commit or neither does, so "message saved but event forgotten" can no longer happen. The relay can be a <strong>polling publisher</strong> (the loop above) or <strong>transaction log tailing</strong> (e.g. Debezium reading Postgres's WAL).</p>
+      <p><strong>Gotcha — it is at-least-once, not exactly-once.</strong> If the relay publishes and then crashes before marking the row, it will publish again. Clients must de-duplicate by message ID (see <a href="#p4-idempotency">Pattern 4</a>). This does NOT remove the need for reconnect catch-up either: an event published while a phone was offline is still missed by that phone.</p>
+      <p><strong>Reconnect catch-up (the cheaper fallback).</strong> On every (re)connect, the client calls <code>GET /chats/{id}/messages?after={lastSeenId}</code> and merges the result. This covers both lost publishes and time spent offline, and it is worth doing even with an outbox.</p>
+      <p><strong>Learn it:</strong></p>
+      <ul>
+        <li>On this site: <a href="../../05-database/03a-transactions-and-concurrency/index.html">Transactions and Concurrency</a> · <a href="../../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a> · <a href="../../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a> · <a href="../../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li>
+        <li><a href="https://microservices.io/patterns/data/transactional-outbox.html" target="_blank" rel="noopener">microservices.io — Transactional Outbox</a>, <a href="https://microservices.io/patterns/data/polling-publisher.html" target="_blank" rel="noopener">Polling Publisher</a>, <a href="https://microservices.io/patterns/data/transaction-log-tailing.html" target="_blank" rel="noopener">Transaction Log Tailing</a></li>
+        <li><a href="https://developer.confluent.io/courses/microservices/the-transactional-outbox-pattern/" target="_blank" rel="noopener">Confluent — The Transactional Outbox Pattern</a> and <a href="https://www.confluent.io/blog/dual-write-problem/" target="_blank" rel="noopener">Understanding the Dual-Write Problem</a></li>
+        <li><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html" target="_blank" rel="noopener">AWS Prescriptive Guidance — Transactional outbox pattern</a></li>
+        <li><a href="https://debezium.io/documentation/reference/stable/transformations/outbox-event-router.html" target="_blank" rel="noopener">Debezium — Outbox Event Router</a> (log-tailing implementation)</li>
+        <li><a href="https://www.postgresql.org/docs/current/sql-select.html#SQL-FOR-UPDATE-SHARE" target="_blank" rel="noopener">PostgreSQL — <code>FOR UPDATE SKIP LOCKED</code></a> (safe multi-worker relays)</li>
+        <li><a href="https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/" target="_blank" rel="noopener">AWS Builders' Library — Timeouts, retries and backoff with jitter</a> (how the relay should retry)</li>
+      </ul>
+
+      <!-- Pattern 3 -->
+      <h2 id="p3-fanout">Pattern 3 — Avoid N+1 Queries; Move Fan-Out to a Background Job</h2>
+      <p><strong>What it is.</strong> An <strong>N+1 query</strong> is running one query to get a list, then one more query <em>per item</em> in that list. Here the list is "recipients of this message" and the per-item query is "unread count for this recipient". <strong>Fan-out</strong> is the work of delivering one message to many recipients.</p>
+      <p><strong>Why it exists.</strong> Latency adds up in sequence: 8–10 calls before the response, plus 200 unread-count queries in a 200-person group, all while the sender waits for "sent". It also multiplies database load by group size, so the busiest chats hurt the most.</p>
+      <p><strong>Fix A — one grouped query.</strong></p>
+      <pre><code>-- instead of 200 × "SELECT count(*) ... WHERE user_id = $1"
+SELECT m.user_id, count(msg.id) AS unread
+  FROM chat_members m
+  JOIN messages msg
+    ON msg.chat_id = m.chat_id
+   AND msg.id &gt; m.last_read_message_id
+ WHERE m.chat_id = $1
+ GROUP BY m.user_id;</code></pre>
+      <p>Better still, keep a denormalized <code>unread_count</code> column on <code>chat_members</code> and increment it for all members in one <code>UPDATE ... WHERE chat_id = $1 AND user_id &lt;&gt; $sender</code>.</p>
+      <p><strong>Fix B — background job.</strong> The request path only saves the message (and outbox row) and returns. A worker picks up a "message.created" job and does the unread counts, per-user notifications, and push notifications off the critical path. Cause → effect: the sender's latency no longer depends on group size; spikes are absorbed by the queue instead of the database.</p>
+      <p><strong>Gotcha.</strong> Moving work to a background job does NOT make it cheaper — it only moves it off the user's request. You still want Fix A inside the job. And background jobs retry, so they must be idempotent (Pattern 4).</p>
+      <p><strong>Learn it:</strong></p>
+      <ul>
+        <li>On this site: <a href="../../05-database/03b-query-plans-and-optimization/index.html">Query Plans and Optimization</a> · <a href="../../05-database/03-querying-and-performance/08-indxing.html">Indexing</a> · <a href="../../sqs/01-sqs.html">SQS Overview</a> · <a href="../../sqs/use-case.html">SQS Use Cases</a></li>
+        <li><a href="https://planetscale.com/blog/what-is-n-1-query-problem-and-how-to-solve-it" target="_blank" rel="noopener">PlanetScale — What is the N+1 query problem and how to solve it</a></li>
+        <li><a href="https://www.postgresql.org/docs/current/queries-table-expressions.html#QUERIES-GROUP" target="_blank" rel="noopener">PostgreSQL — GROUP BY and HAVING</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/queue-based-load-leveling" target="_blank" rel="noopener">Azure Architecture Center — Queue-Based Load Leveling</a> and <a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/background-jobs" target="_blank" rel="noopener">Background jobs guidance</a></li>
+        <li><a href="https://docs.bullmq.io/" target="_blank" rel="noopener">BullMQ docs</a> (Redis-backed job queue for a Node/TypeScript API like <code>chat-api</code>)</li>
+        <li>Fan-out on write vs. on read: ByteByteGo's "Design a News Feed System" chapter covers the same trade-off for feeds.</li>
+      </ul>
+
+      <!-- Pattern 4 -->
+      <h2 id="p4-idempotency">Pattern 4 — Idempotency Key + Unique Constraint</h2>
+      <p><strong>What it is.</strong> An operation is <strong>idempotent</strong> if doing it twice has the same effect as doing it once. An <strong>idempotency key</strong> is an ID the client generates once per logical action and sends with every retry of it, so the server can recognize repeats.</p>
+      <p><strong>Why it exists.</strong> Mobile networks drop responses, not just requests. Cause → effect: the phone sends the message → the server saves it → the response is lost on a flaky connection → the phone assumes failure and resends → the server saves it again → the chat shows the message twice.</p>
+      <p><strong>How it works.</strong></p>
+      <ol>
+        <li>Client generates <code>client_message_id</code> (a UUID) when the user presses Send, and stores it with the pending message.</li>
+        <li>Every retry sends the same <code>client_message_id</code>.</li>
+        <li>The database enforces uniqueness, so the second insert cannot create a row.</li>
+        <li>On conflict, the server returns the already-saved message, so the client sees success either way.</li>
+      </ol>
+      <pre><code>ALTER TABLE messages ADD COLUMN client_message_id uuid;
+CREATE UNIQUE INDEX messages_sender_client_id_uq
+    ON messages (sender_id, client_message_id);
+
+INSERT INTO messages (chat_id, sender_id, client_message_id, body)
+VALUES ($1, $2, $3, $4)
+ON CONFLICT (sender_id, client_message_id) DO NOTHING
+RETURNING *;
+-- if no row returned, SELECT the existing one and return it</code></pre>
+      <p><strong>Gotcha.</strong> Checking "does it exist?" in application code and then inserting is NOT enough — two concurrent retries can both pass the check. The unique constraint is what makes it safe. The same client ID also lets the client match the live PubNub event to its own optimistic "sending…" bubble instead of showing it twice.</p>
+      <p><strong>Learn it:</strong></p>
+      <ul>
+        <li>On this site: <a href="../../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a> · <a href="../../sqs/02-queus-methord.html">Queue Methods</a> · <a href="../../05-database/03a-transactions-and-concurrency/index.html">Transactions and Concurrency</a></li>
+        <li><a href="https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/" target="_blank" rel="noopener">AWS Builders' Library — Making retries safe with idempotent APIs</a></li>
+        <li><a href="https://stripe.com/blog/idempotency" target="_blank" rel="noopener">Stripe — Designing robust and predictable APIs with idempotency</a> and <a href="https://docs.stripe.com/api/idempotent_requests" target="_blank" rel="noopener">Stripe API — Idempotent requests</a></li>
+        <li><a href="https://microservices.io/patterns/communication-style/idempotent-consumer.html" target="_blank" rel="noopener">microservices.io — Idempotent Consumer</a> (the consumer side of Pattern 2)</li>
+        <li><a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/IdempotentReceiver.html" target="_blank" rel="noopener">Enterprise Integration Patterns — Idempotent Receiver</a></li>
+        <li><a href="https://www.postgresql.org/docs/current/sql-insert.html#SQL-ON-CONFLICT" target="_blank" rel="noopener">PostgreSQL — <code>INSERT ... ON CONFLICT</code></a></li>
+      </ul>
+
+      <!-- Pattern 5 -->
+      <h2 id="p5-cursor">Pattern 5 — Cursor (Keyset) Pagination</h2>
+      <p><strong>What it is.</strong> Paging by a <strong>cursor</strong> — "give me 50 messages older than message X" — instead of by an <strong>offset</strong> — "skip 100 rows, give me the next 50".</p>
+      <p><strong>Why it exists — offset vs. cursor, the difference is</strong> that an offset counts positions from the newest message, and positions shift every time a new message arrives; a cursor names a fixed message, which doesn't move.</p>
+      <p><strong>Cause → effect with offsets.</strong></p>
+      <ol>
+        <li>User loads page 1 (newest 50, <code>skip=0</code>).</li>
+        <li>3 new messages arrive.</li>
+        <li>User scrolls up; client requests <code>skip=50</code>.</li>
+        <li>Everything shifted down by 3, so the first 3 messages of the new page are ones the user already saw → repeated messages. (Deletions cause the opposite: skipped messages.)</li>
+        <li>Also, <code>OFFSET 10000</code> makes Postgres read and discard 10,000 rows, so deep scrolling gets slower.</li>
+      </ol>
+      <pre><code>-- offset (current)
+SELECT * FROM messages WHERE chat_id = $1
+ ORDER BY created_at DESC LIMIT 50 OFFSET $2;
+
+-- cursor / keyset (fix)
+SELECT * FROM messages
+ WHERE chat_id = $1
+   AND (created_at, id) &lt; ($2, $3)      -- the last message the client has
+ ORDER BY created_at DESC, id DESC
+ LIMIT 50;
+
+CREATE INDEX messages_chat_cursor_idx ON messages (chat_id, created_at DESC, id DESC);</code></pre>
+      <p>The API returns a <code>nextCursor</code> (often base64 of <code>created_at|id</code>) and the client sends it back as <code>?before=</code>. The same shape with <code>&gt;</code> gives <code>?after=</code> for reconnect catch-up (Pattern 2).</p>
+      <p><strong>Gotcha.</strong> The cursor must be unique — <code>created_at</code> alone can tie, so add <code>id</code> as a tie-breaker. Cursor pagination does NOT support "jump to page 37"; for chat that's fine because users scroll, they don't jump.</p>
+      <p><strong>Learn it:</strong></p>
+      <ul>
+        <li>On this site: <a href="../../05-database/03-querying-and-performance/08-indxing.html">Indexing</a> · <a href="../../path/02-apis.html">API Planning</a> · <a href="../../01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a> (GraphQL "connections" are cursor pagination)</li>
+        <li><a href="https://use-the-index-luke.com/no-offset" target="_blank" rel="noopener">Use The Index, Luke — "We need tool support for keyset pagination" (no-offset)</a> and <a href="https://use-the-index-luke.com/sql/partial-results/fetch-next-page" target="_blank" rel="noopener">Paging Through Results</a></li>
+        <li><a href="https://slack.engineering/evolving-api-pagination-at-slack/" target="_blank" rel="noopener">Slack Engineering — Evolving API Pagination at Slack</a></li>
+        <li><a href="https://docs.stripe.com/api/pagination" target="_blank" rel="noopener">Stripe API — Pagination</a> (<code>starting_after</code> / <code>ending_before</code>)</li>
+        <li><a href="https://graphql.org/learn/pagination/" target="_blank" rel="noopener">GraphQL — Pagination</a></li>
+      </ul>
+
+      <!-- Pattern 6 -->
+      <h2 id="p6-alternatives">Pattern 6 — Build vs. Buy for Real-Time Delivery</h2>
+      <p><strong>What it is.</strong> The decision of who runs the persistent-connection layer. The review lists three options; here is what each one means you take on.</p>
+      <table>
+        <thead>
+          <tr><th>Option</th><th>You run</th><th>Cost model</th><th>Who stores messages</th><th>Pick when</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Own WebSocket servers (Socket.IO + Redis adapter, or Slack-style gateway)</td><td>Connection servers, Redis pub/sub between nodes, scaling, reconnects</td><td>Infrastructure only — nothing per message</td><td>You (Postgres)</td><td>High volume where per-message pricing hurts, and you have ops capacity</td></tr>
+          <tr><td>Hosted pub/sub (PubNub, Ably)</td><td>Only token issuing + publishing</td><td>Per message / connection</td><td>You (Postgres)</td><td>Small team, moderate scale — this app today</td></tr>
+          <tr><td>Hosted chat product (Stream, Sendbird)</td><td>Only user sync + moderation hooks</td><td>Per monthly active user</td><td>The vendor</td><td>Chat is not your core product and you want UI kits, reactions, threads out of the box</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Gotcha.</strong> Switching to Stream/Sendbird is NOT a drop-in replacement for PubNub — it moves the source of truth out of Postgres, which reverses Pattern 0.</p>
+      <p><strong>Learn it:</strong></p>
+      <ul>
+        <li><a href="https://slack.engineering/real-time-messaging/" target="_blank" rel="noopener">Slack Engineering — Real-time Messaging</a></li>
+        <li><a href="https://socket.io/docs/v4/redis-adapter/" target="_blank" rel="noopener">Socket.IO — Redis adapter</a> (how multiple WebSocket nodes share rooms)</li>
+        <li><a href="https://ably.com/docs" target="_blank" rel="noopener">Ably docs</a> · <a href="https://getstream.io/chat/docs/" target="_blank" rel="noopener">Stream Chat docs</a> · <a href="https://sendbird.com/docs" target="_blank" rel="noopener">Sendbird docs</a></li>
+        <li><a href="https://discord.com/blog/how-discord-stores-trillions-of-messages" target="_blank" rel="noopener">Discord — How Discord Stores Trillions of Messages</a> (what "own everything" looks like at extreme scale)</li>
+        <li>On this site: <a href="../../traffic/00-load-balancing.html">Load Balancing</a> (sticky sessions for WebSockets) · <a href="../../networking/00-networking-fundamentals.html">Networking Fundamentals</a></li>
+      </ul>
+
+      <h2 id="books">Books and Courses That Cover All of These</h2>
+      <ul>
+        <li><em>Designing Data-Intensive Applications</em> — Martin Kleppmann. Ch. 7 (transactions), Ch. 11 (stream processing, dual writes, derived data), Ch. 12 (end-to-end idempotence).</li>
+        <li><em>Microservices Patterns</em> — Chris Richardson. Ch. 3 covers transactional outbox, polling publisher, and idempotent consumers (same author as microservices.io).</li>
+        <li><em>System Design Interview, Vol. 1</em> — Alex Xu. "Design a Chat System" and "Design a News Feed System" chapters (the ByteByteGo course is the online version).</li>
+        <li><em>Enterprise Integration Patterns</em> — Gregor Hohpe &amp; Bobby Woolf. The vocabulary for guaranteed delivery, idempotent receiver and publish-subscribe channels.</li>
+      </ul>
+
+      <!-- ═══════════  END OF CONTENT  ═══════════ -->
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

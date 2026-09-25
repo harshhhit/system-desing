@@ -488,6 +488,12 @@ window.SITE_PAGES = {
     section: "Project Walkthroughs",
     title: "Instagram: Major Tools"
   },
+  "chat-architecture-review": {
+    href: "project-explaintion/chat-system/chat-architecture-review.html",
+    section: "Project Walkthroughs",
+    title: "Chat Architecture Review: Postgres + PubNub",
+    subtitle: "A design review of a chat app that stores messages in Postgres and uses PubNub for live delivery — plus a learning guide and references for every pattern it names: scoped tokens, transactional outbox, N+1 fan-out, idempotency keys, cursor pagination."
+  },
   "01-pubsub-and-pubnub": {
     href: "mislanious/01-pubsub-and-pubnub.html",
     section: "Miscellaneous",
