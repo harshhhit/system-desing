@@ -192,11 +192,25 @@ Clicking a marker opens a textarea; saving pins an amber note card (with Edit/De
 right after that block — **anywhere on the page, not just the bottom.**
 State lives in `localStorage` (`sdnotes_notes_<siteId>`), per-viewer only — there is no
 server, so a note exists only in the browser it was written in. A note is keyed by the
-page's href plus the block's index-in-page and a hash of its own text (`renderNotes()`'s
-`idFor`/`hashStr`), so it stays attached to the right block even as unrelated content is
-added elsewhere on the page; editing the exact wording of that specific block will orphan
+page's href plus a hash of its block's own text (`hashStr`), with a `#2`, `#3`… suffix
+when identical text repeats on the page — **not** the block's position — so it stays
+attached to the right block even as content is added or removed elsewhere on the page.
+Notes saved under the older `<index>|<hash>` key are migrated automatically the first
+time their page is opened. Editing the exact wording of that specific block will orphan
 its note (rare, and not destructive — the old entry just stops rendering).
 
 **It is fully automatic — no per-page markup**, exactly like the coverage tracker and
 read-aloud bar. `renderNotes()` runs after `renderReadAloud()` specifically so its
 markers/cards are never picked up as text for the "Listen" feature to speak.
+
+## Sticky header strip + mobile menu — automatic, never hand-add
+
+The brand band (`#site-header-root`) scrolls away; the coverage tracker and Listen bar
+live in a `.sd-sticky` strip that `site-header.js` inserts right *after* the mount so it
+stays pinned while reading. Its height is published as the CSS variable `--sd-sticky-h`;
+anything else that sticks to the top (sidebars, `.sd-progress`, anchor jumps via
+`scroll-padding-top`) offsets by it — do the same for any new sticky element.
+Below 860px the `.sd-study-sidebar` becomes an off-canvas drawer opened by a floating
+"☰ Menu" button (`renderNavDrawer()`); legacy `.layout` pages keep their own top-bar ☰.
+When you change `site.css` or `site-header.js`, bump the `?v=` query on both across
+`docs/` so browsers don't mix a new stylesheet with a cached script.

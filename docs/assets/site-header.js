@@ -98,6 +98,27 @@
     try { activePath = new URL(root + entry.href, window.location.href).pathname; } catch (e) {}
   }
 
+  /* ---- sticky strip: the coverage tracker and Listen bar live in here.
+     It sits right AFTER #site-header-root (not inside it) so that
+     position: sticky is bounded by <body> and the strip stays pinned while
+     the page scrolls — a sticky child of the short header mount would scroll
+     away with it. Its measured height is published as --sd-sticky-h so the
+     desktop sidebar, anchor jumps and page-level sticky boxes sit below it. ---- */
+  var stickyStrip = null;
+  if (mount) {
+    stickyStrip = document.createElement("div");
+    stickyStrip.className = "sd-sticky";
+    mount.insertAdjacentElement("afterend", stickyStrip);
+  }
+  function syncStickyHeight() {
+    var h = stickyStrip ? stickyStrip.offsetHeight : 0;
+    document.documentElement.style.setProperty("--sd-sticky-h", h + "px");
+  }
+  if (stickyStrip) {
+    if (typeof window.ResizeObserver === "function") new window.ResizeObserver(syncStickyHeight).observe(stickyStrip);
+    else window.addEventListener("resize", syncStickyHeight);
+  }
+
   /* ---- top band: brand + home + today's revision ---- */
   function renderTopBand() {
     if (!mount) return;
@@ -109,7 +130,7 @@
     var brand = document.createElement("a");
     brand.className = "sd-brand";
     brand.href = root + (map.home || "index.html");
-    brand.textContent = (map.siteIcon || "📚") + " " + (map.siteName || "System Design Notes");
+    brand.textContent = (map.siteIcon || "📚") + " " + (map.siteName || "Notes");
     band.appendChild(brand);
 
     var home = document.createElement("a");
@@ -160,7 +181,7 @@
       sidebar.insertBefore(sidebarBrand, sidebar.firstChild);
     }
     sidebarBrand.href = root + (map.home || "index.html");
-    sidebarBrand.textContent = map.siteName || "System Design Notes";
+    sidebarBrand.textContent = map.siteName || "Notes";
 
     var nav = sidebar.querySelector("nav");
     if (!nav) { nav = document.createElement("nav"); sidebar.appendChild(nav); }
@@ -229,6 +250,55 @@
     });
   }
 
+  /* ---- mobile nav drawer: below 860px the .sd-study-sidebar becomes an
+     off-canvas drawer (CSS) opened by a floating "☰ Menu" button, so the
+     page content comes first instead of ~100 sidebar links. Legacy .layout
+     pages already have their own top-bar ☰ toggle, so they're left alone. ---- */
+  function renderNavDrawer() {
+    // the sidebar comes after this script in the page, so wait for it
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", renderNavDrawer, { once: true });
+      return;
+    }
+    var sidebar = document.querySelector(".sd-study-sidebar");
+    if (!sidebar) return;
+    var body = document.body;
+
+    var fab = document.createElement("button");
+    fab.type = "button";
+    fab.className = "sd-nav-fab";
+    fab.setAttribute("aria-label", "Open navigation");
+    fab.setAttribute("aria-expanded", "false");
+    fab.textContent = "☰ Menu";
+
+    var backdrop = document.createElement("div");
+    backdrop.className = "sd-nav-backdrop";
+
+    function setOpen(open) {
+      body.classList.toggle("sd-nav-open", open);
+      fab.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) {
+        var active = sidebar.querySelector("nav a.active");
+        if (active) { try { active.scrollIntoView({ block: "center" }); } catch (e) {} }
+      }
+    }
+    fab.addEventListener("click", function () { setOpen(!body.classList.contains("sd-nav-open")); });
+    backdrop.addEventListener("click", function () { setOpen(false); });
+    sidebar.addEventListener("click", function (ev) { if (ev.target.closest("a")) setOpen(false); });
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape" && body.classList.contains("sd-nav-open")) { setOpen(false); fab.focus(); }
+    });
+    if (window.matchMedia) {
+      var mq = window.matchMedia("(min-width: 861px)");
+      var onWide = function () { if (mq.matches) setOpen(false); };
+      if (mq.addEventListener) mq.addEventListener("change", onWide);
+      else if (mq.addListener) mq.addListener(onWide);
+    }
+
+    body.appendChild(backdrop);
+    body.appendChild(fab);
+  }
+
   /* ---- coverage tracker: a sticky "mark covered" bar on every SITE_MAP page,
      plus ✓ marks in the sidebar. State is per-viewer in localStorage. ---- */
   var COVERED_KEY = "sdnotes_covered_" + map.siteId;
@@ -248,8 +318,14 @@
   }
   function markCoveredLinks() {
     var cov = readCovered();
-    document.querySelectorAll(".sidebar nav a[data-href]").forEach(function (a) {
-      a.classList.toggle("covered", cov[a.dataset.href] === true);
+    // baked sidebar links carry no data-href, so match them by resolved path
+    var byPath = {};
+    allMapPages().forEach(function (p) {
+      try { byPath[new URL(root + p.href, window.location.href).pathname] = p.href; } catch (e) {}
+    });
+    document.querySelectorAll(".sidebar nav a").forEach(function (a) {
+      var href = a.dataset.href || byPath[a.pathname];
+      if (href) a.classList.toggle("covered", cov[href] === true);
     });
   }
   function currentSection() {
@@ -261,7 +337,7 @@
     return found;
   }
   function renderCoverageTracker() {
-    if (!mount || !entry) return;
+    if (!stickyStrip || !entry) return;
     var sec = currentSection();
     var all = allMapPages();
 
@@ -306,7 +382,8 @@
       paint();
     });
     paint();
-    mount.appendChild(box);
+    stickyStrip.appendChild(box);
+    syncStickyHeight();
   }
 
   /* ---- weekly reading target: a homepage-only widget ([data-weekly-target]).
@@ -487,7 +564,7 @@
       document.addEventListener("DOMContentLoaded", renderReadAloud, { once: true });
       return;
     }
-    if (!mount) return;
+    if (!stickyStrip) return;
     var synth = window.speechSynthesis;
     if (!synth || typeof window.SpeechSynthesisUtterance === "undefined") return;
 
@@ -591,7 +668,8 @@
       activeEl = el;
       el.classList.add("sd-tts-active");
       var r = el.getBoundingClientRect();
-      if (r.top < 60 || r.bottom > (window.innerHeight || 0) - 20) {
+      var top = (stickyStrip ? stickyStrip.offsetHeight : 0) + 20;
+      if (r.top < top || r.bottom > (window.innerHeight || 0) - 20) {
         try { el.scrollIntoView({ block: "center", behavior: "smooth" }); }
         catch (e) { el.scrollIntoView(); }
       }
@@ -651,7 +729,8 @@
     window.addEventListener("pagehide", function () { try { synth.cancel(); } catch (e) {} });
 
     setLabel();
-    mount.appendChild(bar);
+    stickyStrip.appendChild(bar);
+    syncStickyHeight();
   }
 
   /* ---- inline notes: a "🗒️+" marker next to every <p> in the content
@@ -659,10 +738,12 @@
      (short one-line items like "Pods" or "kubectl" don't get one — the
      paragraph is the base unit, not every line). Click it to write a note;
      it's pinned right after that block until edited or deleted. Notes are
-     keyed by page href + a fingerprint of the block's own text (its index in
-     the page plus a hash of its text), so
-     a note stays attached to the right spot even as other content is added
-     elsewhere on the page. Purely per-viewer, localStorage only — there is
+     keyed by page href + a hash of the block's own text (plus "#2", "#3"…
+     when the same text appears more than once on the page), so a note stays
+     attached to the right block even as other content is added or removed
+     elsewhere on the page. Older notes were keyed "<index>|<hash>" — which
+     broke whenever a block was inserted above them — and are migrated to
+     the new key the first time their page is opened. Purely per-viewer, localStorage only — there is
      no server, so notes live only in the browser they were written in.
      Runs after renderReadAloud() so its markers/cards are never picked up as
      text to speak. ---- */
@@ -775,8 +856,31 @@
 
     var store = readNotes();
     var pageNotes = store[pageKey] || {};
+    var LEGACY_ID = /^\d+\|/;
+    var seen = {};
+    var migrated = false;
+    function legacyFor(i, h) {
+      if (pageNotes[i + "|" + h]) return i + "|" + h;           // block hasn't moved
+      var suffix = "|" + h, found = null;
+      Object.keys(pageNotes).forEach(function (k) {            // block moved: same text, other index
+        if (!found && LEGACY_ID.test(k) && k.slice(-suffix.length) === suffix) found = k;
+      });
+      return found;
+    }
+    var ids = blocks.map(function (block) {
+      var h = hashStr(block.text);
+      seen[h] = (seen[h] || 0) + 1;
+      return seen[h] === 1 ? h : h + "#" + seen[h];
+    });
     blocks.forEach(function (block, i) {
-      var id = i + "|" + hashStr(block.text);
+      var id = ids[i];
+      if (pageNotes[id]) return;
+      var old = legacyFor(i, hashStr(block.text));
+      if (old) { pageNotes[id] = pageNotes[old]; delete pageNotes[old]; migrated = true; }
+    });
+    if (migrated) { store[pageKey] = pageNotes; writeNotes(store); }
+    blocks.forEach(function (block, i) {
+      var id = ids[i];
       var node = pageNotes[id] ? buildCard(block.el, id, pageNotes) : buildMarker(block.el, id, pageNotes);
       place(block.el, node);
     });
@@ -940,10 +1044,13 @@
 
   renderTopBand();
   renderSidebar();
+  renderNavDrawer();
   renderCoverageTracker();
   renderReadAloud();
   renderNotes();
   markCoveredLinks();
+  // the baked sidebar is parsed after this script runs, so re-mark it once it exists
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", markCoveredLinks, { once: true });
   applyPageMeta();
   renderTopicGrid();
   renderResourceList();
