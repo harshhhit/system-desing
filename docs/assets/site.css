@@ -602,3 +602,25 @@ input[type="checkbox"] { margin-right: 0.5em; }
     border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); color: var(--fg); cursor: pointer; font-size: 1.1rem;
   }
 }
+
+/* ═══════════ Topic map — clickable block diagram at the top of each section's head page ═══════════
+   Markup: <nav class="topic-map" aria-label="…" style="--map-accent: var(--sd-c1)">
+             <p class="topic-map-legend">…</p>
+             <div class="topic-map-row"><p class="topic-map-label">Layer</p><p class="topic-map-why">Why this layer</p>
+               <div class="topic-map-blocks"><a href="…">Title<small>what it covers</small></a> …</div></div>
+             <div class="topic-map-arrow" aria-hidden="true">↓</div> …
+           </nav>
+   a.here = the current page; a.ext = related page in another section; span.soon = planned, no page yet. */
+.topic-map { --map-accent: var(--sd-c1); margin: 1.2rem 0 1.8rem; display: flex; flex-direction: column; align-items: stretch; }
+.topic-map-legend { margin: 0 0 0.7rem; font-size: 0.85rem; color: var(--muted); }
+.topic-map-row { border: 1px solid var(--border); border-radius: 12px; padding: 0.7rem 0.8rem 0.8rem; background: var(--bg-alt); }
+.topic-map-label { margin: 0 0 0.35rem; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.topic-map-why { margin: -0.15rem 0 0.55rem; font-size: 0.84rem; line-height: 1.45; color: var(--muted); }
+.topic-map-blocks { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.topic-map-blocks a, .topic-map-blocks .soon { flex: 1 1 11rem; display: block; padding: 0.6rem 0.75rem; border: 1px solid var(--border); border-left: 4px solid var(--map-accent); border-radius: 8px; background: var(--card-bg); color: var(--fg); text-decoration: none; font-weight: 600; font-size: 0.92rem; line-height: 1.3; transition: transform .15s, box-shadow .15s, border-color .15s; }
+.topic-map-blocks a:hover, .topic-map-blocks a:focus-visible { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(15,23,42,0.1); border-color: var(--map-accent); text-decoration: none; }
+.topic-map-blocks small { display: block; font-weight: 400; color: var(--muted); font-size: 0.8rem; margin-top: 0.15rem; }
+.topic-map-blocks a.here { background: color-mix(in srgb, var(--map-accent) 10%, var(--card-bg)); cursor: default; }
+.topic-map-blocks a.ext { border-left-color: var(--sd-c10); }
+.topic-map-blocks .soon { border-style: dashed; border-left-style: solid; border-left-color: var(--border); color: var(--muted); font-weight: 500; }
+.topic-map-arrow { text-align: center; color: var(--muted); font-size: 1.1rem; line-height: 1.6; }

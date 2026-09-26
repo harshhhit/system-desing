@@ -151,512 +151,536 @@ window.REVISION_CARDS = [
   "title": "Secure Login Implementation Steps",
   "section": "Authentication",
   "icon": "🔐",
-  "source": "intro",
-  "text": "Require MFA for: First login; New device; Password change."
+  "source": "interview",
+  "text": "For a secure login I serve everything over HTTPS, store passwords only as salted bcrypt or Argon2 hashes, and verify them in constant time. On success I rotate the session ID and put it in an HttpOnly, Secure, SameSite cookie, or issue a short-lived access token with a refresh token."
  },
  {
   "href": "authentication/01-authentication/01-introduction.html",
   "title": "Authentication Schemes: An Introduction",
   "section": "Authentication",
   "icon": "🔐",
-  "source": "intro",
-  "text": "A comparison of the most common authentication schemes."
+  "source": "interview",
+  "text": "An authentication scheme is how a client proves who it is to a server. For browser users I'd use session cookies or OAuth 2.0 with OpenID Connect for social or enterprise login; for APIs, bearer tokens such as short-lived JWTs; for simple machine access, API keys; and for high-security service-to-service calls, mTLS…"
  },
  {
   "href": "authentication/01-authentication/03-hashing-process.html",
   "title": "Secure Password Hashing Process",
   "section": "Authentication",
   "icon": "🔐",
-  "source": "intro",
-  "text": "There are four main components involved in securely storing a password: the Password, the Salt, the Hashing Function (bcrypt/argon2), and the Resulting Hash."
+  "source": "interview",
+  "text": "I never store passwords, only a hash from a slow password-hashing function like Argon2id or bcrypt. Each user gets a unique random salt so identical passwords produce different hashes and rainbow tables don't work, and the cost factor makes every guess expensive so a stolen database can't be brute-forced quickly."
  },
  {
   "href": "authentication/02-social-login/google-key-task.html",
   "title": "Google Social Login Checklist",
   "section": "Authentication",
   "icon": "🔐",
-  "source": "intro",
-  "text": "Google Cloud Console / API Setup is the “Google-side” prep — you do this once for your project."
+  "source": "interview",
+  "text": "Social login uses OpenID Connect: the user signs in with Google, and my app receives a Google-signed ID token. The mobile app sends that ID token to my backend, and the backend verifies its signature, expiry, and that the audience is my client ID."
  },
  {
   "href": "authentication/02-social-login/google-login.html",
   "title": "Google Sign-In with Credential Manager",
   "section": "Authentication",
   "icon": "🔐",
-  "source": "intro",
-  "text": "The Android app gets an ID Token from Google, sends it to your Backend, and your Backend verifies it with Google before issuing its own session tokens."
+  "source": "interview",
+  "text": "The Android app uses Credential Manager to get a Google ID token, which is a signed JWT proving who the user is. It sends that token to my backend, which verifies the signature, expiry, and audience with Google's library, then logs the user in or creates their account."
  },
  {
   "href": "01-front-end/frontend-roadmap.html",
   "title": "Front-End Development Roadmap (Concepts Only)",
   "section": "Front-End",
   "icon": "🖥️",
-  "source": "lead",
-  "text": "A concept-first map of what “understanding front-end” actually requires — the ideas, why they exist, and how they connect, from how the web works up to modern architecture and delivery."
+  "source": "interview",
+  "text": "Front-end development is building what runs in the user's browser — HTML for structure, CSS for presentation, and JavaScript for interactivity and talking to APIs."
  },
  {
   "href": "01-front-end/graphql/http/04-client-server-model.html",
   "title": "Client-Server Model, End to End",
   "section": "Front-End",
   "icon": "🖥️",
-  "source": "lead",
-  "text": "Beginner to advanced: the restaurant-analogy mental model, DNS/TCP/TLS/HTTP request mechanics, HTTP/1.1 vs 2 vs 3 vs WebSockets, monolith → REST → microservices architecture, caching/load balancing/async workers/replication, security, and modern paradigms — ending in one summary request-flow diagram."
+  "source": "interview",
+  "text": "In the client-server model, clients like browsers and mobile apps send requests, and servers process them and send responses. The server centralizes the data and business logic, so everyone shares the same trusted state."
  },
  {
   "href": "01-front-end/graphql/http/04.2-request-flow-interactive.html",
   "title": "Interactive Request Flow",
   "section": "Front-End",
   "icon": "🖥️",
-  "source": "lead",
-  "text": "Every method from the Client-Server Model page, walked through as one guided, 13-step request: DNS → TCP/TLS → CDN → load balancer → security gate → API gateway → auth → cache/DB → queue → response → render."
+  "source": "interview",
+  "text": "The browser resolves the domain through DNS, opens a TCP connection and does a TLS handshake, and sends the HTTP request. A CDN serves it if it's cached; otherwise it goes through a load balancer, a security layer like rate limiting and a WAF, and an API gateway to the right service."
  },
  {
   "href": "01-front-end/graphql/http/04.1-cookies-sessions-jwt.html",
   "title": "Cookies, Sessions & JWT",
   "section": "Front-End",
   "icon": "🖥️",
-  "source": "lead",
-  "text": "State management deep dive: how cookies work, server-side sessions vs. stateless JWTs, the modern access/refresh hybrid, and the CSRF/XSS trade-offs behind each."
+  "source": "interview",
+  "text": "HTTP is stateless, so we need a way to remember the logged-in user. Cookies are the transport — the browser stores them and sends them automatically. With server-side sessions, the cookie holds a random ID and the session data lives in Redis or a database, so revocation is instant."
+ },
+ {
+  "href": "01-front-end/browser-javascript-capabilities.html",
+  "title": "What In-Browser JavaScript Can & Can't Do",
+  "section": "Front-End",
+  "icon": "🖥️",
+  "source": "interview",
+  "text": "JavaScript's power depends on where it runs. In the browser it's sandboxed: it can manipulate the DOM, handle user events, make network requests, set cookies and use localStorage — but it can't read arbitrary files, run programs, or access the OS, and devices like the camera need the user's permission."
+ },
+ {
+  "href": "01-front-end/cors.html",
+  "title": "CORS (Cross-Origin Resource Sharing)",
+  "section": "Front-End",
+  "icon": "🖥️",
+  "source": "interview",
+  "text": "CORS is how a server relaxes the browser's Same Origin Policy. When a page calls an API on a different origin, the browser sends an Origin header, and the server replies with Access-Control-Allow-Origin saying which origins may read the response."
  },
  {
   "href": "01-front-end/graphql/http/01.02-rendering-types.html",
   "title": "Web Rendering & Architecture",
   "section": "Front-End",
   "icon": "🖥️",
-  "source": "intro",
-  "text": "Rendering strategy answers one question: where does HTML get generated, and when? There are four points on this spectrum: build time, request time, client time, and a hybrid of these."
+  "source": "interview",
+  "text": "Rendering strategy is where and when the HTML is built. CSR builds it in the browser — great for interactive apps, but slower first paint and weaker SEO. SSR builds it on the server per request — fast first content and good SEO, but more server load and a hydration step."
  },
  {
   "href": "01-front-end/graphql/http/02.1-ssr-vs-csr.html",
   "title": "SSR vs CSR",
   "section": "Front-End",
   "icon": "🖥️",
-  "source": "intro",
-  "text": "CSR → Browser renders. S3 hosts files. API server provides data. NO FRONTEND SERVER needed."
+  "source": "interview",
+  "text": "With CSR, the browser gets an empty HTML shell and a JavaScript bundle, runs it, calls the API, and renders the page — so it can be hosted as static files on S3 and a CDN, but first paint and SEO are weaker."
  },
  {
   "href": "01-front-end/graphql/http/02.1ssr-vs-csr-v.html",
   "title": "SSR vs CSR (v2)",
   "section": "Front-End",
   "icon": "🖥️",
-  "source": "intro",
-  "text": "The SSR model is built on three fundamental premises: Computation Centralization: Servers provide consistent, predictable rendering performance; Content First: Users see content before interactivity; Progressive Enhancement: Basic functionality works without JavaScript."
+  "source": "interview",
+  "text": "CSR sends a shell and JavaScript and renders in the browser: cheap to host, but a long path to first content and weaker SEO. SSR renders HTML on the server per request: fast visible content and good SEO, but server cost and a hydration step before interactivity."
  },
  {
   "href": "01-front-end/graphql/http/03.1graphql-vs-rest.html",
   "title": "GraphQL vs REST",
   "section": "Front-End",
   "icon": "🖥️",
-  "source": "intro",
-  "text": "How fetching 20 random images from a user differs between REST and GraphQL, why GraphQL reduces network work, when to choose each approach, and how to implement efficient/random sampling on the server."
+  "source": "interview",
+  "text": "In REST, each resource has its own endpoint and the server fixes the response shape, so a screen that needs related data often makes many requests and over- or under-fetches."
  },
  {
   "href": "01-front-end/system-design-roadmap.html",
   "title": "System Design Roadmap — DevOps/SRE → System Design Interviews",
   "section": "Front-End",
   "icon": "🖥️",
-  "source": "lead",
-  "text": "A sequenced prep path for infra-heavy engineers: move fast through the building blocks you already run in production, slow down on interview framing (requirements → capacity → API → HLD → deep dive → tradeoffs) and the few coding-adjacent pieces (consistent hashing, rate limiters, LRU, tries) that system design rounds…"
+  "source": "interview",
+  "text": "A system design interview tests whether I can take an open-ended problem and design a scalable, reliable system while explaining the trade-offs. I follow a structure: clarify functional and non-functional requirements, estimate scale with quick back-of-the-envelope math, define the API, sketch the high-level…"
  },
  {
   "href": "05-database/00-learning-path/00-index.html",
   "title": "Database Index",
   "section": "Database",
   "icon": "🗄️",
-  "source": "intro",
-  "text": "Before scaling out, you must know how a single database works."
+  "source": "interview",
+  "text": "A database stores data durably and lets many clients read and write it correctly, usually with ACID transactions on a single node. At scale one node isn't enough, so we replicate for availability and read scaling, which brings replication lag and consistency trade-offs, and we partition or shard for write throughput…"
  },
  {
   "href": "05-database/01-foundations/mislanious-terms.html",
   "title": "Miscellaneous Database Terms",
   "section": "Database",
   "icon": "🗄️",
-  "source": "intro",
-  "text": "A constraint in a database is a rule applied to a table's columns to limit the type of data that can be stored in them. Constraints ensure the accuracy and reliability of the data in the database. 🔒 They are used to enforce business rules and maintain the integrity of the data."
+  "source": "interview",
+  "text": "Integrity constraints are rules the database enforces on every write — NOT NULL, UNIQUE, PRIMARY KEY, FOREIGN KEY, and CHECK. If a write violates one, the database rejects it and rolls the change back, so invalid data can't get in no matter which application, script, or migration wrote it."
  },
  {
   "href": "05-database/01a-sql-and-relational-fundamentals/index.html",
   "title": "SQL and Relational Fundamentals",
   "section": "Database",
   "icon": "🗄️",
-  "source": "lead",
-  "text": "Learn tables, rows, columns, primary and foreign keys, normalization, CRUD, filtering, joins, aggregation, subqueries, and constraints. Practice by modeling a small order-management database and writing queries for it."
+  "source": "interview",
+  "text": "A relational database stores data in tables with rows and typed columns, each row identified by a primary key, and relationships expressed with foreign keys. Data is normalized so each fact is stored once, which prevents update anomalies, and the database enforces constraints like NOT NULL, UNIQUE, CHECK, and foreign…"
+ },
+ {
+  "href": "05-database/02-data-modeling-and-selection/how-to-choose-the-database.html",
+  "title": "How to Choose the Database",
+  "section": "Database",
+  "icon": "🗄️",
+  "source": "interview",
+  "text": "I choose a database from the access patterns and requirements, not from popularity. I default to a relational database like PostgreSQL when I need transactions, relationships, and flexible queries."
  },
  {
   "href": "05-database/02-data-modeling-and-selection/factors.html",
   "title": "Database Performance Factors",
   "section": "Database",
   "icon": "🗄️",
-  "source": "intro",
-  "text": "As a DevOps engineer, when we talk about database performance, we usually look at several key factors that affect speed, scalability, and reliability."
+  "source": "interview",
+  "text": "Database performance comes down to latency and throughput, and it's limited by whichever resource is the bottleneck: query efficiency and indexes, CPU, memory and cache hit ratio, disk IOPS, connections, or locks."
  },
  {
   "href": "05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html",
   "title": "Scratch Note: Polyglot Persistence",
   "section": "Database",
   "icon": "🗄️",
-  "source": "intro",
-  "text": "Many modern architectures (microservices, data lakes) use more than one database type. Knowing when and why to mix is a mark of a senior architect."
+  "source": "interview",
+  "text": "Polyglot persistence means using different databases for different workloads in one system — for example PostgreSQL for transactions, Redis for caching, Elasticsearch for search, and a warehouse for analytics."
  },
  {
   "href": "05-database/02a-schema-design-and-migrations/index.html",
   "title": "Schema Design and Migrations",
   "section": "Database",
   "icon": "🗄️",
-  "source": "lead",
-  "text": "Learn how to design schemas from access patterns, choose data types and constraints, normalize or denormalize safely, version schema changes, and run backward-compatible migrations with rollback plans."
+  "source": "interview",
+  "text": "I design the schema from the application's access patterns — the hot reads and writes — choosing correct data types and letting the database enforce constraints. I normalize by default and denormalize only for measured read-heavy paths."
  },
  {
   "href": "05-database/03-querying-and-performance/01A-Database-basic.html",
   "title": "PostgreSQL Views Explained",
   "section": "Database",
   "icon": "🗄️",
-  "source": "intro",
-  "text": "Views make queries reusable, readable, and secure (you can hide complex joins or sensitive columns)."
+  "source": "interview",
+  "text": "A view is a saved query that behaves like a virtual table — it stores no data, and every query against it runs the underlying SQL on the live tables, so it's always up to date. I use views to reuse complex joins and to restrict what columns or rows a role can see."
  },
  {
   "href": "05-database/03-querying-and-performance/08-indxing.html",
   "title": "Indexing",
   "section": "Database",
   "icon": "🗄️",
-  "source": "intro",
-  "text": "Think of an index in a book. Instead of flipping through every page to find \"Chapter 7\", you just look at the index and jump directly there. In databases, an index is the same — it helps the computer quickly find the row you want instead of scanning everything."
+  "source": "interview",
+  "text": "An index is a separate sorted data structure, usually a B-tree, that lets the database find rows by a column's value without scanning the whole table — turning a linear scan into a logarithmic lookup."
  },
  {
   "href": "05-database/03a-transactions-and-concurrency/index.html",
   "title": "Transactions and Concurrency",
   "section": "Database",
   "icon": "🗄️",
-  "source": "lead",
-  "text": "Learn ACID, isolation levels, locks, MVCC, deadlocks, lost updates, optimistic versus pessimistic concurrency, and how to make payment or inventory updates correct under concurrent requests."
+  "source": "interview",
+  "text": "A transaction groups several operations so they succeed or fail together, with ACID guarantees: atomicity, consistency, isolation, and durability. Isolation levels trade correctness for concurrency — Read Committed, Repeatable Read, Serializable. Databases like Postgres use MVCC so readers don't block writers."
  },
  {
   "href": "05-database/03b-query-plans-and-optimization/index.html",
   "title": "Query Plans and Optimization",
   "section": "Database",
   "icon": "🗄️",
-  "source": "lead",
-  "text": "Learn to read EXPLAIN and EXPLAIN ANALYZE output, identify sequential scans and expensive joins, choose useful indexes, update statistics, avoid N+1 queries, and measure before and after every optimization."
+  "source": "interview",
+  "text": "A query plan is how the database decides to execute a SQL query — index or full scan, join order, and join algorithm — based on its statistics. I use EXPLAIN ANALYZE to see the real plan with timings and row counts, look for sequential scans on big tables, bad row estimates, and expensive joins, then fix it with the…"
  },
  {
   "href": "05-database/04-distributed-database-fundamentals/lecture-2.html",
   "title": "Lecture 2",
   "section": "Database",
   "icon": "🗄️",
-  "source": "intro",
-  "text": "In a distributed database, you can only guarantee two out of the following three at any given time: C – Consistency: Every read gets the latest write or an error; A – Availability: Every request gets a response, even if it’s not the latest; P – Partition Tolerance: The system continues operating despite network…"
+  "source": "interview",
+  "text": "ACID means transactions are atomic, consistent, isolated, and durable — the model of relational databases, ideal for money and inventory. BASE means basically available, soft state, eventually consistent — the model of many distributed NoSQL stores, which stay available and fast but let replicas be briefly out of…"
  },
  {
   "href": "05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html",
   "title": "CAP Theorem Questions",
   "section": "Database",
   "icon": "🗄️",
-  "source": "intro",
-  "text": "The CAP theorem (Consistency, Availability, Partition Tolerance) is often oversimplified into a triangle diagram. For top-tier DevOps engineers, the value lies in understanding how trade-offs manifest in distributed systems under real-world conditions, especially in cloud-native architectures, multi-region…"
+  "source": "interview",
+  "text": "CAP says that during a network partition, a distributed database must choose between consistency — every read sees the latest write or gets an error — and availability — every request gets an answer, possibly stale. Since partitions can't be ruled out, the real choice is CP or AP behaviour during a partition."
  },
  {
   "href": "05-database/04a-database-security-and-access-control/index.html",
   "title": "Database Security and Access Control",
   "section": "Database",
   "icon": "🗄️",
-  "source": "lead",
-  "text": "Learn authentication, roles, least-privilege permissions, secrets management, TLS, encryption at rest, parameterized queries, SQL-injection prevention, auditing, and data masking for sensitive fields."
+  "source": "interview",
+  "text": "I secure a database in layers. Each service gets a least-privilege role, and multi-tenant data uses row-level security. Connections use TLS with certificate verification; storage and backups are encrypted, with extra column-level encryption for the most sensitive fields."
  },
  {
   "href": "05-database/05-scaling-and-partitioning/01-Database-Basic.html",
   "title": "Database Basics: Partitioning & Data Distribution",
   "section": "Database",
   "icon": "🗄️",
-  "source": "intro",
-  "text": "Data Distribution Concepts determine how data is split, stored, and accessed across systems."
+  "source": "interview",
+  "text": "Data distribution is spreading data across machines. Partitioning splits the data into pieces — horizontally by rows or vertically by columns — and sharding is horizontal partitioning across different servers, which scales storage and writes."
  },
  {
   "href": "05-database/05-scaling-and-partitioning/02-partiontion.html",
   "title": "Partitioning",
   "section": "Database",
   "icon": "🗄️",
-  "source": "intro",
-  "text": "Partitioning is the process of dividing a large dataset or table into smaller, more manageable pieces. It plays a crucial role in improving the scalability, performance, and availability of databases, particularly in distributed systems."
+  "source": "interview",
+  "text": "Partitioning splits a large table into smaller pieces — by rows horizontally or by columns vertically — so queries can skip irrelevant data and old data is easy to drop."
  },
  {
   "href": "05-database/05-scaling-and-partitioning/03-horizintal-scaling.html",
   "title": "Horizontal Scaling",
   "section": "Database",
   "icon": "🗄️",
-  "source": "intro",
-  "text": "The biggest friction point is not tech, but organizational maturity — most failures in horizontal scaling happen because teams underestimate operational complexity, shard key design, and consistency trade-offs."
+  "source": "interview",
+  "text": "Vertical scaling makes one database server bigger — simple, no code changes, and transactions stay easy — but it has a hard ceiling, gets expensive, and is still a single point of failure."
  },
  {
   "href": "05-database/05a-connection-management-and-database-proxies/index.html",
   "title": "Connection Management and Database Proxies",
   "section": "Database",
   "icon": "🗄️",
-  "source": "lead",
-  "text": "Learn connection pooling, pool sizing, timeouts, connection leaks, health checks, failover, and database proxies such as PgBouncer and ProxySQL. Understand when read/write routing is safe and how replication lag can return stale data."
+  "source": "interview",
+  "text": "Connection pooling reuses a set of open database connections instead of opening one per request, because opening connections is slow and each one costs the database memory, so it has a hard connection limit."
  },
  {
   "href": "05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html",
   "title": "PostgreSQL Connection & Query Troubleshooting Guide",
   "section": "Database",
   "icon": "🗄️",
-  "source": "lead",
-  "text": "Diagnostic queries against pg_stat_activity for connection usage, connection state, per-IP/user/application breakdowns, active and long-running queries, idle and idle-in-transaction sessions, and a step-by-step workflow for \"too many connections\" incidents."
+  "source": "interview",
+  "text": "When Postgres says too many connections, I query pg_stat_activity to see who holds them: count by state, then group by client IP, user, and application name. Many active connections mean slow queries or real load; many idle ones mean oversized pools across too many instances; and 'idle in transaction' means the…"
  },
  {
   "href": "05-database/06a-backup-recovery-and-disaster-recovery/index.html",
   "title": "Backup, Recovery, and Disaster Recovery",
   "section": "Database",
   "icon": "🗄️",
-  "source": "lead",
-  "text": "Learn full, incremental, and logical backups; restore drills; point-in-time recovery; RPO and RTO; replication versus backup; regional failures; and how to document and test a disaster-recovery runbook."
+  "source": "interview",
+  "text": "Backups are copies of the data stored separately so I can restore after deletion or corruption; with WAL archiving I can do point-in-time recovery to just before a mistake."
  },
  {
   "href": "05-database/07-observability-capacity-and-operations/index.html",
   "title": "Observability, Capacity, and Operations",
   "section": "Database",
   "icon": "🗄️",
-  "source": "lead",
-  "text": "Learn database metrics, slow-query logs, tracing, alerting, capacity planning, load testing, maintenance tasks, upgrades, incident response, and how to turn production symptoms into an investigation plan."
+  "source": "interview",
+  "text": "For a database I monitor p95 and p99 query latency, connection and pool usage, replication lag, lock waits and deadlocks, disk and IOPS, and the slow query log, and I alert well before hard limits."
  },
  {
   "href": "distributed-system/distributed-systems.html",
   "title": "Distributed Systems",
   "section": "Distributed Systems",
   "icon": "🌐",
-  "source": "intro",
-  "text": "A distributed systems architecture is a design approach where a software system is built as a collection of multiple independent components (often called nodes) that run on different machines but work together to achieve a common goal."
+  "source": "interview",
+  "text": "A distributed system is a group of independent machines that communicate over a network and work together so they look like a single system to the user. We build them to scale beyond one machine, to stay available when a machine fails, and to be closer to users."
  },
  {
   "href": "distributed-system/01-consensus-algorithms.html",
   "title": "Consensus Algorithms: Raft & Paxos",
   "section": "Distributed Systems",
   "icon": "🌐",
-  "source": "lead",
-  "text": "Quorums, Paxos's prepare/accept phases, Raft's leader election and log replication, split-brain, and how etcd/ZooKeeper use this in practice."
+  "source": "interview",
+  "text": "A consensus algorithm lets a cluster of nodes agree on one value, or one ordered log of values, even when some nodes fail. Raft and Paxos both do it with majority quorums: a write is committed only after a majority of nodes accept it, and because any two majorities overlap, a committed value can't be lost."
  },
  {
   "href": "distributed-system/02-consistent-hashing.html",
   "title": "Consistent Hashing",
   "section": "Distributed Systems",
   "icon": "🌐",
-  "source": "lead",
-  "text": "Why mod-N hashing breaks on resize, the hash ring, virtual nodes, rebalancing cost, and where this shows up in databases, caches, load balancers, and CDNs."
+  "source": "interview",
+  "text": "Consistent hashing places both servers and keys on a hash ring, and each key goes to the next server clockwise. With plain hash-mod-N, adding one server remaps almost every key; with the ring, adding or removing a server only moves about 1/N of the keys — the ones in that server's slice."
  },
  {
   "href": "distributed-database/index.html",
   "title": "Replication & Distributed Data — Solution Architect Roadmap (Part 1)",
   "section": "Distributed Database",
   "icon": "🧬",
-  "source": "intro",
-  "text": "Phase 1 — Core Replication Theory: Single-leader (master–slave), multi-leader (master–master), leaderless (Dynamo-style), synchronous vs asynchronous vs semi-synchronous, statement-based vs row-based vs logical vs physical replication."
+  "source": "interview",
+  "text": "Replication means keeping copies of the same data on multiple nodes and streaming every change between them, for availability, read scaling, disaster recovery, and locality."
  },
  {
   "href": "distributed-database/02-replication-mechanism.html",
   "title": "Replication Mechanism — The 4 Dimensions (Part 2)",
   "section": "Distributed Database",
   "icon": "🧬",
-  "source": "intro",
-  "text": "Replication = Topology (who) + Timing (when) + Payload (what) + Delivery (how)"
+  "source": "interview",
+  "text": "Replication keeps copies of the same data on multiple database nodes by shipping each change from one node to the others. We do it for high availability, read scaling, and disaster recovery."
  },
  {
   "href": "distributed-database/03-pacelc-interview-masterclass.html",
   "title": "PACELC — Senior Interview Masterclass",
   "section": "Distributed Database",
   "icon": "🧬",
-  "source": "lead",
-  "text": "To nail a PACELC question at a senior level you cannot just recite the acronym — you have to understand the psychology of why interviewers ask it."
+  "source": "interview",
+  "text": "PACELC extends CAP. If there's a network partition, a distributed database chooses between availability and consistency; else, during normal operation, it chooses between latency and consistency."
  },
  {
   "href": "distributed-database/04-wal-vs-binlog.html",
   "title": "WAL vs Binlog — Storage Engine vs Server Log",
   "section": "Distributed Database",
   "icon": "🧬",
-  "source": "lead",
-  "text": "The junior answer — \"WAL is for crash recovery, binlog is for replication\" — passes. The principal-engineer answer explains the storage-engine level (physical vs logical), the timing of writes, and the replication topology implications."
+  "source": "interview",
+  "text": "The WAL is the storage engine's physical redo log: every change is written to it before the data pages are modified, so after a crash the database can replay it and not lose committed transactions."
  },
  {
   "href": "distributed-database/05-replication-lag.html",
   "title": "Replication Lag — Causes, Measurement, Mitigation",
   "section": "Distributed Database",
   "icon": "🧬",
-  "source": "lead",
-  "text": "Lag is the time difference between when a write commits on the leader and when it becomes visible on a follower. It is never just about network speed."
+  "source": "interview",
+  "text": "Replication lag is how far a replica is behind the leader — the time between a write committing on the leader and becoming visible on the replica. It comes from asynchronous replication, and it's usually caused by the replica being slow to apply changes — disk I/O, single-threaded apply, or heavy read queries — not by…"
  },
  {
   "href": "sqs/01-sqs.html",
   "title": "SQS Overview",
   "section": "Messaging & Queues",
   "icon": "📨",
-  "source": "intro",
-  "text": "Producer → SQS API → Storage Layer → Message replicated to AZ1 + AZ2 + AZ3 → Consumer retrieves message from healthy AZ."
+  "source": "interview",
+  "text": "SQS is AWS's fully managed message queue. Producers send messages, SQS stores them redundantly across Availability Zones, and consumers poll, process, and delete them. It decouples services and absorbs traffic spikes, because the producer doesn't wait for the consumer."
  },
  {
   "href": "sqs/02-queus-methord.html",
   "title": "Queue Methods",
   "section": "Messaging & Queues",
   "icon": "📨",
-  "source": "intro",
-  "text": "AMQP (Advanced Message Queuing Protocol) is an open standard messaging protocol designed for reliable, interoperable, and asynchronous communication between applications or services."
+  "source": "interview",
+  "text": "AMQP is an open binary protocol for talking to message brokers like RabbitMQ. Producers publish to an exchange, the exchange routes messages to queues by routing key, and consumers acknowledge each message after processing so the broker can redeliver on failure or send it to a dead-letter queue."
  },
  {
   "href": "sqs/use-case.html",
   "title": "SQS Use Cases",
   "section": "Messaging & Queues",
   "icon": "📨",
-  "source": "intro",
-  "text": "Queues play a huge role in system design because they help make systems scalable, resilient, and decoupled."
+  "source": "interview",
+  "text": "A message queue sits between services so the producer can hand off work and move on, and consumers process it at their own pace. That decouples services, so one being down doesn't break the other; it absorbs traffic spikes as a backlog; it keeps messages safe if a consumer crashes; and it lets me scale by adding…"
  },
  {
   "href": "sqs/03-kafka-fundamentals.html",
   "title": "Kafka Fundamentals",
   "section": "Messaging & Queues",
   "icon": "📨",
-  "source": "lead",
-  "text": "Topics and partitions, consumer groups and offsets, delivery semantics, retention and log compaction, replication and acks — contrasted with SQS."
+  "source": "interview",
+  "text": "Kafka is a distributed, durable, append-only log. Topics are split into partitions spread across brokers; producers append messages, and consumers read by offset without deleting anything, so many consumer groups can read the same stream independently and replay it."
  },
  {
   "href": "sqs/04-event-sourcing-and-cqrs.html",
   "title": "Event Sourcing & CQRS",
   "section": "Messaging & Queues",
   "icon": "📨",
-  "source": "lead",
-  "text": "Storing state as immutable events, snapshotting, splitting write and read models, projections and materialized views, and when this is (and isn't) worth the complexity."
+  "source": "interview",
+  "text": "Event sourcing stores every change as an immutable event and rebuilds current state by replaying them, which gives a full audit trail and time travel; snapshots keep replay fast. CQRS separates the write model from the read models, so each side can be optimized independently."
  },
  {
   "href": "sqs/05-microservice-resilience-patterns.html",
   "title": "Microservice Resilience Patterns",
   "section": "Messaging & Queues",
   "icon": "📨",
-  "source": "lead",
-  "text": "Circuit breaker, retries with backoff and idempotency, bulkhead isolation, the saga pattern, API gateway, and service mesh."
+  "source": "interview",
+  "text": "Resilience patterns stop one failing service from taking down the whole system. I set timeouts on every call, retry transient failures with exponential backoff and jitter, and only retry idempotent operations."
  },
  {
   "href": "sqs/project/project.html",
   "title": "Multiprotocol Messaging Starter: Project Guide",
   "section": "Messaging & Queues",
   "icon": "📨",
-  "source": "intro",
-  "text": "A complete, Docker-based Django + Kafka + RabbitMQ project that implements retries and DLQs end-to-end."
+  "source": "interview",
+  "text": "When a consumer fails to process a message, I retry it a limited number of times, ideally with exponential backoff, because many failures are transient. If it still fails after the maximum attempts, I move it to a dead-letter queue so the poison message doesn't block or waste the workers, and I alert on the DLQ and…"
  },
  {
   "href": "storage/storage-type.html",
   "title": "Storage Types",
   "section": "Storage",
   "icon": "💾",
-  "source": "intro",
-  "text": "File storage is the most traditional and widely used storage paradigm."
+  "source": "interview",
+  "text": "Block storage is a raw virtual disk attached to one server — low latency and high IOPS — so I use it for databases and VM boot volumes, like EBS. File storage is a shared file system with folders and paths over NFS or SMB, good for shared drives and content many servers read and write, like EFS."
  },
  {
   "href": "caching/00-caching-and-cdn-fundamentals.html",
   "title": "Caching & CDN Fundamentals",
   "section": "Caching & CDN",
   "icon": "🧊",
-  "source": "lead",
-  "text": "Caching layers, cache-aside vs write-through vs write-behind, eviction and invalidation, cache stampede, Redis vs Memcached, and CDN edge caching."
+  "source": "interview",
+  "text": "Caching stores a copy of frequently read data in a faster layer — browser, CDN, Redis, or process memory — so most reads skip the database or origin. The most common pattern is cache-aside: check the cache, on a miss read the database and populate the cache, and on a write update the database and invalidate the key."
  },
  {
   "href": "traffic/00-load-balancing.html",
   "title": "Load Balancing",
   "section": "Traffic Management",
   "icon": "🚦",
-  "source": "lead",
-  "text": "L4 vs L7, algorithms (round robin, least connections, consistent hashing), health checks, sticky sessions, and global vs local load balancing."
+  "source": "interview",
+  "text": "A load balancer sits in front of a pool of servers and spreads incoming traffic across them, so I can scale horizontally and survive instance failures. It uses an algorithm like round robin or least connections to pick a backend, and health checks to stop sending traffic to instances that fail."
  },
  {
   "href": "traffic/01-rate-limiting-and-throttling.html",
   "title": "Rate Limiting & Throttling",
   "section": "Traffic Management",
   "icon": "🚦",
-  "source": "lead",
-  "text": "Token bucket, leaky bucket, fixed and sliding window algorithms, distributed rate limiting with Redis, and the client contract (429, Retry-After)."
+  "source": "interview",
+  "text": "Rate limiting caps how many requests a client can make in a time window, so one caller can't overload a shared service or run up costs. I'd usually use a token bucket, which allows short bursts but enforces an average rate, enforced at the API gateway per API key, with Redis holding the counter so every instance sees…"
  },
  {
   "href": "networking/00-networking-fundamentals.html",
   "title": "Networking Fundamentals",
   "section": "Networking",
   "icon": "🔌",
-  "source": "lead",
-  "text": "TCP vs UDP, the TCP handshake, DNS resolution end to end, the TLS handshake, HTTP/1.1 vs HTTP/2 vs HTTP/3, and WebSockets vs gRPC vs plain HTTP."
+  "source": "interview",
+  "text": "Before an HTTPS request is answered, the client resolves the hostname with DNS, opens a TCP connection with a three-way handshake, negotiates encryption with a TLS handshake, and then sends the HTTP request."
  },
  {
   "href": "observability-security/00-observability-fundamentals.html",
   "title": "Observability Fundamentals",
   "section": "Observability, Security & Ops",
   "icon": "🛡️",
-  "source": "lead",
-  "text": "The three pillars (metrics, logs, traces), Prometheus/Grafana, structured logging and correlation IDs, distributed tracing, SLI/SLO/SLA and error budgets, and alerting."
+  "source": "interview",
+  "text": "Observability is being able to explain what a system is doing from the signals it emits — metrics, logs, and traces. Metrics tell me something is wrong and when, traces show which service in the request path was slow, and structured logs tied together by a correlation ID show exactly why."
  },
  {
   "href": "observability-security/01-application-security-fundamentals.html",
   "title": "Application Security Fundamentals",
   "section": "Observability, Security & Ops",
   "icon": "🛡️",
-  "source": "lead",
-  "text": "The OWASP Top 10, encryption in transit and at rest, secrets management, and threat modeling."
+  "source": "interview",
+  "text": "Application security is making sure only the right users and systems can reach the right data and actions. In practice I start from the OWASP Top 10: enforce authorization on the server for every request, use parameterized queries to prevent injection, encrypt data in transit with TLS and at rest with properly managed…"
  },
  {
   "href": "observability-security/02-cicd-and-deployment-strategies.html",
   "title": "CI/CD & Deployment Strategies",
   "section": "Observability, Security & Ops",
   "icon": "🛡️",
-  "source": "lead",
-  "text": "CI vs CD vs continuous deployment, a typical pipeline, blue-green vs canary vs rolling deploys, the testing pyramid, feature flags, and rollback strategy."
+  "source": "interview",
+  "text": "CI means every change is automatically built and tested on push. Continuous delivery means every passing change is packaged into an artifact that's always ready to release, and continuous deployment goes further and ships it to production automatically."
  },
  {
   "href": "web-servers/server.html",
   "title": "Web Servers",
   "section": "Web Servers",
   "icon": "🖧",
-  "source": "intro",
-  "text": "A comparison table that covers the major languages & frameworks, whether they come with a built-in server, and what’s commonly used in production."
+  "source": "interview",
+  "text": "A web server like Nginx handles HTTP itself — connections, TLS, static files, reverse proxying, and load balancing — while an application server runs the application code."
  },
  {
   "href": "web-servers/wsgi.html",
   "title": "WSGI Explained",
   "section": "Web Servers",
   "icon": "🖧",
-  "source": "intro",
-  "text": "WSGI (Web Server Gateway Interface) and ASGI (Asynchronous Server Gateway Interface) come into play. They act as translators between your Python app and the outside world (browsers, clients, APIs, etc.)."
+  "source": "interview",
+  "text": "WSGI is the Python standard interface between a web server and a Python web application. A WSGI server like Gunicorn receives the request, calls the app's application(environ, start_response) callable, and returns the response, so any WSGI server can run any WSGI framework such as Django or Flask."
  },
  {
   "href": "software-development-principles/01-sdp.html",
   "title": "Software Development Principles",
   "section": "Dev Principles",
   "icon": "🧭",
-  "source": "intro",
-  "text": "The book is organized into three main parts, with the core of the content being the catalog of patterns."
+  "source": "interview",
+  "text": "Design patterns are named, reusable solutions to common object-oriented design problems, popularized by the Gang of Four book's 23 patterns. They fall into three groups: creational patterns like Factory and Builder control object creation, structural patterns like Adapter, Decorator, and Facade control how objects are…"
  },
  {
   "href": "path/00-system-desing.html",
   "title": "System Design: EC2 Hosting Checklist",
   "section": "Planning & Roadmap",
   "icon": "🗺️",
-  "source": "intro",
-  "text": "If you’re acting as the top decision-maker (CTO / lead architect) designing a system to host a website on EC2, you need to think in terms of end-to-end architecture — not just \"spinning up a server,\" but ensuring scalability, security, cost efficiency, and maintainability."
+  "source": "interview",
+  "text": "I'd start from requirements — traffic, uptime SLA, compliance. Then I'd put the app on EC2 instances in an Auto Scaling Group across at least two Availability Zones, behind an Application Load Balancer, inside a VPC with the instances and an RDS Multi-AZ database in private subnets."
  },
  {
   "href": "path/01-requirements-and-planning.html",
   "title": "Requirements & Planning",
   "section": "Planning & Roadmap",
   "icon": "🗺️",
-  "source": "intro",
-  "text": "Define input/output schemas, auth requirements, and error handling."
+  "source": "interview",
+  "text": "Before designing, I clarify requirements. Functional requirements are what the system does — the features, user flows, and APIs. Non-functional requirements are how well it does it — latency, throughput, availability, scalability, security, and compliance."
  },
  {
   "href": "path/01-b-MVP.html",
   "title": "MVP Planning",
   "section": "Planning & Roadmap",
   "icon": "🗺️",
-  "source": "intro",
-  "text": "URL Shortener • DynamoDB or RDS • API Gateway + Lambda"
+  "source": "interview",
+  "text": "An MVP is the smallest working version of a product that delivers its core value to real users, so we can validate the idea and learn before building more. For system design, that means designing only for the core flow and realistic launch traffic, using simple managed services like API Gateway, Lambda, S3, SQS, and a…"
  },
  {
   "href": "path/02-apis.html",
   "title": "API Planning",
   "section": "Planning & Roadmap",
   "icon": "🗺️",
-  "source": "intro",
-  "text": "Use standard HTTP status codes (e.g., 400 Bad Request, 401 Unauthorized, 404 Not Found, 500 Internal Error)."
+  "source": "interview",
+  "text": "I default to REST for public and CRUD APIs because it's simple, universally supported, and works with HTTP caching. I choose GraphQL when clients like mobile apps or SPAs need flexible, precisely shaped data from many sources in one request."
  },
  {
   "href": "path/03-coverage-gap-analysis.html",
@@ -671,16 +695,16 @@ window.REVISION_CARDS = [
   "title": "Image Share System (200 Images)",
   "section": "Project Walkthroughs",
   "icon": "🏗️",
-  "source": "intro",
-  "text": "The system employs a multi-tiered architecture with a strong emphasis on caching and precomputation to offload real-time database lookups and expensive random selections. Signed URLs ensure secure and efficient content delivery via CDN."
+  "source": "interview",
+  "text": "Picking 200 random images from the database on every request doesn't scale, so I precompute. A background worker builds many random sets of 200 image IDs, with signed CDN URLs already generated, and stores each set as one JSON value in Redis with a short TTL."
  },
  {
   "href": "project-explaintion/instagram/major-tools.html",
   "title": "Instagram: Major Tools",
   "section": "Project Walkthroughs",
   "icon": "🏗️",
-  "source": "intro",
-  "text": "For each tool you’ll see: What it is, Why it’s used, When to choose it, and How it typically works (with quick examples/analogies). Where helpful, I’ll tie it to familiar Instagram features (feed, stories, reels, search, etc.)."
+  "source": "interview",
+  "text": "Instagram-scale systems use the right tool for each job. Clients call a GraphQL API backed by Django services. PostgreSQL holds relational data like users and posts, Cassandra holds high-volume writes like likes and follows, and Memcached caches hot reads."
  },
  {
   "href": "project-explaintion/chat-system/chat-architecture-review.html",
@@ -695,23 +719,23 @@ window.REVISION_CARDS = [
   "title": "Pub/Sub and PubNub",
   "section": "Miscellaneous",
   "icon": "🧩",
-  "source": "intro",
-  "text": "Pub/Sub is a messaging pattern or architecture used in distributed systems for real-time communication between services, apps, or devices."
+  "source": "interview",
+  "text": "Pub/sub is a messaging pattern where publishers send messages to a topic and every subscriber to that topic receives a copy, through a broker, so senders and receivers don't know about each other. Kafka, RabbitMQ, Redis, SNS, and Google Pub/Sub implement it."
  },
  {
   "href": "mislanious/Memory-Profiling.html",
   "title": "Memory Profiling",
   "section": "Miscellaneous",
   "icon": "🧩",
-  "source": "intro",
-  "text": "Memory profiling is the process of analyzing how a program uses memory while it is running. It helps developers understand how much memory is being allocated, where it’s being used, and whether there are leaks or inefficiencies."
+  "source": "interview",
+  "text": "Memory profiling is analyzing how a program uses memory while it runs — what allocates memory, how it grows over time, and what is still holding references. I use it to find memory leaks and reduce memory usage."
  },
  {
   "href": "mislanious/query-string.html",
   "title": "Query Strings",
   "section": "Miscellaneous",
   "icon": "🧩",
-  "source": "intro",
-  "text": "A query string is the part of a URL that comes after the ? symbol. It contains parameters in the form of key-value pairs that provide instructions or additional data for the server."
+  "source": "interview",
+  "text": "A query string is the part of the URL after the question mark, with key-value pairs separated by ampersands, like ?page=2&sort=price. It lets one endpoint handle search, filtering, sorting, pagination, and tracking without a separate URL for each variation."
  }
 ];
