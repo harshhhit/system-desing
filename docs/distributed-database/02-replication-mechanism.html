@@ -35,6 +35,19 @@
       <p class="sd-study-prompt" data-page-subtitle><strong>Part 2 of the Distributed Database track.</strong> Part 1 is the <a href="index.html">Replication &amp; Distributed Data Roadmap</a>. This page breaks replication down as a pure mechanism, independent of any specific database:</p>
       <p style="text-align:center; font-weight:700;">Replication = Topology <span style="font-weight:400;">(who)</span> + Timing <span style="font-weight:400;">(when)</span> + Payload <span style="font-weight:400;">(what)</span> + Delivery <span style="font-weight:400;">(how)</span></p>
 
+      <h2 id="interview-answer">Interview Answer — What Is Database Replication?</h2>
+      <p>Database replication is keeping copies of the same data on more than one database node, by shipping every change made on one node to the others so they apply it too. Each copy is a <strong>replica</strong>; a node that accepts writes is a <strong>leader</strong>, and a node that only applies changes it receives is a <strong>follower</strong>.</p>
+      <p>Replication exists for four reasons: <strong>high availability</strong> (a follower can take over if the leader dies), <strong>read scaling</strong> (reads spread across followers), <strong>disaster recovery</strong> (a copy in another region survives a regional outage), and <strong>locality</strong> (data placed closer to users). Without it, one database server is both the bottleneck for every read and a single point of failure for the whole application.</p>
+      <p>This page treats replication as a mechanism made of four independent choices: <strong>topology</strong> — who accepts writes (single-leader, multi-leader, or leaderless); <strong>timing</strong> — when the leader acknowledges a write (synchronous, asynchronous, or semi-synchronous, see <a href="#replication-timing">section 2</a>); <strong>payload</strong> — what is shipped (SQL statements, changed rows, logical change records, or raw WAL pages, see <a href="#replication-payload">section 3</a>); and <strong>delivery</strong> — how it travels (log shipping or change data capture). The cause → effect chain for the most common setup — single-leader, asynchronous, row-based — is: the leader commits the write and acknowledges the client → the change is written to its log → the log stream is sent to followers → each follower replays it, a little later.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Replication keeps copies of the same data on multiple database nodes by shipping each change from one node to the others. We do it for high availability, read scaling, and disaster recovery. I describe any replication setup by four choices: the topology — single-leader, multi-leader, or leaderless; the timing — synchronous for zero data loss or asynchronous for low latency; the payload — statements, rows, logical records, or physical WAL; and the delivery — log shipping or change data capture."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If my database is replicated, do I still need backups?</strong></p>
+      <p><strong>A:</strong> Yes. Replication copies <em>every</em> change — including mistakes. If someone runs <code>DELETE FROM orders</code> without a <code>WHERE</code> clause, or a bug corrupts rows, the replicas faithfully apply the same damage within milliseconds. Replication protects against a node or region failing; only backups (snapshots plus archived WAL/binlog for point-in-time recovery) let you restore the data to how it was before the bad change.</p>
+
       <figure>
         <img src="replication-4-dimensions.png" alt="Infographic: the 4 dimensions of a replication mechanism — topology (single-leader, multi-leader, leaderless), timing (synchronous, asynchronous, semi-synchronous), payload (statement-based, row-based, logical, physical), and delivery (log-shipping, change data capture), with a summary and golden rule.">
         <figcaption>The 4 dimensions of a replication mechanism, at a glance — each is expanded in the sections below.</figcaption>
@@ -55,7 +68,7 @@
       <p>No primary node. Any client can write to any replica. To ensure consistency, the client writes to a <strong>quorum</strong> of replicas (W nodes) and reads from a quorum (R nodes) so that <code>R + W &gt; N</code> (total nodes) — guaranteeing at least one overlapping node with the latest data.</p>
       <p><span class="lead">Mechanism:</span> Relies heavily on version vectors and <em>read-repair</em> (fixing stale data during a read) or <em>anti-entropy</em> (background gossip protocols) to reconcile differences over time.</p>
 
-      <h2>2. The Timing: When does the change happen on the replica?</h2>
+      <h2 id="replication-timing">2. The Timing: When does the change happen on the replica?</h2>
       <p>This defines the <strong>durability and consistency trade-offs</strong>.</p>
 
       <h3>Synchronous</h3>
@@ -70,7 +83,7 @@
       <p>A pragmatic hybrid. Usually configured so that <strong>one</strong> replica is synchronous and the rest are asynchronous.</p>
       <p><span class="lead">Mechanism:</span> The client waits for ack from the leader + that one synced replica. If that specific replica crashes, the system dynamically reverts to asynchronous for that node to keep the system available — sacrificing full durability temporarily until the node recovers.</p>
 
-      <h2>3. The Payload: What exact data is being replicated?</h2>
+      <h2 id="replication-payload">3. The Payload: What exact data is being replicated?</h2>
       <p>This defines the <strong>format of the change</strong> shipped across the network. This is the most critical architectural choice.</p>
 
       <h3>Statement-Based (Logical — SQL Text)</h3>

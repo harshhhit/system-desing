@@ -16,6 +16,16 @@
   .sd-study-main h2 { margin-top: 2.2rem; }
   .sd-study-main h3 { margin-top: 1.3rem; font-size: 1rem; }
   .stage-note { color: var(--muted); font-size: 0.92rem; margin-top: -0.2rem; }
+  .fe-map { margin: 1.2rem 0 1.6rem; display: flex; flex-direction: column; align-items: stretch; }
+  .fe-map-row { border: 1px solid var(--border); border-radius: 12px; padding: 0.7rem 0.8rem 0.8rem; background: var(--bg-alt); }
+  .fe-map-label { margin: 0 0 0.5rem; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .fe-map-blocks { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .fe-map-blocks a { flex: 1 1 11rem; display: block; padding: 0.6rem 0.75rem; border: 1px solid var(--border); border-left: 4px solid var(--sd-c1); border-radius: 8px; background: var(--card-bg); color: var(--fg); text-decoration: none; font-weight: 600; font-size: 0.92rem; line-height: 1.3; transition: transform .15s, box-shadow .15s; }
+  .fe-map-blocks a:hover, .fe-map-blocks a:focus-visible { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(15,23,42,0.1); border-color: var(--sd-c1); }
+  .fe-map-blocks a small { display: block; font-weight: 400; color: var(--muted); font-size: 0.8rem; margin-top: 0.15rem; }
+  .fe-map-blocks a.here { background: color-mix(in srgb, var(--sd-c1) 10%, var(--card-bg)); cursor: default; }
+  .fe-map-blocks a.ext { border-left-color: var(--sd-c10); }
+  .fe-map-arrow { text-align: center; color: var(--muted); font-size: 1.1rem; line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -39,6 +49,56 @@
         code, just the ideas, why they exist, and how they connect. Follow top to bottom; each stage
         builds on the last. Tick a stage's box once you've genuinely covered it — progress is saved
         in this browser.</p>
+
+      <h2 id="interview-answer">Interview Answer — What Is Front-End Development?</h2>
+      <p>Front-end development is building the part of a web application that runs in the user's browser: the <strong>HTML</strong> that defines the document's structure and meaning, the <strong>CSS</strong> that controls its presentation, and the <strong>JavaScript</strong> that makes it interactive and fetches data from back-end APIs. The browser downloads these files, turns them into the pixels the user sees, and runs the code that responds to clicks and input.</p>
+      <p>It exists as its own discipline because the browser is a demanding runtime. The front end has to work on every screen size, network speed, and device; stay accessible to people using keyboards and screen readers; and stay fast, because each extra second of loading measurably loses users. The cause → effect chain of a page load shows why the concepts connect: the browser requests the page → parses HTML into the DOM and CSS into the CSSOM → runs JavaScript, which may change the DOM or fetch data → computes layout and paints (the <a href="#stage-4">rendering pipeline</a>) → so a large JavaScript bundle or a layout-changing script directly delays what the user sees.</p>
+      <p>On top of those fundamentals sit the architecture and delivery concerns this roadmap builds up to: component-based UI frameworks and state management, where rendering happens (client, server, or build time), build tooling that bundles and optimizes code, talking to APIs, testing, and deploying static assets through a CDN.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Front-end development is building what runs in the user's browser — HTML for structure, CSS for presentation, and JavaScript for interactivity and talking to APIs. The core skills are understanding how the browser loads and renders a page, building accessible and responsive UIs, organizing the app into components with clear state management, choosing where rendering happens, and shipping fast, tested code through a build pipeline and a CDN."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If the app works in my browser, is the front end finished?</strong></p>
+      <p><strong>A:</strong> No. Your browser is usually a fast laptop on a fast connection with a mouse and good eyesight. The same page may be slow on a mid-range phone on a mobile network because of a large JavaScript bundle, unusable with a keyboard or screen reader because it relies on clickable <code>div</code>s and missing labels, broken on another browser or screen size, and vulnerable to XSS if it inserts user input as HTML. Front-end quality means measuring performance on realistic devices, testing accessibility, and treating everything from the network and the user as untrusted.</p>
+
+      <h2 id="page-map">Front-End Page Map</h2>
+      <p>A block diagram of every Front-End page on this site, in the order they build on each other. Click any block to open that page. Read top to bottom: each layer assumes the one above it. The grey blocks at the bottom are related pages in other sections.</p>
+      <div class="fe-map">
+        <div class="fe-map-row"><p class="fe-map-label">Start here</p><div class="fe-map-blocks">
+          <a class="here" href="frontend-roadmap.html" aria-current="page">00. Front-End Roadmap<small>You are here: the concept map</small></a>
+        </div></div>
+        <div class="fe-map-arrow" aria-hidden="true">↓</div>
+        <div class="fe-map-row"><p class="fe-map-label">How a request works</p><div class="fe-map-blocks">
+          <a href="graphql/http/04-client-server-model.html">01. Client-Server Model<small>DNS, TCP, TLS, HTTP, end to end</small></a>
+          <a href="graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow<small>The same journey, step by step</small></a>
+        </div></div>
+        <div class="fe-map-arrow" aria-hidden="true">↓</div>
+        <div class="fe-map-row"><p class="fe-map-label">Browser state &amp; security</p><div class="fe-map-blocks">
+          <a href="graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT<small>How the browser remembers you</small></a>
+          <a href="browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't<small>The sandbox &amp; Same Origin Policy</small></a>
+          <a href="cors.html">01d. CORS<small>Cross-origin reads, preflight, headers</small></a>
+        </div></div>
+        <div class="fe-map-arrow" aria-hidden="true">↓</div>
+        <div class="fe-map-row"><p class="fe-map-label">Rendering &amp; architecture</p><div class="fe-map-blocks">
+          <a href="graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture<small>CSR, SSR, SSG, ISR</small></a>
+          <a href="graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR<small>Where the HTML is built</small></a>
+          <a href="graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)<small>Second take, visual</small></a>
+        </div></div>
+        <div class="fe-map-arrow" aria-hidden="true">↓</div>
+        <div class="fe-map-row"><p class="fe-map-label">APIs &amp; system design</p><div class="fe-map-blocks">
+          <a href="graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST<small>How the front end fetches data</small></a>
+          <a href="system-design-roadmap.html">04. System Design Roadmap<small>The front end in the whole system</small></a>
+        </div></div>
+        <div class="fe-map-arrow" aria-hidden="true">↓</div>
+        <div class="fe-map-row"><p class="fe-map-label">Related, in other sections</p><div class="fe-map-blocks">
+          <a class="ext" href="../observability-security/01-application-security-fundamentals.html">Application Security Fundamentals<small>XSS, CSRF, server-side security</small></a>
+          <a class="ext" href="../authentication/00-login-steps.html">Secure Login Steps<small>Sessions &amp; tokens in a real login</small></a>
+          <a class="ext" href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals<small>Browser cache, CDNs</small></a>
+          <a class="ext" href="../networking/00-networking-fundamentals.html">Networking Fundamentals<small>Hosts, ports, HTTPS</small></a>
+        </div></div>
+      </div>
 
       <div class="sd-progress" id="feProgress">
         <div class="sd-progress-bar"><span id="feBar"></span></div>

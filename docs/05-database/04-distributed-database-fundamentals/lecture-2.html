@@ -30,6 +30,19 @@
       <p class="breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Database / Lecture 2</p>
       <h1 data-page-title>Lecture 2</h1>
       <p>Lecture 2 — Databases &amp; Distributed Systems</p>
+<h2 id="interview-answer">Interview Answer — What Is the Difference Between ACID and BASE?</h2>
+<p><strong>ACID</strong> and <strong>BASE</strong> describe two philosophies for the guarantees a database gives. ACID — <strong>Atomicity, Consistency, Isolation, Durability</strong> — means each transaction is all-or-nothing, leaves the data valid, is isolated from concurrent transactions, and survives crashes once committed; relational databases such as PostgreSQL provide it. BASE — <strong>Basically Available, Soft state, Eventually consistent</strong> — means the system stays available and accepts that replicas may briefly disagree and converge over time; many distributed NoSQL stores such as Cassandra and DynamoDB default to it.</p>
+<p>The two exist because of the trade-off the CAP theorem describes. Keeping every replica strictly consistent across a network requires coordination on each write, which costs latency and, during a partition, availability. The cause → effect chain for a BASE system is: a write is accepted by some replicas and acknowledged quickly → other replicas receive it a little later through replication → a read in that window may return an older value → eventually all replicas converge. For an ACID system it is the reverse: the write waits for the coordination it needs, so reads are correct but writes are slower and can be refused during failures.</p>
+<p>ACID vs. BASE is not a strict either/or. Many NoSQL databases let you tune consistency per operation — MongoDB's read and write concerns, Cassandra's quorum reads and writes — and the consistency models on this page (strong, near-real-time, eventual, periodic) describe the range in between. Replication method (synchronous, asynchronous, semi-synchronous) and change data capture decide where on that range a system lands.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"ACID means transactions are atomic, consistent, isolated, and durable — the model of relational databases, ideal for money and inventory. BASE means basically available, soft state, eventually consistent — the model of many distributed NoSQL stores, which stay available and fast but let replicas be briefly out of date. It's a spectrum, not a switch: many NoSQL databases let me tune consistency per request with quorums or read and write concerns, so I pick the guarantee each piece of data actually needs."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: Does "eventually consistent" mean the data might be wrong forever?</strong></p>
+<p><strong>A:</strong> No — it means that if writes stop, all replicas will converge to the same value; it does not say how long that takes or which value wins when writes conflict. In practice convergence is usually milliseconds to seconds, but during that window a user can fail to see their own write or see data go backwards between reads. The design must handle that: route a user's reads to the leader after they write (read-your-writes), use quorum reads when needed, and define how conflicts are resolved — last-write-wins, version vectors, or CRDTs — because "eventually" alone does not decide which concurrent write survives.</p>
+
 <ol>
 <li>CAP Theorem</li>
 </ol>

@@ -53,6 +53,19 @@
            This block is the only part unique to this page.
            Everything outside it is shared / central. -->
 
+      <h2 id="interview-answer">Interview Answer — What Are Cookies, Sessions, and JWTs?</h2>
+      <p>Cookies, sessions, and JWTs are three pieces of how a web application remembers who a user is across HTTP requests, which are otherwise independent. A <strong>cookie</strong> is a small value the server asks the browser to store and send back automatically on every request to that site — it is the <em>transport</em>. A <strong>server-side session</strong> stores the user's login state on the server (in memory, Redis, or a database) and puts only a random session ID in the cookie. A <strong>JWT (JSON Web Token)</strong> puts the user's identity and claims into a signed token that the server can verify without looking anything up.</p>
+      <p>They exist because HTTP is stateless: without them, the user would have to send their password with every request. The cause → effect chain for a session is: the user logs in → the server creates a session record and sets <code>Set-Cookie: sessionid=…; HttpOnly; Secure; SameSite=Lax</code> → the browser sends that cookie on each request → the server looks up the session and knows the user. For a JWT it is: the server signs a token with the user ID and an expiry → the client sends it on each request → any server holding the verification key can check the signature without a shared store.</p>
+      <p>Session vs. JWT — the difference is <em>where the truth lives</em>. A session lives on the server, so logout and revocation are instant, but every request needs a store lookup. A JWT lives in the token, so verification is fast and stateless, but it stays valid until it expires. That is why the common production answer is a <a href="#modern-hybrid">hybrid</a>: a short-lived access token plus a revocable refresh token, both held in <code>HttpOnly</code> cookies.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"HTTP is stateless, so we need a way to remember the logged-in user. Cookies are the transport — the browser stores them and sends them automatically. With server-side sessions, the cookie holds a random ID and the session data lives in Redis or a database, so revocation is instant. With JWTs, the signed token itself carries the user's identity, so any server can verify it without a lookup, but it can't easily be revoked before expiry. In practice I use short-lived access tokens with revocable refresh tokens, stored in HttpOnly, Secure, SameSite cookies."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Is a JWT encrypted, so it's safe to put user data in it?</strong></p>
+      <p><strong>A:</strong> No. A standard JWT (a JWS) is only <strong>signed</strong>, not encrypted: its header and payload are Base64URL-encoded, and anyone who has the token can decode and read them. The signature only guarantees that the contents weren't changed by someone without the key. So never put secrets or sensitive personal data in a JWT, always verify the signature, algorithm, issuer, audience, and expiry on the server, and remember that a stolen JWT works for anyone until it expires — which is why access tokens should be short-lived. See <a href="#jwt-vs-session">the JWT vs. session security debate</a> below.</p>
+
       <h2>The Fundamental Problem: Why "Stateless" Is a Lie We Tell Ourselves</h2>
       <p>HTTP was designed in 1991 for academics to fetch static documents. The original spec said: <em>"Each request is independent; the server forgets you immediately."</em></p>
       <p>But modern web applications require:</p>
@@ -147,7 +160,7 @@ Set-Cookie: cart=shoes; Max-Age=3600; Path=/; Domain=.myshop.com</code></pre>
         <li><strong>Secret rotation:</strong> If your private key is leaked, an attacker can issue valid tokens. Rotating keys requires invalidating all issued tokens, which forces all users to re-login.</li>
       </ol>
 
-      <h2>The "Modern Hybrid" Strategy (The Industry Standard)</h2>
+      <h2 id="modern-hybrid">The "Modern Hybrid" Strategy (The Industry Standard)</h2>
       <p>No one uses pure Sessions or pure JWTs in production anymore. We use a <strong>hybrid</strong>:</p>
       <ul>
         <li><strong>Access token (JWT):</strong> Short-lived (5–15 minutes). Stateless. Used for every API request. Stored in memory (not localStorage) to prevent XSS.</li>
@@ -169,7 +182,7 @@ Set-Cookie: cart=shoes; Max-Age=3600; Path=/; Domain=.myshop.com</code></pre>
         <li><strong>Kill-switch:</strong> If a user is compromised, you delete their refresh token from the DB. They can still use the JWT for a few more minutes, but after that, they cannot get a new one.</li>
       </ul>
 
-      <h2>The Critical Security Debate: JWT vs. Session</h2>
+      <h2 id="jwt-vs-session">The Critical Security Debate: JWT vs. Session</h2>
       <table>
         <tr><th>Attack vector</th><th>Server-side session</th><th>JWT (stateless)</th></tr>
         <tr><td><strong>CSRF (Cross-Site Request Forgery)</strong></td><td>Vulnerable if using cookies; mitigated by <code>SameSite=Strict</code> or CSRF tokens.</td><td><strong>Immune</strong> if using an <code>Authorization: Bearer</code> header (browsers don't auto-send headers). Vulnerable if stored in cookies without <code>SameSite</code>.</td></tr>

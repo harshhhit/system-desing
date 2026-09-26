@@ -34,6 +34,19 @@
       <h1 data-page-title>Load Balancing</h1>
       <p class="sd-study-prompt" data-page-subtitle>L4 vs L7, algorithms (round robin, least connections, consistent hashing), health checks, sticky sessions, and global vs local load balancing.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is a Load Balancer?</h2>
+      <p>A load balancer is a component that sits in front of a pool of backend instances, receives every incoming request or connection, and forwards each one to a healthy backend chosen by an algorithm such as round robin or least connections. To the client, the whole pool looks like one address.</p>
+      <p>It exists because a single server has a hard ceiling on connections, CPU, and memory, and is a single point of failure. With a load balancer in front, you scale by adding instances behind the same address (horizontal scaling), and you survive instance failures because <a href="#health-checks">health checks</a> take a failing instance out of rotation. The cause → effect chain is: an instance stops answering its health check → after the failure threshold the load balancer marks it unhealthy → new requests go only to the remaining instances → clients see no outage, only slightly more load per instance.</p>
+      <p>Load balancers differ by the layer they work at. A <strong>Layer 4</strong> load balancer (for example AWS NLB) sees only IP addresses and ports and forwards connections; a <strong>Layer 7</strong> load balancer (for example AWS ALB, Nginx, Envoy) parses the HTTP request and can route by path, header, or cookie and terminate TLS. At global scale, a separate tier — DNS-based or anycast <strong>global server load balancing</strong> — first picks the region, then a local load balancer picks the instance.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"A load balancer sits in front of a pool of servers and spreads incoming traffic across them, so I can scale horizontally and survive instance failures. It uses an algorithm like round robin or least connections to pick a backend, and health checks to stop sending traffic to instances that fail. An L4 balancer forwards connections by IP and port; an L7 balancer understands HTTP and can route by path or header and terminate TLS. For multiple regions, DNS or anycast picks the region first, and a local load balancer picks the instance."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Should I just turn on sticky sessions so each user always hits the same server?</strong></p>
+      <p><strong>A:</strong> Only if you must. <a href="#session-affinity">Sticky sessions</a> make a user's requests depend on one specific instance, so that instance becomes a single point of failure for those users — if it dies, their in-memory session is lost — and it makes load uneven and scale-in harder, because you cannot remove an instance without breaking its users' sessions. The usual better design is to keep backends stateless and move session state to a shared store such as Redis or a signed token, so any instance can serve any request and the load balancer can pick freely.</p>
+
       <h2>Why load balancing exists</h2>
       <p>A single server has a ceiling — on connections, CPU, memory — and a single point of failure. A load
       balancer sits in front of a pool of backend instances, spreads incoming traffic across them, and stops
@@ -67,7 +80,7 @@
       <tr><td>Random / power-of-two-choices</td><td>Pick 2 backends at random, send to whichever has fewer connections</td><td>Scales better than "check every backend" at very large pool sizes, nearly as good as full least-connections</td><td>Slightly worse than true least-connections in the average case</td></tr>
       </table>
 
-      <h2>Health checks</h2>
+      <h2 id="health-checks">Health checks</h2>
       <ul>
       <li><strong>Active checks</strong> — the load balancer itself polls each backend on an interval (a TCP connect, an HTTP <code>GET /healthz</code>, or a custom check) and pulls it out of rotation on repeated failure.</li>
       <li><strong>Passive checks</strong> — the load balancer watches real traffic; if a backend starts erroring or timing out on actual requests, it's marked unhealthy without a separate probe.</li>
@@ -75,7 +88,7 @@
       <li>A deep health check (e.g. "can this instance reach the database") catches more real failures than a shallow one ("process is running"), but couples the LB's routing decision to a dependency's health — a DB blip can then pull every backend out of rotation at once.</li>
       </ul>
 
-      <h2>Session affinity ("sticky sessions")</h2>
+      <h2 id="session-affinity">Session affinity ("sticky sessions")</h2>
       <p>If a backend keeps per-user state in local memory (an in-process cache, a WebSocket connection, an
       uploaded-file-in-progress), every request from that user has to land on the <em>same</em> backend —
       that's session affinity, usually implemented as a cookie the LB sets on first response, or via IP hash

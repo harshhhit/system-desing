@@ -31,6 +31,19 @@
       <h1 data-page-title>Google Social Login Checklist</h1>
       <p>Alright, here’s the <strong>complete checklist</strong> — everything each side (Android, Backend, Google Console, and Firebase if you’re using it) needs to do for your <strong>Google Social Login flow</strong> to work end-to-end.
 No fluff. No hand-wavy “connect this with that.” Just the jobs that actually need doing.</p>
+<h2 id="interview-answer">Interview Answer — What Is Social Login (Sign in with Google)?</h2>
+<p>Social login is letting users sign in to your application with an account they already have at an identity provider such as Google, instead of creating a new password. Technically, "Sign in with Google" uses <strong>OpenID Connect (OIDC)</strong>, the identity layer built on OAuth 2.0: Google authenticates the user and gives your app an <strong>ID token</strong> — a JWT signed by Google that states who the user is (<code>sub</code>, <code>email</code>) and which client it was issued for (<code>aud</code>).</p>
+<p>It exists to remove password handling from your app and the sign-up step from your users: Google handles the password, MFA, and account recovery, and your app receives a verified identity. The trust chain on this page is: the Android app obtains an ID token from Google → it sends that token to your backend (<code>POST /socialAuth/social-login</code> or <code>/social-register</code>) → the backend verifies the token's signature, expiry, and audience with <code>google-auth-library</code> against its <code>GOOGLE_CLIENT_ID</code> → it finds or creates the user by email or <code>social_id</code> → it issues its <em>own</em> access and refresh tokens, which the app uses from then on (see <a href="#🔄-6-end-to-end-flow-summary">the end-to-end flow</a>).</p>
+<p>The checklist below splits that into the work each side owns: OAuth clients and the consent screen in Google Cloud Console, the sign-in SDK in the Android app, token verification and user records in the backend, and the database fields that link a user to their Google identity.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"Social login uses OpenID Connect: the user signs in with Google, and my app receives a Google-signed ID token. The mobile app sends that ID token to my backend, and the backend verifies its signature, expiry, and that the audience is my client ID. Then it finds or creates the user and issues my own access and refresh tokens for the rest of the session. Google handles passwords and MFA, and my backend never trusts the client's word about who the user is."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: Can the backend trust the email the app sends along with the Google token?</strong></p>
+<p><strong>A:</strong> No. The backend must trust only the claims inside an ID token it has verified itself — signature from Google's public keys, <code>iss</code> is Google, <code>exp</code> has not passed, and <code>aud</code> equals your own client ID. Anything the app sends alongside, including an email field, can be forged by anyone calling your API. Checking the audience matters just as much: a valid Google token issued to a <em>different</em> app would otherwise log someone into yours. Link accounts by the stable Google user ID (<code>sub</code>) rather than email alone, and only rely on the email if <code>email_verified</code> is true.</p>
+
 <hr>
 <h2 id="🧩-1-google-cloud-console--api-setup">🧩 1. <strong>Google Cloud Console / API Setup</strong></h2>
 <p>This is the “Google-side” prep — you do this <em>once</em> for your project.</p>

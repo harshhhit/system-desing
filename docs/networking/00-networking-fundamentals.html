@@ -34,6 +34,19 @@
       <h1 data-page-title>Networking Fundamentals</h1>
       <p class="sd-study-prompt" data-page-subtitle>TCP vs UDP, the TCP handshake, DNS resolution end to end, the TLS handshake, HTTP/1.1 vs HTTP/2 vs HTTP/3, and WebSockets vs gRPC vs plain HTTP.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Happens on the Network When a Client Calls a Server?</h2>
+      <p>Networking fundamentals, for system design, are the steps that must happen below the application before a single HTTP request can be answered: a <strong>DNS</strong> lookup turns a hostname into an IP address, a <strong>TCP</strong> handshake opens a reliable connection to that IP, a <strong>TLS</strong> handshake agrees on encryption keys on top of that connection, and only then does the <strong>HTTP</strong> request and response flow.</p>
+      <p>These steps matter because each one costs one or more network round trips. The cause → effect chain for a first HTTPS request to a new host is: DNS lookup (up to several round trips if nothing is cached) → TCP handshake (one round trip) → TLS handshake (one round trip with TLS 1.3, two with TLS 1.2) → the HTTP request itself. For a user 150 ms away, that setup alone can cost half a second — which is why real systems reuse connections (keep-alive, connection pools), cache DNS answers, resume TLS sessions, and put CDN edges close to users.</p>
+      <p>The protocol choices built on top follow from the same trade-offs. <strong>TCP</strong> guarantees ordered, reliable delivery; <strong>UDP</strong> does not, but has no handshake or retransmission delay. <strong>HTTP/2</strong> multiplexes many requests on one TCP connection; <strong>HTTP/3</strong> runs over QUIC on UDP to remove TCP's head-of-line blocking. <strong>WebSockets</strong> and <strong>gRPC streaming</strong> exist for cases where the server must push data without the client asking.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Before an HTTPS request is answered, the client resolves the hostname with DNS, opens a TCP connection with a three-way handshake, negotiates encryption with a TLS handshake, and then sends the HTTP request. Each step costs round trips, so systems reuse connections, cache DNS, resume TLS sessions, and use CDNs to cut latency. TCP gives reliable ordered delivery, UDP trades that for speed, HTTP/2 multiplexes requests over one connection, HTTP/3 moves to QUIC over UDP, and WebSockets or gRPC streaming are used when the server needs to push data."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: HTTP/2 multiplexes requests on one connection — doesn't that fully solve head-of-line blocking?</strong></p>
+      <p><strong>A:</strong> No. HTTP/2 removes head-of-line blocking at the HTTP layer — a slow response no longer blocks the responses queued behind it. But all those streams still share one TCP connection, and TCP delivers bytes strictly in order, so one lost packet stalls every stream on the connection until it is retransmitted. HTTP/3 fixes this by running over QUIC on UDP, where each stream is ordered independently, so a lost packet only delays its own stream. See <a href="#http-versions">HTTP/1.1 vs. HTTP/2 vs. HTTP/3</a> below.</p>
+
       <h2>Why this layer matters for system design</h2>
       <p>Every "should we cache this," "how many round trips does this take," and "why is this API slow from
       one region and fast from another" question ultimately comes down to what's happening below the
@@ -54,7 +67,7 @@
       <tr><td>Pick it when</td><td>losing or reordering a byte is unacceptable (an API call, a file transfer)</td><td>a late or dropped packet is better than a delayed one (a live video frame arriving stale is useless anyway)</td></tr>
       </table>
 
-      <h2>The TCP handshake</h2>
+      <h2 id="tcp-handshake">The TCP handshake</h2>
       <ol>
       <li><strong>SYN</strong> — client sends a synchronize packet with an initial sequence number, proposing a connection.</li>
       <li><strong>SYN-ACK</strong> — server acknowledges and sends its own sequence number back.</li>
@@ -98,7 +111,7 @@
       handshake on reconnect entirely, which is why a client that closes and reopens connections to the same
       host repeatedly is far more expensive than one that keeps a connection alive.</p>
 
-      <h2>HTTP/1.1 vs. HTTP/2 vs. HTTP/3</h2>
+      <h2 id="http-versions">HTTP/1.1 vs. HTTP/2 vs. HTTP/3</h2>
       <table>
       <tr><th></th><th>HTTP/1.1</th><th>HTTP/2</th><th>HTTP/3</th></tr>
       <tr><td>Transport</td><td>TCP</td><td>TCP</td><td><strong>QUIC</strong> — over UDP</td></tr>

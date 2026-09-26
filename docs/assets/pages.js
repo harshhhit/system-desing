@@ -147,6 +147,18 @@ window.SITE_PAGES = {
     title: "Front-End Development Roadmap (Concepts Only)",
     subtitle: "A concept-first map of what &ldquo;understanding front-end&rdquo; actually requires — the ideas, why they exist, and how they connect, from how the web works up to modern architecture and delivery. Tick each stage as you cover it; progress is saved in this browser."
   },
+  "browser-javascript-capabilities": {
+    href: "01-front-end/browser-javascript-capabilities.html",
+    section: "Front-End",
+    title: "What In-Browser JavaScript Can & Can't Do",
+    subtitle: "The browser sandbox explained: what page scripts can do, what they can't (files, OS, devices, other tabs), the Same Origin Policy and CORS — plus how Web Workers, Service Workers, WebAssembly, extensions, Node.js, Deno, Bun and other JavaScript runtimes differ."
+  },
+  "cors": {
+    href: "01-front-end/cors.html",
+    section: "Front-End",
+    title: "CORS (Cross-Origin Resource Sharing)",
+    subtitle: "How a server relaxes the browser's Same Origin Policy: origins, simple vs. preflighted requests, every CORS header, cookies and credentials, server config (Express, Nginx, S3), reading CORS errors, and the misconceptions interviewers ask about."
+  },
   "04-client-server-model": {
     href: "01-front-end/graphql/http/04-client-server-model.html",
     section: "Front-End",

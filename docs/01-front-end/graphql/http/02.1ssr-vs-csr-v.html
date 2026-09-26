@@ -42,6 +42,19 @@
     A-->>B: 6. Return JSON
     Note over B: 7. Render UI
 </div>
+<h2 id="interview-answer">Interview Answer — What Are CSR, SSR, and SSG, in Theory?</h2>
+<p>CSR, SSR, and SSG are three contracts for dividing work between server and client in the client-server model. In <strong>client-side rendering (CSR)</strong>, as the sequence above shows, static storage returns an HTML shell and a JavaScript bundle, and the browser loads React, calls the API, and renders the UI. In <strong>server-side rendering (SSR)</strong>, a server fetches data and returns complete HTML for every request. In <strong>static site generation (SSG)</strong>, HTML is generated once at build time and served as files.</p>
+<p>These models exist because two resources are always being traded: the server's compute and the client's device and network. CSR offloads rendering to each user's device — cheap to host and smooth after the first load, but the critical path to first content is long (download HTML → download and parse JavaScript → execute → fetch data → render), which produces the "blank screen" problem, weaker search visibility, and poor experience on slow devices. SSR shortens that critical path by doing the rendering on the server, gaining perceived performance and SEO, and paying for it in server load per request and a <strong>hydration</strong> step before the page is interactive (see <a href="#342-the-hydration-tax">the hydration tax</a>). SSG does the rendering once, so it is the cheapest and fastest to serve, but cannot reflect per-request or per-user data.</p>
+<p>Newer models reduce the cost of hydration rather than choosing between the three: <strong>islands architecture</strong> hydrates only interactive parts of a page, <strong>resumability</strong> (Qwik) serializes state so the client does not re-run components, and <strong>React Server Components</strong> keep some components on the server so their code never ships to the browser.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"CSR sends a shell and JavaScript and renders in the browser: cheap to host, but a long path to first content and weaker SEO. SSR renders HTML on the server per request: fast visible content and good SEO, but server cost and a hydration step before interactivity. SSG renders at build time: cheapest and fastest, but not personalized or real-time. Modern approaches like islands, resumability, and React Server Components try to keep SSR's fast first paint while shipping and hydrating less JavaScript."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: Is SSR always faster for users than CSR?</strong></p>
+<p><strong>A:</strong> No. SSR usually improves <em>first contentful paint</em>, but the total can be slower: the server must fetch all data before sending anything (a slow API delays the whole page), each request costs server time that can queue under load, and the browser still downloads and runs the same JavaScript to hydrate. For a logged-in app where users navigate between many views, CSR can feel faster after the first load because navigation needs only small JSON responses. The right comparison is per metric — first contentful paint, time to interactive, and subsequent navigations — for your actual users and devices.</p>
+
 <h1 id="complete-theoretical-foundation">COMPLETE THEORETICAL FOUNDATION</h1>
 <h2 id="web-rendering--infrastructure-architecture">Web Rendering &amp; Infrastructure Architecture</h2>
 <h3 id="academicprofessional-reference-document">Academic/Professional Reference Document</h3>

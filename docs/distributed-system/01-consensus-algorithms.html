@@ -34,6 +34,19 @@
       <h1 data-page-title>Consensus Algorithms: Raft &amp; Paxos</h1>
       <p class="sd-study-prompt" data-page-subtitle>Quorums, Paxos's prepare/accept phases, Raft's leader election and log replication, split-brain, and how etcd/ZooKeeper use this in practice.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is a Consensus Algorithm?</h2>
+      <p>A consensus algorithm is a protocol that lets a group of nodes agree on a single value — who the leader is, what the next entry in a shared log is, whether a write is committed — even when some nodes crash or messages are delayed or lost. <strong>Paxos</strong> and <strong>Raft</strong> are the two best-known consensus algorithms; Raft is used by etcd, Consul, and CockroachDB.</p>
+      <p>Consensus exists because replicating data across machines is only useful if every replica applies the same changes in the same order. Without it, a crashed node or a network partition leaves the cluster unable to answer "which value is actually true?", and two halves of a cluster can each accept conflicting writes — <a href="#split-brain">split-brain</a>. Every distributed lock, leader election, and replicated database log depends on solving this.</p>
+      <p>Both algorithms rely on a <a href="#quorums">majority quorum</a>: a value is committed only once ⌊N/2⌋ + 1 of N nodes accept it. Any two majorities overlap in at least one node, so a later majority can never "forget" a committed value. In Raft, the cause → effect chain for a write is: the client sends the write to the leader → the leader appends it to its log and replicates it to followers → once a majority have stored it, the entry is committed and applied → if the leader dies, followers time out, hold an election, and only a node with an up-to-date log can win. As a consequence, an N-node cluster tolerates ⌊(N−1)/2⌋ failures — 3 nodes tolerate 1, 5 tolerate 2.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"A consensus algorithm lets a cluster of nodes agree on one value, or one ordered log of values, even when some nodes fail. Raft and Paxos both do it with majority quorums: a write is committed only after a majority of nodes accept it, and because any two majorities overlap, a committed value can't be lost. Raft elects a leader that handles all writes and replicates them to followers. A cluster of N nodes survives ⌊(N−1)/2⌋ failures, which is why clusters like etcd run with 3 or 5 nodes."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Would a 4-node cluster be more fault-tolerant than a 3-node cluster?</strong></p>
+      <p><strong>A:</strong> No. A 4-node cluster needs a majority of 3, so it still tolerates only 1 failure — the same as 3 nodes — while adding one more machine that must acknowledge writes. It is also worse in a partition: a 2–2 split leaves neither side with a majority, so the whole cluster stops accepting writes. This is why consensus clusters use odd sizes (3, 5, 7); going from 3 to 5 is what raises fault tolerance from 1 failure to 2.</p>
+
       <h2>Why consensus is a hard problem</h2>
       <p>Consensus means getting a set of nodes to agree on a single value — "who's the leader," "what's the
       next entry in this log," "did this write commit" — even though nodes can crash, restart, and messages can
@@ -42,7 +55,7 @@
       leaves the question "which answer is actually true?" unanswerable — which is exactly the failure mode
       called <strong>split-brain</strong>, covered below.</p>
 
-      <h2>Quorums — the mechanism both algorithms are built on</h2>
+      <h2 id="quorums">Quorums — the mechanism both algorithms are built on</h2>
       <p>Instead of requiring every node to agree (impossible to guarantee once nodes can fail), consensus
       algorithms require a <strong>majority</strong> — <code>⌊N/2⌋ + 1</code> out of <code>N</code> nodes — to
       agree before a value is considered committed.</p>
@@ -78,7 +91,7 @@
       </table>
       <div class="sd-study-note tip"><span class="sd-note-title">The practical difference is smaller than it looks</span><p>Both provide the same guarantee (linearizable agreement via majority quorum) and both end up with a stable leader in real deployments — Raft just makes that leader concept explicit and mandatory from the start instead of arriving at it as an optimization. For an interview, knowing <em>why</em> a leader + majority quorum gives safety matters more than reciting either algorithm's message sequence from memory.</p></div>
 
-      <h2>Split-brain — and how quorum prevents it</h2>
+      <h2 id="split-brain">Split-brain — and how quorum prevents it</h2>
       <p>A network partition splits a cluster into two groups, each of which can still talk to itself. If both
       groups kept accepting writes independently as if they were the whole cluster, you'd get two diverging,
       inconsistent copies of the data — that's split-brain.</p>

@@ -34,7 +34,20 @@
       <h1 data-page-title>Consistent Hashing</h1>
       <p class="sd-study-prompt" data-page-subtitle>Why mod-N hashing breaks on resize, the hash ring, virtual nodes, rebalancing cost, and where this shows up in databases, caches, load balancers, and CDNs.</p>
 
-      <h2>The problem: naive hashing doesn't survive a resize</h2>
+      <h2 id="interview-answer">Interview Answer — What Is Consistent Hashing?</h2>
+      <p>Consistent hashing is a way of assigning keys to servers so that adding or removing a server moves only a small fraction of the keys — roughly 1/M of them for M servers — instead of nearly all of them. Both servers and keys are hashed onto the same circular number space (the <strong>hash ring</strong>), and each key belongs to the first server found clockwise from the key's position.</p>
+      <p>It exists because the obvious sharding rule, <code>server = hash(key) % M</code>, breaks on every resize. The cause → effect chain is: you add a fifth server to four → <code>% 5</code> gives a different answer than <code>% 4</code> for about 80% of keys → a cache loses most of its hits at once and the database is flooded, or a sharded database has to move most of its data (see <a href="#mod-n-problem">the mod-N problem</a> below). With the ring, a new server only takes over the slice of the ring just before it, and every other key stays where it was.</p>
+      <p>Plain consistent hashing can still spread load unevenly, because a few random points on the ring leave uneven gaps. <a href="#virtual-nodes">Virtual nodes</a> fix this: each physical server is placed on the ring at many points (for example 100–200), which evens out the slices and spreads a departing server's keys across many neighbours. The same technique is used by DynamoDB and Cassandra for data partitioning, by Memcached clients for cache sharding, and by load balancers and CDNs for request routing.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Consistent hashing places both servers and keys on a hash ring, and each key goes to the next server clockwise. With plain hash-mod-N, adding one server remaps almost every key; with the ring, adding or removing a server only moves about 1/N of the keys — the ones in that server's slice. Virtual nodes put each server on the ring many times so load stays even. It's used in Cassandra and DynamoDB partitioning, cache client sharding, and load balancer affinity."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Does consistent hashing by itself guarantee an even load across servers?</strong></p>
+      <p><strong>A:</strong> No. With one point per server, the arcs between servers depend on where their hashes happen to land, so one server can own 40% of the ring and another 5%. And when a server leaves, its entire slice lands on the single next server clockwise, which can overload it. Even distribution comes from <strong>virtual nodes</strong> — many points per server — and even then a single very hot key still lands on one server, so hot keys need separate handling such as replication or client-side caching.</p>
+
+      <h2 id="mod-n-problem">The problem: naive hashing doesn't survive a resize</h2>
       <p>The obvious way to shard <code>N</code> keys across <code>M</code> servers is
       <code>server = hash(key) % M</code>. It's simple and spreads load evenly — right up until <code>M</code>
       changes. Add or remove a single server and <code>hash(key) % M</code> gives a different answer for
@@ -54,7 +67,7 @@
       <p>The result: a resize moves roughly <code>1/M</code> of the keys instead of nearly all of them — the
       exact problem mod-N hashing has.</p>
 
-      <h2>Virtual nodes — fixing uneven distribution</h2>
+      <h2 id="virtual-nodes">Virtual nodes — fixing uneven distribution</h2>
       <p>With only a handful of physical servers hashed to a handful of points on the ring, the slices between
       them can be very uneven by chance — one server might own 5% of the ring, another 40%. <strong>Virtual
       nodes</strong> fix this: each physical server is hashed onto the ring not once but many times (e.g. 100–200

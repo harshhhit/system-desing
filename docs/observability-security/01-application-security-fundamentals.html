@@ -34,11 +34,24 @@
       <h1 data-page-title>Application Security Fundamentals</h1>
       <p class="sd-study-prompt" data-page-subtitle>The OWASP Top 10, encryption in transit and at rest, secrets management, and threat modeling.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is Application Security?</h2>
+      <p>Application security is the set of design decisions and controls that keep an application's data and functions available only to the people and systems that are supposed to use them — covering how input is handled, how access is checked, how data is encrypted, and how secrets are stored. The <a href="#owasp-top-10">OWASP Top 10</a> is the standard list of the most common ways those controls fail in real applications.</p>
+      <p>It exists because every input to a system and every trust boundary it crosses is a potential way in. The cause → effect chain of a typical incident is short: one missing control — an unparameterized SQL query, an authorization check that trusts a user-supplied ID, an API key committed to Git — lets an attacker read or change data they should never reach, and a missing security log means nobody notices. Security therefore has to be designed in (threat modeling before implementation), not bolted on after code review.</p>
+      <p>A baseline design names a few controls explicitly: authorization enforced server-side on every request, parameterized queries against injection, <a href="#encryption">TLS in transit and encryption at rest</a> with managed keys, secrets kept in a dedicated store (Vault, AWS Secrets Manager, a Kubernetes Secret) rather than source control, and security events logged and alerted on.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Application security is making sure only the right users and systems can reach the right data and actions. In practice I start from the OWASP Top 10: enforce authorization on the server for every request, use parameterized queries to prevent injection, encrypt data in transit with TLS and at rest with properly managed keys, keep secrets in a secrets manager instead of code, patch dependencies, and log and alert on security events. I threat-model the design up front so security flaws aren't baked into the architecture."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If the user is logged in with a valid session, is the request safe to serve?</strong></p>
+      <p><strong>A:</strong> No. A valid session proves <strong>authentication</strong> — who the user is — not <strong>authorization</strong> — what that user is allowed to do. If the server serves <code>/orders/1234</code> just because the caller is logged in, any user can change the ID in the URL and read someone else's order; this is <strong>broken access control</strong>, the top OWASP category. The server must check, on every request, that this specific user may act on this specific resource, and it must never trust an ID, role, or price supplied by the client.</p>
+
       <h2>Scope of this page</h2>
       <p>This covers general, system-wide application security — the things that apply regardless of which
       database or framework sits underneath. <a href="../05-database/04a-database-security-and-access-control/index.html">Database Security and Access Control</a> covers the same territory specifically for the data layer (row-level security, least-privilege DB roles, encryption of data at rest); <a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a> and <a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a> cover authentication in depth. This page is the layer above both: the classes of vulnerability and the controls that apply to the application as a whole.</p>
 
-      <h2>OWASP Top 10 — the categories that recur in almost every interview</h2>
+      <h2 id="owasp-top-10">OWASP Top 10 — the categories that recur in almost every interview</h2>
       <table>
       <tr><th>Category</th><th>What it is</th><th>Core mitigation</th></tr>
       <tr><td>Broken access control</td><td>A user can act on data/resources they shouldn't be able to — e.g. changing an ID in a URL to view another user's record</td><td>Enforce authorization server-side on every request, never trust a client-supplied ID alone; default-deny</td></tr>
@@ -54,7 +67,7 @@
       </table>
       <div class="sd-study-note tip"><span class="sd-note-title">XSS didn't disappear — it's folded into "injection" conceptually</span><p>Cross-site scripting (unescaped user input rendered as executable script in another user's browser) is the classic example of injection targeting the browser instead of a database. The fix is the same shape as SQL injection's: never trust unescaped user input in an executable context — escape/encode output, and use a Content-Security-Policy header as defense in depth.</p></div>
 
-      <h2>Encryption: in transit vs. at rest</h2>
+      <h2 id="encryption">Encryption: in transit vs. at rest</h2>
       <ul>
       <li><strong>In transit</strong> — TLS on every network hop, not just the public-facing edge; internal service-to-service traffic inside a "trusted" network is still worth encrypting (assume the network itself isn't a trust boundary) — this is part of what a service mesh's mTLS (see <a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a>) automates.</li>
       <li><strong>At rest</strong> — disk/volume-level encryption as a baseline, plus field-level encryption for specifically sensitive data (payment details, health records) so even a database dump or backup isn't readable without the key.</li>

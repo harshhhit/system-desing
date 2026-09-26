@@ -34,6 +34,19 @@
 <h1>Rendering Strategies</h1>
 <p class="subtitle">Core theory, production tradeoffs, failure scenarios, real-world usage, and interview perspective</p>
 
+<h2 id="interview-answer">Interview Answer — What Is a Web Rendering Strategy?</h2>
+<p>A web rendering strategy is the decision about <em>where</em> and <em>when</em> a page's HTML is generated. <strong>CSR (client-side rendering)</strong> generates it in the browser with JavaScript after the page loads; <strong>SSR (server-side rendering)</strong> generates it on the server for each request; <strong>SSG (static site generation)</strong> generates it once at build time; and <strong>ISR (incremental static regeneration)</strong> serves static pages but regenerates them in the background after a set interval.</p>
+<p>The choice exists because the same page has competing needs: fast first paint, search-engine visibility, fresh or personalized data, and low server cost. The cause → effect chain differs by strategy. With CSR, the server sends a near-empty HTML shell → the browser downloads and runs the JavaScript bundle → fetches data → renders, so the user sees content late and crawlers may see little. With SSR, the server fetches data and renders full HTML → the user sees content on the first response → the JavaScript then <strong>hydrates</strong> it (attaches event handlers) to make it interactive, at the cost of server work on every request. SSG and ISR move that work to build time, making pages as cheap to serve as files from a CDN, but only as fresh as the last build or regeneration.</p>
+<p>Modern frameworks such as Next.js let you choose per page or even per component, so a real application commonly mixes them: SSG for marketing pages, ISR for product pages, SSR for personalized pages, and CSR for highly interactive dashboards.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"Rendering strategy is where and when the HTML is built. CSR builds it in the browser — great for interactive apps, but slower first paint and weaker SEO. SSR builds it on the server per request — fast first content and good SEO, but more server load and a hydration step. SSG builds it at deploy time — fastest and cheapest from a CDN, but only as fresh as the last build; ISR regenerates static pages periodically. I pick per page based on SEO, freshness, personalization, and cost."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: With SSR, the user sees the page immediately — so is it interactive immediately?</strong></p>
+<p><strong>A:</strong> No. SSR makes content <em>visible</em> early, but buttons and inputs do nothing until the JavaScript bundle has downloaded and <strong>hydrated</strong> the page. On a slow device there can be seconds between First Contentful Paint and Time to Interactive, where clicks are ignored. And if the HTML the client renders during hydration differs from what the server sent — for example because of <code>Date.now()</code>, random values, or browser-only APIs — you get a <a href="#hydration-mismatch">hydration mismatch</a>. Techniques such as streaming SSR, partial or selective hydration, islands architecture, and React Server Components exist to shrink that gap.</p>
+
 <h2>1. Core Explanation</h2>
 <p>Rendering strategy answers one question: where does HTML get generated, and when? There are four points on this spectrum: build time, request time, client time, and a hybrid of these.</p>
 <ul>
@@ -67,9 +80,9 @@
 <p><strong>At low scale:</strong> the difference between SSR and CSR barely matters — a few hundred req/s is nothing for a Node server.</p>
 <p><strong>At high scale:</strong> SSR compute cost scales linearly with traffic (every request = server-side render = CPU cycles), which is why high-traffic sites push as much as possible to SSG/ISR + CDN, and reserve SSR only for genuinely personalized/real-time pages.</p>
 
-<h2>3. Failure Scenarios and Debugging</h2>
+<h2 id="failure-scenarios">3. Failure Scenarios and Debugging</h2>
 
-<h3>Hydration mismatch — the most infamous SSR bug class</h3>
+<h3 id="hydration-mismatch">Hydration mismatch — the most infamous SSR bug class</h3>
 <ul>
   <li><strong>Symptom:</strong> Console warning "Text content does not match server-rendered HTML," UI flickers or breaks after load.</li>
   <li><strong>Root cause:</strong> Server-rendered HTML differs from what client-side render produces — common causes: <code>Date.now()</code>/<code>Math.random()</code> used during render, <code>typeof window</code> branching, browser extensions mutating the DOM before hydration, or locale/timezone differences between server and client.</li>

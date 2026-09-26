@@ -32,6 +32,19 @@
       <p>Perfect ✅ You want a <strong>deep dive</strong> where I <strong>elaborate each section</strong> of the notes so that a technical expert (like in an interview or system design discussion) can use it confidently.</p>
 <p>Here’s the <strong>detailed, expanded version</strong> 👇</p>
 <hr>
+<h2 id="interview-answer">Interview Answer — What Is a Query String?</h2>
+<p>A query string is the part of a URL after the <code>?</code> that carries parameters as <code>key=value</code> pairs separated by <code>&amp;</code> — for example <code>?page=2&amp;sort=price</code> in <code>https://example.com/products?page=2&amp;sort=price</code>. The server framework parses it into a map, such as <code>request.GET</code> in Django or <code>req.query</code> in Express.</p>
+<p>Query strings exist so that one endpoint can return many variations of the same resource. Without them, every search term, filter, sort order, or page would need its own URL path. With them, the cause → effect chain is: the client adds <code>?k=shoes&amp;sort=price-asc-rank</code> → the server parses the parameters → it passes them into the database query as filters and ordering → the same <code>/s</code> endpoint returns a different, tailored result. They are also used for tracking (<code>utm_source</code>), and by infrastructure — for example AWS ALB listener rules can route a request to a different target group based on a query parameter.</p>
+<p>Query string vs. path — the difference is that the <strong>path</strong> identifies <em>which resource</em> (<code>/products/42</code>), while the <strong>query string</strong> modifies <em>how</em> you want it or a collection of it — filtering, sorting, pagination, search (<code>/products?category=shoes</code>). Values must be URL-encoded, keys and values are case-sensitive, and the query string is optional: the server must behave sensibly when a parameter is missing (see <a href="#7-query-string-vs-path">Query String vs Path</a> below).</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"A query string is the part of the URL after the question mark, with key-value pairs separated by ampersands, like ?page=2&amp;sort=price. It lets one endpoint handle search, filtering, sorting, pagination, and tracking without a separate URL for each variation. The server parses it and uses the values, for example in a database query, and load balancers like AWS ALB can even route on it. I use the path to identify a resource and the query string to filter or shape the result."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: With HTTPS, is it safe to put a password or token in the query string?</strong></p>
+<p><strong>A:</strong> No. HTTPS encrypts the query string on the network, but the full URL is still stored in places outside your control: browser history, server and load-balancer access logs, proxy and CDN logs, analytics tools, and the <code>Referer</code> header sent to other sites when the user follows a link. Anything in the URL should be treated as visible to whoever can read those logs. Credentials and tokens belong in a header (such as <code>Authorization</code>) or the request body, and values from the query string must be validated and passed to the database as parameters, never concatenated into SQL.</p>
+
 <h1 id="📘-query-string--detailed-expert-notes">📘 Query String – Detailed Expert Notes</h1>
 <hr>
 <h2 id="1-definition">1. <strong>Definition</strong></h2>

@@ -29,6 +29,19 @@
     <main>
       <p class="breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Database / Scratch Note: Polyglot Persistence</p>
       <h1 data-page-title>Scratch Note: Polyglot Persistence</h1>
+      <h2 id="interview-answer">Interview Answer — What Is Polyglot Persistence?</h2>
+      <p>Polyglot persistence is using more than one type of database in the same system, choosing each one for the workload it handles best. A typical example: PostgreSQL holds orders and payments, Redis caches sessions and hot reads, Elasticsearch powers product search, and a data warehouse or data lake serves analytics — each fed from the source of truth.</p>
+      <p>It exists because no single database is good at everything. A relational database gives ACID transactions and flexible queries for <strong>OLTP</strong> (online transaction processing) but is a poor full-text search engine and is not built for large analytical scans (<strong>OLAP</strong>); a wide-column or key-value store scales writes horizontally but gives up joins and multi-row transactions. The cause → effect chain for a single-database design under growth is: search queries, analytics, and transactions compete on one engine → each is slower than it would be on a store built for it → teams add specialized stores, one per bottleneck.</p>
+      <p>The balance question on this page is where to draw the line: keep data that needs strong consistency and transactions (money, inventory, identities) in a relational store under <strong>ACID</strong>, and move data that tolerates eventual consistency, <strong>BASE</strong>-style, and needs different access patterns or scale to specialized stores — with one clearly defined source of truth for each piece of data.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Polyglot persistence means using different databases for different workloads in one system — for example PostgreSQL for transactions, Redis for caching, Elasticsearch for search, and a warehouse for analytics. I keep strongly consistent, transactional data in a relational database as the source of truth, and move workloads that need different query patterns or scale to specialized stores, synced with change data capture or events. The cost is operational complexity and keeping the copies consistent."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If you use several databases, how do you keep them consistent — can you write to all of them in one transaction?</strong></p>
+      <p><strong>A:</strong> Generally no — a transaction does not span PostgreSQL, Redis, and Elasticsearch, and "dual writes" from the application (write the database, then the search index) break when the second write fails, leaving the stores out of sync. The usual pattern is a single source of truth plus asynchronous propagation: write to the primary database, and publish the change through <strong>change data capture</strong> (e.g. Debezium reading the WAL) or a <strong>transactional outbox</strong> table to a stream that updates the other stores. The derived stores are then eventually consistent, and they can be rebuilt from the source if they drift.</p>
+
       <ol>
 <li><p>How do you determine the right balance between relational and non-relational databases in a polyglot persistence architecture?</p>
 <p> Why it matters: Many modern architectures (microservices, data lakes) use more than one database type. Knowing when and why to mix is a mark of a senior architect.</p>

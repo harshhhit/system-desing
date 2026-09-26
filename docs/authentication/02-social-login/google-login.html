@@ -34,6 +34,19 @@
 <div class="alert alert-tip"><p class="alert-title">TIP</p><p><strong>Quick Summary</strong>: The Android app gets an ID Token from Google, sends it to your Backend, and your Backend verifies it with Google before issuing its own session tokens.</p>
 </div>
 
+<h2 id="interview-answer">Interview Answer — How Does Google Sign-In Work in a Mobile App with a Backend?</h2>
+<p>Google Sign-In in an Android app is an <strong>OpenID Connect</strong> login split across three parties. The app uses Android's <strong>Credential Manager</strong> API to let the user choose a Google account; Google returns an <strong>ID token</strong> — a signed JWT with the user's identity; and your backend verifies that token and turns it into a session in your own system.</p>
+<p>The backend step exists because the app runs on a device you do not control, so nothing the app says can be trusted on its own. The cause → effect chain is: the user taps "Sign in with Google" → Credential Manager returns an ID token → the app sends it to <code>POST /socialAuth/social-register</code> → the backend calls <code>verifyIdToken</code>, which checks Google's signature, the expiry, and that the audience is your client ID (see <a href="#4-backend-verifies-token">step 4</a>) → the backend finds the user by email or creates one (just-in-time provisioning) → it returns its own access and refresh tokens → the app uses those tokens, not the Google token, for every later API call.</p>
+<p>Google's ID token vs. your app's tokens — the difference is who issued them and what they are for. The Google ID token proves identity to your backend once, at sign-in. Your access token authorizes calls to your own API, with your own expiry, roles, and revocation rules.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"The Android app uses Credential Manager to get a Google ID token, which is a signed JWT proving who the user is. It sends that token to my backend, which verifies the signature, expiry, and audience with Google's library, then logs the user in or creates their account. The backend then issues its own access and refresh tokens, and the app uses those for all further requests — the Google token is only used once, to establish identity."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: Why not just use the Google ID token as the app's access token for every API call?</strong></p>
+<p><strong>A:</strong> Because it is issued by Google, for sign-in, with Google's rules. It expires after about an hour, you cannot revoke it from your side when a user logs out or is banned, and it carries none of your application's roles or permissions. Your API would also need to call or cache Google's keys on every request and tie its whole authorization model to one provider — adding Apple or email login would mean supporting several token types. Exchanging it once for your own access and refresh tokens gives you control over expiry, revocation, and claims, and keeps every login method on the same session model.</p>
+
 <hr>
 <h2 id="⚡-quick-implementation-checklist">⚡ Quick Implementation Checklist</h2>
 <ul>

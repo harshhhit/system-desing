@@ -42,6 +42,19 @@ You want this whole explanation on <strong>WSGI, HTTP servers, and their role in
 </ul>
 <p>Let me draft it for you as <strong>well-structured notes</strong> 👇</p>
 <hr>
+<h2 id="interview-answer">Interview Answer — What Is WSGI?</h2>
+<p><strong>WSGI (Web Server Gateway Interface)</strong> is the Python standard, defined in PEP 3333, for how a web server passes an HTTP request to a Python web application and gets the response back. The application exposes a single callable — <code>application(environ, start_response)</code> — and any WSGI server (Gunicorn, uWSGI, Waitress) can run any WSGI framework (Django, Flask).</p>
+<p>WSGI exists so that servers and frameworks can be mixed freely. Without a shared interface, every framework would need its own server integration and every server would need to support each framework separately. With it, the cause → effect chain for a request is: the browser sends an HTTP request → Nginx terminates TLS, serves static files itself, and forwards the dynamic request to Gunicorn → Gunicorn converts the request into the <code>environ</code> dictionary and calls the Django application → Django returns the status, headers, and body → Gunicorn sends them back through Nginx to the browser.</p>
+<p>WSGI is <strong>synchronous</strong>: each worker handles one request at a time, so concurrency comes from running multiple worker processes or threads. <strong>ASGI (Asynchronous Server Gateway Interface)</strong> is its async successor, used by FastAPI and Django Channels with servers such as Uvicorn and Daphne; it supports long-lived connections such as WebSockets. See <a href="#6-why-use-both-nginx-and-gunicorn">why use both Nginx and Gunicorn</a> below.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"WSGI is the Python standard interface between a web server and a Python web application. A WSGI server like Gunicorn receives the request, calls the app's application(environ, start_response) callable, and returns the response, so any WSGI server can run any WSGI framework such as Django or Flask. In production, Nginx sits in front for TLS, static files, and proxying. WSGI is synchronous, one request per worker at a time; ASGI is the async successor used by FastAPI and for WebSockets."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: Is Gunicorn a web server that replaces Nginx?</strong></p>
+<p><strong>A:</strong> No. Gunicorn is a WSGI application server: it understands HTTP well enough to run Python workers, but it is not designed to face the internet directly. Its synchronous workers are tied up for as long as a client takes to send a request or receive a response, so slow clients can exhaust them; it is also not built for serving static files efficiently or managing TLS certificates. Nginx in front buffers slow clients, terminates TLS, serves static files, and load-balances across Gunicorn workers or instances — the two do different jobs.</p>
+
 <h1 id="📘-wsgi-http-servers-and-python-web-applications">📘 WSGI, HTTP Servers, and Python Web Applications</h1>
 <p><em>(University-Level Notes with Interview Questions)</em></p>
 <hr>

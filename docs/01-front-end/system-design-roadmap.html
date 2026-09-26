@@ -46,6 +46,19 @@
 
       <!-- ═══════════  PAGE CONTENT  ═══════════ -->
 
+      <h2 id="interview-answer">Interview Answer — What Is a System Design Interview?</h2>
+      <p>A system design interview asks you to design a large-scale software system — a URL shortener, a chat app, a news feed — out loud, in about 45 minutes, while an interviewer probes your decisions. There is no single correct answer; you are evaluated on how you move from vague requirements to a reasonable architecture and how clearly you reason about the trade-offs.</p>
+      <p>The format exists because real system design is mostly judgement under uncertainty: deciding what to build, estimating scale, choosing components, and knowing what will break first. So a strong answer follows a predictable shape (<a href="#phase-0">Phase 0</a>): <strong>clarify requirements</strong> (functional and non-functional, with explicit assumptions) → <strong>estimate scale</strong> (requests per second, storage, bandwidth) → <strong>define the API</strong> → draw the <strong>high-level design</strong> → <strong>deep-dive</strong> into one or two components → discuss <strong>bottlenecks and trade-offs</strong> → wrap up. Skipping the first two steps is the most common failure, because every later choice depends on them.</p>
+      <p>This roadmap is tuned for engineers coming from DevOps or SRE: it moves quickly through building blocks you already operate (load balancers, caches, databases, queues), spends more time on distributed-systems theory and interview framing, and covers the coding-adjacent pieces interviews lean on — consistent hashing, rate limiters, LRU caches, tries — before the classic design questions.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"A system design interview tests whether I can take an open-ended problem and design a scalable, reliable system while explaining the trade-offs. I follow a structure: clarify functional and non-functional requirements, estimate scale with quick back-of-the-envelope math, define the API, sketch the high-level architecture, deep-dive into the hardest components, then discuss bottlenecks, failure modes, and trade-offs. I state my assumptions out loud and adjust as the interviewer adds constraints."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Should you start drawing the architecture as soon as you hear the problem?</strong></p>
+      <p><strong>A:</strong> No. Designing before clarifying is the most common way to fail. "Design Twitter" could mean posting, timelines, search, or DMs, for a thousand users or three hundred million, with different latency and consistency needs — and each of those changes the design. Spend the first few minutes agreeing on the core features, the scale (daily users, read/write ratio, data size), and the non-functional targets, and write down your assumptions. The interviewer is partly testing whether you ask; a sophisticated design for the wrong requirements scores worse than a simple design for the right ones.</p>
+
       <div class="roadmap-track">
         <h2>Pages in this track</h2>
         <p>This index and its companion deep-dives — the list updates itself as

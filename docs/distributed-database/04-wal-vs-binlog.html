@@ -37,6 +37,19 @@
       <h1 data-page-title>WAL vs Binlog — Storage Engine vs Server Log</h1>
       <p class="sd-study-prompt" data-page-subtitle>A companion deep-dive to the <a href="index.html">Distributed Data Roadmap</a> (Phase 0). The junior answer — <em>"WAL is for crash recovery, binlog is for replication"</em> — passes. The principal-engineer answer explains the <strong>storage-engine level</strong> (physical vs logical), the <strong>timing of writes</strong>, and the <strong>replication topology</strong> implications.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is the Difference Between a WAL and a Binlog?</h2>
+      <p>A <strong>write-ahead log (WAL)</strong> is a log in which a database's storage engine records every physical change to its data pages <em>before</em> those pages are changed on disk, so that after a crash it can replay the log and recover every committed transaction. A <strong>binary log (binlog)</strong> is MySQL's server-level log of <em>logical</em> changes — SQL statements or row images — written at commit time and used for replication and point-in-time recovery.</p>
+      <p>The WAL exists for durability. Writing a small sequential log record is much faster than writing random data pages, so the cause → effect chain is: a transaction changes a page in memory → the change is appended to the WAL and flushed to disk → the transaction commits → the data page itself is written back to disk later → if the server crashes first, recovery replays the WAL and the committed change is not lost. The binlog exists for sharing data: because it records logical changes independent of the storage engine, it can be replayed on replicas, used to restore to an exact point in time, or streamed to other systems through change data capture.</p>
+      <p>WAL vs. binlog — the difference is layer, format, and purpose. In MySQL, the InnoDB redo log is the WAL (storage engine, physical, fixed-size, crash recovery) and the binlog is separate (server layer, logical, append-only, replication), so MySQL keeps them in agreement with an internal two-phase commit (see <a href="#mysql-2pc">Part 4</a>). PostgreSQL has no separate binlog: its WAL does both jobs (see <a href="#postgres-curveball">Part 6</a>).</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"The WAL is the storage engine's physical redo log: every change is written to it before the data pages are modified, so after a crash the database can replay it and not lose committed transactions. The binlog is MySQL's logical log of row changes or statements, written at commit time, and it's used for replication and point-in-time recovery. In MySQL the two are kept consistent with an internal two-phase commit. PostgreSQL doesn't have a separate binlog — its WAL is used for both crash recovery and replication."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If the MySQL server crashes after writing the WAL but before writing the binlog, is the transaction committed?</strong></p>
+      <p><strong>A:</strong> No — it is rolled back. MySQL coordinates the InnoDB redo log (WAL) and the binlog with an internal two-phase commit: InnoDB first writes a <em>prepare</em> record, then the binlog is written, then InnoDB writes the commit. On recovery, a transaction that is prepared in the WAL but missing from the binlog is rolled back, because replicas read the binlog — keeping it would make the primary contain data the replicas never receive. A transaction that is in the binlog is committed. This keeps the primary and its replicas consistent at the cost of extra fsyncs per commit.</p>
+
       <h2>The 10-Second TL;DR (the interview hook)</h2>
       <ul>
         <li><strong>WAL (Write-Ahead Log):</strong> the database's <strong>"insurance policy"</strong> against crashes. Lives at the <em>storage-engine</em> level. Logs <strong>physical</strong> changes to disk pages.</li>
@@ -77,7 +90,7 @@
       </ul>
       <p><span class="lead">The catch:</span> because the binlog is logical, it is <strong>larger and slower</strong> than the WAL. A massive <code>UPDATE</code> touching 1 million rows produces a tiny WAL entry (a few page changes) but a <em>huge</em> binlog entry (1 million row images).</p>
 
-      <h2>Part 4 — The Advanced Twist: the MySQL 2PC trap</h2>
+      <h2 id="mysql-2pc">Part 4 — The Advanced Twist: the MySQL 2PC trap</h2>
       <p><em>Interviewer: "What happens if the server crashes right after writing the WAL but BEFORE writing the binlog?"</em></p>
       <p><span class="lead">Junior answer:</span> "The data is lost."</p>
       <blockquote>
@@ -93,7 +106,7 @@
         <tr><td><strong>Recovery speed</strong></td><td><strong>Extremely fast.</strong> Re-applies physical bytes at the page level.</td><td><strong>Extremely slow.</strong> Would require re-parsing SQL/rows and executing them through the query engine.</td></tr>
       </table>
 
-      <h2>Part 6 — The PostgreSQL Curveball</h2>
+      <h2 id="postgres-curveball">Part 6 — The PostgreSQL Curveball</h2>
       <p>If the interviewer mentions PostgreSQL, pivot hard. PostgreSQL <strong>has no separate binlog</strong> — in Postgres, the WAL <strong>is</strong> the binlog. It is used for <strong>both</strong> crash recovery <strong>and</strong> replication (via streaming replication).</p>
       <ul>
         <li><strong>MySQL's philosophy:</strong> separate the storage engine (InnoDB WAL) from the server (binlog) for flexibility.</li>

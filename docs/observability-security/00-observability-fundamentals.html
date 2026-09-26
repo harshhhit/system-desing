@@ -34,6 +34,19 @@
       <h1 data-page-title>Observability Fundamentals</h1>
       <p class="sd-study-prompt" data-page-subtitle>The three pillars (metrics, logs, traces), Prometheus/Grafana, structured logging and correlation IDs, distributed tracing, SLI/SLO/SLA and error budgets, and alerting.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is Observability?</h2>
+      <p>Observability is the ability to understand what a running system is doing — and why — from the signals it emits, without shipping new code to investigate. Those signals are the <a href="#three-pillars">three pillars</a>: <strong>metrics</strong> (numeric time series such as request rate and latency), <strong>logs</strong> (structured, timestamped events), and <strong>traces</strong> (the timed path of one request across every service it touched).</p>
+      <p>It exists because modern systems fail in ways nobody predicted. <strong>Monitoring vs. observability — the difference is</strong> that monitoring checks conditions you decided on in advance ("is CPU above 80%?"), while observability lets you answer a question you did not anticipate ("why did this user's checkout take 4 seconds at 3:12pm?"). In a system split across many services, a single slow request can have its cause three hops away, and without recorded signals you cannot reconstruct what happened after the fact.</p>
+      <p>The pillars work as a chain: a <strong>metric</strong> spike tells you something is wrong and when → a <strong>trace</strong> from that window shows which service in the call chain was slow → the <strong>log</strong> from that span shows the exact error or query. A <strong>correlation ID</strong> / trace ID propagated through every hop is what ties the three together. Reliability targets are then expressed as <strong>SLIs</strong> (what you measure), <strong>SLOs</strong> (the internal target), and <strong>SLAs</strong> (the external promise), and alerts fire on user-facing symptoms such as burning error budget too fast.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Observability is being able to explain what a system is doing from the signals it emits — metrics, logs, and traces. Metrics tell me something is wrong and when, traces show which service in the request path was slow, and structured logs tied together by a correlation ID show exactly why. I define reliability as SLIs and SLOs with an error budget, and I alert on user-facing symptoms like error rate or latency, not on every possible cause."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Why not add the user ID as a label on every metric, so we can see each user's latency?</strong></p>
+      <p><strong>A:</strong> Because every unique combination of metric name and label values is a separate time series. A <code>user_id</code> label with a million users turns one metric into a million series — this is the <strong>cardinality</strong> problem — and it can exhaust Prometheus's memory and make queries unusably slow. Metrics should carry low-cardinality labels such as status code, route, and region; per-user or per-request detail belongs in logs and traces, which are designed to hold high-cardinality data. See <a href="#metrics-prometheus">Metrics in practice</a> below.</p>
+
       <h2>Observability vs. monitoring</h2>
       <p>Monitoring answers questions you already thought to ask ahead of time ("is CPU above 80%?").
       <strong>Observability</strong> is about being able to answer questions you <em>didn't</em> anticipate —
@@ -41,7 +54,7 @@
       to investigate after the fact, not just a dashboard that was pre-built for a known failure mode. This
       page covers the general, cross-service version; <a href="../05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a> in the Database section covers the same pillars scoped specifically to a database.</p>
 
-      <h2>The three pillars</h2>
+      <h2 id="three-pillars">The three pillars</h2>
       <table>
       <tr><th>Pillar</th><th>What it captures</th><th>Best for</th></tr>
       <tr><td><strong>Metrics</strong></td><td>Numeric time series — counters (only go up, e.g. total requests), gauges (go up or down, e.g. current memory), histograms (a distribution, e.g. latency buckets)</td><td>Trends, dashboards, alerting thresholds — cheap to store, low cardinality</td></tr>
@@ -53,7 +66,7 @@
       was slow; a log from that specific span shows <em>why</em> (the exact error, the exact query). Losing any
       one pillar leaves a real gap the other two can't fill.</p>
 
-      <h2>Metrics in practice: the Prometheus/Grafana model</h2>
+      <h2 id="metrics-prometheus">Metrics in practice: the Prometheus/Grafana model</h2>
       <ul>
       <li><strong>Pull-based scraping</strong> — Prometheus polls each service's <code>/metrics</code> HTTP endpoint on an interval, rather than services pushing metrics out — simpler service discovery, and a service that's down is visible as "scrape failed" rather than silently missing data.</li>
       <li><strong>Cardinality</strong> — every unique combination of metric name + label values (e.g. <code>http_requests{status="500", path="/api/x", user_id="42"}</code>) is a separate time series. Putting a high-cardinality value like a raw user ID in a label can multiply storage and query cost by orders of magnitude — a very common real-world Prometheus mistake, and a strong interview signal to mention.</li>

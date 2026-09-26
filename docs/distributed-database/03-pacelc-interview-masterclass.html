@@ -47,6 +47,19 @@
 
       <p><strong>The mindset:</strong> if CAP is the "Newton's Laws" of distributed systems (simple, foundational, but incomplete), then PACELC is the "Theory of Relativity" — nuanced, handles the edge cases, and actually reflects reality. What follows is a full syllabus, from basic definitions to architectural mastery.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is PACELC?</h2>
+      <p>PACELC is a model for describing the trade-offs of a replicated database in two situations: <strong>if there is a Partition (P)</strong>, the system must choose between <strong>Availability (A)</strong> and <strong>Consistency (C)</strong>; <strong>Else (E)</strong>, when the network is healthy, it must choose between <strong>Latency (L)</strong> and <strong>Consistency (C)</strong>. It was introduced by Daniel Abadi (first in a 2010 blog post, then formalized in a 2012 paper) as an extension of the CAP theorem.</p>
+      <p>PACELC exists because CAP describes only the partition case, and partitions are rare. Most of the time the network works, yet a replicated database still has to make a trade-off on every request. The cause → effect chain is: to be strongly consistent, a write must reach other replicas before it is acknowledged → replicas in other data centers are tens to hundreds of milliseconds away → so every consistent write pays that network delay; to avoid it, the database acknowledges after a local write and replicates asynchronously, accepting that replicas may briefly be stale and that a leader crash can lose the latest writes.</p>
+      <p>Databases are then described by their pair of choices — for example DynamoDB and Cassandra by default are <strong>PA/EL</strong>, while systems such as HBase and ZooKeeper are <strong>PC/EC</strong> (see <a href="#pacelc-archetypes">the four archetypes</a> below). The most useful nuance is that PACELC is often a <em>configuration</em> property, not a fixed database property: Cassandra with consistency level <code>ONE</code> behaves as EL, and with <code>QUORUM</code> behaves closer to EC, per request.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"PACELC extends CAP. If there's a network partition, a distributed database chooses between availability and consistency; else, during normal operation, it chooses between latency and consistency. The 'else' part matters most day to day, because strong consistency means waiting for other replicas on every write, which costs latency. Cassandra and DynamoDB default to PA/EL, systems like HBase and ZooKeeper are PC/EC, and in many databases you can tune this per operation — for example Cassandra with ONE versus QUORUM."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Is PACELC a fixed label you look up for each database?</strong></p>
+      <p><strong>A:</strong> No. The labels describe a database's <em>default</em> behaviour, but many databases let you choose per request or per operation. Cassandra with <code>ONE</code> reads and writes is EL; with <code>QUORUM</code> reads and writes (R + W &gt; N) it gives strong reads at the cost of latency. MongoDB changes behaviour with its write concern and read concern, and DynamoDB offers both eventually consistent and strongly consistent reads. So a strong answer names the requirement per operation — for example low-latency writes but consistent reads for a balance check — and then configures the database to match, as described in <a href="#read-write-asymmetry">Part 5</a>.</p>
+
       <h2>Part 1 — The Prerequisite: Why CAP Fails in Practice</h2>
       <p><strong>CAP Theorem</strong> says: in a <em>Partition</em> (P), you must choose between <em>Availability</em> (A) and <em>Consistency</em> (C).</p>
       <p><span class="lead">The interview trap:</span> junior devs think CAP solves everything. But <strong>99.9% of the time, your system is NOT partitioned.</strong> What do you choose <em>during normal operation</em>? CAP is silent on this.</p>
@@ -66,7 +79,7 @@
         <li><strong>L vs C:</strong> do you speed up reads/writes by relaxing consistency (L), or slow them down to ensure strong consistency (C)?</li>
       </ul>
 
-      <h2>Part 3 — The Four Archetypes (the "Periodic Table" of Databases)</h2>
+      <h2 id="pacelc-archetypes">Part 3 — The Four Archetypes (the "Periodic Table" of Databases)</h2>
       <p>Interviewers love to ask: <em>"Given this use case, which PACELC tradeoff do you make?"</em> Map these four combinations to real databases:</p>
       <table>
         <tr><th>Scenario</th><th>Partition (P)</th><th>Else (E)</th><th>Real-world example</th></tr>
@@ -87,7 +100,7 @@
       </ul>
       <p><span class="lead">The interview insight:</span> "Else" is not about network failures. It is about the <em>physics of light</em>. You cannot beat the speed of light. You are choosing to lose data (L) or wait for physics (C).</p>
 
-      <h2>Part 5 — The Secret Sauce: Read/Write Asymmetry</h2>
+      <h2 id="read-write-asymmetry">Part 5 — The Secret Sauce: Read/Write Asymmetry</h2>
       <p>This is what senior candidates say to impress: you do not have to choose PACELC globally. You can choose it <em>per operation</em>.</p>
       <ul>
         <li><strong>For writes:</strong> choose <strong>EL</strong> (low latency) using async replication to keep the UI snappy.</li>

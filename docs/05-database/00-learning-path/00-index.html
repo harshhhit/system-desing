@@ -38,6 +38,19 @@
       <h1 data-page-title>Database Index</h1>
       <h1 id="📘-database--distributed-systems--learning-roadmap">📘 Database &amp; Distributed Systems — Learning Roadmap</h1>
 
+      <h2 id="interview-answer">Interview Answer — What Is a Database, and Why Does It Get Hard at Scale?</h2>
+      <p>A database is a system that stores data durably and lets applications read and change it concurrently and correctly through a query interface. A single-node database — one PostgreSQL or MySQL server — gives you tables, indexes, SQL, and <strong>ACID transactions</strong>, and for many applications that is enough.</p>
+      <p>It gets hard at scale because one node has limits: disk size, write throughput, the number of connections, and being a single point of failure. Each way of removing a limit introduces a new problem. The cause → effect chain is: to survive node failure and scale reads you add <strong>replicas</strong> → replicas lag, so reads can be stale and failover can lose writes → to scale writes and data size you <strong>partition</strong> or shard the data → queries and transactions that span partitions become slow or impossible, and a bad partition key creates hot spots → to keep other systems in sync you capture changes (<strong>CDC</strong>) and index into search engines → now you must reason about ordering, duplicates, and eventual consistency across systems.</p>
+      <p>This roadmap follows that path in order: single-node foundations → distributed database theory such as CAP and consistency models (see <a href="#stage-2-distributed-database-theory">Stage 2</a>) → data distribution → synchronization and change tracking → search and query optimization → putting it together in system design → production operations, security, and reliability.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"A database stores data durably and lets many clients read and write it correctly, usually with ACID transactions on a single node. At scale one node isn't enough, so we replicate for availability and read scaling, which brings replication lag and consistency trade-offs, and we partition or shard for write throughput and data size, which makes cross-partition queries and transactions harder. Understanding databases for system design means knowing those trade-offs — CAP, consistency models, partitioning strategies, and change data capture — and choosing per workload."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: When a single database starts struggling, should you shard it right away?</strong></p>
+      <p><strong>A:</strong> No — sharding is usually the last lever, not the first, because it permanently adds complexity: cross-shard joins and transactions, rebalancing, and a partition key that is hard to change later. Before sharding, fix the queries and indexes, add caching, move reads to read replicas, add connection pooling, archive or partition old data within the same database, and scale the instance vertically. Shard when write throughput or data size genuinely exceeds what one well-tuned primary can handle, and choose the partition key from the access patterns.</p>
+
       <div class="sd-progress" id="dbrProgress">
         <div class="sd-progress-bar"><span id="dbrBar"></span></div>
         <p class="sd-progress-text"><strong id="dbrCount">0</strong> / <span id="dbrTotal">6</span> stages covered

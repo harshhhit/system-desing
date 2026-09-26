@@ -34,6 +34,19 @@
       <h1 data-page-title>Event Sourcing &amp; CQRS</h1>
       <p class="sd-study-prompt" data-page-subtitle>Storing state as immutable events, snapshotting, splitting write and read models, projections and materialized views, and when this is (and isn't) worth the complexity.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Are Event Sourcing and CQRS?</h2>
+      <p><strong>Event sourcing</strong> is a way of storing data in which the system records every change as an immutable event — <code>OrderPlaced</code>, <code>PaymentReceived</code>, <code>OrderShipped</code> — in an append-only log, and derives the current state by replaying those events, instead of overwriting a row with the latest values. <strong>CQRS (Command Query Responsibility Segregation)</strong> is a design in which the model that handles writes (commands) is separate from the model, or models, that serve reads (queries).</p>
+      <p>Event sourcing exists because a normal update destroys information: once an order's <code>status</code> column becomes <code>shipped</code>, what it was before and when it changed are gone unless you build an audit table. With events as the source of truth, you get a full audit trail and can rebuild state as of any past moment. CQRS exists because one data model rarely suits both sides: writes need validation and normalized data, while reads need data pre-shaped for each screen or query.</p>
+      <p>Event sourcing vs. CQRS — the difference is that event sourcing is about <em>how state is stored</em>, and CQRS is about <em>splitting the write and read models</em>; each can be used without the other, but they combine naturally (see <a href="#how-they-combine">how they combine</a>). The cause → effect chain is: a command is validated → a new event is appended to the log and the write is acknowledged → projections consume the event and update read-optimized views → queries read those views. Because the views are updated after the write is acknowledged, the read side is eventually consistent.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Event sourcing stores every change as an immutable event and rebuilds current state by replaying them, which gives a full audit trail and time travel; snapshots keep replay fast. CQRS separates the write model from the read models, so each side can be optimized independently. They're often combined: commands append events, projections update read views, and queries read the views — which means reads are eventually consistent. I'd use them for audit-heavy domains like ledgers, not for simple CRUD."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: After a user submits a command, can they immediately read their own change?</strong></p>
+      <p><strong>A:</strong> Not necessarily. The write is acknowledged when the event is durably appended, but the read model is updated afterward by a projection, so for a short window a query can return the old state. You handle this explicitly: return the new state directly in the command's response, have the client wait until the projection has processed the event's position or version, or read that one entity from the write side when freshness is required. This eventual consistency, plus event schema versioning and projection rebuilds, is why the pattern is not worth it for simple CRUD — see <a href="#when-worth-it">when this is worth the complexity</a>.</p>
+
       <h2>Event sourcing: store what happened, not just the current state</h2>
       <p>A conventional model stores current state and overwrites it on every update — an <code>orders</code>
       row's <code>status</code> column just becomes <code>"shipped"</code>, and whatever it was before is gone.
@@ -60,7 +73,7 @@
       <li>This directly addresses the same "how do I choose the database" trade-off in <a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">How to Choose the Database</a> — CQRS lets you pick a different, purpose-fit answer for reads than for writes instead of one compromise database.</li>
       </ul>
 
-      <h2>How they combine</h2>
+      <h2 id="how-they-combine">How they combine</h2>
       <ol>
       <li>A command arrives, is validated, and — instead of updating a row — appends a new event to that entity's event log.</li>
       <li>The write side acknowledges once the event is durably appended (this is the source of truth being updated).</li>
@@ -69,7 +82,7 @@
       </ol>
       <div class="sd-study-note warning"><span class="sd-note-title">The read side is eventually consistent</span><p>Between step 2 and step 3 there's a real (usually small) window where the write has committed but the read-side projection hasn't caught up yet — a user can write something and, for a moment, not see it reflected in a query. Any system built this way has to decide explicitly how to handle that gap (read-your-writes tricks, UI optimism, or simply accepting the lag) rather than assume the read side is always current.</p></div>
 
-      <h2>When this is worth the complexity</h2>
+      <h2 id="when-worth-it">When this is worth the complexity</h2>
       <ul>
       <li><strong>Reach for it</strong> when an audit trail is a real requirement (financial ledgers, compliance-heavy domains), when read and write access patterns genuinely diverge enough that one schema can't serve both well, or when the domain is naturally event-shaped (order fulfillment, workflow/state-machine-heavy processes).</li>
       <li><strong>Skip it</strong> for straightforward CRUD domains — event sourcing and CQRS add real operational and cognitive overhead (event schema versioning, projection lag, replay tooling), and most systems don't need either. This is one of the more commonly over-applied patterns in system design interviews; being able to say "this doesn't need it" is as valuable as knowing how it works.</li>

@@ -30,6 +30,19 @@
       <p class="breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Planning &amp; Roadmap / API Planning</p>
       <h1 data-page-title>API Planning</h1>
       <p>Here’s a refined system-design-oriented overview to help you deeply grasp the trade-offs between <strong>REST</strong>, <strong>GraphQL</strong>, and <strong>gRPC</strong>, along with key aspects like schemas, auth requirements, and error handling:</p>
+<h2 id="interview-answer">Interview Answer — How Do You Choose Between REST, GraphQL, and gRPC?</h2>
+<p>REST, GraphQL, and gRPC are three styles for designing an API. <strong>REST</strong> exposes resources at URLs and uses HTTP methods and status codes (<code>GET /users/42</code>), usually with JSON. <strong>GraphQL</strong> exposes one endpoint and a typed schema; the client sends a query naming exactly the fields it wants. <strong>gRPC</strong> defines services and messages in Protocol Buffers (<code>.proto</code> files), generates client and server code, and sends compact binary messages over HTTP/2, with support for streaming.</p>
+<p>They exist because different clients have different needs. REST is simple, universally supported, and works with HTTP caching, which suits public APIs and CRUD. Mobile and single-page apps that render complex screens run into REST's over-fetching (getting fields they don't need) and under-fetching (making several calls for one screen), which GraphQL solves by letting the client shape the response. Internal service-to-service calls care most about latency, strict contracts, and streaming, which gRPC provides.</p>
+<p>Whichever style is chosen, the same design questions must be answered up front: how input and output schemas are defined (OpenAPI, GraphQL SDL, or <code>.proto</code>), how authentication and authorization are enforced (gateway, middleware, or interceptors), how errors are reported consistently (HTTP status codes with RFC 9457 Problem Details, GraphQL's <code>errors</code> array, gRPC status codes), and how the API evolves without breaking clients (see the <a href="#6-quick-comparison-table">quick comparison table</a> below).</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"I default to REST for public and CRUD APIs because it's simple, universally supported, and works with HTTP caching. I choose GraphQL when clients like mobile apps or SPAs need flexible, precisely shaped data from many sources in one request. I use gRPC for internal service-to-service calls where performance, strict typed contracts, and streaming matter. In every case I define the schema, the auth model, consistent error handling, and a versioning strategy up front."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: Since GraphQL can fetch everything in one request, is it always faster than REST?</strong></p>
+<p><strong>A:</strong> No. GraphQL reduces round trips and over-fetching for the client, but the work moves to the server: one query can fan out into many resolver calls and cause the <strong>N+1 query problem</strong> (one database query per item in a list) unless you batch with a tool such as DataLoader. A single deeply nested query can also be very expensive, so servers need query depth and cost limits. And because most GraphQL requests are POSTs to one endpoint, standard HTTP and CDN caching does not work out of the box, which REST gets for free on <code>GET</code> URLs — persisted queries are the usual workaround.</p>
+
 <hr>
 <h2 id="1-choosing-rest-graphql-or-grpc-fit-for-purpose">1. Choosing REST, GraphQL, or gRPC: Fit-for-Purpose</h2>
 <h3 id="rest"><strong>REST</strong></h3>

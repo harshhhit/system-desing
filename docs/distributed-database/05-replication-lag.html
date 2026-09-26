@@ -35,6 +35,19 @@
       <h1 data-page-title>Replication Lag — Causes, Measurement, Mitigation</h1>
       <p class="sd-study-prompt" data-page-subtitle>A companion deep-dive to the <a href="index.html">Distributed Data Roadmap</a> (Phase 1). Lag is the time difference between when a write commits on the leader and when it becomes visible on a follower. It is <strong>never just about network speed</strong>.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is Replication Lag?</h2>
+      <p>Replication lag is the delay between the moment a write commits on the leader and the moment that same write is visible on a follower (replica). It exists only with <strong>asynchronous</strong> (or semi-synchronous) replication, where the leader acknowledges the client before every follower has applied the change.</p>
+      <p>Asynchronous replication is chosen because it keeps writes fast and the leader available even if a follower is slow — and lag is the price of that choice. The main causes are rarely the network: a follower must apply every change with random disk I/O and index updates, often on a single thread to preserve commit order, while also serving heavy read queries. The cause → effect chain is: the leader commits writes faster than a follower can apply them → the follower's backlog grows → reads sent to that follower return older data → and if the leader fails, writes the follower never received can be lost on failover.</p>
+      <p>Lag is measured from positions or timestamps in the replication log — MySQL's <code>Seconds_Behind_Source</code>, PostgreSQL's <code>write_lag</code> / <code>flush_lag</code> / <code>replay_lag</code> in <code>pg_stat_replication</code>. It cannot be eliminated without synchronous replication, so it is managed: read-your-writes routing, bounded-staleness read routing, session stickiness, and replicas with fast single-core CPUs and high-IOPS storage (see <a href="#lag-mitigation">mitigations</a> below).</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Replication lag is how far a replica is behind the leader — the time between a write committing on the leader and becoming visible on the replica. It comes from asynchronous replication, and it's usually caused by the replica being slow to apply changes — disk I/O, single-threaded apply, or heavy read queries — not by the network. Lag causes users to not see their own writes or see data go backwards, and it can mean data loss on failover. I handle it by routing a user's reads to the leader right after they write, only reading from replicas under a lag threshold, and alerting on lag."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: A user updates their profile, refreshes, and sees the old version. What happened, and how do you fix it?</strong></p>
+      <p><strong>A:</strong> The write went to the leader, but the refresh was served by a follower that had not yet applied it — a violation of <strong>read-your-writes</strong> consistency caused by replication lag. The database is working as designed; the application's read routing is the problem. Fixes: for a short window after a user writes (or for data the user owns), route that user's reads to the leader; or track the log position of the user's last write and only read from a follower that has reached it; and pin a session to one follower to avoid data appearing to go backwards (monotonic reads). See <a href="#lag-failure-modes">why lag is the #1 operational headache</a>.</p>
+
       <h2>1. What actually causes replication lag? (The 4 culprits)</h2>
 
       <h3>Network RTT — the red herring</h3>
@@ -57,7 +70,7 @@
       </ul>
       <div class="sd-study-note warning"><span class="sd-note-title">Operational trap</span><p><code>Seconds_Behind_Source</code> is a lie if the replica is completely stalled (e.g. network partition). If it hasn't received an event in 5 minutes, it reports <strong>0 lag</strong> — because the last timestamp it applied is 5 minutes old, matching its clock. The real lag is infinite. Monitor <strong>heartbeat timestamps</strong> (periodic empty writes) to catch this.</p></div>
 
-      <h2>3. Why is lag the #1 operational headache?</h2>
+      <h2 id="lag-failure-modes">3. Why is lag the #1 operational headache?</h2>
       <p>Because it breaks the mental model developers have about databases. Three catastrophic failure modes are caused solely by lag:</p>
       <ul>
         <li><strong>Read-your-writes:</strong> a user saves a new profile picture (leader write), refreshes, and their read hits a lagging replica showing the old picture. They think the system is broken.</li>
@@ -72,7 +85,7 @@
         <li><strong>Physical (disk-block) replication</strong> — shipping raw disk pages: this makes lag <strong>worse</strong>, not better. If you ship a raw page change and the replica is running a heavy analytical query that holds that same page in its cache, the apply process <strong>blocks and waits</strong>. Physical replication is brittle and stalls easily.</li>
       </ul>
 
-      <h2>5. The real ways to mitigate lag (the Ops toolkit)</h2>
+      <h2 id="lag-mitigation">5. The real ways to mitigate lag (the Ops toolkit)</h2>
       <p>You cannot eliminate lag — you manage it with these four proven mechanisms:</p>
       <ul>
         <li><strong>Synchronous replication (the nuclear option):</strong> make the client wait until the replica applies the change. Fixes lag by definition, but kills write throughput and availability. Only for critical financial data.</li>

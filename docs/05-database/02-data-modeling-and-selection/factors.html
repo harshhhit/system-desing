@@ -30,6 +30,19 @@
       <p class="breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Database / Database Performance Factors</p>
       <h1 data-page-title>Database Performance Factors</h1>
       <p>Great question 👍 As a DevOps engineer, when we talk about <strong>database performance</strong>, we usually look at several key factors that affect <strong>speed, scalability, and reliability</strong>. Here’s a structured breakdown:</p>
+      <h2 id="interview-answer">Interview Answer — What Determines Database Performance?</h2>
+      <p>Database performance is how quickly and how much work a database can do — measured mainly as <strong>latency</strong> (how long a single query takes, tracked as p50/p95/p99 percentiles) and <strong>throughput</strong> (how many queries or transactions per second it sustains) — while staying available. It is shaped by eight groups of factors on this page: query performance, resource utilization, throughput and latency, scalability, storage and data management, availability and reliability, caching, and workload-specific metrics.</p>
+      <p>Understanding the factors matters because a slow database has one binding bottleneck at a time, and the fix depends on which one it is. The cause → effect chains are distinct: a missing index → full table scans → high CPU and disk reads → slow queries (see <a href="#1-query-performance">query performance</a>); a working set larger than memory → cache misses in the buffer pool → disk I/O saturation; too many connections → memory pressure and contention; lock contention → queries waiting on each other → latency spikes under concurrency; replication or backup jobs → competing for I/O.</p>
+      <p>Latency vs. throughput — the difference is <em>one request's time</em> versus <em>total work per second</em>, and they trade against each other: pushing throughput toward saturation makes queueing grow and latency rise sharply (see <a href="#3-throughput--latency">throughput and latency</a>). So performance work starts from metrics — slow query log, <code>EXPLAIN ANALYZE</code>, CPU, memory, IOPS, locks, connections — to find the bottleneck before changing anything.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Database performance comes down to latency and throughput, and it's limited by whichever resource is the bottleneck: query efficiency and indexes, CPU, memory and cache hit ratio, disk IOPS, connections, or locks. I measure first — slow query log, EXPLAIN ANALYZE, percentiles, and resource metrics — then fix the actual bottleneck with indexes, query changes, caching, pooling, read replicas, or scaling, and re-measure."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: The database is slow — will moving it to a bigger instance fix it?</strong></p>
+      <p><strong>A:</strong> Only if the bottleneck is the hardware and scales with it. If a query is slow because it scans a whole table for lack of an index, a bigger instance scans it a little faster but the cost still grows with the data; if the problem is lock contention, a connection leak, or an N+1 query pattern in the application, more CPU does not help at all. Vertical scaling is a valid, fast lever when CPU, memory, or IOPS is genuinely saturated by efficient work — but identify the bottleneck with metrics and query plans first.</p>
+
       <div class="mermaid">flowchart TD
     ROOT["📊 Database Performance Factors"] --> QP["1. Query Performance"]
     ROOT --> RU["2. Resource Utilization"]

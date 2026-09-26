@@ -204,6 +204,14 @@ window.SITE_MAP = {
           "title": "01b. Cookies, Sessions & JWT"
         },
         {
+          "href": "01-front-end/browser-javascript-capabilities.html",
+          "title": "01c. Browser JavaScript: Can & Can't"
+        },
+        {
+          "href": "01-front-end/cors.html",
+          "title": "01d. CORS"
+        },
+        {
           "href": "01-front-end/graphql/http/01.02-rendering-types.html",
           "title": "02. Web Rendering & Architecture"
         },
@@ -231,7 +239,9 @@ window.SITE_MAP = {
             "01-front-end/frontend-roadmap.html",
             "01-front-end/graphql/http/04-client-server-model.html",
             "01-front-end/graphql/http/04.2-request-flow-interactive.html",
-            "01-front-end/graphql/http/04.1-cookies-sessions-jwt.html"
+            "01-front-end/graphql/http/04.1-cookies-sessions-jwt.html",
+            "01-front-end/browser-javascript-capabilities.html",
+            "01-front-end/cors.html"
           ]
         },
         {

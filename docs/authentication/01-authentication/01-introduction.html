@@ -31,6 +31,19 @@
       <h1 data-page-title>Authentication Schemes: An Introduction</h1>
       <h1 id="🔑-authentication-schemes-an-introduction">🔑 Authentication Schemes: An Introduction</h1>
 <p>If you&#39;re referring to authentication schemes used in APIs, applications, and distributed systems, API key-based authentication is just one of many options.</p>
+<h2 id="interview-answer">Interview Answer — What Is an Authentication Scheme?</h2>
+<p>An authentication scheme is the method a client uses to prove its identity to a server on a request — what credential it presents and how the server checks it. The credential can be a shared secret (an API key, a password in Basic auth), a token issued earlier (a session cookie, a bearer token such as a JWT), a cryptographic signature (HMAC request signing), or a key or certificate (mTLS, SSH keys, passkeys/WebAuthn).</p>
+<p>There are many schemes because the callers and risks differ. A human in a browser needs a login that can be revoked on logout — session cookies or OAuth 2.0 with OpenID Connect. A backend service calling another needs something automated and hard to steal — mTLS, HMAC signing, or OAuth client-credentials tokens. A public API needs a simple way to identify the calling application — an API key. The table below compares them by who is authenticated, whether the server keeps state, and how easily a credential can be revoked (see <a href="#⚖️-production-tradeoffs">production trade-offs</a>).</p>
+<p>Authentication vs. authorization — the difference is that <strong>authentication</strong> answers "who are you?" and <strong>authorization</strong> answers "what are you allowed to do?". Several schemes are easy to confuse on exactly this line: <strong>OAuth 2.0</strong> is an authorization framework that issues access tokens to call APIs, and <strong>OpenID Connect</strong> is the identity layer on top of it that adds an ID token saying who the user is.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"An authentication scheme is how a client proves who it is to a server. For browser users I'd use session cookies or OAuth 2.0 with OpenID Connect for social or enterprise login; for APIs, bearer tokens such as short-lived JWTs; for simple machine access, API keys; and for high-security service-to-service calls, mTLS or HMAC request signing. The trade-offs are statefulness, scalability, and how easily a credential can be revoked — and every scheme must run over HTTPS."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: Is OAuth 2.0 an authentication protocol?</strong></p>
+<p><strong>A:</strong> No. OAuth 2.0 is an <strong>authorization</strong> framework: it lets a user grant an application an access token to call an API on their behalf, and that access token is meant for the API, not as proof to the application of who the user is. Using a bare OAuth access token as a login has led to real account-takeover bugs, because a token issued to one application can be replayed to another. <strong>OpenID Connect</strong> adds authentication on top of OAuth 2.0: it returns an <strong>ID token</strong>, a signed JWT whose issuer, audience (your client ID), and expiry the application must verify. "Sign in with Google" is OIDC.</p>
+
 <p>Here&#39;s a comparison of the most common authentication schemes.</p>
 <table>
 <thead>

@@ -29,6 +29,19 @@
     <main>
       <p class="breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Messaging &amp; Queues / SQS Use Cases</p>
       <h1 data-page-title>SQS Use Cases</h1>
+      <h2 id="interview-answer">Interview Answer — Why Use a Message Queue in System Design?</h2>
+      <p>A message queue is a buffer between services: a <strong>producer</strong> writes a message describing work to be done or an event that happened, the queue stores it durably, and one or more <strong>consumers</strong> read and process it later, at their own pace. AWS SQS, RabbitMQ, and Azure Service Bus are message queues; Kafka, Pulsar, and Kinesis are related log-based streaming systems.</p>
+      <p>Queues exist because direct, synchronous calls tie services together: the caller must wait for the callee, fails when the callee is down, and passes every traffic spike straight through. Putting a queue in between changes the cause → effect chain: the producer enqueues and responds immediately → a spike becomes a longer backlog instead of an overloaded service (<strong>load leveling</strong>) → if a consumer crashes, the message stays in the queue and is processed after recovery (<strong>fault tolerance</strong>) → when the backlog grows, you add consumers (<strong>horizontal scaling</strong>).</p>
+      <p>Concrete uses in the notes below: an order service emitting an <code>Order Placed</code> message that payment, inventory, and notification services each handle; a ticket-booking spike absorbed by a queue and drained by workers; sign-up confirmation emails and report generation moved off the request path (<strong>asynchronous processing</strong>); and events as the backbone of an event-driven architecture. See <a href="01-sqs.html">SQS Overview</a> and <a href="03-kafka-fundamentals.html">Kafka Fundamentals</a> for the two main models.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"A message queue sits between services so the producer can hand off work and move on, and consumers process it at their own pace. That decouples services, so one being down doesn't break the other; it absorbs traffic spikes as a backlog; it keeps messages safe if a consumer crashes; and it lets me scale by adding consumers. I use it for anything that doesn't need to happen within the user's request — emails, video processing, order fulfilment — and as the backbone of event-driven systems."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Once a message is in the queue, is it guaranteed to be processed exactly once and in order?</strong></p>
+      <p><strong>A:</strong> Usually neither, unless you design for it. Most queues deliver <strong>at least once</strong>: if a consumer crashes after doing the work but before acknowledging the message, it is delivered again, so consumers must be idempotent. Ordering is also limited — SQS Standard queues are best-effort ordered, SQS FIFO queues order within a message group, and Kafka orders within a partition. And a message that always fails needs a retry limit and a dead-letter queue, or it will be retried forever and block or waste workers.</p>
+
       <p>queues role in system design
 ChatGPT said:
 Great question 🚀 — queues play a huge role in system design because they help make systems scalable, resilient, and decoupled. Let me break it down for you:

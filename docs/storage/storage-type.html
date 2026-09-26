@@ -29,6 +29,19 @@
     <main>
       <p class="breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Storage / Storage Types</p>
       <h1 data-page-title>Storage Types</h1>
+      <h2 id="interview-answer">Interview Answer — What Are File, Object, and Block Storage?</h2>
+      <p>File, object, and block storage are the three ways a storage system can expose data to applications. <strong>File storage</strong> organizes data as files inside a hierarchy of folders and is accessed by path over protocols such as NFS or SMB (for example AWS EFS). <strong>Object storage</strong> stores each piece of data as an object — the data, customizable metadata, and a unique key — in a flat bucket, accessed over an HTTP API (for example AWS S3). <strong>Block storage</strong> exposes a raw disk made of fixed-size blocks that a server attaches, formats with a file system, and uses like a local drive (for example AWS EBS).</p>
+      <p>The three exist because workloads need different trade-offs between latency, sharing, and scale. A database needs fast, random, low-latency reads and writes to small pieces of data — that is block storage. A team or a set of servers needs to share and edit the same files with locking — that is file storage. An application storing billions of images, videos, backups, or log files needs near-unlimited, cheap, highly durable capacity reachable over HTTP, and can accept higher latency and whole-object writes — that is object storage.</p>
+      <p>The choice follows from the access pattern: <strong>how</strong> data is addressed (block address, file path, or object key), <strong>who</strong> accesses it (one server, many servers, or any client over HTTP), and <strong>how</strong> it changes (in-place partial updates, or replace the whole object). The protocol section below maps each type to its access protocols — NFS/SMB for file, REST over HTTPS for object, and iSCSI, Fibre Channel, or NVMe-oF for block (see <a href="#1-nfs--smb-file-level-access-protocols">storage access protocols</a>).</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Block storage is a raw virtual disk attached to one server — low latency and high IOPS — so I use it for databases and VM boot volumes, like EBS. File storage is a shared file system with folders and paths over NFS or SMB, good for shared drives and content many servers read and write, like EFS. Object storage keeps data as objects with metadata and a key in a flat bucket, accessed over HTTP; it scales almost without limit and is very durable and cheap, so I use it for images, videos, backups, and data lakes, like S3, usually behind a CDN."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: The S3 console shows folders — so isn't S3 just a file system?</strong></p>
+      <p><strong>A:</strong> No. S3's namespace is flat: an object key such as <code>users/42/photo.jpg</code> is one string, and the "folders" are only a display of key prefixes. There are no real directories, no file locking, no POSIX semantics, and no partial in-place updates — to change one byte you rewrite the whole object. That is why object storage is a poor fit for a database's data files or for workloads that edit files in place, and why a web application usually stores uploaded images in S3 but runs its database on block storage.</p>
+
       <h2 id="1-read-how-files-are-read">1) READ HOW FILES ARE READ</h2>
 <h2 id="2-how-file-stored-and-images">2) HOW FILE STORED AND IMAGES</h2>
 <p>Resource <a href="https://blog.algomaster.io/p/file-vs-object-vs-block-storage">https://blog.algomaster.io/p/file-vs-object-vs-block-storage</a></p>
