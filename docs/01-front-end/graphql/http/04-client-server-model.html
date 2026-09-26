@@ -56,6 +56,19 @@
 
       <p>To cover the client-server model in depth, from beginner to advanced, we need to build a structured understanding. We will start with the simple "what" and "why," move through the mechanics of the web stack, and finally dive into the architectural trade-offs and modern implementations that power the internet today.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is the Client-Server Model?</h2>
+      <p>The client-server model is the architecture in which one program, the <strong>client</strong>, sends requests for data or actions, and another program, the <strong>server</strong>, processes those requests and sends back responses. On the web, the client is usually a browser or mobile app and the server is a web application reached over HTTP; the server typically owns the data and the business rules, and the client owns the presentation.</p>
+      <p>The model exists because it centralizes what must be shared and trusted. If every device held its own copy of the data and rules, users could not see each other's changes and nothing could be trusted. With a server in the middle, the cause → effect chain for a request is: the client resolves the server's address (DNS) → opens a connection (TCP, then TLS) → sends an HTTP request with a method, path, headers, and body → the server authenticates it, applies business logic, and reads or writes the database → it returns a status code and a response body → the client renders the result. Because HTTP is stateless, the server recognizes returning users through cookies, sessions, or tokens (see <a href="#part-4-state-management">state management</a>).</p>
+      <p>As traffic grows, the "server" side stops being one machine: it becomes a monolith, then an API consumed by several clients, then microservices, with CDNs, load balancers, caches, background workers, and replicated databases added to handle scale — which is how this page builds from the basics up to the architecture of a large system.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"In the client-server model, clients like browsers and mobile apps send requests, and servers process them and send responses. The server centralizes the data and business logic, so everyone shares the same trusted state. A web request goes through DNS, a TCP and TLS connection, and an HTTP request; the server authenticates it, runs logic, uses the database, and returns a response. HTTP is stateless, so cookies, sessions, or tokens identify the user, and at scale the server side grows into load balancers, caches, queues, microservices, and replicated databases."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If the client validates a form before submitting it, does the server still need to validate the data?</strong></p>
+      <p><strong>A:</strong> Yes, always. Client-side validation only improves the user experience; the server cannot trust anything the client sends, because anyone can bypass the browser and send requests directly with curl or a modified app. Every rule that matters — input validation, authorization, prices, quantities, ownership of the record being changed — must be enforced on the server. This is the main security consequence of the client-server model: the server is the trust boundary, and the client is untrusted input.</p>
+
       <h2 id="part-1-basics">Part 1: The Absolute Basics (The "Restaurant" Analogy)</h2>
       <p>Before we talk about code and packets, let's establish a simple mental model.</p>
       <p>Imagine a high-end restaurant.</p>

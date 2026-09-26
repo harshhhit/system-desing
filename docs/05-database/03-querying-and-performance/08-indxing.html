@@ -30,6 +30,19 @@
       <p class="breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Database / Indexing</p>
       <h1 data-page-title>Indexing</h1>
       <p>Great — let’s unpack those three techniques (<strong>indexing, denormalization, and in-memory caches</strong>) since they’re fundamental to meeting <strong>latency and throughput SLAs</strong> in system design:</p>
+<h2 id="interview-answer">Interview Answer — What Is a Database Index?</h2>
+<p>A database index is a separate data structure — most commonly a <strong>B-tree</strong> — that keeps the values of one or more columns in sorted, searchable order with pointers to the matching rows, so the database can find rows without reading the whole table. Creating an index on <code>users.email</code>, for example, turns "find the user with this email" from a scan of every row into a lookup of a few pages.</p>
+<p>Indexes exist because a table without them can only be searched by a <strong>full table scan</strong>, whose cost grows linearly with the number of rows. The cause → effect chain is: a table grows from thousands to millions of rows → a query filtering on an unindexed column reads all of them → latency climbs from milliseconds to seconds and CPU and disk load rise → an index on that column cuts the work to a logarithmic lookup. Indexes also speed up joins on foreign keys and <code>ORDER BY</code> on the indexed columns.</p>
+<p>This page places indexing alongside two other techniques for meeting latency targets: <strong>denormalization</strong> (storing precomputed or duplicated data to avoid joins, see <a href="#2-denormalization">denormalization</a>) and <strong>in-memory caches</strong> such as Redis (serving hot reads without touching the database), then applies all three step by step to a user profile service.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"An index is a separate sorted data structure, usually a B-tree, that lets the database find rows by a column's value without scanning the whole table — turning a linear scan into a logarithmic lookup. I index the columns used in WHERE, JOIN, and ORDER BY on hot queries, and use composite indexes in the order the queries filter. The trade-off is that every index costs storage and slows down every insert and update, so I only add indexes that real queries need, and I combine them with denormalization and caching for read-heavy paths."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: If indexes make reads faster, why not index every column?</strong></p>
+<p><strong>A:</strong> Because every index has to be updated on every insert, every delete, and every update that changes an indexed column, so each extra index slows writes and adds disk and memory use — and indexes compete for the same buffer cache as the table data. Many single-column indexes also rarely help multi-column queries as well as one well-ordered composite index, and an index on a low-selectivity column (such as a boolean) is often ignored by the planner. Index for the queries you actually run, confirm with <code>EXPLAIN ANALYZE</code>, and remove unused indexes.</p>
+
 <hr>
 <h2 id="1-indexing">1. <strong>Indexing</strong></h2>
 <ul>

@@ -34,6 +34,19 @@
       <h1 data-page-title>CI/CD &amp; Deployment Strategies</h1>
       <p class="sd-study-prompt" data-page-subtitle>CI vs CD vs continuous deployment, a typical pipeline, blue-green vs canary vs rolling deploys, the testing pyramid, feature flags, and rollback strategy.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is CI/CD?</h2>
+      <p>CI/CD is an automated pipeline that takes every code change from commit to a production-ready (or production-deployed) release. <strong>Continuous Integration (CI)</strong> builds and tests every change as soon as it is pushed. <strong>Continuous Delivery (CD)</strong> additionally packages every passing change into a deployable artifact, so the code is always releasable and a human decides when to ship. <strong>Continuous Deployment</strong> removes that manual gate, so every change that passes all checks goes to production automatically.</p>
+      <p>It exists because manual, infrequent releases are risky: large batches of changes are hard to test and hard to debug when they break, and hand-run deploy steps are easy to get wrong. With a pipeline, the cause → effect chain is: a developer pushes a change → the pipeline builds one immutable artifact (typically a container image) → tests and security scans run and stop the pipeline on the first failure → the same artifact is deployed to staging, then production → automated checks verify the rollout.</p>
+      <p>How the new version replaces the old one is the <a href="#deployment-strategies">deployment strategy</a>: <strong>rolling</strong> (replace instances in batches), <strong>blue-green</strong> (run the full new version beside the old and switch traffic at once), or <strong>canary</strong> (send a small share of real traffic to the new version and increase it while metrics stay healthy). <strong>Feature flags</strong> add a second layer by separating <em>deploying</em> code from <em>releasing</em> a feature.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"CI means every change is automatically built and tested on push. Continuous delivery means every passing change is packaged into an artifact that's always ready to release, and continuous deployment goes further and ships it to production automatically. The pipeline builds one immutable artifact, tests and scans it, deploys it with a strategy like rolling, blue-green, or canary, and verifies it with monitoring. Feature flags let me deploy code dark and turn features on separately, and I plan the rollback before I deploy."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: With blue-green deployment, can I always roll back instantly by switching traffic back to blue?</strong></p>
+      <p><strong>A:</strong> Only for the application code. Switching the router back is instant, but if the release ran a database migration — dropped a column, renamed a field, changed a format — and green has already written real data in the new shape, the old blue version may no longer work against that database. That is why schema changes should be backward-compatible and additive (the <strong>expand-and-contract</strong> pattern: add the new column, deploy code that handles both, remove the old column in a later release), so both versions can run against the same schema. See <a href="#rollback-strategy">Rollback strategy</a> below.</p>
+
       <h2>CI, CD, and continuous deployment — three different promises</h2>
       <ul>
       <li><strong>Continuous Integration (CI)</strong> — every code change is automatically built and tested as soon as it's pushed, so integration problems (two people's changes conflicting, a break nobody noticed) surface in minutes, not at the end of a long-lived branch.</li>
@@ -50,7 +63,7 @@
       <li><strong>Verify</strong> — automated smoke tests and/or a monitored rollout window (see <a href="00-observability-fundamentals.html">Observability Fundamentals</a>) before calling the deploy complete.</li>
       </ol>
 
-      <h2>Deployment strategies</h2>
+      <h2 id="deployment-strategies">Deployment strategies</h2>
       <table>
       <tr><th>Strategy</th><th>How it works</th><th>Rollback speed</th><th>Cost / complexity</th></tr>
       <tr><td>Recreate</td><td>Stop the old version entirely, then start the new one</td><td>Slow — redeploy the old version from scratch</td><td>Simplest, but guarantees downtime during the swap</td></tr>
@@ -75,7 +88,7 @@
       infrastructure level), or for specific users. This also makes "rollback" instant and cheap for a bad
       feature specifically: flip the flag off, no redeploy needed at all.</p>
 
-      <h2>Rollback strategy</h2>
+      <h2 id="rollback-strategy">Rollback strategy</h2>
       <ul>
       <li>Decide the rollback mechanism <em>before</em> deploying, not while an incident is already happening — for infrastructure-level issues that's redeploying the previous artifact (fast with blue-green, slower with recreate); for a bad feature specifically, a feature flag flip is faster than either.</li>
       <li>Database migrations complicate rollback the most: a migration that's already run and been written to by the new code often can't simply be reversed once real writes have happened — favor backward-compatible, additive migrations (add a column, don't rename/drop one in the same release) so the previous code version can still run against the new schema if a rollback is needed.</li>

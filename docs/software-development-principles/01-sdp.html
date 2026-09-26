@@ -30,6 +30,19 @@
       <p class="breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Dev Principles / Software Development Principles</p>
       <h1 data-page-title>Software Development Principles</h1>
       <p>While I cannot provide the full, copyrighted index of the book &quot;Design Patterns: Elements of Reusable Object-Oriented Software,&quot; I can give you a detailed outline of its structure, which is the functional equivalent for understanding its contents. The book is organized into three main parts, with the core of the content being the catalog of patterns.</p>
+<h2 id="interview-answer">Interview Answer — What Are Design Patterns?</h2>
+<p>A design pattern is a named, reusable solution to a problem that keeps recurring in object-oriented software design — a description of how to arrange classes and objects to solve it, not a piece of code you copy. The 23 classic patterns come from the 1994 book <em>Design Patterns: Elements of Reusable Object-Oriented Software</em> by the "Gang of Four" (Gamma, Helm, Johnson, and Vlissides), outlined below.</p>
+<p>Patterns exist for two reasons. First, they capture proven designs: problems such as "create objects without hard-coding their classes" or "notify many objects when one changes" have well-understood solutions with known trade-offs, so you do not have to rediscover them. Second, they give developers a shared vocabulary — saying "use a Strategy here" or "wrap it in an Adapter" communicates a whole design in one word during code review or an interview.</p>
+<p>The book groups the patterns by the problem they solve. <strong>Creational</strong> patterns (Factory Method, Abstract Factory, Builder, Prototype, Singleton) control how objects are created. <strong>Structural</strong> patterns (Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy) control how classes and objects are composed into larger structures. <strong>Behavioral</strong> patterns (Strategy, Observer, Command, State, Template Method, Iterator, and others) control how objects communicate and share responsibilities. Most of them apply two underlying principles from the book: program to an interface rather than an implementation, and favor object composition over class inheritance.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"Design patterns are named, reusable solutions to common object-oriented design problems, popularized by the Gang of Four book's 23 patterns. They fall into three groups: creational patterns like Factory and Builder control object creation, structural patterns like Adapter, Decorator, and Facade control how objects are composed, and behavioral patterns like Strategy, Observer, and Command control how objects interact. Their value is proven trade-offs and a shared vocabulary, and most of them rest on programming to interfaces and preferring composition over inheritance."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: Is Singleton a good default for anything that should have one instance, like a database connection?</strong></p>
+<p><strong>A:</strong> Usually not. A Singleton is global mutable state behind a class: every caller depends on it implicitly, which hides dependencies, makes unit tests hard to isolate (you cannot easily swap in a fake), and causes problems with concurrency and with multiple processes, where each process gets its own "single" instance anyway. A database connection in particular should normally come from a connection pool. The usual alternative is to create one instance at application start-up and pass it in through dependency injection — you still have one instance, without the global access.</p>
+
 <hr>
 <h3 id="part-i-introduction">Part I: Introduction</h3>
 <p>This section sets the stage by explaining the purpose and context of the book.</p>

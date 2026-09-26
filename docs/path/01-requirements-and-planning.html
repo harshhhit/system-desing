@@ -29,6 +29,19 @@
     <main>
       <p class="breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Planning &amp; Roadmap / Requirements &amp; Planning</p>
       <h1 data-page-title>Requirements &amp; Planning</h1>
+      <h2 id="interview-answer">Interview Answer — What Are Functional and Non-Functional Requirements?</h2>
+      <p>Requirements are the agreed description of what a system must do and how well it must do it, written down before the architecture is designed. <strong>Functional requirements</strong> describe the features and behavior — "users can post a video", <code>GET /feed</code> returns a paginated list. <strong>Non-functional requirements (NFRs)</strong> describe the quality attributes — performance (95% of requests under 200 ms), scalability, availability (99.99% uptime), security, compliance, observability, and maintainability. Both are derived from the <strong>business goals</strong>: why the system exists, who uses it, how much traffic it will see, and what budget and deadline constrain it.</p>
+      <p>Requirements come first because every design decision is a trade-off, and you cannot choose between trade-offs without knowing what matters. The cause → effect chain is: business goals set the expected users and growth → functional requirements define APIs, data, and services → non-functional requirements decide the architecture around them — a 99.99% uptime target forces multi-AZ deployment and automated failover, a 200 ms latency target forces caching and nearby data, GDPR forces data residency and deletion workflows, a read-heavy workload forces read replicas and a CDN.</p>
+      <p>Functional vs. non-functional — the difference is <em>what</em> versus <em>how well</em>. A system can meet every functional requirement and still fail in production because it is too slow, goes down at peak, or leaks data; the non-functional requirements are usually what shape the architecture (see <a href="#c-non-functional-requirements-nfrs">non-functional requirements</a> below).</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Before designing, I clarify requirements. Functional requirements are what the system does — the features, user flows, and APIs. Non-functional requirements are how well it does it — latency, throughput, availability, scalability, security, and compliance. I also estimate scale: daily users, peak requests per second, read/write ratio, and data growth. The functional requirements define the APIs and data model, and the non-functional ones drive the architecture — caching, replication, multi-AZ, and so on."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: What does 99.99% availability actually allow, and why does the number matter so much?</strong></p>
+      <p><strong>A:</strong> 99.99% ("four nines") allows about 52.6 minutes of downtime per year, or about 4.3 minutes per month; 99.9% allows about 8.8 hours per year. Each extra nine roughly multiplies cost and complexity: four nines is usually impossible with manual recovery, because a single incident that needs a human to wake up and fix it uses the whole budget, so it requires redundancy across Availability Zones, automated health checks and failover, and deployments that don't cause downtime. That is why an interviewer expects you to ask for the target rather than assume "it should never go down."</p>
+
       <h2 id="1-requirements--planning--system-designers-breakdown"><strong>1. Requirements &amp; Planning – System Designer’s Breakdown</strong></h2>
 <h3 id="a-business-goals"><strong>A. Business Goals</strong></h3>
 <blockquote>

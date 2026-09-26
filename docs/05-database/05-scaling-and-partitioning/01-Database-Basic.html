@@ -30,6 +30,19 @@
       <p class="breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Database / Database Basics: Partitioning &amp; Data Distribution</p>
       <h1 data-page-title>Database Basics: Partitioning &amp; Data Distribution</h1>
       <p>DATABSE </p>
+<h2 id="interview-answer">Interview Answer — What Is Data Distribution in Databases?</h2>
+<p>Data distribution is how a database spreads data across storage units or machines. It has two independent techniques. <strong>Partitioning</strong> splits one dataset into smaller pieces — by rows (horizontal) or by columns (vertical) — and <strong>sharding</strong> is horizontal partitioning where each piece lives on a different server. <strong>Replication</strong> copies the same data to several servers. Partitioning divides the data; replication duplicates it; large systems use both, replicating each shard.</p>
+<p>They exist because one machine limits both size and failure tolerance. The cause → effect chains are different: data or write volume outgrows one server → partition it so each node holds and writes only part of the data (see <a href="#data-distribution-concepts">data distribution concepts</a>); one server is a single point of failure and a read bottleneck → replicate it so another copy can serve reads and take over on failure (see <a href="#replication-concepts">replication concepts</a>).</p>
+<p>How data is split is decided by the <strong>partitioning strategy</strong> — range (by value ranges such as dates), list (by explicit values such as country), hash (by a hash of a key, for even spread), or composite — and it determines which queries stay on one node and which must touch all of them. The page also covers the supporting pieces: indexing, caching, and the scalability and availability patterns built from them.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"Data distribution is spreading data across machines. Partitioning splits the data into pieces — horizontally by rows or vertically by columns — and sharding is horizontal partitioning across different servers, which scales storage and writes. Replication copies the same data to multiple servers for availability and read scaling. I pick a partitioning strategy — range, list, hash, or composite — from the access patterns, and usually replicate each shard too."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: Does replicating a database help it handle more writes?</strong></p>
+<p><strong>A:</strong> Not in a single-leader setup. Every replica has to apply every write, so replicas add read capacity and fault tolerance, but the leader still processes all the writes, and replication adds some overhead to it. To scale writes you partition (shard) the data so different nodes accept writes for different keys, or use a multi-leader or leaderless design, which brings write conflicts that must be resolved. So: replication for reads and availability, partitioning for writes and data size.</p>
+
 <hr>
 <h2 id="data-distribution-concepts"><strong>Data Distribution Concepts</strong></h2>
 <p>These determine <strong>how</strong> data is split, stored, and accessed across systems.</p>

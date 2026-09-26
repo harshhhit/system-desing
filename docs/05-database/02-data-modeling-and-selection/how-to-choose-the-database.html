@@ -31,6 +31,19 @@
       <h1 data-page-title>How to Choose the Database</h1>
       <p>How to chose the Databse </p>
 
+      <h2 id="interview-answer">Interview Answer — How Do You Choose a Database?</h2>
+      <p>Choosing a database means matching a data store's model and guarantees to a specific workload. The main families are: <strong>relational</strong> (PostgreSQL, MySQL) for structured data with relationships and ACID transactions; <strong>key-value</strong> (Redis, DynamoDB) for fast lookups by key; <strong>document</strong> (MongoDB) for flexible, nested records read as a whole; <strong>wide-column</strong> (Cassandra) for very high write volume spread across many nodes; <strong>search engines</strong> (Elasticsearch, OpenSearch) for full-text search; <strong>time-series</strong> (TimescaleDB, InfluxDB) for metrics; and <strong>graph</strong> (Neo4j) for relationship traversal.</p>
+      <p>The choice matters because each family is fast at the operations it was designed for and awkward or unsafe at others. The decision works backwards from the requirements: what are the access patterns (lookups by key, ad-hoc queries, joins, full-text search, range scans over time)? What consistency is required (can a balance ever be stale)? What is the read/write ratio and expected volume? Does it need multi-row transactions? What are the latency targets and the team's operational experience? Each answer rules out options — for example, "multi-table transactions on money" points to a relational database, while "millions of writes per second, queried only by user and time" points to a wide-column store.</p>
+      <p>Many systems end up using more than one — a relational database as the source of truth, Redis as a cache, and a search engine for text search — which is <a href="scratch-note-polyglot-persistence.html">polyglot persistence</a>. See <a href="factors.html">Database Performance Factors</a> for what to measure once one is chosen.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"I choose a database from the access patterns and requirements, not from popularity. I default to a relational database like PostgreSQL when I need transactions, relationships, and flexible queries. I'd pick a key-value store like DynamoDB or Redis for simple lookups at massive scale, a document store for flexible nested records, Cassandra for huge write volumes queried by known keys, Elasticsearch for full-text search, and a time-series database for metrics. I weigh consistency needs, read/write ratio, scale, latency, and what the team can operate."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Isn't NoSQL always the better choice for a system that needs to scale?</strong></p>
+      <p><strong>A:</strong> No. A well-indexed PostgreSQL or MySQL primary with read replicas and caching handles a very large amount of traffic, and many large companies run core data on relational databases. NoSQL stores scale horizontally more easily <em>for the access patterns they are designed around</em>, but you give up joins, ad-hoc queries, and usually multi-row transactions, and must design tables around known queries up front. Choose NoSQL when the workload actually needs its scaling model and fits its query model — not as a default.</p>
+
       <div class="page-footer">
         <span>Section: Database</span>
         <span>Source: <code>how to chose the database.md</code></span>

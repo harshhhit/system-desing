@@ -30,6 +30,19 @@
       <p class="breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Distributed Systems / Distributed Systems</p>
       <h1 data-page-title>Distributed Systems</h1>
       <p>A <strong>distributed systems architecture</strong> is a design approach where a software system is built as a collection of <strong>multiple independent components</strong> (often called <strong>nodes</strong>) that run on different machines but work together to achieve a common goal. These systems <strong>share resources</strong>, <strong>communicate over a network</strong>, and <strong>coordinate tasks</strong> while appearing to users as a <strong>single unified system</strong>.</p>
+<h2 id="interview-answer">Interview Answer — What Is a Distributed System?</h2>
+<p>A distributed system is a set of independent computers (<strong>nodes</strong>) that communicate over a network and coordinate their work so that, to its users, the whole set behaves like one system. A web application with load-balanced app servers, a replicated database, and a message queue is already a distributed system.</p>
+<p>Distributed systems exist because one machine has hard limits: finite CPU, memory, and disk, and a single point of failure. Spreading work across nodes lets a system scale by adding machines, keep running when one machine fails, and place data closer to users. The architecture styles on this page — client-server, peer-to-peer, n-tier, microservices, and event-driven — are different ways of dividing that work and deciding how the nodes talk to each other.</p>
+<p>The trade-off is that the network becomes part of the system. The cause → effect chain is: nodes communicate only by messages → messages can be delayed, lost, or reordered, and a slow node looks the same as a dead one → so the system must handle partial failure, keep replicated data consistent, and deal with latency. Those problems are what consensus algorithms, replication, and consistent hashing (elsewhere in this section) exist to solve — see <a href="#5-challenges">Challenges</a> below.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"A distributed system is a group of independent machines that communicate over a network and work together so they look like a single system to the user. We build them to scale beyond one machine, to stay available when a machine fails, and to be closer to users. The cost is that the network is unreliable: messages can be delayed or lost and nodes can fail independently, so we need replication, consensus, and careful handling of consistency and partial failure."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: If one node in a distributed system fails, does the system automatically keep working?</strong></p>
+<p><strong>A:</strong> Not automatically. Fault tolerance is a property you design in, not something you get by running on several machines. A distributed system with no replication, no health checks, and no failover can actually be <em>less</em> reliable than one server, because now any one of many machines — or the network between them — can break a request. Staying up through a failure requires redundant copies of data and services, a way to detect the failure (timeouts, health checks), and a way to agree on who takes over (leader election via a consensus algorithm) without creating split-brain.</p>
+
 <p>Let me break it down for you in detail:</p>
 <hr>
 <h2 id="1-what-is-distributed-systems-architecture"><strong>1. What Is Distributed Systems Architecture?</strong></h2>

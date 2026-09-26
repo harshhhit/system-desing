@@ -30,6 +30,19 @@
       <p class="breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Authentication / Secure Password Hashing Process</p>
       <h1 data-page-title>Secure Password Hashing Process</h1>
       <p>🔑 Secure Password Hashing Process</p>
+<h2 id="interview-answer">Interview Answer — How Should Passwords Be Stored?</h2>
+<p>Passwords should be stored only as the output of a slow, salted password-hashing function — <strong>Argon2id</strong> (preferred), <strong>bcrypt</strong>, or scrypt — never as plain text and never encrypted. A <strong>salt</strong> is a random value generated uniquely for each user and stored with the hash; the <strong>cost factor</strong> (work factor) sets how much computation each hash takes. The stored string, such as <code>$2b$12$…</code>, contains the algorithm identifier, the cost factor, the salt, and the hash.</p>
+<p>This exists because databases get stolen, and a stolen password table must still not reveal the passwords. The cause → effect chain for the two protections is: a unique salt per user means two users with the same password get different hashes, and precomputed rainbow tables are useless, so each password must be attacked separately → a deliberately slow hash (for example about 100–500 ms per guess on the server) means an attacker can try only a small number of guesses per second per password instead of billions → a strong password becomes impractical to crack. Because hardware keeps getting faster, the cost factor is raised over time and hashes are upgraded when users next log in.</p>
+<p>Verification never "decrypts" anything. At login, the server reads the stored string, extracts the salt and cost factor, hashes the entered password with the same parameters, and compares the result to the stored hash in constant time.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"I never store passwords, only a hash from a slow password-hashing function like Argon2id or bcrypt. Each user gets a unique random salt so identical passwords produce different hashes and rainbow tables don't work, and the cost factor makes every guess expensive so a stolen database can't be brute-forced quickly. The stored string includes the algorithm, cost, salt, and hash. At login I hash the entered password with the same salt and cost and compare in constant time, and I raise the cost factor as hardware gets faster."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: Why not just hash passwords with SHA-256 plus a salt?</strong></p>
+<p><strong>A:</strong> Because SHA-256 is designed to be fast. A single GPU can compute billions of SHA-256 hashes per second, so even salted, a leaked table of SHA-256 password hashes can have most human-chosen passwords cracked quickly — the salt only stops precomputed tables, not brute force against each hash. Password-hashing functions such as bcrypt, scrypt, and Argon2 are deliberately slow and have a tunable cost; scrypt and Argon2 are also memory-hard, which makes GPU and ASIC cracking far less efficient. Encryption is also wrong for passwords: anyone who obtains the key can recover every password.</p>
+
 <p>There are four main components involved in securely storing a password: the Password, the Salt, the Hashing Function (bcrypt/argon2), and the Resulting Hash.</p>
 <ol>
 <li>The Password</li>

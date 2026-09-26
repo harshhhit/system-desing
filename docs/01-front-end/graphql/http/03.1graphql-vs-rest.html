@@ -30,6 +30,19 @@
       <p class="breadcrumb" data-breadcrumb><a href="../../../index.html">Home</a> / Front-End / GraphQL vs REST</p>
       <h1 data-page-title>GraphQL vs REST</h1>
       <p>Great — below is a clear, structured, beginner-friendly guide that explains <strong>how fetching 20 random images</strong> from a user differs between <strong>REST</strong> and <strong>GraphQL</strong>, why GraphQL reduces network work, when to choose each approach, and how to implement efficient/random sampling on the server. I’ll also give diagrams, key definitions, math worked step-by-step, tradeoffs (scalability/cost/reliability/security), a deep thought-provoking question, and interview-style practice questions.</p>
+<h2 id="interview-answer">Interview Answer — What Is the Difference Between GraphQL and REST?</h2>
+<p><strong>REST</strong> is an API style in which each resource has its own URL and the server decides the shape of each response — for example <code>GET /users/42/images</code> returns a list of image IDs, and <code>GET /images/{id}</code> returns one image. <strong>GraphQL</strong> is a query language and runtime in which the API exposes one endpoint and a typed schema, and the client sends a single query naming exactly the fields and nested objects it needs.</p>
+<p>GraphQL vs. REST — the difference is <em>who decides the shape of the data</em>. This page's scenario, fetching 20 random images from a user, shows the consequence. With REST, the client often needs one call for the list and then one call per image (and maybe per author) — the <strong>N+1 request problem</strong> — so the cause → effect chain is: 21 or more HTTP round trips → at 100 ms each, most of that time is spent waiting on the network, especially on mobile. With GraphQL, the client sends one query → the server resolves all the fields → one response returns everything, so the network cost drops to roughly one round trip.</p>
+<p>GraphQL does not make the work disappear; it moves it to the server. The server must batch its own lookups (for example with DataLoader) to avoid N+1 queries against the database, limit query depth and cost, and give up the simple URL-based HTTP caching that REST's <code>GET</code> requests get for free (see <a href="#7-how-servers-avoid-internal-n1-resolver-strategies">how servers avoid internal N+1</a>).</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"In REST, each resource has its own endpoint and the server fixes the response shape, so a screen that needs related data often makes many requests and over- or under-fetches. In GraphQL, there's one endpoint and a typed schema, and the client asks for exactly the fields it needs in one query, which cuts round trips — especially valuable on mobile. The trade-off is server complexity: I need batching to avoid N+1 database queries, query cost limits, and a different caching strategy, whereas REST gets simple HTTP and CDN caching."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: GraphQL turns 21 requests into one — does it solve the N+1 problem?</strong></p>
+<p><strong>A:</strong> It solves it on the network, not on the server. A naive GraphQL server resolves each image's author with its own database query, so the one HTTP request becomes 1 + 20 database queries — the same N+1 problem moved behind the API. The fix is batching and caching inside a request: a DataLoader collects all the author IDs requested while resolving the list and loads them in one <code>WHERE id IN (...)</code> query. Without it, GraphQL can put more load on the database than the REST version did.</p>
+
 <hr>
 <h1 id="1-quick-summary-one-liner">1) Quick summary (one-liner)</h1>
 <ul>

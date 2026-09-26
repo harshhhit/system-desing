@@ -31,6 +31,19 @@
       <h1 data-page-title>SQS Overview</h1>
       <p>Producer → SQS API → Storage Layer → Message replicated to AZ1 + AZ2 + AZ3 → Consumer retrieves message from healthy AZ.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is Amazon SQS?</h2>
+      <p>Amazon SQS (Simple Queue Service) is a fully managed message queue from AWS: a <strong>producer</strong> sends a message to a queue over an HTTPS API, SQS stores it durably, and a <strong>consumer</strong> polls the queue, processes the message, and deletes it. As the one-line flow above shows, every message is stored redundantly across multiple Availability Zones, so a consumer can still receive it if one AZ fails.</p>
+      <p>SQS exists to <strong>decouple</strong> services. Without a queue, a service that calls another directly must wait for it and fails when it is down or overloaded. With a queue in between, the cause → effect chain is: the producer writes a message and returns immediately → the message waits safely in SQS → consumers process it at their own pace, and more consumers can be added when the backlog grows → if a consumer crashes mid-processing, the message becomes visible again and is retried. See <a href="use-case.html">SQS Use Cases</a> for the patterns this enables.</p>
+      <p>Three mechanisms make this work. The <strong>visibility timeout</strong> hides a received message from other consumers while one consumer works on it; if the consumer does not delete it before the timeout, it reappears for another attempt. A <strong>dead-letter queue (DLQ)</strong> receives messages that have failed a configured number of times, so one bad message does not block processing forever. And SQS offers two queue types: <strong>Standard</strong> (nearly unlimited throughput, at-least-once delivery, best-effort ordering) and <strong>FIFO</strong> (strict ordering within a message group and deduplication, with lower throughput).</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"SQS is AWS's fully managed message queue. Producers send messages, SQS stores them redundantly across Availability Zones, and consumers poll, process, and delete them. It decouples services and absorbs traffic spikes, because the producer doesn't wait for the consumer. A visibility timeout hides a message while it's being processed and makes it reappear if the consumer fails, and a dead-letter queue catches messages that keep failing. Standard queues give high throughput with at-least-once delivery; FIFO queues give strict ordering and deduplication."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Does SQS guarantee that each message is processed exactly once?</strong></p>
+      <p><strong>A:</strong> No. A Standard queue guarantees <strong>at-least-once</strong> delivery: a message can occasionally be delivered more than once, and it is redelivered whenever a consumer does not delete it before the visibility timeout expires — for example if the consumer crashed after doing the work but before deleting the message. FIFO queues deduplicate messages sent with the same deduplication ID within a 5-minute window, but that prevents duplicate <em>sends</em>, not duplicate <em>processing</em> after a consumer failure. So consumers must be <strong>idempotent</strong> — processing the same message twice must have the same effect as processing it once, for example by recording the message or order ID and skipping IDs already handled.</p>
+
       <div class="page-footer">
         <span>Section: Messaging &amp; Queues</span>
         <span>Source: <code>01-sqs.md</code></span>

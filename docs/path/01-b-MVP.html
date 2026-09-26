@@ -29,6 +29,19 @@
     <main>
       <p class="breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Planning &amp; Roadmap / MVP Planning</p>
       <h1 data-page-title>MVP Planning</h1>
+      <h2 id="interview-answer">Interview Answer — What Is an MVP (Minimum Viable Product)?</h2>
+      <p>An MVP (minimum viable product) is the smallest version of a product that delivers its core value to real users, so you can learn whether it solves their problem before investing in the rest. "Minimum" means everything non-essential is left out; "viable" means what remains must actually work and be usable, not a mock-up.</p>
+      <p>MVPs exist because building the full product up front is expensive, and the biggest risk is building something nobody needs. The cause → effect chain is: define the one core user flow → build only what that flow needs, preferring managed services over custom infrastructure → release it to real users → measure usage and feedback → decide what to build, change, or drop next. In system design terms, an MVP favors simple, managed building blocks — for example API Gateway and Lambda, S3 with signed URLs, SQS, RDS or DynamoDB — over a microservices architecture designed for millions of users on day one.</p>
+      <p>This page applies the same idea to <em>learning</em> system design: the minimum set of fundamentals (client–server, latency vs. throughput, scaling, load balancing, SQL vs. NoSQL, DNS and CDN), core patterns (cache-aside, message queues), core AWS services, and three small hands-on projects — a URL shortener, an image upload service, and a notification service — that together cover the essentials before going deeper.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"An MVP is the smallest working version of a product that delivers its core value to real users, so we can validate the idea and learn before building more. For system design, that means designing only for the core flow and realistic launch traffic, using simple managed services like API Gateway, Lambda, S3, SQS, and a managed database, and keeping the design easy to evolve once real usage tells us where it needs to scale."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Does "minimum" mean an MVP can skip security, backups, and reliability?</strong></p>
+      <p><strong>A:</strong> No. An MVP cuts <em>features</em>, not the basics that protect users and data. Real users mean real personal data and real trust, so HTTPS, proper authentication and password hashing, least-privilege access, backups, and basic monitoring are part of "viable." What an MVP can defer is scale and sophistication — multi-region setups, sharding, microservices, custom infrastructure — as long as the design does not make those changes impossible later, for example by keeping services stateless and data in managed stores.</p>
+
       <ul>
 <li><p>MVP Feature Set – System Design Learning</p>
 </li>

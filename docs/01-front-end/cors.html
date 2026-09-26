@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "cors" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Page · Infra Owl</title>
+<link rel="stylesheet" href="../assets/site.css?v=7">
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=7" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2 id="interview-answer">Interview Answer — What Is CORS?</h2>
+      <p><strong>CORS (Cross-Origin Resource Sharing)</strong> is a browser mechanism that lets a server say, through HTTP response headers, which other origins are allowed to read its responses from JavaScript. By default, the browser's <strong>Same Origin Policy</strong> blocks a script on one origin (for example <code>https://app.example.com</code>) from reading responses from a different origin (for example <code>https://api.example.com</code>). CORS is the controlled exception to that rule.</p>
+      <p>CORS exists because the Same Origin Policy on its own is too strict for modern apps. A single-page app on one domain routinely calls an API on another subdomain, a third-party payment service, or a CDN-hosted font. Without CORS, every one of those calls would need a same-origin proxy. Without the Same Origin Policy at all, any website you visit could call your bank's API with your cookies and read the result. CORS keeps the safe default (deny) and lets the <em>server that owns the data</em> opt specific origins in.</p>
+      <p>It works in two modes. For <strong>simple requests</strong> the browser sends the request with an <code>Origin</code> header and then checks the response's <code>Access-Control-Allow-Origin</code> header before handing the body to the script. For <strong>non-simple requests</strong> (for example <code>PUT</code>/<code>DELETE</code>, <code>Content-Type: application/json</code>, or an <code>Authorization</code> header) the browser first sends an <code>OPTIONS</code> <strong>preflight</strong> request and only sends the real request if the server approves. CORS is enforced entirely by the browser, so it protects users in the browser. It is not an authentication or authorization layer for your API. For the wider browser sandbox this fits into, see <a href="browser-javascript-capabilities.html">What In-Browser JavaScript Can &amp; Can't Do</a>.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"CORS is how a server relaxes the browser's Same Origin Policy. When a page calls an API on a different origin, the browser sends an Origin header, and the server replies with Access-Control-Allow-Origin saying which origins may read the response. For non-simple requests, such as JSON bodies, PUT or DELETE, or custom headers, the browser first sends an OPTIONS preflight to ask permission. It's enforced by the browser, not the server, so it protects users from malicious sites. It doesn't secure your API against curl or other servers."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If I get a CORS error, did the request reach the server?</strong></p>
+      <p><strong>A:</strong> Often yes. For a <em>simple</em> request (for example a <code>POST</code> with <code>Content-Type: application/x-www-form-urlencoded</code>), the browser sends the request, the server runs it (it can write to the database, send an email, and so on) and returns a response. Only then does the browser see there's no matching <code>Access-Control-Allow-Origin</code> and hide the response from your script. So a CORS error does <strong>not</strong> mean "nothing happened on the server", and CORS does not protect against CSRF. For a <em>preflighted</em> request, a failed preflight means the real request is never sent. The fix for a CORS error is always on the <strong>server</strong> (or a proxy in front of it). Adding headers to the <em>request</em> in the browser never fixes it. See <a href="#simple-vs-preflight">Simple vs. preflighted requests</a> and <a href="#misconceptions">Common misconceptions</a> below.</p>
+
+      <h2 id="origin">First: what is an origin?</h2>
+      <p>An <strong>origin</strong> is the combination of <em>scheme + host + port</em>. Two URLs are same-origin only if all three match exactly. The path, query string and fragment are ignored.</p>
+      <table>
+        <thead><tr><th>Page at <code>https://app.example.com</code> calling…</th><th>Same origin?</th><th>Needs CORS?</th></tr></thead>
+        <tbody>
+          <tr><td><code>https://app.example.com/api/notes</code></td><td>Yes</td><td>No</td></tr>
+          <tr><td><code>https://api.example.com/notes</code></td><td>No — different host (subdomains count)</td><td>Yes</td></tr>
+          <tr><td><code>http://app.example.com/api</code></td><td>No — different scheme</td><td>Yes</td></tr>
+          <tr><td><code>https://app.example.com:8443/api</code></td><td>No — different port</td><td>Yes</td></tr>
+          <tr><td><code>http://localhost:5173</code> → <code>http://localhost:3000</code></td><td>No — different port</td><td>Yes (the classic dev-setup CORS error)</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Origin vs. site — the difference is the subdomain.</strong> <code>app.example.com</code> and <code>api.example.com</code> are different <em>origins</em> but the same <em>site</em> (same registrable domain). CORS works on origins. Cookie <code>SameSite</code> rules work on sites. That's why a request can be same-site for cookies but still cross-origin for CORS.</p>
+
+      <h2 id="why">Why CORS exists — what breaks without it</h2>
+      <p>Walk through the attack the Same Origin Policy prevents, step by step:</p>
+      <ol>
+        <li>You're logged in to <code>https://bank.com</code>. Your browser holds its session cookie.</li>
+        <li>You open <code>https://evil.com</code> in another tab.</li>
+        <li><code>evil.com</code>'s script runs <code>fetch("https://bank.com/api/balance", { credentials: "include" })</code>.</li>
+        <li>The browser attaches your bank cookie. The bank sees a valid session and returns your balance.</li>
+        <li><strong>Without the Same Origin Policy</strong>, <code>evil.com</code>'s script could read that response and send it to its own server.</li>
+        <li><strong>With the Same Origin Policy</strong>, the browser checks whether <code>bank.com</code> allowed <code>https://evil.com</code>. It didn't, so the script gets an error and never sees the data.</li>
+      </ol>
+      <p>But the same rule also blocks <em>legitimate</em> calls, such as your own front end at <code>app.example.com</code> calling your own API at <code>api.example.com</code>. CORS lets <code>api.example.com</code> say "I trust <code>app.example.com</code>" without opening the door to <code>evil.com</code>.</p>
+
+      <h2 id="simple-vs-preflight">Simple vs. preflighted requests</h2>
+      <p>The browser decides which flow to use from the request itself. The difference is whether the request could already have been sent by a plain HTML form before CORS existed. If it could, servers were already exposed to it, so the browser just sends it. If it couldn't, the browser asks first.</p>
+
+      <h3>Simple request</h3>
+      <p>A request is <strong>simple</strong> only if <em>all</em> of these are true:</p>
+      <ul>
+        <li>Method is <code>GET</code>, <code>HEAD</code> or <code>POST</code>.</li>
+        <li>Only "safe-listed" headers are set by the script (<code>Accept</code>, <code>Accept-Language</code>, <code>Content-Language</code>, <code>Content-Type</code>, <code>Range</code>).</li>
+        <li><code>Content-Type</code>, if set, is <code>application/x-www-form-urlencoded</code>, <code>multipart/form-data</code> or <code>text/plain</code>.</li>
+      </ul>
+<pre><code>GET /notes HTTP/1.1
+Host: api.example.com
+Origin: https://app.example.com
+
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: https://app.example.com
+Content-Type: application/json</code></pre>
+
+      <h3>Preflighted request</h3>
+      <p>Anything else, such as <code>PUT</code>, <code>DELETE</code>, <code>PATCH</code>, <code>Content-Type: application/json</code>, or an <code>Authorization</code> / <code>X-Request-Id</code> header, triggers a <strong>preflight</strong>: an automatic <code>OPTIONS</code> request the browser sends before the real one.</p>
+<pre><code>OPTIONS /notes/42 HTTP/1.1
+Host: api.example.com
+Origin: https://app.example.com
+Access-Control-Request-Method: PUT
+Access-Control-Request-Headers: content-type, authorization
+
+HTTP/1.1 204 No Content
+Access-Control-Allow-Origin: https://app.example.com
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Max-Age: 600</code></pre>
+      <p>Only if that answer matches does the browser send the real <code>PUT</code>, and the real response must <em>also</em> carry <code>Access-Control-Allow-Origin</code>.</p>
+      <p><strong>Gotcha:</strong> sending JSON is the most common reason a request becomes preflighted. It also costs an extra round trip on every call unless the server sets <code>Access-Control-Max-Age</code> so the browser caches the approval. Browsers cap this cache (Chromium at 2 hours).</p>
+
+      <h3>The full flow</h3>
+<pre><code>Browser (app.example.com)                     Server (api.example.com)
+        |                                                |
+        |-- is it a simple request? --no--> OPTIONS ---->|  preflight
+        |<------------- 204 + Allow-Origin/Methods/Headers|
+        |   approved? no  -> CORS error, real request     |
+        |                    is NEVER sent                |
+        |   approved? yes                                 |
+        |------------------ real request + Origin ------->|  server runs it
+        |<------------------ response + Allow-Origin -----|
+        |   Allow-Origin matches? yes -> script reads it  |
+        |                         no  -> CORS error, but  |
+        |                         the server already ran  |</code></pre>
+
+      <h2 id="headers">The CORS headers</h2>
+      <h3>Request headers (set by the browser, never by your code)</h3>
+      <table>
+        <thead><tr><th>Header</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>Origin</code></td><td>The origin of the page making the request. Sent on cross-origin requests and on non-GET same-origin ones.</td></tr>
+          <tr><td><code>Access-Control-Request-Method</code></td><td>Preflight only: the method the real request will use.</td></tr>
+          <tr><td><code>Access-Control-Request-Headers</code></td><td>Preflight only: the non-safe-listed headers the real request will send.</td></tr>
+        </tbody>
+      </table>
+      <h3>Response headers (set by the server)</h3>
+      <table>
+        <thead><tr><th>Header</th><th>Meaning</th><th>Gotcha</th></tr></thead>
+        <tbody>
+          <tr><td><code>Access-Control-Allow-Origin</code></td><td>The one origin allowed to read the response, or <code>*</code> for any.</td><td>Only a single origin or <code>*</code>. A comma-separated list is invalid. To allow several, check <code>Origin</code> against an allow-list and echo the match back.</td></tr>
+          <tr><td><code>Access-Control-Allow-Methods</code></td><td>Methods allowed for the real request (preflight response).</td><td>Only checked on preflight.</td></tr>
+          <tr><td><code>Access-Control-Allow-Headers</code></td><td>Request headers allowed (preflight response).</td><td><code>Authorization</code> must be listed explicitly. <code>*</code> doesn't cover it.</td></tr>
+          <tr><td><code>Access-Control-Allow-Credentials</code></td><td><code>true</code> lets the browser send cookies/auth and expose the response.</td><td>Can't be combined with <code>Allow-Origin: *</code>. Must name the exact origin.</td></tr>
+          <tr><td><code>Access-Control-Expose-Headers</code></td><td>Extra response headers the script may read (for example <code>X-Total-Count</code>, <code>ETag</code>).</td><td>Without it, JS can read only a few basic response headers.</td></tr>
+          <tr><td><code>Access-Control-Max-Age</code></td><td>Seconds the browser may cache the preflight result.</td><td>Browsers cap it, so a very large value doesn't help.</td></tr>
+          <tr><td><code>Vary: Origin</code></td><td>Tells caches/CDNs the response differs per <code>Origin</code>.</td><td>Forget it and a CDN may serve origin A's allowed response to origin B.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="credentials">Credentials: cookies and CORS</h2>
+      <p>By default, a cross-origin <code>fetch</code> does <strong>not</strong> send cookies. To send them, both sides must opt in:</p>
+      <ol>
+        <li>The client sets <code>credentials: "include"</code> (or <code>xhr.withCredentials = true</code>).</li>
+        <li>The server returns <code>Access-Control-Allow-Credentials: true</code> <em>and</em> an explicit <code>Access-Control-Allow-Origin</code> (not <code>*</code>).</li>
+        <li>The cookie itself must be allowed cross-site: <code>SameSite=None; Secure</code>, and the browser must not be blocking third-party cookies.</li>
+      </ol>
+<pre><code>fetch("https://api.example.com/me", { credentials: "include" });</code></pre>
+<pre><code>Access-Control-Allow-Origin: https://app.example.com
+Access-Control-Allow-Credentials: true
+Vary: Origin</code></pre>
+      <p>For how the session cookie itself works, see <a href="graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a>.</p>
+
+      <h2 id="server-config">Configuring CORS on the server</h2>
+      <p>The fix for a CORS error always lives on the server that owns the resource, or on a reverse proxy/API gateway in front of it. The pattern is the same everywhere: check the incoming <code>Origin</code> against an allow-list, echo it back if it matches, and answer <code>OPTIONS</code> preflights.</p>
+      <h3>Node.js / Express</h3>
+<pre><code>const cors = require("cors");
+app.use(cors({
+  origin: ["https://app.example.com", "http://localhost:5173"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  maxAge: 600
+}));</code></pre>
+      <h3>Nginx</h3>
+<pre><code>map $http_origin $cors_origin {
+    default "";
+    "https://app.example.com" $http_origin;
+}
+
+location /api/ {
+    add_header Access-Control-Allow-Origin $cors_origin always;
+    add_header Access-Control-Allow-Credentials true always;
+    add_header Vary Origin always;
+    if ($request_method = OPTIONS) {
+        add_header Access-Control-Allow-Origin $cors_origin;
+        add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE";
+        add_header Access-Control-Allow-Headers "Content-Type, Authorization";
+        add_header Access-Control-Max-Age 600;
+        return 204;
+    }
+    proxy_pass http://backend;
+}</code></pre>
+      <h3>AWS S3 bucket (for example fonts or uploads loaded from another domain)</h3>
+<pre><code>[
+  {
+    "AllowedOrigins": ["https://app.example.com"],
+    "AllowedMethods": ["GET", "PUT"],
+    "AllowedHeaders": ["*"],
+    "MaxAgeSeconds": 3000
+  }
+]</code></pre>
+      <p><strong>Alternative: avoid CORS entirely.</strong> Serve the front end and the API from the same origin (for example <code>app.example.com</code> and <code>app.example.com/api</code> behind one reverse proxy or CDN), or use the dev server's proxy (Vite's <code>server.proxy</code>) locally. With no cross-origin request, there's no CORS and no preflight latency.</p>
+
+      <h2 id="errors">Reading common CORS errors</h2>
+      <table>
+        <thead><tr><th>Browser console message (paraphrased)</th><th>Cause</th><th>Fix (server side)</th></tr></thead>
+        <tbody>
+          <tr><td>No <code>Access-Control-Allow-Origin</code> header is present</td><td>Server didn't send CORS headers at all. Often an error page (500/404) or proxy response skips them.</td><td>Add the header, including on error responses (<code>always</code> in Nginx).</td></tr>
+          <tr><td>Response to preflight doesn't pass access control check</td><td><code>OPTIONS</code> not handled, returns 401/404, or is blocked by auth middleware.</td><td>Answer <code>OPTIONS</code> before auth runs, with 204 + CORS headers.</td></tr>
+          <tr><td>Wildcard <code>*</code> cannot be used when credentials mode is include</td><td><code>Allow-Origin: *</code> + cookies.</td><td>Echo the specific origin and add <code>Allow-Credentials: true</code>.</td></tr>
+          <tr><td>Request header field <code>authorization</code> is not allowed</td><td>Header missing from <code>Access-Control-Allow-Headers</code>.</td><td>List it explicitly.</td></tr>
+          <tr><td>Allow-Origin contains multiple values</td><td>Two layers (app + proxy) both add the header.</td><td>Set CORS in exactly one layer.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="misconceptions">Common misconceptions</h2>
+      <ul>
+        <li><strong>"CORS protects my API."</strong> It doesn't. It's enforced by browsers only. <code>curl</code>, Postman, mobile apps and other servers ignore it. Your API still needs authentication, authorization and rate limiting.</li>
+        <li><strong>"CORS stops CSRF."</strong> It doesn't. Simple cross-origin requests (form posts) are still sent with cookies; only the response is hidden. Use CSRF tokens and <code>SameSite</code> cookies.</li>
+        <li><strong>"I can fix it in the front end."</strong> You can't. Adding <code>Access-Control-Allow-Origin</code> to your <em>request</em> does nothing. <code>mode: "no-cors"</code> doesn't bypass anything either: it gives you an <em>opaque</em> response whose body and status your script can't read.</li>
+        <li><strong>"Reflecting any Origin is a convenient default."</strong> Echoing back <em>whatever</em> <code>Origin</code> arrives, together with <code>Allow-Credentials: true</code>, is effectively "every site may read my users' data". Always check against an allow-list. Also never allow the <code>null</code> origin, which sandboxed iframes and <code>file://</code> pages send.</li>
+        <li><strong>"<code>&lt;img&gt;</code>, <code>&lt;script&gt;</code> and <code>&lt;link&gt;</code> need CORS."</strong> Not to <em>load</em>. Cross-origin embedding has always been allowed. CORS matters when a script wants to <em>read</em> the resource: canvas pixel data (<code>crossorigin</code> attribute on <code>&lt;img&gt;</code>), web fonts, ES modules (<code>&lt;script type="module"&gt;</code>), and detailed error info from scripts.</li>
+      </ul>
+
+      <h2 id="related">Related pages</h2>
+      <ul>
+        <li><a href="browser-javascript-capabilities.html">What In-Browser JavaScript Can &amp; Can't Do</a>: the browser sandbox and Same Origin Policy CORS is built on.</li>
+        <li><a href="graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a>: cookies, <code>SameSite</code> and CSRF.</li>
+        <li><a href="graphql/http/04-client-server-model.html">Client-Server Model, End to End</a>: the HTTP request/response cycle these headers ride on.</li>
+        <li><a href="../observability-security/01-application-security-fundamentals.html">Application Security Fundamentals</a>: the server-side security CORS does not replace.</li>
+      </ul>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

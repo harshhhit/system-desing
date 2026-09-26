@@ -34,6 +34,19 @@
       <h1 data-page-title>Rate Limiting &amp; Throttling</h1>
       <p class="sd-study-prompt" data-page-subtitle>Token bucket, leaky bucket, fixed and sliding window algorithms, distributed rate limiting with Redis, and the client contract (429, Retry-After).</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is Rate Limiting?</h2>
+      <p>Rate limiting is a control that caps how many requests a single client — identified by an API key, user ID, or IP address — may make to a service in a given period of time, and rejects (or delays) the requests over that limit. A rejected request gets an HTTP <code>429 Too Many Requests</code> response, ideally with a <code>Retry-After</code> header.</p>
+      <p>It exists because a shared service has finite capacity. Without a limit, one noisy caller — a buggy retry loop, a scraper, a credential-stuffing attack — can consume that capacity and degrade the service for every other client, or run up the cost of a paid downstream API. With a limit, the cause → effect chain is: a client exceeds its quota → the limiter rejects its extra requests cheaply at the edge → the backend keeps serving everyone else at normal latency.</p>
+      <p>A rate limiter is defined by its <a href="#algorithms">algorithm</a> — token bucket (allows short bursts up to the bucket size), leaky bucket (smooths traffic to a constant rate), or fixed / sliding window counters — and by <a href="#where-to-enforce">where it is enforced</a>: coarse limits at the API gateway, operation-specific limits (for example "3 password-reset emails per hour") inside the service. When several instances enforce the same limit, they must share one counter, typically in Redis, updated atomically.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Rate limiting caps how many requests a client can make in a time window, so one caller can't overload a shared service or run up costs. I'd usually use a token bucket, which allows short bursts but enforces an average rate, enforced at the API gateway per API key, with Redis holding the counter so every instance sees the same count. Rejected requests get a 429 with a Retry-After header, and clients retry with jittered backoff."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: With 10 app servers, can each server just keep its own in-memory counter?</strong></p>
+      <p><strong>A:</strong> No — not if the limit is meant to be global. With 10 independent counters, a client whose requests are spread across all servers gets up to 10× the intended limit, and the effective limit changes every time you scale. The instances need a shared counter, usually in Redis, and the check and the increment must be one atomic operation (a single <code>INCR</code> with expiry, or a Lua script). If "read the count" and "increment the count" are two separate calls, two concurrent requests on different instances can both read a value just under the limit and both pass.</p>
+
       <h2>Why rate limit</h2>
       <ul>
       <li><strong>Protect the backend</strong> — cap how much load any one client can put on a shared resource, so one noisy caller can't degrade the service for everyone else.</li>
@@ -42,7 +55,7 @@
       <li><strong>Upstream protection</strong> — a service calling a third-party API (payment provider, SMS gateway) rate-limits its own outbound calls to stay under that provider's limit and avoid being cut off entirely.</li>
       </ul>
 
-      <h2>Algorithms</h2>
+      <h2 id="algorithms">Algorithms</h2>
       <table>
       <tr><th>Algorithm</th><th>How it works</th><th>Allows bursts?</th><th>Memory / accuracy</th></tr>
       <tr><td>Fixed window counter</td><td>Count requests in the current clock window (e.g. per-minute); reset the counter when the window rolls over</td><td>Yes — a burst right at the boundary of two windows can let through nearly <strong>2×</strong> the limit (all at the end of one window, all at the start of the next)</td><td>Cheapest — one counter per key</td></tr>
@@ -53,7 +66,7 @@
       </table>
       <div class="sd-study-note tip"><span class="sd-note-title">Token bucket vs. leaky bucket, in one line</span><p>Token bucket controls how much traffic you <em>let in</em> and is happy to allow bursts; leaky bucket controls how much traffic you <em>send out</em> and actively smooths bursts away. Rate-limiting an API's inbound requests → token bucket. Throttling your own outbound calls to a fragile downstream → leaky bucket.</p></div>
 
-      <h2>Where to enforce it</h2>
+      <h2 id="where-to-enforce">Where to enforce it</h2>
       <ul>
       <li><strong>Client-side</strong> — polite, but not a security boundary; a client can always skip its own throttle. Useful for UX (disable a submit button) not protection.</li>
       <li><strong>Edge / API gateway</strong> — the common place for coarse, per-API-key or per-IP limits, before the request even reaches application servers; cheapest place to reject abusive traffic.</li>

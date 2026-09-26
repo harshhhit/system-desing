@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "browser-javascript-capabilities" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Page · Infra Owl</title>
+<link rel="stylesheet" href="../assets/site.css?v=7">
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=7" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
+      <p class="sd-study-prompt" data-page-subtitle></p>
+
+      <h2 id="interview-answer">Interview Answer — What Is the Browser JavaScript Sandbox?</h2>
+      <p>The browser JavaScript sandbox is the set of restrictions a web browser places on any script that arrives with a web page. JavaScript itself is only a language; what a script can actually <em>do</em> — touch files, open network connections, read other pages — is decided by the <strong>host environment</strong> that runs it. In a browser, that host deliberately gives the script a small, safe set of APIs: it can change the page, react to the user, talk to servers, and store a little data, but it cannot reach the operating system, the disk, or other sites' data.</p>
+      <p>The sandbox exists because a browser runs code from strangers. Every time you open a link, you execute a program written by whoever owns that site, without installing it or reviewing it. Without the sandbox, any page could read your files, turn on your camera, or open your bank in a hidden tab and read your balance. The browser's answer is layered: no OS access at all, files and devices only after an explicit user action or permission prompt, and the <strong>Same Origin Policy</strong> keeping each site's data isolated from every other site's scripts — with <strong>CORS</strong> as the opt-in way for a server to relax that for specific callers.</p>
+      <p>The same language runs in other hosts with very different rules. Node.js, Deno and Bun run JavaScript on a server or laptop with full (Node, Bun) or permission-gated (Deno) access to files and the network. Web Workers, Service Workers, extension content scripts and WebAssembly each sit inside the browser with their own, slightly different box. See <a href="#other-runtimes">Other scripts and runtimes that work like this</a> below for the full comparison.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"JavaScript's power depends on where it runs. In the browser it's sandboxed: it can manipulate the DOM, handle user events, make network requests, set cookies and use localStorage — but it can't read arbitrary files, run programs, or access the OS, and devices like the camera need the user's permission. The Same Origin Policy stops a script from one site reading another site's pages or responses, and CORS headers are how a server explicitly allows cross-origin reads. The same language in Node.js has no sandbox and can read files and open sockets freely."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Does the Same Origin Policy stop my page from <em>sending</em> a request to another domain?</strong></p>
+      <p><strong>A:</strong> No — and this is the most common misconception. The Same Origin Policy mainly restricts <em>reading</em> cross-origin data, not <em>sending</em> requests. A page on <code>http://anysite.com</code> can submit a form or fire a simple <code>fetch</code> (GET/POST with basic content types) to <code>http://gmail.com</code>; the browser sends it, cookies may even be attached, and the server processes it. What the browser blocks is the script <em>reading the response</em> unless the server replies with a matching <code>Access-Control-Allow-Origin</code> header. For "non-simple" requests (e.g. <code>PUT</code>, <code>DELETE</code>, a JSON <code>Content-Type</code>, custom headers) the browser first sends an <code>OPTIONS</code> <strong>preflight</strong> and only sends the real request if the server approves. This is exactly why CSRF attacks are possible despite the Same Origin Policy, and why servers still need CSRF tokens or <code>SameSite</code> cookies. Also: CORS protects the <em>user in the browser</em>, not the server — <code>curl</code> or a backend service ignores CORS entirely. See <a href="#same-origin">Same Origin Policy</a> and <a href="#cors">CORS</a> below.</p>
+
+      <h2 id="can-do">What can in-browser JavaScript do?</h2>
+      <p>Modern JavaScript is a “safe” programming language. It does not provide low-level access to memory or the CPU, because it was initially created for browsers which do not require it.</p>
+      <p>JavaScript’s capabilities greatly depend on the environment it’s running in. For instance, Node.js supports functions that allow JavaScript to read/write arbitrary files, perform network requests, etc.</p>
+      <p>In-browser JavaScript can do everything related to webpage manipulation, interaction with the user, and the webserver.</p>
+      <p>For instance, in-browser JavaScript is able to:</p>
+      <ul>
+        <li>Add new HTML to the page, change the existing content, modify styles.</li>
+        <li>React to user actions, run on mouse clicks, pointer movements, key presses.</li>
+        <li>Send requests over the network to remote servers, download and upload files (so-called AJAX and COMET technologies).</li>
+        <li>Get and set cookies, ask questions to the visitor, show messages.</li>
+        <li>Remember the data on the client-side (“local storage”).</li>
+      </ul>
+
+      <h3>The same list, mapped to the actual APIs</h3>
+      <p>"The environment decides the capabilities" is concrete: each ability above is a specific object the browser hands to the script. The language has none of these built in.</p>
+      <table>
+        <thead><tr><th>Capability</th><th>Browser API that provides it</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Change HTML / styles</td><td>DOM (<code>document</code>), CSSOM</td><td><code>document.querySelector("h1").textContent = "Hi"</code></td></tr>
+          <tr><td>React to the user</td><td>Events (<code>addEventListener</code>)</td><td><code>btn.addEventListener("click", save)</code></td></tr>
+          <tr><td>Network requests (AJAX)</td><td><code>fetch</code>, <code>XMLHttpRequest</code></td><td><code>fetch("/api/notes")</code></td></tr>
+          <tr><td>Server push (COMET and its successors)</td><td>Long-polling, Server-Sent Events (<code>EventSource</code>), <code>WebSocket</code></td><td><code>new WebSocket("wss://…")</code></td></tr>
+          <tr><td>Cookies</td><td><code>document.cookie</code>, Cookie Store API</td><td>Cannot read <code>HttpOnly</code> cookies — by design</td></tr>
+          <tr><td>Ask / tell the visitor</td><td><code>alert</code>, <code>confirm</code>, <code>prompt</code>, Notifications API</td><td><code>confirm("Delete?")</code></td></tr>
+          <tr><td>Client-side storage</td><td><code>localStorage</code>, <code>sessionStorage</code>, IndexedDB, Cache API</td><td>This site's own login keeps <code>unlocked</code> in <code>sessionStorage</code> / <code>localStorage</code></td></tr>
+        </tbody>
+      </table>
+      <p><strong>Gotcha:</strong> client-side storage is per-origin and per-browser, and anything in it is readable by any script running on that origin. That is why this site's access gate is described as a "soft client-side barrier" — a determined visitor can set <code>localStorage.unlocked = "1"</code> in DevTools. Never keep secrets or authorization decisions only in browser JavaScript.</p>
+
+      <h2 id="cant-do">What CAN’T in-browser JavaScript do?</h2>
+      <p>JavaScript’s abilities in the browser are limited to protect the user’s safety. The aim is to prevent an evil webpage from accessing private information or harming the user’s data.</p>
+      <p>Examples of such restrictions include:</p>
+
+      <h3>No arbitrary file or OS access</h3>
+      <p>JavaScript on a webpage may not read/write arbitrary files on the hard disk, copy them or execute programs. It has no direct access to OS functions.</p>
+      <p>Modern browsers allow it to work with files, but the access is limited and only provided if the user does certain actions, like “dropping” a file into a browser window or selecting it via an <code>&lt;input&gt;</code> tag.</p>
+      <p>Concretely: <code>&lt;input type="file"&gt;</code> and drag-and-drop give the script a <code>File</code> object for <em>only the file the user picked</em>, never its full path or neighbouring files. The newer File System Access API (<code>showOpenFilePicker()</code>, Chromium-based browsers) can write back to a chosen file or folder, but still only after the user picks it in a native dialog.</p>
+
+      <h3>Devices need explicit permission</h3>
+      <p>There are ways to interact with the camera/microphone and other devices, but they require a user’s explicit permission. So a JavaScript-enabled page may not sneakily enable a web-camera, observe the surroundings and send the information to the NSA.</p>
+      <p>The same permission model covers geolocation, notifications, clipboard reading, USB / Bluetooth / Serial (WebUSB, Web Bluetooth, Web Serial) and screen capture. Most of these APIs are also only available on secure (HTTPS) origins, and several require a recent user gesture such as a click.</p>
+
+      <h3 id="same-origin">Tabs and windows are isolated — the Same Origin Policy</h3>
+      <p>Different tabs/windows generally do not know about each other. Sometimes they do, for example when one window uses JavaScript to open the other one. But even in this case, JavaScript from one page may not access the other page if they come from different sites (from a different domain, protocol or port).</p>
+      <p>This is called the “Same Origin Policy”. To work around that, both pages must agree for data exchange and must contain special JavaScript code that handles it. We’ll cover that in the tutorial.</p>
+      <p>This limitation is, again, for the user’s safety. A page from <code>http://anysite.com</code> which a user has opened must not be able to access another browser tab with the URL <code>http://gmail.com</code>, for example, and steal information from there.</p>
+      <p><strong>What an "origin" is:</strong> the triple <em>scheme + host + port</em>. All three must match exactly.</p>
+      <table>
+        <thead><tr><th>Compared with <code>https://example.com</code></th><th>Same origin?</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><code>https://example.com/notes/a.html</code></td><td>Yes</td><td>Path doesn't matter</td></tr>
+          <tr><td><code>http://example.com</code></td><td>No</td><td>Different scheme</td></tr>
+          <tr><td><code>https://api.example.com</code></td><td>No</td><td>Different host (subdomain counts)</td></tr>
+          <tr><td><code>https://example.com:8443</code></td><td>No</td><td>Different port</td></tr>
+        </tbody>
+      </table>
+      <p><strong>The "special JavaScript code" both pages use to agree</strong> is usually <code>window.postMessage()</code>: the sender posts a message to the other window, and the receiver listens for <code>message</code> events and must check <code>event.origin</code> before trusting the data. Same-origin tabs can also talk via <code>BroadcastChannel</code> or storage events.</p>
+
+      <h3 id="cors">Cross-site network reads need the server's agreement — CORS</h3>
+      <p>JavaScript can easily communicate over the net to the server where the current page came from. But its ability to receive data from other sites/domains is severely limited. Though possible, it requires explicit agreement (expressed in HTTP headers) from the remote side. Once again, that’s a safety limitation.</p>
+      <p>That agreement mechanism is <strong>CORS (Cross-Origin Resource Sharing)</strong>. Step by step, for a page on <code>https://app.example.com</code> calling <code>https://api.other.com</code>:</p>
+      <ol>
+        <li>The browser adds an <code>Origin: https://app.example.com</code> header to the request.</li>
+        <li>If the request is "non-simple" (a method other than GET/HEAD/POST, a JSON <code>Content-Type</code>, or custom headers like <code>Authorization</code>), the browser first sends an <code>OPTIONS</code> preflight asking permission.</li>
+        <li>The server answers with headers such as <code>Access-Control-Allow-Origin: https://app.example.com</code> (and, for preflights, <code>Access-Control-Allow-Methods</code> / <code>Access-Control-Allow-Headers</code>).</li>
+        <li>If the headers match, the browser hands the response to the script. If not, the script gets a network error — even though the server may already have processed the request.</li>
+      </ol>
+<pre><code>HTTP/1.1 200 OK
+Access-Control-Allow-Origin: https://app.example.com
+Access-Control-Allow-Credentials: true
+Vary: Origin</code></pre>
+      <p><strong>CORS vs. security on the server — the difference is who is protected.</strong> CORS is enforced by the browser to protect the user's data from other sites; it is not an access control for your API. Any non-browser client (<code>curl</code>, Postman, another backend) ignores it, so the API still needs its own authentication and authorization.</p>
+      <p><strong>Deep dive:</strong> every CORS header, credentials, server configuration and common errors are covered on the dedicated <a href="cors.html">CORS (Cross-Origin Resource Sharing)</a> page.</p>
+
+      <h2 id="other-runtimes">Other scripts and runtimes that work like this</h2>
+      <p>The key idea from above — <em>the environment, not the language, decides what a script can do</em> — applies to every runtime below. Each one is either another box inside the browser, or JavaScript (or something that compiles to it) running outside the browser with a different set of permissions.</p>
+
+      <h3>Inside the browser</h3>
+
+      <h4>Web Workers</h4>
+      <p><strong>What:</strong> a background thread running a separate script (<code>new Worker("worker.js")</code>). <strong>Why:</strong> heavy computation on the main thread freezes the page, because the main thread also handles rendering and input. <strong>Can:</strong> <code>fetch</code>, WebSockets, IndexedDB, timers, <code>postMessage</code> with the page. <strong>Can't:</strong> touch the DOM, <code>window</code>, or <code>localStorage</code>. Same Origin Policy and CORS still apply — a worker has exactly the page's network rights, not more.</p>
+
+      <h4>Service Workers</h4>
+      <p><strong>What:</strong> a special worker that sits between the page and the network as a programmable proxy. <strong>Why:</strong> offline support, caching strategies, background sync and push notifications (the basis of PWAs). <strong>Can:</strong> intercept every <code>fetch</code> from pages in its scope and answer from the Cache API. <strong>Can't:</strong> access the DOM; it runs only on HTTPS (or <code>localhost</code>), only for its own origin and scope, and the browser kills it when idle. Because it can rewrite responses, it's powerful enough that the HTTPS requirement is non-negotiable.</p>
+
+      <h4>Worklets (Audio / Paint)</h4>
+      <p>Tiny, even more restricted scripts that hook into the rendering or audio pipeline (e.g. <code>AudioWorklet</code> for real-time audio processing). They get almost no APIs beyond the one pipeline they plug into.</p>
+
+      <h4>iframes and the <code>sandbox</code> attribute</h4>
+      <p>An <code>&lt;iframe&gt;</code> from another origin is isolated from the parent by the Same Origin Policy; the two talk only via <code>postMessage</code>. The <code>sandbox</code> attribute restricts it further (no scripts, no forms, no top-level navigation) unless you re-enable items like <code>allow-scripts</code>. This is how sites safely embed ads, widgets, and user-generated HTML.</p>
+
+      <h4>Browser extensions (content scripts vs. background scripts)</h4>
+      <p><strong>What:</strong> JavaScript the user installs, which the browser grants <em>more</em> power than a page — but only the permissions declared in its <code>manifest.json</code> and approved at install time.</p>
+      <ul>
+        <li><strong>Content scripts</strong> are injected into web pages. They can read and change that page's DOM, but run in an "isolated world": they don't share JavaScript variables with the page's own scripts.</li>
+        <li><strong>Background scripts / service workers</strong> run with the extension's own origin (<code>chrome-extension://…</code>). With the right host permissions they can make cross-origin requests without CORS and use APIs like <code>chrome.tabs</code>, <code>chrome.storage</code> and <code>chrome.cookies</code>.</li>
+      </ul>
+      <p><strong>Gotcha:</strong> an extension with "read and change all your data on all websites" permission effectively bypasses the Same Origin Policy for you — which is why malicious extensions are a real threat.</p>
+
+      <h4>WebAssembly (Wasm)</h4>
+      <p><strong>What:</strong> a compact binary format that C, C++, Rust, Go and others compile to, running at near-native speed in the browser. <strong>Why:</strong> CPU-heavy work (video editing, games, image processing, databases like SQLite in the browser) that plain JavaScript runs too slowly. <strong>This does NOT mean</strong> Wasm gets "low-level" access to your machine: it runs inside the same sandbox as JavaScript, sees only its own linear memory block, and can do nothing — no DOM, no network — except call the JavaScript functions the page explicitly imports into it.</p>
+
+      <h4>TypeScript, JSX and other compile-to-JS languages</h4>
+      <p>TypeScript, JSX (React), CoffeeScript, Elm, Dart (via <code>dart2js</code>) and similar are <em>not</em> separate runtimes in the browser. They are compiled/transpiled to plain JavaScript before the browser sees them, so they have exactly the same capabilities and restrictions as the JavaScript they become. TypeScript's types are erased at build time — they add no runtime security.</p>
+
+      <h4>Bookmarklets and DevTools console</h4>
+      <p>A bookmarklet (<code>javascript:…</code> URL saved as a bookmark) and code typed into the DevTools console both run <em>as the current page</em> — with that page's origin, cookies (except <code>HttpOnly</code>) and storage. That's why "paste this into your console" is a classic social-engineering attack (self-XSS).</p>
+
+      <h3>Outside the browser</h3>
+
+      <h4>Node.js</h4>
+      <p><strong>What:</strong> JavaScript on the V8 engine, outside a browser, for servers, CLIs and build tools (this site's own <code>scripts/regen-sidebars.js</code> is a Node script). <strong>Can:</strong> everything the OS user running it can — read/write any file (<code>fs</code>), open raw TCP/UDP sockets (<code>net</code>, <code>dgram</code>), spawn programs (<code>child_process</code>), read environment variables. <strong>No</strong> DOM, <code>window</code>, or Same Origin Policy, and no CORS on outgoing requests. Newer Node versions add an opt-in permission model (<code>--permission</code>), but it's off by default.</p>
+<pre><code>node scripts/regen-sidebars.js --check</code></pre>
+
+      <h4>Deno</h4>
+      <p><strong>What:</strong> a JavaScript/TypeScript runtime by Node's original author, built around a browser-like security model. <strong>Why:</strong> Node trusts every script and dependency fully; Deno denies everything by default. A script gets file, network, or env access only when granted with flags such as <code>--allow-read</code>, <code>--allow-net=api.example.com</code> or <code>--allow-env</code>. It also ships browser-standard APIs (<code>fetch</code>, Web Workers).</p>
+<pre><code>deno run --allow-net=api.example.com main.ts</code></pre>
+
+      <h4>Bun</h4>
+      <p>A fast Node-compatible runtime (JavaScriptCore engine) with a built-in bundler, test runner and package manager. Security-wise it behaves like Node: full OS access, no sandbox.</p>
+
+      <h4>Edge / serverless JavaScript (Cloudflare Workers, Vercel Edge, Lambda@Edge)</h4>
+      <p>JavaScript running on CDN edge servers in <strong>V8 isolates</strong> — the same isolation mechanism browsers use between tabs. They expose browser-style APIs (<code>fetch</code>, <code>Request</code>/<code>Response</code>, Web Crypto) but no file system, strict CPU-time and memory limits, and no persistent in-memory state between requests. A middle ground between the browser sandbox and Node.</p>
+
+      <h4>Electron and Tauri (desktop apps)</h4>
+      <p>Desktop apps built with web tech (VS Code, Slack, Discord). Electron bundles Chromium + Node: the <em>main process</em> has full Node/OS power, while each window's <em>renderer</em> is a web page that — with the recommended <code>contextIsolation</code> and <code>nodeIntegration: false</code> settings — is sandboxed like a normal browser and reaches OS features only through a narrow <code>preload</code> bridge. Tauri takes the same approach with a Rust backend and an explicit allow-list of commands.</p>
+
+      <h4>React Native</h4>
+      <p>JavaScript driving native mobile UI (not a web page). It runs in the Hermes engine inside the app, so it has whatever permissions the app has been granted by iOS/Android (camera, files in the app's container) — but no DOM and no Same Origin Policy.</p>
+
+      <h4>Google Apps Script, userscripts, and other hosted JavaScript</h4>
+      <p>Google Apps Script runs JavaScript on Google's servers with access to Sheets/Docs/Gmail via OAuth scopes you approve. Userscript managers (Tampermonkey, Greasemonkey) are extensions that run your scripts on matching pages, with extra <code>GM_*</code> APIs such as cross-origin <code>GM_xmlhttpRequest</code> if you grant them.</p>
+
+      <h3>Not JavaScript, but historically "scripts in the page"</h3>
+      <p>Before today's model, browsers ran other in-page languages: <strong>VBScript</strong> (Internet Explorer only), <strong>Java applets</strong>, <strong>Flash / ActionScript</strong>, and <strong>Silverlight</strong>. Plugins like these ran outside the browser's own sandbox and were a major source of security holes, which is a key reason they were all removed. Today JavaScript (plus WebAssembly) is the only code a browser runs natively.</p>
+
+      <h2 id="comparison">Comparison table</h2>
+      <table>
+        <thead><tr><th>Runtime</th><th>DOM</th><th>Files / OS</th><th>Network</th><th>Same Origin Policy / CORS</th><th>Who grants extra power</th></tr></thead>
+        <tbody>
+          <tr><td>Page script (main thread)</td><td>Yes</td><td>Only user-picked files</td><td>fetch / WebSocket</td><td>Yes</td><td>User permission prompts</td></tr>
+          <tr><td>Web Worker</td><td>No</td><td>No</td><td>fetch / WebSocket</td><td>Yes</td><td>—</td></tr>
+          <tr><td>Service Worker</td><td>No</td><td>No (Cache API only)</td><td>Intercepts its scope's fetches</td><td>Yes, HTTPS only</td><td>—</td></tr>
+          <tr><td>WebAssembly</td><td>Only via JS imports</td><td>No</td><td>Only via JS imports</td><td>Yes (inherits page)</td><td>The page's JS</td></tr>
+          <tr><td>Extension content script</td><td>Yes (isolated world)</td><td>No</td><td>Page-like</td><td>Mostly yes</td><td><code>manifest.json</code> + install prompt</td></tr>
+          <tr><td>Extension background</td><td>No</td><td>Downloads only</td><td>Cross-origin with host permission</td><td>Bypassed for granted hosts</td><td><code>manifest.json</code> + install prompt</td></tr>
+          <tr><td>Node.js / Bun</td><td>No</td><td>Full</td><td>Full, raw sockets</td><td>No</td><td>OS user account</td></tr>
+          <tr><td>Deno</td><td>No</td><td>Only with <code>--allow-read/write</code></td><td>Only with <code>--allow-net</code></td><td>No</td><td>Command-line flags</td></tr>
+          <tr><td>Edge workers</td><td>No</td><td>No</td><td>fetch</td><td>No</td><td>Platform config</td></tr>
+          <tr><td>Electron main / renderer</td><td>No / Yes</td><td>Full / via preload</td><td>Full / page-like</td><td>No / Yes</td><td>App developer</td></tr>
+        </tbody>
+      </table>
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

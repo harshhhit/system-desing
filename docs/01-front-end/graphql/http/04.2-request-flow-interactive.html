@@ -52,6 +52,19 @@
 
       <p>This walks through <strong>one real page load</strong> end to end, step by step, using the same methods and terms taught on <a href="04-client-server-model.html">Client-Server Model, End to End</a>. Every stage below maps back to a specific part of that page. Use <strong>Next</strong> / <strong>Previous</strong>, click a numbered dot, or just scroll — every step is real content on the page, not hidden behind the interaction.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Happens When You Type a URL and Press Enter?</h2>
+      <p>When a user loads a page, the request passes through a chain of systems, each with one job, before anything appears on screen. The browser resolves the domain name with <strong>DNS</strong>, opens a <strong>TCP</strong> connection and negotiates encryption with <strong>TLS</strong>, and sends an <strong>HTTP request</strong>. The request is answered from a <strong>CDN</strong> edge if possible; otherwise it passes a <strong>load balancer</strong>, security checks (rate limiting, WAF, CORS), an <strong>API gateway</strong>, and an <strong>auth</strong> check, reaches a service that reads from a <strong>cache</strong> or <strong>database</strong>, hands slow work to a <strong>queue</strong>, and returns a response that the browser <strong>renders</strong>.</p>
+      <p>The chain exists because each layer removes a specific cost or risk. The cause → effect reasoning at each step is: DNS turns a name into an IP; the TCP and TLS handshakes create a reliable, encrypted connection; the CDN answers cacheable content near the user so it never travels to the origin; the load balancer spreads load and skips unhealthy servers; the security gate rejects abusive or malicious requests cheaply; the gateway routes to the right microservice; auth establishes who the user is; the cache avoids repeating database reads; the queue keeps slow work — emails, image processing — off the user's wait time; and the browser turns the response into pixels.</p>
+      <p>The 13 steps below walk through this flow one stage at a time, and each links back to the section of <a href="04-client-server-model.html">Client-Server Model, End to End</a> that explains it in depth.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"The browser resolves the domain through DNS, opens a TCP connection and does a TLS handshake, and sends the HTTP request. A CDN serves it if it's cached; otherwise it goes through a load balancer, a security layer like rate limiting and a WAF, and an API gateway to the right service. The service checks the user's session or JWT, reads from a cache and falls back to the database, pushes slow work onto a queue, and returns the response. The browser then parses the HTML, CSS, and JavaScript and renders the page."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Does every page load go through all of these steps?</strong></p>
+      <p><strong>A:</strong> No — most real page loads skip several of them, and that is where the performance comes from. DNS answers are cached by the browser and OS, so repeat visits skip the lookup. Keep-alive connections, HTTP/2 multiplexing, and TLS session resumption let later requests reuse an existing connection instead of repeating the handshakes. Static assets are usually answered by the browser cache or the CDN edge and never reach the load balancer, and a cache hit means the database is never touched. Knowing which steps are skipped on a warm path — and which ones a cold, first visit pays for — is the useful part of this answer.</p>
+
       <div class="sd-flow" data-flow>
         <div class="sd-flow-rail" data-flow-rail aria-hidden="true"></div>
         <div class="sd-flow-controls">

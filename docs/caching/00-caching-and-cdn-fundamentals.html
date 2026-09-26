@@ -34,6 +34,19 @@
       <h1 data-page-title>Caching &amp; CDN Fundamentals</h1>
       <p class="sd-study-prompt" data-page-subtitle>Caching layers, cache-aside vs write-through vs write-behind, eviction and invalidation, cache stampede, Redis vs Memcached, and CDN edge caching.</p>
 
+      <h2 id="interview-answer">Interview Answer — What Is Caching?</h2>
+      <p>Caching is keeping a copy of data in a faster, closer storage layer so that repeated reads can be answered without going back to the slower source of truth — usually a database or an origin server. A cache can live in the browser, at a CDN edge, in a reverse proxy, in a shared store such as Redis, or inside the application process itself.</p>
+      <p>Caching exists because the same data is read far more often than it changes. Without a cache, every read pays a full network round trip and puts load on the database; with one, most reads are answered from memory in microseconds to a few milliseconds, and the database only sees the misses. The cause → effect chain is: a request checks the cache → on a <strong>hit</strong> it returns immediately → on a <strong>miss</strong> it reads the source of truth, returns the result, and stores a copy so the next request becomes a hit.</p>
+      <p>The price is <strong>staleness</strong>: the cached copy can drift away from the source of truth. That is why every cache design has to answer three questions — which caching strategy writes the data (cache-aside, write-through, write-behind), which eviction policy frees memory (LRU, LFU) and which TTL bounds freshness, and how a change invalidates the old copy. A <strong>CDN</strong> is the same idea applied at the network edge: geographically distributed caches that serve static and cacheable responses from the location nearest to the user.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Caching stores a copy of frequently read data in a faster layer — browser, CDN, Redis, or process memory — so most reads skip the database or origin. The most common pattern is cache-aside: check the cache, on a miss read the database and populate the cache, and on a write update the database and invalidate the key. Every cache trades some staleness for speed, so I always state the strategy, the eviction policy, the TTL, and how the data gets invalidated."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If a cache makes reads faster, can adding one ever make the system less reliable?</strong></p>
+      <p><strong>A:</strong> Yes. A cache does not crash when it is wrong — it quietly serves stale data if <a href="#invalidation">invalidation</a> is missed, for example when a backfill script writes directly to the database. And if a hot key expires, thousands of concurrent requests miss at the same moment and hit the database together — a <a href="#cache-stampede">cache stampede</a> — which can take down a database that was sized for the cache-hit traffic. The database must be protected with request coalescing, TTL jitter, or stale-while-revalidate, and the system must be designed so a cold or failed cache degrades performance instead of availability.</p>
+
       <h2>Why caching exists</h2>
       <p>Every cache trades a little staleness for a lot of speed: reading from memory (nanoseconds–microseconds)
       instead of making a network round trip to a database or an origin server (single-digit to hundreds of
@@ -74,7 +87,7 @@
       <li><strong>TTL / expiration</strong> — every entry gets a time budget regardless of memory pressure. Used alongside LRU/LFU, not instead of it — TTL is the main tool for bounding <em>freshness</em>, eviction policy is the tool for bounding <em>memory</em>.</li>
       </ul>
 
-      <h2>Invalidation — the genuinely hard part</h2>
+      <h2 id="invalidation">Invalidation — the genuinely hard part</h2>
       <p>"There are only two hard things in Computer Science: cache invalidation and naming things" isn't a joke
       about implementation effort, it's about correctness: a stale cache doesn't crash — it just quietly serves
       wrong answers.</p>
@@ -86,7 +99,7 @@
       <li><strong>Stale-while-revalidate</strong> — serve the stale value immediately, kick off a background refresh, the next request gets the fresh value. Trades a bounded amount of staleness for zero-latency cache misses; it's the pattern CDNs use by default (see below).</li>
       </ul>
 
-      <h2>Cache stampede (thundering herd)</h2>
+      <h2 id="cache-stampede">Cache stampede (thundering herd)</h2>
       <p>A hot key expires, and every one of the thousands of requests that would have hit the cache in that
       instant now misses at the same moment and hammers the database simultaneously — often hard enough to take
       it down, which is worse than never having had a cache at all.</p>

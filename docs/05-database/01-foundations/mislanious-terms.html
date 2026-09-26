@@ -29,6 +29,19 @@
     <main>
       <p class="breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Database / Miscellaneous Database Terms</p>
       <h1 data-page-title>Miscellaneous Database Terms</h1>
+      <h2 id="interview-answer">Interview Answer — What Are Database Integrity Constraints?</h2>
+      <p>An integrity constraint is a rule declared on a table that the database enforces on every insert, update, and delete, rejecting any change that would break it. The common constraints are <code>NOT NULL</code> (a value is required), <code>UNIQUE</code> (no duplicates), <code>PRIMARY KEY</code> (unique and not null — the row's identifier), <code>FOREIGN KEY</code> (the value must exist in another table), <code>CHECK</code> (a condition such as <code>price &gt;= 0</code>), and <code>DEFAULT</code> values.</p>
+      <p>Constraints exist because data is written by more than one piece of code. Validation in the application only covers that application's code path; migrations, admin scripts, a second service, or a bug can all write directly to the tables. With the rule in the database, the cause → effect chain is: any writer attempts an invalid change → the database raises an error → the statement (or the whole transaction) is rolled back → the invalid data is never stored. That makes the data trustworthy for every reader, regardless of who wrote it.</p>
+      <p>The same page covers <strong>concurrency</strong> — many transactions reading and writing at the same time — which is the other half of keeping data correct: constraints stop individually invalid values, while transactions, isolation, and locking stop concurrent changes from interfering with each other (see <a href="#concurrency-in-databse">concurrency in databases</a>).</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Integrity constraints are rules the database enforces on every write — NOT NULL, UNIQUE, PRIMARY KEY, FOREIGN KEY, and CHECK. If a write violates one, the database rejects it and rolls the change back, so invalid data can't get in no matter which application, script, or migration wrote it. I validate in the application for good error messages, but I rely on database constraints for correctness, alongside transactions and isolation to handle concurrent changes."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If the application already checks that an email is unique before inserting, do you still need a UNIQUE constraint?</strong></p>
+      <p><strong>A:</strong> Yes. The application's check is a race: two sign-up requests for the same email can both run <code>SELECT … WHERE email = ?</code>, both see no match, and both insert — leaving two accounts with one email. Only a <code>UNIQUE</code> constraint (backed by a unique index) is checked atomically by the database, so the second insert fails. The application should still handle that error gracefully and return "email already registered." The same reasoning applies to foreign keys versus application-side existence checks.</p>
+
       <h2 id="integrity-constraine-in-db">integrity constraine in DB</h2>
 <p>A constraint in a database is a rule applied to a table&#39;s columns to limit the type of data that can be stored in them. Constraints ensure the accuracy and reliability of the data in the database. 🔒 They are used to enforce business rules and maintain the integrity of the data. If a data manipulation operation (like an INSERT, UPDATE, or DELETE) violates a constraint, the operation is automatically rolled back, preventing the invalid data from being saved.</p>
 <h2 id="-common-types-of-constraints">** Common Types of Constraints</h2>

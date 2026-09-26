@@ -30,6 +30,19 @@
       <p class="breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Web Servers / Web Servers</p>
       <h1 data-page-title>Web Servers</h1>
       <p>Perfect 👍 I’ll build you a <strong>comparison table</strong> that covers the major languages &amp; frameworks, whether they come with a built-in server, and what’s commonly used in production.</p>
+<h2 id="interview-answer">Interview Answer — What Is a Web Server vs. an Application Server?</h2>
+<p>A <strong>web server</strong> (HTTP server) is a program that accepts HTTP connections from clients, serves static files, terminates TLS, and forwards dynamic requests — examples are Nginx, Apache, and Caddy. An <strong>application server</strong> is the process that runs your application code and produces dynamic responses — for example Gunicorn running a Django app, PHP-FPM running a Laravel app, or Tomcat running a Java app.</p>
+<p>Web server vs. application server — the difference is responsibility. Some languages ship a production-ready HTTP server inside the runtime (Node.js's <code>http</code> module, Go's <code>net/http</code>, ASP.NET Core's Kestrel, Rust's async servers), so the application is its own server. Others do not: Python, Ruby, PHP, and Perl frameworks come with development servers only, and in production they run under a separate application server (Gunicorn/Uvicorn, Puma, PHP-FPM, PSGI) that speaks a language-specific interface such as WSGI or ASGI. See <a href="wsgi.html">WSGI Explained</a> for the Python case in detail.</p>
+<p>Either way, production deployments almost always put a web server or reverse proxy in front. The cause → effect chain is: the browser connects to Nginx → Nginx terminates TLS, serves static assets directly, and applies limits and buffering → it forwards only dynamic requests to the application server → the application server runs the code and returns the response through Nginx. This keeps slow clients, TLS, and static files off the application processes and lets one proxy load-balance across several of them.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"A web server like Nginx handles HTTP itself — connections, TLS, static files, reverse proxying, and load balancing — while an application server runs the application code. Node, Go, .NET, and Rust include a production HTTP server in the runtime; Python, Ruby, and PHP need a separate app server like Gunicorn, Puma, or PHP-FPM. In production I put Nginx or a load balancer in front of either kind, so the app processes only handle dynamic requests."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: Node.js and Go have built-in HTTP servers — so do they still need Nginx?</strong></p>
+<p><strong>A:</strong> They do not strictly need it — a Go or Node process can serve HTTP directly — but most production setups still put a reverse proxy or load balancer in front. It terminates TLS and renews certificates, serves static files efficiently, buffers slow clients so they don't tie up application connections, enforces limits, and distributes traffic across multiple application instances. In cloud or Kubernetes deployments that role is often played by a managed load balancer or an Ingress controller instead of a hand-configured Nginx, but the layering is the same.</p>
+
 <hr>
 <h1 id="🌍-web-servers-across-languages--frameworks">🌍 Web Servers Across Languages &amp; Frameworks</h1>
 <table>

@@ -55,6 +55,19 @@
       </ul>
       <div class="sd-study-note warning"><span class="sd-note-title">Important</span><p>These queries are primarily diagnostic. Do not terminate database sessions until you understand which application/service owns them.</p></div>
 
+      <h2 id="interview-answer">Interview Answer — How Do You Troubleshoot "Too Many Connections" in PostgreSQL?</h2>
+      <p>"Too many connections" (<code>FATAL: sorry, too many clients already</code>) means PostgreSQL has reached its <code>max_connections</code> limit and refuses new connections. Troubleshooting it means finding out <em>who</em> holds the existing connections and <em>what state</em> they are in, using the <code>pg_stat_activity</code> system view, which has one row per connection with its user, application name, client IP, state, current or last query, and timing columns.</p>
+      <p>The investigation matters because the limit is usually hit by connections that are open but not doing useful work, not by real load. The cause → effect chains to distinguish are: many <strong>active</strong> connections → queries are slow or traffic is high → look at long-running queries and locks; many <strong>idle</strong> connections → application pools are oversized or too many instances each keep their own pool; many <strong>idle in transaction</strong> connections → application code opened a transaction and never committed or rolled back, which also holds locks and blocks vacuum (see <a href="#idle-in-transaction">idle in transaction sessions</a>).</p>
+      <p>The workflow on this page follows that order (see <a href="#investigation-workflow">the recommended workflow</a>): compare current usage against <code>max_connections</code> → group by state → group by IP, user, and application to find the source → inspect active and long-running queries → check idle-in-transaction and old connections → fix the cause in the application or pool configuration rather than only raising the limit or killing sessions.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"When Postgres says too many connections, I query pg_stat_activity to see who holds them: count by state, then group by client IP, user, and application name. Many active connections mean slow queries or real load; many idle ones mean oversized pools across too many instances; and 'idle in transaction' means the application isn't closing transactions, which also holds locks. I fix the cause — pool sizes, leaks, slow queries — and add a pooler like PgBouncer, rather than just raising max_connections or killing sessions."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Why not just raise max_connections to a much larger number?</strong></p>
+      <p><strong>A:</strong> Because in PostgreSQL every connection is a separate server process with its own memory, and settings such as <code>work_mem</code> are allocated per operation within those processes. Raising the limit much higher increases memory pressure and CPU context switching and can make the database slower or run it out of memory, while the real cause — a leak, idle-in-transaction sessions, or oversized pools — keeps growing into the new limit. The durable fix is to use fewer, better-used connections: right-sized application pools and a transaction-level pooler such as PgBouncer.</p>
+
       <h2>1. Check Current Connection Usage</h2>
       <h3>Query</h3>
       <pre><code>SELECT
@@ -271,7 +284,7 @@ ORDER BY idle_for DESC;</code></pre>
  21294 | 10.0.1.207  | idle  | 17 hours       | 17 hours</code></pre>
       <p>A high number of idle connections can indicate a large application connection pool.</p>
 
-      <h2>8. Find <code>idle in transaction</code> Sessions</h2>
+      <h2 id="idle-in-transaction">8. Find <code>idle in transaction</code> Sessions</h2>
       <h3>Query</h3>
       <pre><code>SELECT
     pid,
@@ -420,7 +433,7 @@ ORDER BY connections DESC;</code></pre>
  402</code></pre>
       <p>This is the maximum number of PostgreSQL client connections allowed by the configuration.</p>
 
-      <h2>14. Recommended Investigation Workflow</h2>
+      <h2 id="investigation-workflow">14. Recommended Investigation Workflow</h2>
       <p>When the application reports:</p>
       <pre><code>Too many connections</code></pre>
       <p>or:</p>

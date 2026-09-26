@@ -30,6 +30,19 @@
       <p class="breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Database / PostgreSQL Views Explained</p>
       <h1 data-page-title>PostgreSQL Views Explained</h1>
       <p>Got it 👍 Let me break it down with a <strong>clear real-world analogy</strong> so you fully understand what a <strong>View</strong> in PostgreSQL is.</p>
+<h2 id="interview-answer">Interview Answer — What Is a View in PostgreSQL?</h2>
+<p>A <strong>view</strong> is a named, saved SQL query that you can select from as if it were a table. It stores no data of its own: every time you query a view, PostgreSQL runs the underlying query against the current tables. A <strong>materialized view</strong> is different — it runs the query once and <em>stores</em> the result on disk, and that stored result only changes when you run <code>REFRESH MATERIALIZED VIEW</code>.</p>
+<p>Views exist to simplify and control access to data. A complex join — for example customers, orders, and products combined into a "customer order summary" — can be written once and reused by many queries and reports, instead of being copied into application code. Views can also hide columns or rows, so a reporting role can be granted access to the view but not to the underlying sensitive tables. Materialized views exist for performance: an expensive aggregation that would take seconds on every request is computed once and read in milliseconds.</p>
+<p>View vs. materialized view — the difference is <em>freshness versus speed</em>. A view is always current but costs as much as its query on every read; a materialized view is fast to read but shows data as of its last refresh (see <a href="#materialized-views">materialized views</a> below). The same page also covers the related building blocks of PostgreSQL: functions, sequences and <code>SERIAL</code>, data types, and aggregate functions.</p>
+
+<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+  <p>"A view is a saved query that behaves like a virtual table — it stores no data, and every query against it runs the underlying SQL on the live tables, so it's always up to date. I use views to reuse complex joins and to restrict what columns or rows a role can see. A materialized view stores the query result physically, so reads are fast, but the data is only as fresh as the last REFRESH — good for expensive dashboards and reports."</p>
+</div>
+
+<h3>One important interview follow-up</h3>
+<p><strong>Q: Does creating a view make the query faster?</strong></p>
+<p><strong>A:</strong> No. A regular view is only a stored query definition; PostgreSQL expands it into the outer query and plans the whole thing as if you had written the SQL yourself, so it runs as fast or as slow as that SQL — the indexes on the underlying tables are what matter. Only a <strong>materialized view</strong> precomputes and stores the result, and that speed comes at the cost of stale data between refreshes; <code>REFRESH MATERIALIZED VIEW CONCURRENTLY</code> (which requires a unique index on the view) lets reads continue during a refresh.</p>
+
 <hr>
 <h3 id="definition-recap"><strong>Definition Recap</strong></h3>
 <ul>
