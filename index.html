@@ -32,6 +32,7 @@
   --c-net:      #059669;   --c-net-bg:      #e6faf1;
   --c-obs:      #a16207;   --c-obs-bg:      #fef3c7;
   --c-web:      #4f46e5;   --c-web-bg:      #edecff;
+  --c-aws:      #c2570c;   --c-aws-bg:      #fff0e3;
   --c-dev:      #0d9488;   --c-dev-bg:      #e2fbf7;
   --c-plan:     #dc2626;   --c-plan-bg:     #ffecec;
   --c-proj:     #b45309;   --c-proj-bg:     #fff3e0;
@@ -46,7 +47,7 @@
     --shadow-hover: 0 10px 24px rgba(0,0,0,0.55);
     --frontend-bg:#0d1117;
     --c-frontend-bg:#0e1f3d; --c-k8s-bg:#101b33;--c-database-bg:#0d2417; --c-auth-bg:#26123d; --c-dist-bg:#062a31;
-    --c-msg-bg:#33190a; --c-storage-bg:#33081d; --c-caching-bg:#062338; --c-traffic-bg:#330d0a; --c-net-bg:#052a1e; --c-obs-bg:#2e2205; --c-web-bg:#181240; --c-dev-bg:#052e28;
+    --c-msg-bg:#33190a; --c-storage-bg:#33081d; --c-caching-bg:#062338; --c-traffic-bg:#330d0a; --c-net-bg:#052a1e; --c-obs-bg:#2e2205; --c-web-bg:#181240; --c-aws-bg:#33190a; --c-dev-bg:#052e28;
     --c-plan-bg:#320a0a; --c-proj-bg:#301c05; --c-misc-bg:#1e1140; --c-overview-bg:#1b2027;
   }
 }
@@ -509,7 +510,19 @@ a:hover { text-decoration: underline; }
       <h3>💾 Storage</h3>
       <ul><li><a href="docs/storage/storage-type.html">Storage Types</a></li></ul>
       <h3>🧊 Caching &amp; CDN</h3>
-      <ul><li><a href="docs/caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul>
+      <ul>
+        <li><a href="docs/caching/caching-roadmap.html">Caching Roadmap</a></li>
+        <li><a href="docs/caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li>
+        <li><a href="docs/caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li>
+        <li><a href="docs/caching/01a-browser-caching.html">01a. Browser Caching</a></li>
+        <li><a href="docs/caching/01b-cdn-caching.html">01b. CDN Caching</a></li>
+        <li><a href="docs/caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li>
+        <li><a href="docs/caching/01d-database-caching.html">01d. Database Caching</a></li>
+        <li><a href="docs/caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li>
+        <li><a href="docs/caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li>
+        <li><a href="docs/caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li>
+        <li><a href="docs/caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li>
+      </ul>
       <h3>🚦 Traffic Management</h3>
       <ul>
         <li><a href="docs/traffic/00-load-balancing.html">00. Load Balancing</a></li>
@@ -632,6 +645,7 @@ a:hover { text-decoration: underline; }
           <a href="docs/kubernetes/00-index.html" style="--a: var(--c-k8s)" data-section="Kubernetes">☸️ Kubernetes<small>Control plane, data plane, HA, networking</small></a>
           <a href="docs/storage/storage-type.html" style="--a: var(--c-storage)" data-section="Storage">💾 Storage<small>File, object, and block storage &amp; protocols</small></a>
           <a href="docs/observability-security/00-observability-fundamentals.html" style="--a: var(--c-obs)" data-section="Observability, Security & Ops">🛡️ Observability, Security &amp; Ops<small>Logs, metrics, traces, security, CI/CD</small></a>
+          <a href="docs/aws/00-aws-learning-path.html" style="--a: var(--c-aws)" data-section="AWS Learning">☁️ AWS Learning<small>Regions, IAM, VPC, EC2, S3, RDS, cost</small></a>
         </div></div>
         <div class="smap-arrow" aria-hidden="true">↓<span>the code reads and writes state</span></div>
         <div class="smap-row"><p class="smap-label">🗃️ Data &amp; Distributed Systems</p><p class="smap-why">Where state lives and how it stays correct when it is copied, split, and passed between services.</p><div class="smap-blocks">
@@ -729,8 +743,20 @@ a:hover { text-decoration: underline; }
             </ul>
           </div>
           <div class="card" style="--card-accent: var(--c-caching); --card-accent-bg: var(--c-caching-bg);">
-            <div class="icon-wrap">🧊</div><h2>Caching &amp; CDN</h2><p class="count">1 page</p>
-            <ul><li><a href="docs/caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul>
+            <div class="icon-wrap">🧊</div><h2>Caching &amp; CDN</h2><p class="count">11 pages</p>
+            <ul>
+              <li><a href="docs/caching/caching-roadmap.html">Caching Roadmap</a></li>
+              <li><a href="docs/caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li>
+              <li><a href="docs/caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li>
+              <li><a href="docs/caching/01a-browser-caching.html">01a. Browser Caching</a></li>
+              <li><a href="docs/caching/01b-cdn-caching.html">01b. CDN Caching</a></li>
+              <li><a href="docs/caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li>
+              <li><a href="docs/caching/01d-database-caching.html">01d. Database Caching</a></li>
+              <li><a href="docs/caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li>
+              <li><a href="docs/caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li>
+              <li><a href="docs/caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li>
+              <li><a href="docs/caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li>
+            </ul>
           </div>
           <div class="card" style="--card-accent: var(--c-storage); --card-accent-bg: var(--c-storage-bg);">
             <div class="icon-wrap">💾</div><h2>Storage</h2><p class="count">1 page</p>
@@ -750,6 +776,10 @@ a:hover { text-decoration: underline; }
               <li><a href="docs/observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li>
               <li><a href="docs/observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li>
             </ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-aws); --card-accent-bg: var(--c-aws-bg);">
+            <div class="icon-wrap">☁️</div><h2>AWS Learning</h2><p class="count">2 pages</p>
+            <ul><li><a href="docs/aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="docs/aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul>
           </div>
         </div>
       </div>
@@ -1100,7 +1130,7 @@ a:hover { text-decoration: underline; }
   // ---- categories: which top-level group each SITE_MAP section belongs to ----
   const CATEGORY = {
     'Kubernetes': 'infra', 'Networking': 'infra', 'Traffic Management': 'infra', 'Caching & CDN': 'infra',
-    'Storage': 'infra', 'Web Servers': 'infra', 'Observability, Security & Ops': 'infra',
+    'Storage': 'infra', 'Web Servers': 'infra', 'Observability, Security & Ops': 'infra', 'AWS Learning': 'infra',
     'Database': 'data', 'Distributed Database': 'data', 'Distributed Systems': 'data', 'Messaging & Queues': 'data',
     'Front-End': 'app', 'Authentication': 'app', 'Dev Principles': 'app', 'Miscellaneous': 'app',
     'Planning & Roadmap': 'plan', 'Project Walkthroughs': 'plan', 'Overview': 'plan'
@@ -1109,7 +1139,7 @@ a:hover { text-decoration: underline; }
     'Kubernetes': 'k8s', 'Front-End': 'frontend', 'Database': 'database', 'Authentication': 'auth',
     'Distributed Systems': 'dist', 'Distributed Database': 'dist', 'Messaging & Queues': 'msg', 'Storage': 'storage',
     'Caching & CDN': 'caching', 'Traffic Management': 'traffic', 'Networking': 'net',
-    'Observability, Security & Ops': 'obs', 'Web Servers': 'web', 'Dev Principles': 'dev',
+    'Observability, Security & Ops': 'obs', 'Web Servers': 'web', 'AWS Learning': 'aws', 'Dev Principles': 'dev',
     'Planning & Roadmap': 'plan', 'Project Walkthroughs': 'proj', 'Miscellaneous': 'misc'
   };
   // Site map: badge each topic block with its live page count from SITE_MAP.
@@ -1343,7 +1373,17 @@ a:hover { text-decoration: underline; }
     { title: "Event Sourcing & CQRS", url: "docs/sqs/04-event-sourcing-and-cqrs.html" },
     { title: "Microservice Resilience Patterns", url: "docs/sqs/05-microservice-resilience-patterns.html" },
     { title: "Storage Types", url: "docs/storage/storage-type.html" },
+    { title: "Caching Roadmap", url: "docs/caching/caching-roadmap.html" },
     { title: "Caching & CDN Fundamentals", url: "docs/caching/00-caching-and-cdn-fundamentals.html" },
+    { title: "Types of Cache", url: "docs/caching/01-types-of-cache.html" },
+    { title: "Browser Caching", url: "docs/caching/01a-browser-caching.html" },
+    { title: "CDN Caching", url: "docs/caching/01b-cdn-caching.html" },
+    { title: "Reverse Proxy & API Gateway Caching", url: "docs/caching/01c-proxy-and-gateway-caching.html" },
+    { title: "Database Caching", url: "docs/caching/01d-database-caching.html" },
+    { title: "DNS, OS & Hardware Caching", url: "docs/caching/01e-dns-os-hardware-caching.html" },
+    { title: "In-Memory Caching Strategies", url: "docs/caching/02-in-memory-caching-strategies.html" },
+    { title: "In-Memory Eviction Policies", url: "docs/caching/03-in-memory-eviction-policies.html" },
+    { title: "In-Memory Cache Problems", url: "docs/caching/04-in-memory-cache-problems.html" },
     { title: "Load Balancing", url: "docs/traffic/00-load-balancing.html" },
     { title: "Rate Limiting & Throttling", url: "docs/traffic/01-rate-limiting-and-throttling.html" },
     { title: "Networking Fundamentals", url: "docs/networking/00-networking-fundamentals.html" },

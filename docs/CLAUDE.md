@@ -89,6 +89,7 @@ the user exactly what's inconsistent) before considering the task done.
 `Kubernetes` · `Authentication` · `Front-End` · `Database` · `Distributed Systems` ·
 `Distributed Database` · `Messaging & Queues` · `Storage` · `Caching & CDN` ·
 `Traffic Management` · `Networking` · `Observability, Security & Ops` · `Web Servers` ·
+`AWS Learning` ·
 `Dev Principles` · `Planning & Roadmap` · `Project Walkthroughs` · `Miscellaneous`
 
 `Authentication` (`docs/authentication/`) holds login/session, OAuth/social-login,

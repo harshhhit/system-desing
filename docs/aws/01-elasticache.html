@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "01-elasticache" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon ElastiCache · Infra Owl</title>
+<link rel="stylesheet" href="../assets/site.css?v=8">
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+  .faq-q { margin-bottom: 0.2rem; }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=7" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a class="active" href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / AWS Learning / Amazon ElastiCache</p>
+      <h1 data-page-title>Amazon ElastiCache</h1>
+      <p class="sd-study-prompt" data-page-subtitle>AWS's managed Valkey, Redis OSS and Memcached service, following the User Guide's main chapters &mdash; serverless vs node-based, engines, caching strategies, Multi-AZ, durability, Global Datastore, scaling, data tiering, security, monitoring &mdash; plus the full official FAQ.</p>
+
+      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+
+      <p>This page follows the main chapters of the <a href="https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/WhatIs.html" target="_blank" rel="noopener">Amazon ElastiCache User Guide</a> and ends with the official <a href="https://aws.amazon.com/elasticache/faqs/" target="_blank" rel="noopener">ElastiCache FAQs</a> (<a href="#faq">jump to the FAQ</a>), with the caching concepts cross-linked to this site's <a href="../caching/caching-roadmap.html">Caching</a> section. AWS changes limits, versions and prices often, so check the linked docs before quoting a number.</p>
+
+      <h2 id="interview-answer">Interview Answer — What Is Amazon ElastiCache?</h2>
+      <p><strong>Amazon ElastiCache</strong> is AWS's fully managed, in-memory data store and cache service. It runs three open-source-compatible engines — <strong>Valkey</strong>, <strong>Redis OSS</strong>, and <strong>Memcached</strong> — and AWS handles the hardware, patching, monitoring, failure detection, node replacement, and backups. You use it in one of two ways: <strong>ElastiCache Serverless</strong>, where you just create a cache by name and it scales automatically, or a <strong>node-based cluster</strong>, where you choose the node type, number of nodes/shards, and where they are placed across Availability Zones.</p>
+      <p>It exists because running Redis or Memcached yourself at production quality is real work: replicas and automatic failover across AZs, resharding without downtime, patching, backups, TLS, and monitoring. ElastiCache turns that into configuration. The cause → effect chain for a typical app: an application on EC2, ECS, EKS, or Lambda checks ElastiCache before RDS/Aurora/DynamoDB → hot reads come back in microseconds from memory → the database only handles misses and writes → you can run a smaller database and still give users faster responses.</p>
+      <p><strong>ElastiCache vs. running Redis on EC2 — the difference is</strong> who owns operations. On EC2 you control every setting but you build HA, failover, backups, and scaling yourself. With ElastiCache, AWS does those, and in return some things are restricted (for example, some admin commands are disabled and configuration goes through <a href="#parameter-groups">parameter groups</a>). ElastiCache is still a <strong>cache</strong> first: unless you enable the newer <a href="#durability">durability</a> feature, treat the data as something you can rebuild from the source of truth.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"ElastiCache is AWS's managed in-memory cache running Valkey, Redis OSS, or Memcached. I put it in front of RDS, Aurora, or DynamoDB for microsecond reads using lazy loading with TTLs. Serverless is the default when I don't want to size anything — it scales automatically and bills per GB and per ECPU; node-based clusters give me control over node types, shards, and replicas. For HA I use Valkey or Redis OSS with Multi-AZ and automatic failover, cluster mode for sharding, and Global Datastore for cross-Region reads and disaster recovery. It runs inside my VPC, secured with security groups, TLS, encryption at rest, and IAM or RBAC authentication."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If ElastiCache fails over to a replica, is any data lost?</strong></p>
+      <p><strong>A:</strong> Possibly, with standard replication. Valkey/Redis OSS replication is asynchronous, so writes acknowledged by the primary but not yet copied to the replica are lost when the replica is promoted. The Redis-style append-only file (AOF) doesn't fix this in a managed failover because it lives on the failed node's local disk. If you need zero data loss, the options are to treat ElastiCache as a cache that can be rebuilt from the database, or to use ElastiCache <a href="#durability">durability</a> with <strong>synchronous</strong> writes, which persists each write to a Multi-AZ transactional log before acknowledging (at single-digit-millisecond write latency). Amazon MemoryDB is the related AWS service built as a durable, Redis-compatible primary database.</p>
+
+      <h2 id="what-is">1. What is ElastiCache — the two deployment options</h2>
+      <h3 id="serverless">ElastiCache Serverless</h3>
+      <ul>
+        <li><strong>What it is:</strong> create a highly available cache in under a minute by giving it a name; no instances, nodes, or clusters to configure. ElastiCache continuously watches memory, compute, and network use and scales up and out to match — the FAQ describes scaling up while scale-out starts in parallel, with no downtime.</li>
+        <li><strong>Endpoint:</strong> one endpoint that hides the cluster design. All serverless caches run <strong>Multi-AZ</strong>.</li>
+        <li><strong>Connection types:</strong> VPC, or (for Valkey 9.0 and later) a <strong>public endpoint</strong> reachable over the internet without a VPC — every connection must use IAM authentication and TLS 1.3.</li>
+        <li><strong>Engines (per the user guide):</strong> Valkey 7.2 and later, Memcached 1.6.22 and later, Redis OSS 7.1.</li>
+        <li><strong>Billing:</strong> per GB of data stored and per <strong>ECPU</strong> (ElastiCache Processing Unit — a measure of the compute and data transferred by your requests), with no node-hour charges. Valkey serverless has a lower minimum storage charge (100 MB) than Redis OSS.</li>
+        <li><strong>Use when:</strong> traffic is unpredictable or spiky, or you want zero capacity planning.</li>
+      </ul>
+      <h3 id="node-based">Node-based (self-designed) clusters</h3>
+      <ul>
+        <li><strong>What it is:</strong> you pick the node type (e.g. <code>cache.r7g.large</code>), how many nodes/shards, and which AZs they live in. AWS still manages hardware, monitoring, node replacement, and patching; you choose when to apply engine patches.</li>
+        <li><strong>Options only here:</strong> single-AZ or Multi-AZ, cluster mode enabled or disabled, <a href="#data-tiering">data tiering</a>, <a href="#global-datastore">Global Datastore</a>, reserved nodes, <a href="#durability">durability</a> (Valkey 9.0).</li>
+        <li><strong>Billing:</strong> per node-hour, with <strong>reserved nodes</strong> for 1- or 3-year discounts.</li>
+        <li><strong>Use when:</strong> load is steady and predictable (reserved nodes are cheaper), or you need a feature only node-based clusters offer.</li>
+      </ul>
+      <p><strong>Serverless vs. node-based — the difference is</strong> who sizes the cache: with serverless, ElastiCache sizes and scales it and you pay per use; with node-based, you size it, you pay per node-hour, and you are responsible for having enough capacity.</p>
+
+      <h2 id="how-it-works">2. How it works, related services, and use cases</h2>
+      <p>ElastiCache sits between your application and its data store. The application (on EC2, ECS, EKS, Lambda, or EMR) connects to the cache endpoint inside your VPC using a normal Valkey/Redis or Memcached client library — no AWS-specific SDK is needed for data operations. The AWS SDK/CLI/console are only used to create and manage the cache.</p>
+      <ul>
+        <li><strong>Related services:</strong> it is used as a caching layer in front of Amazon RDS, Aurora, DocumentDB, and DynamoDB; CloudWatch receives its metrics; S3 stores backups; KMS encrypts data at rest; IAM controls management and (optionally) data access.</li>
+        <li><strong>Use cases in the guide and FAQ:</strong> database query caching, session stores, leaderboards (sorted sets), real-time analytics and counters, rate limiting, pub/sub messaging, geospatial queries, and — in newer Valkey versions — vector search for generative-AI workloads (semantic caching, retrieval), full-text search, and Bloom filters.</li>
+        <li><strong>Getting started paths in the guide:</strong> create a Valkey/Redis OSS/Memcached serverless cache, a Python tutorial, and connecting Lambda to ElastiCache inside a VPC (Lambda must be attached to the VPC's subnets and allowed by the cache's security group).</li>
+      </ul>
+
+      <h2 id="components">3. Components and terminology</h2>
+      <table>
+        <tr><th>Term</th><th>What it means</th></tr>
+        <tr><td><strong>Node</strong></td><td>The smallest building block: one fixed-size chunk of network-attached RAM running one engine instance. Has a node type (family + size).</td></tr>
+        <tr><td><strong>Shard (node group)</strong></td><td>Valkey/Redis OSS: one primary node plus 0–5 read replicas, all holding the same slice of the data.</td></tr>
+        <tr><td><strong>Cluster / replication group</strong></td><td>The whole cache: one or more shards. ("Replication group" is the API name for a Valkey/Redis OSS cluster with replicas.)</td></tr>
+        <tr><td><strong>Cluster mode disabled</strong></td><td>One shard: all data on one primary, scale reads with replicas, scale writes/memory only vertically (bigger node).</td></tr>
+        <tr><td><strong>Cluster mode enabled</strong></td><td>Data partitioned across multiple shards by hash slot (16,384 slots), so memory and write throughput scale horizontally; supports online resharding. Clients must be cluster-aware. The limit is a few hundred shards per cluster — check the Quotas chapter for current numbers.</td></tr>
+        <tr><td><strong>Endpoints</strong></td><td>Cluster mode disabled: a <em>primary endpoint</em> (writes, follows failover) and a <em>reader endpoint</em> (spreads reads across replicas). Cluster mode enabled: a <em>configuration endpoint</em> from which the client discovers the topology. Memcached: a configuration endpoint used by <em>Auto Discovery</em>. Individual <em>node endpoints</em> exist too, but applications should use the higher-level ones so failover is transparent.</td></tr>
+        <tr><td><strong>Cache subnet group</strong></td><td>The set of VPC subnets (ideally in several AZs) where nodes may be placed.</td></tr>
+        <tr><td><strong>Parameter group</strong></td><td>Engine configuration (e.g. <code>maxmemory-policy</code>, <code>timeout</code>); see <a href="#parameter-groups">below</a>.</td></tr>
+        <tr><td><strong>Security group</strong></td><td>VPC firewall rules; allow the engine port (6379 for Valkey/Redis OSS, 11211 for Memcached by default) only from the application's security group.</td></tr>
+      </table>
+      <p>Concept background: <a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a> (how keys are spread across nodes) and <a href="../caching/01-types-of-cache.html#distributed-cache">Distributed cache</a>.</p>
+
+      <h2 id="choosing-engine">4. Comparing Valkey, Memcached, and Redis OSS</h2>
+      <p><strong>Choose Memcached</strong> (per the guide) if you need the simplest model, want large multi-core/multi-threaded nodes, need to scale out and in by adding and removing nodes, and are caching simple objects. <strong>Choose Valkey or Redis OSS</strong> if you need rich data types, replication and automatic failover, backups, pub/sub, sorted sets, geospatial indexes, encryption and compliance features, or the newer Valkey capabilities. Valkey is the open-source, Linux Foundation-governed fork of Redis; ElastiCache for Valkey is priced lower than Redis OSS (the FAQ says 20% lower node-based and up to 33% lower serverless).</p>
+      <table>
+        <tr><th>Feature</th><th>Memcached</th><th>Valkey / Redis OSS (cluster mode disabled)</th><th>Valkey / Redis OSS (cluster mode enabled)</th></tr>
+        <tr><td>Data types</td><td>simple (strings, objects)</td><td>complex: strings, sets, sorted sets, lists, hashes, bitmaps, HyperLogLog</td><td>complex, plus geospatial indexes</td></tr>
+        <tr><td>Data partitioning</td><td>yes (client-side across nodes)</td><td>no</td><td>yes</td></tr>
+        <tr><td>Online resharding</td><td>no</td><td>no</td><td>yes</td></tr>
+        <tr><td>Multi-threaded</td><td>yes</td><td>no</td><td>no</td></tr>
+        <tr><td>Replication / HA</td><td>no</td><td>yes</td><td>yes</td></tr>
+        <tr><td>Automatic failover</td><td>no</td><td>optional</td><td>required</td></tr>
+        <tr><td>Backup and restore</td><td>serverless caches only</td><td>yes</td><td>yes</td></tr>
+        <tr><td>Pub/Sub, sorted sets</td><td>no</td><td>yes</td><td>yes</td></tr>
+        <tr><td>Encryption in transit</td><td>1.6.12 and later</td><td>yes</td><td>yes</td></tr>
+        <tr><td>Data tiering</td><td>no</td><td>6.2 and later</td><td>6.2 and later</td></tr>
+        <tr><td>Bloom filters / vector search / full-text search</td><td>no</td><td>Valkey 8.1 / 8.2 / 9.0 and later</td><td>Valkey 8.1 / 8.2 / 9.0 and later</td></tr>
+        <tr><td>Durability (Multi-AZ transactional log)</td><td>no</td><td>no</td><td>Valkey 9.0 and later</td></tr>
+      </table>
+      <p>Version highlights listed in the guide: Valkey 8.0 — up to 20% better memory efficiency, per-slot metrics, dual-channel replication, async I/O threading; 8.1 — a new memory-efficient hash table, native Bloom filters, <code>COMMANDLOG</code>; 8.2 — native vector search; 9.0 — full-text, hybrid and aggregation search, hash-field expiration (per-field TTL), numbered databases in cluster mode, atomic slot migration, durability. Redis OSS 6.0 added RBAC; 6.2 added data tiering; 7.0 added Functions, sharded pub/sub, and ACL improvements.</p>
+      <div class="sd-study-note warning"><span class="sd-note-title">You can upgrade, not downgrade</span><p>After a cache is created you can move to a newer engine version but not back to an older one — downgrading means creating a new cache. Test new versions on a separate cluster first. (Moving from Redis OSS to Valkey is supported in place; see the <a href="#faq-valkey">Valkey FAQ</a>.)</p></div>
+      <p>General comparison of the two engines: <a href="../caching/00-caching-and-cdn-fundamentals.html#redis-vs-memcached">Redis vs. Memcached</a>.</p>
+
+      <h2 id="caching-strategies">5. Best practices and caching strategies (from the guide)</h2>
+      <p>The guide describes the same strategies covered in <a href="../caching/02-in-memory-caching-strategies.html">In-Memory Caching Strategies</a>, in AWS's terms:</p>
+      <ul>
+        <li><strong>Lazy loading</strong> (cache-aside) — load into the cache only on a miss. Advantages: only requested data is cached; a node failure isn't fatal (a replacement empty node just causes more misses). Disadvantages: a <strong>miss penalty of three trips</strong> (cache, database, cache write) and <strong>stale data</strong>, because nothing updates the cache when the database changes.</li>
+        <li><strong>Write-through</strong> — update the cache whenever you write the database. Advantages: cache data is never stale; users tolerate write latency better than read latency. Disadvantages: <strong>missing data</strong> on a new or replaced node until it is written again (combine with lazy loading), and <strong>cache churn</strong> — most written data is never read.</li>
+        <li><strong>Adding TTL</strong> — give every write a time to live (seconds or milliseconds for Valkey/Redis OSS, seconds for Memcached). Combining lazy loading + write-through + TTL gets the benefits of each while keeping data from getting too stale and the cache from filling with unused data.</li>
+        <li><strong>Read replicas</strong> — read from replicas instead of the primary to scale reads (with serverless, reads from replicas are made through a separate reader port; replica reads can be slightly behind the primary).</li>
+      </ul>
+      <p>The guide's lazy-loading pseudocode, as a runnable shape:</p>
+      <pre><code>def get_customer(customer_id):
+    record = cache.get(customer_id)
+    if record is None:
+        record = db.query("SELECT * FROM Customers WHERE id = %s", customer_id)
+        cache.set(customer_id, record, ex=300)
+    return record</code></pre>
+      <p>Other best practices in the guide and Well-Architected Lens: reserve memory for replication and background saves (the <code>reserved-memory-percent</code> parameter), size so that <code>DatabaseMemoryUsagePercentage</code> stays below eviction thresholds, use connection pooling, handle failover in clients (retry with backoff and reconnect to the primary endpoint), and avoid long-running commands such as <code>KEYS</code> in production. For failure modes such as stampedes, see <a href="../caching/04-in-memory-cache-problems.html">Cache Problems</a>.</p>
+
+      <h2 id="ha">6. High availability: replication groups and Multi-AZ</h2>
+      <ol>
+        <li>Each Valkey/Redis OSS shard has a primary and up to five read replicas, placed in different AZs.</li>
+        <li>With <strong>Multi-AZ with automatic failover</strong> enabled, ElastiCache detects a failed primary and promotes a replica.</li>
+        <li>It updates the DNS record of the primary endpoint to point at the promoted replica, so clients using the endpoint reconnect to the new primary.</li>
+        <li>A replacement node is provisioned in the background (the FAQ says a new healthy node joins within about six minutes).</li>
+      </ol>
+      <p>Multi-AZ is required for the 99.99% availability SLA on node-based clusters; serverless caches are always Multi-AZ. Memcached has no replication: a failed node is replaced empty, and the keys it held are simply misses (which lazy loading tolerates). Gotcha: replication is asynchronous, so a failover can lose the most recent writes — see the <a href="#interview-answer">follow-up</a> and <a href="../distributed-database/05-replication-lag.html">Replication Lag</a>. Read replicas must be in the same Region as the primary; cross-Region copies need Global Datastore.</p>
+
+      <h2 id="durability">7. Durability</h2>
+      <p>For node-based Valkey clusters (Valkey 9.0, cluster mode enabled), <strong>durability</strong> persists data in a distributed <strong>Multi-AZ transactional log</strong>, so data survives even if all cache nodes fail, and replicas recover without slowing the primary. Two write modes:</p>
+      <ul>
+        <li><strong>Synchronous writes</strong> — persisted across two AZs before responding: zero data loss, single-digit-millisecond write latency. For applications that can't tolerate losing a write.</li>
+        <li><strong>Asynchronous writes</strong> — respond first, persist afterwards: microsecond latency, with up to about 10 seconds of possible data loss. Suitable for most workloads.</li>
+      </ul>
+      <p><strong>Durability vs. AOF — the difference is</strong> where the log lives: Redis-style AOF writes to the local disk of a single node in one AZ, so a node loss or failover can still lose data or become inconsistent; the ElastiCache transactional log is stored across AZs, independently of the nodes.</p>
+
+      <h2 id="global-datastore">8. Replication across Regions: Global Datastore</h2>
+      <ul>
+        <li>A node-based feature: one <strong>primary</strong> cluster (reads and writes) in one Region replicates to up to <strong>two secondary</strong> Regions (reads only), typically in under a second.</li>
+        <li><strong>Uses:</strong> low-latency local reads for users in other Regions, and cross-Region disaster recovery.</li>
+        <li><strong>Failover is manual:</strong> you promote a secondary to primary; it typically completes in under a minute. AWS gives no SLA for RPO/RTO, but typical RPO is under a second and RTO under a minute after promotion.</li>
+        <li><strong>Security:</strong> cross-Region traffic is encrypted in transit; each cluster can use its own customer-managed KMS key for encryption at rest.</li>
+      </ul>
+
+      <h2 id="snapshots">9. Snapshot and restore</h2>
+      <ul>
+        <li>Supported for Valkey, Redis OSS, and serverless Memcached (not node-based Memcached). Backups are stored in S3.</li>
+        <li>Manual snapshots, or automatic daily backups kept for up to 35 days. One free snapshot is included per active cache.</li>
+        <li>Deleting a cache keeps its manual snapshots (and you can take a final snapshot); automatic snapshots are deleted.</li>
+        <li>Snapshots can be exported to an S3 bucket and shared with another account in the same Region to warm-start a cluster there. Valkey can restore Redis OSS backups (both use the RDB format).</li>
+        <li>Gotcha: on node-based clusters, taking a snapshot of a busy primary uses extra memory (fork and copy-on-write) — take backups from a replica and keep <code>reserved-memory-percent</code> headroom.</li>
+      </ul>
+
+      <h2 id="scaling">10. Scaling ElastiCache</h2>
+      <ul>
+        <li><strong>Serverless</strong> — automatic, based on memory, compute, and network; you can set maximum limits for data and ECPUs to cap cost.</li>
+        <li><strong>Vertical (node-based)</strong> — change to a larger or smaller node type; for Valkey/Redis OSS with replicas this is done online.</li>
+        <li><strong>Horizontal, reads</strong> — add read replicas (up to five per shard).</li>
+        <li><strong>Horizontal, writes and memory</strong> — cluster mode enabled: add or remove shards with <strong>online resharding</strong> (hash slots move between shards while the cluster keeps serving). Auto Scaling policies can adjust shards or replicas based on CloudWatch metrics.</li>
+        <li><strong>Memcached</strong> — add/remove nodes; with Auto Discovery clients learn the new node list, but because keys are distributed by the client's hashing, changing the node count remaps some keys (misses until they refill).</li>
+        <li><strong>Modifying cluster mode</strong> — a cluster-mode-disabled cluster can be moved to cluster mode enabled (via a compatible transition step), which requires cluster-aware clients.</li>
+      </ul>
+
+      <h2 id="data-tiering">11. Data tiering</h2>
+      <p>On R6gd nodes (Valkey 7.2+ / Redis OSS 6.2+), data tiering adds local NVMe SSD to memory. When memory is full, ElastiCache automatically moves the <strong>least recently used</strong> items to SSD; when such an item is read, it is moved back into memory asynchronously. Keys and hot values stay in RAM. Designed for workloads that regularly access up to about 20% of the dataset: SSD reads add roughly 300 µs of latency, while in-memory items see no penalty. AWS cites nearly 5× more total capacity per node and over 60% savings versus memory-only nodes. Nearly all commands work unchanged, with a few documented feature limitations. It is an applied example of the <a href="../caching/03-in-memory-eviction-policies.html#lru">LRU</a> idea across two storage tiers.</p>
+
+      <h2 id="parameter-groups">12. Parameter groups and maintenance</h2>
+      <ul>
+        <li><strong>Parameter groups</strong> hold engine settings. Default groups can't be edited — create a custom group to change values such as <code>maxmemory-policy</code>, <code>timeout</code>, <code>notify-keyspace-events</code>, or <code>reserved-memory-percent</code>. Some changes apply immediately; others need a node reboot.</li>
+        <li><strong>Gotcha — the eviction policy default:</strong> ElastiCache's default parameter group for Valkey/Redis OSS uses <code>volatile-lru</code> (not open-source Redis's <code>noeviction</code>), so only keys with a TTL are evicted; if most keys have no TTL, writes fail with OOM errors when memory fills. For a pure cache, set <code>allkeys-lru</code> or <code>allkeys-lfu</code>. See <a href="../caching/03-in-memory-eviction-policies.html#redis-policies">Redis eviction policies</a>.</li>
+        <li><strong>Maintenance windows</strong> — a weekly window when AWS may apply patches and service updates; with Multi-AZ, updates are applied to replicas first and then fail over. Service updates can also be applied on demand.</li>
+        <li><strong>Engine versions and upgrading</strong> — node-based Memcached and Valkey/Redis OSS major/minor upgrades are applied when you choose (security patches may be applied in the maintenance window).</li>
+      </ul>
+
+      <h2 id="security">13. Security</h2>
+      <ul>
+        <li><strong>Network</strong> — caches live in your VPC (except Valkey serverless public endpoints). Security groups and network ACLs decide who can connect. ElastiCache can automatically set up the connection between an EC2 instance and a cache.</li>
+        <li><strong>Encryption in transit</strong> — TLS between clients and nodes, and between primary and replicas; AWS issues and renews the certificates.</li>
+        <li><strong>Encryption at rest</strong> — AWS KMS (AWS-managed or customer-managed keys) for data synced to disk, swap, and backups in S3.</li>
+        <li><strong>Authentication</strong> — the Valkey/Redis <code>AUTH</code> token, <strong>Role-Based Access Control (RBAC)</strong> with users and user groups that restrict commands and key patterns, or <strong>IAM authentication</strong> (short-lived tokens from IAM identities). IAM policies separately control who can manage caches via the API.</li>
+        <li><strong>Compliance</strong> — SOC 1/2/3, ISO, MTCS, C5, PCI DSS, HIPAA (with a BAA), and FedRAMP.</li>
+      </ul>
+      <p>General principles: <a href="../observability-security/01-application-security-fundamentals.html">Application Security Fundamentals</a>.</p>
+
+      <h2 id="monitoring">14. Logging and monitoring</h2>
+      <ul>
+        <li><strong>CloudWatch metrics</strong> — host-level (<code>CPUUtilization</code>, <code>FreeableMemory</code>, <code>NetworkBytesIn/Out</code>, <code>SwapUsage</code>) and engine-level (<code>EngineCPUUtilization</code> — the engine's single main thread, the one to alarm on for Valkey/Redis OSS; <code>DatabaseMemoryUsagePercentage</code>; <code>CacheHits</code>, <code>CacheMisses</code>, <code>CacheHitRate</code>; <code>Evictions</code>; <code>CurrConnections</code>; <code>ReplicationLag</code>). Serverless caches report usage such as <code>BytesUsedForCache</code> and <code>ElastiCacheProcessingUnits</code>.</li>
+        <li><strong>Events</strong> — failovers, node replacements, and scaling events, delivered through Amazon SNS.</li>
+        <li><strong>Log delivery</strong> — Valkey/Redis OSS slow log and engine log to CloudWatch Logs or Kinesis Data Firehose.</li>
+        <li><strong>CloudTrail</strong> — records ElastiCache API calls (who created, modified, or deleted a cache).</li>
+      </ul>
+      <p>What to watch and why: <a href="../caching/caching-roadmap.html#stage-8">Operating a cache</a> and <a href="../observability-security/00-observability-fundamentals.html">Observability Fundamentals</a>.</p>
+
+      <h2 id="pricing">15. Pricing and quotas</h2>
+      <ul>
+        <li><strong>Serverless</strong> — per GB-hour of data stored plus per ECPU; no node charges.</li>
+        <li><strong>Node-based</strong> — per node-hour by node type; <strong>reserved nodes</strong> for 1 or 3 years (All, Partial, or No Upfront) with size flexibility within a node family and Region. Redis OSS reservations apply to Valkey nodes in the same family.</li>
+        <li><strong>Other charges</strong> — backup storage beyond the free snapshot, cross-Region data transfer (Global Datastore), and cross-AZ data transfer between your application and cache nodes in other AZs.</li>
+        <li><strong>Quotas</strong> — nodes per cluster, shards per cluster, clusters per Region, and parameter/subnet groups have default limits (some raisable). See the <a href="https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/quota-limits.html" target="_blank" rel="noopener">Quotas</a> chapter.</li>
+      </ul>
+
+      <h2 id="migration">16. Online migration</h2>
+      <p>To move from a self-managed Valkey/Redis OSS server (for example on EC2) into ElastiCache, <strong>online migration</strong> makes the ElastiCache cluster replicate from your source while it keeps serving traffic; you verify progress, then complete the migration and point the application at ElastiCache. The alternative is restoring an RDB snapshot from S3 (point-in-time, simpler, but writes after the snapshot are not included).</p>
+
+      <h2 id="faq">Frequently Asked Questions (from the AWS ElastiCache FAQ)</h2>
+      <p>Summarised from the <a href="https://aws.amazon.com/elasticache/faqs/" target="_blank" rel="noopener">official FAQ page</a>, grouped as AWS groups them.</p>
+
+      <h3 id="faq-general">General</h3>
+      <p class="faq-q"><strong>Q: What is Amazon ElastiCache?</strong></p>
+      <p>A serverless, fully managed caching service for Valkey, Memcached, and Redis OSS with microsecond latency and up to a 99.99% availability SLA. AWS handles the management work, and there's no upfront investment.</p>
+      <p class="faq-q"><strong>Q: What is caching and how does it help my applications?</strong></p>
+      <p>Caching keeps frequently accessed data (such as database query results or computation results) in memory, improving latency and throughput for read-heavy workloads such as social networking, gaming, and media sharing.</p>
+      <p class="faq-q"><strong>Q: What deployment options do I have?</strong></p>
+      <p>Serverless (no infrastructure management, instant scaling, pay per use) and node-based (fine-grained control over node types and placement, suited to fixed, predictable capacity).</p>
+      <p class="faq-q"><strong>Q: What does ElastiCache manage on my behalf?</strong></p>
+      <p>Hardware provisioning, software patching, setup and configuration, monitoring, failure recovery, and backups. It publishes CloudWatch metrics so you can set alarms.</p>
+      <p class="faq-q"><strong>Q: How does ElastiCache interact with other AWS services?</strong></p>
+      <p>It is commonly a caching layer in front of RDS, Aurora, DocumentDB, and DynamoDB, reducing database load with microsecond reads, and serves applications on EC2 and EMR.</p>
+      <p class="faq-q"><strong>Q: How am I billed?</strong></p>
+      <p>Serverless: per GB of data stored and per ECPU consumed, no node-hour charges. Node-based: per node-hour, with optional reserved-node discounts. Cross-Region data transfer and backup storage in S3 beyond the free allowance are billed separately.</p>
+      <p class="faq-q"><strong>Q: How do I select the right node type?</strong></p>
+      <p>You don't need to get it exactly right — you can add or remove nodes later. Consider the total memory needed for your target hit rate and the number of nodes needed for fault tolerance; the docs include sizing guidance.</p>
+      <p class="faq-q"><strong>Q: Can a cluster span multiple AZs?</strong></p>
+      <p>Yes. When creating a cluster or adding nodes, you can specify how many nodes go in each AZ, or choose to spread nodes across the zones in your cache subnet group.</p>
+
+      <h3 id="faq-performance">Performance</h3>
+      <p class="faq-q"><strong>Q: What are the performance benefits?</strong></p>
+      <p>Microsecond latency and scaling to billions of operations per second. AWS cites up to 80× faster reads and up to 55% cost savings when paired with RDS for MySQL, and up to 310 TiB per cluster (982 TiB with data tiering).</p>
+      <p class="faq-q"><strong>Q: Does a failover affect latency between my application and the cache?</strong></p>
+      <p>Cross-AZ latency is negligible because AZs are connected with low-latency links. For best results, run your application tier redundantly in the same AZs as your cache nodes.</p>
+
+      <h3 id="faq-scalability">Scalability and serverless</h3>
+      <p class="faq-q"><strong>Q: What is ElastiCache Serverless?</strong></p>
+      <p>The most automated option: zero infrastructure management, instant scaling, pay-per-use billing, and a 99.99% availability SLA. See <a href="#serverless">Serverless</a> above for supported engine versions (the user guide lists Valkey 7.2+, Memcached 1.6.22+, Redis OSS 7.1).</p>
+      <p class="faq-q"><strong>Q: How do I migrate an existing workload to Serverless?</strong></p>
+      <p>Change your application's endpoint to the serverless cache endpoint; to bring existing data, create the serverless cache from a backup in S3.</p>
+      <p class="faq-q"><strong>Q: How does Serverless scale?</strong></p>
+      <p>It continuously monitors memory, compute, and network use and scales instantly without downtime, scaling up while it starts scaling out in parallel.</p>
+      <p class="faq-q"><strong>Q: How do I scale a node-based cluster?</strong></p>
+      <p>Horizontally by adding shards or nodes, or vertically by changing to a larger node type. Valkey and Redis OSS support online resharding and online vertical scaling using read replicas.</p>
+
+      <h3 id="faq-reliability">Reliability</h3>
+      <p class="faq-q"><strong>Q: What is durability for ElastiCache?</strong></p>
+      <p>A feature that lets ElastiCache act as a persistent data store with microsecond reads by storing data in a Multi-AZ transactional log, with synchronous (zero data loss) or asynchronous (microsecond latency) writes — useful for knowledge bases, AI workflows, and leaderboards. See <a href="#durability">Durability</a>.</p>
+      <p class="faq-q"><strong>Q: Synchronous vs. asynchronous writes — which should I choose?</strong></p>
+      <p>Synchronous writes persist across two AZs before responding: zero data loss, single-digit-millisecond write latency — for applications that cannot lose data. Asynchronous writes respond first: microsecond latency with up to 10 seconds of potential loss — right for most workloads.</p>
+      <p class="faq-q"><strong>Q: How is durability different from Valkey/Redis OSS AOF?</strong></p>
+      <p>ElastiCache durability uses a Multi-AZ transactional log; AOF is stored on a single node's local disk in one AZ, and AOF plus replication can lead to unbounded data loss and consistency problems during failover.</p>
+      <p class="faq-q"><strong>Q: What does it mean to run a node as a read replica?</strong></p>
+      <p>A replica is a live, read-only copy of a primary kept in sync by replication, used to offload reads. You can create up to five per primary. Valkey and Redis OSS only — not Memcached.</p>
+      <p class="faq-q"><strong>Q: When would I use a read replica?</strong></p>
+      <p>To scale reads beyond one node's capacity, to keep serving reads when the primary is unavailable, and for data protection — a replica can be promoted if the primary or its AZ fails.</p>
+      <p class="faq-q"><strong>Q: Can a read replica be in another Region?</strong></p>
+      <p>No — replicas must be in an AZ of the same Region. For cross-Region replication, use Global Datastore.</p>
+      <p class="faq-q"><strong>Q: What happens during failover and how long does it take?</strong></p>
+      <p>ElastiCache flips the DNS record of the cache endpoint to the read replica, which is promoted to primary. A new healthy node joins within about six minutes. Global Datastore cross-Region failovers complete in under a minute.</p>
+      <p class="faq-q"><strong>Q: What is Backup and Restore?</strong></p>
+      <p>Snapshots stored in S3 for recovery, supported for Valkey, Redis OSS, and serverless Memcached. One free snapshot per active cache; manual or daily automatic backups with up to 35 days' retention.</p>
+      <p class="faq-q"><strong>Q: Can I use a snapshot from one account to warm-start a cluster in another?</strong></p>
+      <p>Yes — copy the snapshot to an authorised S3 bucket in the same Region and grant the other account permission on that bucket.</p>
+      <p class="faq-q"><strong>Q: What happens to snapshots if I delete my cache?</strong></p>
+      <p>Manual snapshots are kept, and you can take a final snapshot when deleting. Automatic snapshots are not kept.</p>
+      <p class="faq-q"><strong>Q: Can I restore a Redis OSS backup to Valkey?</strong></p>
+      <p>Yes — ElastiCache for Valkey restores backups from any version of ElastiCache for Redis OSS, since both use the RDB file format.</p>
+      <p class="faq-q"><strong>Q: What is Global Datastore?</strong></p>
+      <p>A node-based feature providing fully managed, secure cross-Region replication in under a second, for low-latency local reads and disaster recovery.</p>
+      <p class="faq-q"><strong>Q: How many Regions can I replicate to?</strong></p>
+      <p>Up to two secondary Regions per Global Datastore.</p>
+      <p class="faq-q"><strong>Q: Does Global Datastore fail over automatically if the primary Region is degraded?</strong></p>
+      <p>No — you manually promote a secondary cluster to primary; it usually completes in under a minute.</p>
+      <p class="faq-q"><strong>Q: What RPO and RTO can I expect with Global Datastore?</strong></p>
+      <p>There's no SLA, but RPO is typically under one second and RTO typically under one minute after you start the promotion.</p>
+      <p class="faq-q"><strong>Q: How is my data secured with Global Datastore?</strong></p>
+      <p>Cross-Region traffic is encrypted in transit, and each primary and secondary cache can use its own customer-managed KMS key for encryption at rest.</p>
+
+      <h3 id="faq-availability">Availability / Multi-AZ</h3>
+      <p class="faq-q"><strong>Q: What is Multi-AZ for ElastiCache?</strong></p>
+      <p>A high-availability configuration that replicates data across AZs and fails over automatically. All serverless caches run Multi-AZ; node-based Valkey and Redis OSS with Multi-AZ support up to five read replicas.</p>
+      <p class="faq-q"><strong>Q: What are the benefits of Multi-AZ and when should I use it?</strong></p>
+      <p>Higher availability and less administration: if the primary fails, the impact is limited to the time automatic failover takes. It makes the cache eligible for the 99.99% availability SLA — use it for production.</p>
+
+      <h3 id="faq-security">Security and compliance</h3>
+      <p class="faq-q"><strong>Q: What security controls exist?</strong></p>
+      <p>Encryption at rest (AWS KMS), encryption in transit (TLS), IAM authentication, VPC security groups for network control, and role-based access control for fine-grained permissions. Public endpoints rely on IAM policies.</p>
+      <p class="faq-q"><strong>Q: How do I control access to ElastiCache?</strong></p>
+      <p>At two layers: network (VPC security groups and network ACLs) and identity (IAM authentication and Valkey/Redis OSS RBAC, which restricts users and commands).</p>
+      <p class="faq-q"><strong>Q: What are public endpoints?</strong></p>
+      <p>A public endpoint lets you connect to an ElastiCache Serverless for Valkey cache (Valkey 9 and later) over the internet without a VPC. Every connection requires IAM authentication and TLS.</p>
+      <p class="faq-q"><strong>Q: Which compliance programs are supported?</strong></p>
+      <p>SOC 1, SOC 2, SOC 3, ISO, MTCS, C5, PCI DSS, HIPAA, and FedRAMP, at no extra cost. Processing health data (PHI) requires a Business Associate Agreement with AWS.</p>
+      <p class="faq-q"><strong>Q: What does encryption at rest provide?</strong></p>
+      <p>Protection for data during disk sync, swap operations, and backups stored in S3, using AWS-managed or customer-managed KMS keys.</p>
+      <p class="faq-q"><strong>Q: What does encryption in transit provide?</strong></p>
+      <p>TLS for traffic between clients and ElastiCache and between primary and replica nodes; AWS manages certificate issuance and renewal.</p>
+
+      <h3 id="faq-cost">Cost-effectiveness</h3>
+      <p class="faq-q"><strong>Q: What is data tiering?</strong></p>
+      <p>Using lower-cost NVMe SSDs alongside memory on R6gd nodes, for workloads that regularly access up to 20% of their data. It gives nearly 5× more capacity and over 60% savings; supported for Valkey 7.2+ and Redis OSS 6.2+.</p>
+      <p class="faq-q"><strong>Q: How does data tiering work?</strong></p>
+      <p>When memory is fully used, the least recently used items move automatically to SSD; when accessed, they move back to memory asynchronously.</p>
+      <p class="faq-q"><strong>Q: What performance can I expect with data tiering?</strong></p>
+      <p>About 300 µs of extra latency for items read from SSD, and no penalty for items in memory; steady-state latency is close to in-memory levels when about 20% or less of the data is accessed frequently.</p>
+      <p class="faq-q"><strong>Q: Which features work with data tiering?</strong></p>
+      <p>All Valkey and Redis OSS commands, and most ElastiCache features; the docs list the few that aren't supported.</p>
+      <p class="faq-q"><strong>Q: What are reserved nodes?</strong></p>
+      <p>A pricing option with a significant discount for a one- or three-year commitment, as All Upfront, Partial Upfront, or No Upfront. Not applicable to serverless.</p>
+      <p class="faq-q"><strong>Q: What happens to my Redis OSS reserved nodes if I upgrade to Valkey?</strong></p>
+      <p>They apply automatically to Valkey nodes in the same family and Region. Because Valkey is 20% cheaper, the same reservation covers more capacity — for example five reserved nodes cover six Valkey nodes.</p>
+      <p class="faq-q"><strong>Q: Does size flexibility apply to reserved nodes?</strong></p>
+      <p>Yes — within a node family and Region, the discount applies across all sizes automatically.</p>
+
+      <h3 id="faq-valkey">Valkey engine</h3>
+      <p class="faq-q"><strong>Q: Why use ElastiCache for Valkey?</strong></p>
+      <p>A fully managed experience on open-source Valkey with a 99.99% availability SLA and lower prices: serverless up to 33% cheaper with a 100 MB minimum storage charge (90% lower than Redis OSS), and node-based 20% cheaper, with faster scaling and better memory efficiency.</p>
+      <p class="faq-q"><strong>Q: How is Valkey different from Redis OSS on ElastiCache?</strong></p>
+      <p>Faster scaling, about 20% better memory efficiency, and lower pricing (up to 33% serverless, 20% node-based). Valkey is governed by the Linux Foundation, avoiding single-vendor lock-in.</p>
+      <p class="faq-q"><strong>Q: How do I upgrade from Redis OSS to Valkey?</strong></p>
+      <p>In place, without downtime. Clusters on Redis OSS versions before 5.0.6 may see a 30–60 second failover during DNS propagation. Rolling back to Redis OSS 7.1 is possible with data preserved.</p>
+      <p class="faq-q"><strong>Q: How can I migrate from self-managed Valkey or Redis OSS?</strong></p>
+      <p>Either online migration (continuous replication with minimal disruption) or restoring a snapshot (a simpler point-in-time migration). See <a href="#migration">Online migration</a>.</p>
+      <p class="faq-q"><strong>Q: Do reserved-node discounts carry across all node sizes when I upgrade to Valkey?</strong></p>
+      <p>Yes — Redis OSS reservations apply to Valkey nodes in the same family and Region, and size flexibility spreads the discount across all sizes; because Valkey is cheaper, they cover more capacity.</p>
+
+      <h3 id="faq-memcached">Memcached engine</h3>
+      <p class="faq-q"><strong>Q: I use Memcached today. How do I migrate?</strong></p>
+      <p>ElastiCache is protocol-compatible with Memcached (<code>get</code>, <code>set</code>, <code>incr</code>, <code>decr</code> behave the same). Point your application at the ElastiCache endpoints; Auto Discovery lets clients detect added or removed nodes without restarts.</p>
+      <p class="faq-q"><strong>Q: Can I control when my Memcached engine is upgraded?</strong></p>
+      <p>Yes — ElastiCache doesn't apply major or minor engine upgrades automatically. You choose the version at creation and upgrade when you want; security patches may be applied in the maintenance window.</p>
+      <p class="faq-q"><strong>Q: How do I choose the Memcached version?</strong></p>
+      <p>Pick any supported version when creating the cluster; to upgrade, modify the cluster's engine version and apply immediately or in the next maintenance window.</p>
+      <p class="faq-q"><strong>Q: Can I test a new version before upgrading?</strong></p>
+      <p>Yes — create a new cluster on the new version and point a development or staging application at it first.</p>
+
+      <h3 id="faq-redis">Redis OSS engine</h3>
+      <p class="faq-q"><strong>Q: Will AWS keep supporting ElastiCache for Redis OSS?</strong></p>
+      <p>Yes, including version 7.1. Older versions follow the normal end-of-life process with advance notice; check the docs for currently supported versions.</p>
+
+      <h2 id="interview-checklist">Interview checklist</h2>
+      <ul>
+        <li>Say which engine and why: Valkey/Redis OSS for data structures, HA, and backups; Memcached for the simplest multi-threaded object cache.</li>
+        <li>Say serverless vs. node-based and why (unpredictable traffic vs. steady load and reserved-node savings).</li>
+        <li>State the caching strategy (lazy loading + TTL, write-through where freshness matters) and the eviction policy (<code>allkeys-lru</code> rather than the default <code>volatile-lru</code> for a pure cache).</li>
+        <li>Mention Multi-AZ with automatic failover, cluster mode for sharding, and Global Datastore for multi-Region.</li>
+        <li>Name the data-loss caveat of asynchronous replication, and durability/MemoryDB when the cache must be a primary store.</li>
+        <li>Security: private subnets, security groups from the app tier only, TLS, encryption at rest, RBAC or IAM auth.</li>
+        <li>Monitoring: <code>EngineCPUUtilization</code>, <code>DatabaseMemoryUsagePercentage</code>, <code>Evictions</code>, <code>CacheHitRate</code>, <code>ReplicationLag</code>.</li>
+      </ul>
+
+      <p>Back to the <a href="00-aws-learning-path.html#stage-6">AWS Learning Path — Databases</a>. Caching concepts: <a href="../caching/caching-roadmap.html">Caching Roadmap</a>.</p>
+
+      <!-- ═══════════  END OF CONTENT  ═══════════ -->
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>

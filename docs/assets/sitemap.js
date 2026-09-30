@@ -554,8 +554,76 @@ window.SITE_MAP = {
       "name": "Caching & CDN",
       "pages": [
         {
+          "href": "caching/caching-roadmap.html",
+          "title": "Caching Roadmap"
+        },
+        {
           "href": "caching/00-caching-and-cdn-fundamentals.html",
           "title": "00. Caching & CDN Fundamentals"
+        },
+        {
+          "href": "caching/01-types-of-cache.html",
+          "title": "01. Types of Cache (Overview)"
+        },
+        {
+          "href": "caching/01a-browser-caching.html",
+          "title": "01a. Browser Caching"
+        },
+        {
+          "href": "caching/01b-cdn-caching.html",
+          "title": "01b. CDN Caching"
+        },
+        {
+          "href": "caching/01c-proxy-and-gateway-caching.html",
+          "title": "01c. Reverse Proxy & API Gateway Caching"
+        },
+        {
+          "href": "caching/01d-database-caching.html",
+          "title": "01d. Database Caching"
+        },
+        {
+          "href": "caching/01e-dns-os-hardware-caching.html",
+          "title": "01e. DNS, OS & Hardware Caching"
+        },
+        {
+          "href": "caching/02-in-memory-caching-strategies.html",
+          "title": "02. In-Memory: Caching Strategies"
+        },
+        {
+          "href": "caching/03-in-memory-eviction-policies.html",
+          "title": "03. In-Memory: Eviction Policies"
+        },
+        {
+          "href": "caching/04-in-memory-cache-problems.html",
+          "title": "04. In-Memory: Cache Problems"
+        }
+      ],
+      "groups": [
+        {
+          "name": "Start Here",
+          "hrefs": [
+            "caching/caching-roadmap.html",
+            "caching/00-caching-and-cdn-fundamentals.html"
+          ]
+        },
+        {
+          "name": "Types of Cache",
+          "hrefs": [
+            "caching/01-types-of-cache.html",
+            "caching/01a-browser-caching.html",
+            "caching/01b-cdn-caching.html",
+            "caching/01c-proxy-and-gateway-caching.html",
+            "caching/01d-database-caching.html",
+            "caching/01e-dns-os-hardware-caching.html"
+          ]
+        },
+        {
+          "name": "In-Memory Caching",
+          "hrefs": [
+            "caching/02-in-memory-caching-strategies.html",
+            "caching/03-in-memory-eviction-policies.html",
+            "caching/04-in-memory-cache-problems.html"
+          ]
         }
       ]
     },
@@ -612,6 +680,20 @@ window.SITE_MAP = {
         {
           "href": "web-servers/wsgi.html",
           "title": "WSGI Explained"
+        }
+      ]
+    },
+    {
+      "icon": "☁️",
+      "name": "AWS Learning",
+      "pages": [
+        {
+          "href": "aws/00-aws-learning-path.html",
+          "title": "00. AWS Learning Path"
+        },
+        {
+          "href": "aws/01-elasticache.html",
+          "title": "01. Amazon ElastiCache"
         }
       ]
     },

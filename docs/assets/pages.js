@@ -407,11 +407,71 @@ window.SITE_PAGES = {
     section: "Storage",
     title: "Storage Types"
   },
+  "caching-roadmap": {
+    href: "caching/caching-roadmap.html",
+    section: "Caching & CDN",
+    title: "Caching Roadmap",
+    subtitle: "A concept-first path through caching: why caches exist, every type of cache from CPU to CDN, then the in-memory cache in depth &mdash; strategies, eviction policies, and failure modes like the thundering herd. Tick each stage as you cover it; progress is saved in this browser."
+  },
   "00-caching-and-cdn-fundamentals": {
     href: "caching/00-caching-and-cdn-fundamentals.html",
     section: "Caching & CDN",
     title: "Caching & CDN Fundamentals",
     subtitle: "Caching layers, cache-aside vs write-through vs write-behind, eviction and invalidation, cache stampede, Redis vs Memcached, and CDN edge caching."
+  },
+  "01-types-of-cache": {
+    href: "caching/01-types-of-cache.html",
+    section: "Caching & CDN",
+    title: "Types of Cache",
+    subtitle: "Every kind of cache on one page &mdash; hardware, OS page cache, browser and Service Worker, DNS, CDN, reverse proxy, API gateway, in-process, distributed, near cache, session, negative cache, and the database's own buffer pool, query cache and materialized views."
+  },
+  "01a-browser-caching": {
+    href: "caching/01a-browser-caching.html",
+    section: "Caching & CDN",
+    title: "Browser Caching",
+    subtitle: "How the browser HTTP cache works &mdash; freshness, <code>Cache-Control</code>, ETag revalidation and <code>304</code>, <code>Vary</code>, memory vs disk cache, cache partitioning, cache busting, Service Worker strategies, and header recipes."
+  },
+  "01b-cdn-caching": {
+    href: "caching/01b-cdn-caching.html",
+    section: "Caching & CDN",
+    title: "CDN Caching",
+    subtitle: "PoPs, anycast vs DNS routing, tiered caching and origin shield, cache keys, edge TTLs, purge by URL or tag, request collapsing, dynamic content at the edge, and CDN security (cache poisoning and deception)."
+  },
+  "01c-proxy-and-gateway-caching": {
+    href: "caching/01c-proxy-and-gateway-caching.html",
+    section: "Caching & CDN",
+    title: "Reverse Proxy & API Gateway Caching",
+    subtitle: "Nginx <code>proxy_cache</code>, micro-caching, Varnish grace and bans, API Gateway and Kong response caching, and caching GraphQL &mdash; saving application work in front of your servers."
+  },
+  "01d-database-caching": {
+    href: "caching/01d-database-caching.html",
+    section: "Caching & CDN",
+    title: "Database Caching",
+    subtitle: "The buffer pool and its hit ratio, double buffering with the OS page cache, plan caches, why MySQL removed its query cache, materialized views, ORM caches, and external caches such as Redis and DAX."
+  },
+  "01e-dns-os-hardware-caching": {
+    href: "caching/01e-dns-os-hardware-caching.html",
+    section: "Caching & CDN",
+    title: "DNS, OS & Hardware Caching",
+    subtitle: "DNS caching at every layer and TTL strategy, negative caching, Kubernetes DNS, the OS page cache and <code>fsync</code>, CPU caches and false sharing, and TLS session caches."
+  },
+  "02-in-memory-caching-strategies": {
+    href: "caching/02-in-memory-caching-strategies.html",
+    section: "Caching & CDN",
+    title: "In-Memory Caching Strategies",
+    subtitle: "Cache-aside, read-through, write-through, write-behind, write-around and refresh-ahead &mdash; who fills the cache, how writes keep it in sync, and why you delete instead of update."
+  },
+  "03-in-memory-eviction-policies": {
+    href: "caching/03-in-memory-eviction-policies.html",
+    section: "Caching & CDN",
+    title: "In-Memory Eviction Policies",
+    subtitle: "LRU, LFU, FIFO, MRU, Random, CLOCK, SLRU/2Q, ARC and W-TinyLFU, TTL expiration, and Redis <code>maxmemory-policy</code> &mdash; what a full cache throws out, and why."
+  },
+  "04-in-memory-cache-problems": {
+    href: "caching/04-in-memory-cache-problems.html",
+    section: "Caching & CDN",
+    title: "In-Memory Cache Problems",
+    subtitle: "Thundering herd (cache stampede), cache breakdown, penetration, avalanche, hot keys, big keys, stale data races, cold start and pollution &mdash; what triggers each and how to fix it."
   },
   "00-load-balancing": {
     href: "traffic/00-load-balancing.html",
@@ -424,6 +484,18 @@ window.SITE_PAGES = {
     section: "Traffic Management",
     title: "Rate Limiting & Throttling",
     subtitle: "Token bucket, leaky bucket, fixed and sliding window algorithms, distributed rate limiting with Redis, and the client contract (429, Retry-After)."
+  },
+  "00-aws-learning-path": {
+    href: "aws/00-aws-learning-path.html",
+    section: "AWS Learning",
+    title: "AWS Learning Path",
+    subtitle: "A staged roadmap for learning Amazon Web Services: Regions and AZs, IAM and shared responsibility, VPC networking, compute, storage, databases, messaging, observability, security, IaC, cost, and the Well-Architected Framework. Tick each stage as you cover it; progress is saved in this browser."
+  },
+  "01-elasticache": {
+    href: "aws/01-elasticache.html",
+    section: "AWS Learning",
+    title: "Amazon ElastiCache",
+    subtitle: "AWS's managed Valkey, Redis OSS and Memcached service, following the User Guide's main chapters &mdash; serverless vs node-based, engines, caching strategies, Multi-AZ, durability, Global Datastore, scaling, data tiering, security, monitoring &mdash; plus the full official FAQ."
   },
   "00-networking-fundamentals": {
     href: "networking/00-networking-fundamentals.html",

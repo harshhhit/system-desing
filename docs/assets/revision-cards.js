@@ -571,12 +571,92 @@ window.REVISION_CARDS = [
   "text": "Block storage is a raw virtual disk attached to one server — low latency and high IOPS — so I use it for databases and VM boot volumes, like EBS. File storage is a shared file system with folders and paths over NFS or SMB, good for shared drives and content many servers read and write, like EFS."
  },
  {
+  "href": "caching/caching-roadmap.html",
+  "title": "Caching Roadmap",
+  "section": "Caching & CDN",
+  "icon": "🧊",
+  "source": "interview",
+  "text": "I decide caching layer by layer: static assets at the CDN with long TTLs and versioned URLs, hot read-heavy objects in Redis with cache-aside, and a small in-process cache only for data that is almost never written."
+ },
+ {
   "href": "caching/00-caching-and-cdn-fundamentals.html",
   "title": "Caching & CDN Fundamentals",
   "section": "Caching & CDN",
   "icon": "🧊",
   "source": "interview",
   "text": "Caching stores a copy of frequently read data in a faster layer — browser, CDN, Redis, or process memory — so most reads skip the database or origin. The most common pattern is cache-aside: check the cache, on a miss read the database and populate the cache, and on a write update the database and invalidate the key."
+ },
+ {
+  "href": "caching/01-types-of-cache.html",
+  "title": "Types of Cache",
+  "section": "Caching & CDN",
+  "icon": "🧊",
+  "source": "interview",
+  "text": "Caches exist at every layer: the browser and mobile app cache responses per user; DNS and the CDN cache at the network edge; a reverse proxy or API gateway caches whole responses in front of the app; the application caches objects in its own memory or in a shared store like Redis; and the database keeps hot pages in…"
+ },
+ {
+  "href": "caching/01a-browser-caching.html",
+  "title": "Browser Caching",
+  "section": "Caching & CDN",
+  "icon": "🧊",
+  "source": "interview",
+  "text": "Browser caching lets the browser reuse responses it has already downloaded, controlled by the server's Cache-Control and validator headers. A fresh response within max-age is used with no request at all; a stale one is revalidated with If-None-Match, and the server answers 304 Not Modified with no body if nothing…"
+ },
+ {
+  "href": "caching/01b-cdn-caching.html",
+  "title": "CDN Caching",
+  "section": "Caching & CDN",
+  "icon": "🧊",
+  "source": "interview",
+  "text": "A CDN caches my responses in edge locations close to users, so most requests never reach my origin. Users are routed to the nearest PoP by anycast or DNS; on a miss the PoP fetches from the origin, often through an origin shield so the origin sees one request per object, and caches it for the TTL set by s-maxage."
+ },
+ {
+  "href": "caching/01c-proxy-and-gateway-caching.html",
+  "title": "Reverse Proxy & API Gateway Caching",
+  "section": "Caching & CDN",
+  "icon": "🧊",
+  "source": "interview",
+  "text": "A reverse-proxy cache like Nginx or Varnish sits in front of the app servers and stores full HTTP responses, so repeated requests are answered without running application code."
+ },
+ {
+  "href": "caching/01d-database-caching.html",
+  "title": "Database Caching",
+  "section": "Caching & CDN",
+  "icon": "🧊",
+  "source": "interview",
+  "text": "Databases cache internally: the buffer pool keeps hot data and index pages in RAM — ideally the whole working set — and it's always consistent. I check its hit ratio before anything else."
+ },
+ {
+  "href": "caching/01e-dns-os-hardware-caching.html",
+  "title": "DNS, OS & Hardware Caching",
+  "section": "Caching & CDN",
+  "icon": "🧊",
+  "source": "interview",
+  "text": "DNS answers are cached at every step — browser, OS, runtime, and recursive resolvers — for the TTL on the record, so lookups are fast and authoritative servers aren't overloaded."
+ },
+ {
+  "href": "caching/02-in-memory-caching-strategies.html",
+  "title": "In-Memory Caching Strategies",
+  "section": "Caching & CDN",
+  "icon": "🧊",
+  "source": "interview",
+  "text": "A caching strategy defines who fills the cache and how writes keep it in sync. My default is cache-aside: the app reads the cache, on a miss reads the database and stores the result with a TTL, and on a write it updates the database and then deletes the cache key."
+ },
+ {
+  "href": "caching/03-in-memory-eviction-policies.html",
+  "title": "In-Memory Eviction Policies",
+  "section": "Caching & CDN",
+  "icon": "🧊",
+  "source": "interview",
+  "text": "An eviction policy decides what to drop when the cache is full. LRU drops the entry not used for the longest time and is the usual default because recent use predicts future use; LFU drops the least-used entry and is better when popularity is stable; FIFO and random are cheap but ignore usage."
+ },
+ {
+  "href": "caching/04-in-memory-cache-problems.html",
+  "title": "In-Memory Cache Problems",
+  "section": "Caching & CDN",
+  "icon": "🧊",
+  "source": "interview",
+  "text": "A thundering herd is when a hot cache key expires and thousands of concurrent requests miss together and all hit the database to rebuild the same value, which can overload it."
  },
  {
   "href": "traffic/00-load-balancing.html",
@@ -641,6 +721,22 @@ window.REVISION_CARDS = [
   "icon": "🖧",
   "source": "interview",
   "text": "WSGI is the Python standard interface between a web server and a Python web application. A WSGI server like Gunicorn receives the request, calls the app's application(environ, start_response) callable, and returns the response, so any WSGI server can run any WSGI framework such as Django or Flask."
+ },
+ {
+  "href": "aws/00-aws-learning-path.html",
+  "title": "AWS Learning Path",
+  "section": "AWS Learning",
+  "icon": "☁️",
+  "source": "interview",
+  "text": "AWS is Amazon's public cloud: it rents servers, storage, databases and networking on demand, billed by usage, so I don't have to buy and size hardware up front. It runs in Regions, each with multiple isolated Availability Zones, and I get high availability by spreading my workload across AZs."
+ },
+ {
+  "href": "aws/01-elasticache.html",
+  "title": "Amazon ElastiCache",
+  "section": "AWS Learning",
+  "icon": "☁️",
+  "source": "interview",
+  "text": "ElastiCache is AWS's managed in-memory cache running Valkey, Redis OSS, or Memcached. I put it in front of RDS, Aurora, or DynamoDB for microsecond reads using lazy loading with TTLs."
  },
  {
   "href": "software-development-principles/01-sdp.html",
