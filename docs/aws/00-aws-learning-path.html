@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+
+<script>window.PAGE_CONFIG = { id: "00-aws-learning-path" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS Learning Path · Infra Owl</title>
+<link rel="stylesheet" href="../assets/site.css?v=8">
+<style>
+  .sd-study-main h2 { margin-top: 2.2rem; }
+  .sd-study-main h3 { margin-top: 1.3rem; font-size: 1rem; }
+  .stage-note { color: var(--muted); font-size: 0.92rem; margin-top: -0.2rem; }
+</style>
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=7" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a class="active" href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / AWS Learning / AWS Learning Path</p>
+      <h1 data-page-title>AWS Learning Path</h1>
+      <p class="sd-study-prompt" data-page-subtitle>A staged roadmap for learning Amazon Web Services: Regions and AZs, IAM and shared responsibility, VPC networking, compute, storage, databases, messaging, observability, security, IaC, cost, and the Well-Architected Framework. Tick each stage as you cover it; progress is saved in this browser.</p>
+
+      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+
+      <h2 id="page-map">AWS Learning Page Map</h2>
+      <p class="topic-map-legend">A block diagram of the AWS Learning section. It is a single page today, so the blocks are this page's own stages (click to jump), in the order an AWS workload is built: the account and its guard rails first, then the network, then compute, storage and data, then the services that watch, secure, deploy and pay for it all. Dashed blocks are planned deep-dive pages with no page yet; grey blocks at the bottom are related pages in other sections.</p>
+      <nav class="topic-map" aria-label="AWS Learning page map" style="--map-accent: var(--sd-c4)">
+        <div class="topic-map-row"><p class="topic-map-label">Start here</p><p class="topic-map-why">First understand what AWS is, where it physically runs, and who is responsible for what.</p><div class="topic-map-blocks">
+          <a class="here" href="00-aws-learning-path.html" aria-current="page">00. AWS Learning Path<small>You are here: the whole roadmap</small></a>
+          <a href="#interview-answer">Interview Answer<small>What AWS is, in one breath</small></a>
+          <a href="#stage-0">Cloud Basics<small>Why rent instead of buy</small></a>
+          <a href="#stage-1">Global Infrastructure<small>Regions, AZs, edge locations</small></a>
+        </div></div>
+        <div class="topic-map-arrow" aria-hidden="true">↓</div>
+        <div class="topic-map-row"><p class="topic-map-label">Identity &amp; network</p><p class="topic-map-why">Nothing can be launched safely until you control who may act (IAM) and where resources live on the network (VPC).</p><div class="topic-map-blocks">
+          <a href="#stage-2">IAM &amp; Shared Responsibility<small>Users, roles, policies, root</small></a>
+          <a href="#stage-3">Networking<small>VPC, subnets, SGs, Route 53, ELB</small></a>
+        </div></div>
+        <div class="topic-map-arrow" aria-hidden="true">↓</div>
+        <div class="topic-map-row"><p class="topic-map-label">Run, store, persist</p><p class="topic-map-why">With a safe account and a network, place the code, the files, and the data.</p><div class="topic-map-blocks">
+          <a href="#stage-4">Compute<small>EC2, Lambda, ECS, EKS, Fargate</small></a>
+          <a href="#stage-5">Storage<small>S3, EBS, EFS</small></a>
+          <a href="#stage-6">Databases<small>RDS, Aurora, DynamoDB, ElastiCache</small></a>
+          <a href="#stage-7">Messaging &amp; Integration<small>SQS, SNS, EventBridge, Kinesis</small></a>
+        </div></div>
+        <div class="topic-map-arrow" aria-hidden="true">↓</div>
+        <div class="topic-map-row"><p class="topic-map-label">Operate it</p><p class="topic-map-why">A running workload must be observed, secured, redeployed repeatably, and paid for.</p><div class="topic-map-blocks">
+          <a href="#stage-8">Observability &amp; Governance<small>CloudWatch, CloudTrail, Config</small></a>
+          <a href="#stage-9">Security Services<small>KMS, Secrets Manager, WAF, Shield</small></a>
+          <a href="#stage-10">Infrastructure as Code<small>CloudFormation, CDK, Terraform</small></a>
+          <a href="#stage-11">Cost<small>Pricing models, budgets, data transfer</small></a>
+          <a href="#stage-12">Well-Architected Framework<small>The six pillars</small></a>
+        </div></div>
+        <div class="topic-map-arrow" aria-hidden="true">↓</div>
+        <div class="topic-map-row"><p class="topic-map-label">Put it together</p><p class="topic-map-why">Apply every stage to one real design, then check yourself.</p><div class="topic-map-blocks">
+          <a href="#worked-example">Worked Example<small>A 3-tier web app on AWS</small></a>
+          <a href="#hands-on">Hands-on Labs<small>Build it yourself, cheaply</small></a>
+          <a href="#certifications">Certification Path<small>Which exam, in which order</small></a>
+          <a href="#interview-checklist">Interview Checklist<small>What to say in a design round</small></a>
+        </div></div>
+        <div class="topic-map-arrow" aria-hidden="true">↓</div>
+        <div class="topic-map-row"><p class="topic-map-label">Planned next topics</p><p class="topic-map-why">Deep-dive pages that build on this roadmap but have no page yet.</p><div class="topic-map-blocks">
+          <span class="soon">VPC Deep Dive<small>Planned: CIDR, NAT, peering, endpoints</small></span>
+          <span class="soon">IAM Policy Evaluation<small>Planned: explicit deny, boundaries, SCPs</small></span>
+          <span class="soon">S3 Deep Dive<small>Planned: storage classes, lifecycle, policies</small></span>
+          <span class="soon">EKS on AWS<small>Planned: IRSA, VPC CNI, node groups</small></span>
+        </div></div>
+        <div class="topic-map-arrow" aria-hidden="true">↓</div>
+        <div class="topic-map-row"><p class="topic-map-label">Related, in other sections</p><p class="topic-map-why">The vendor-neutral concepts each AWS service is an implementation of.</p><div class="topic-map-blocks">
+          <a class="ext" href="../networking/00-networking-fundamentals.html">Networking Fundamentals<small>DNS, TCP, TLS under the VPC</small></a>
+          <a class="ext" href="../traffic/00-load-balancing.html">Load Balancing<small>What ALB and NLB implement</small></a>
+          <a class="ext" href="../storage/storage-type.html">Storage Types<small>Block vs. file vs. object</small></a>
+          <a class="ext" href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN<small>ElastiCache and CloudFront</small></a>
+          <a class="ext" href="../sqs/01-sqs.html">SQS Overview<small>AWS's managed queue</small></a>
+          <a class="ext" href="../kubernetes/00-index.html">Kubernetes<small>What EKS manages for you</small></a>
+          <a class="ext" href="../path/00-system-desing.html">EC2 Hosting Checklist<small>Hosting an app on EC2</small></a>
+        </div></div>
+      </nav>
+
+      <h2 id="interview-answer">Interview Answer — What Is AWS?</h2>
+      <p><strong>Amazon Web Services (AWS)</strong> is a public cloud platform: it rents computing resources — virtual servers, storage, databases, networks, queues, and hundreds of higher-level managed services — on demand over the internet, billed by usage. Instead of buying servers, racking them in a data centre, and waiting weeks for capacity, a team calls an API (or clicks in the console) and has a server, a database, or a load balancer in minutes, and deletes it when it is no longer needed.</p>
+      <p>AWS exists because owning infrastructure is slow, expensive up front, and hard to size correctly. Without the cloud, a team must guess peak capacity months ahead: guess too low and the site falls over during a spike; guess too high and money sits in idle hardware. The cause → effect chain AWS changes is: demand rises → an Auto Scaling group launches more EC2 instances → the load balancer starts sending them traffic → demand falls → the extra instances are terminated → the bill falls with them. Capital expense (buying hardware) becomes operating expense (paying per hour, per request, or per GB).</p>
+      <p>AWS runs in <a href="#stage-1">Regions</a> — separate geographic areas — each made of several isolated <strong>Availability Zones (AZs)</strong>. You build reliable systems by spreading a workload across AZs, so one data-centre failure does not take the application down. Security follows the <a href="#stage-2">shared responsibility model</a>: AWS secures the physical data centres, hardware, and the virtualisation layer (security <em>of</em> the cloud); you secure what you put in it — IAM permissions, network rules, data encryption, OS patches on EC2 (security <em>in</em> the cloud). In a system design interview, AWS services are the concrete names for concepts found elsewhere on this site: <a href="../traffic/00-load-balancing.html">load balancing</a> becomes ELB, a <a href="../sqs/01-sqs.html">message queue</a> becomes SQS, <a href="../storage/storage-type.html">object storage</a> becomes S3.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"AWS is Amazon's public cloud: it rents servers, storage, databases and networking on demand, billed by usage, so I don't have to buy and size hardware up front. It runs in Regions, each with multiple isolated Availability Zones, and I get high availability by spreading my workload across AZs. Security is shared — AWS secures the physical infrastructure, and I secure my IAM permissions, network rules, data, and anything I run on EC2. For a typical web app I'd use Route 53 and CloudFront at the edge, an Application Load Balancer, EC2 or containers in private subnets across two AZs, RDS Multi-AZ for the database, S3 for files, and CloudWatch for monitoring."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: If AWS is "highly available," is my application automatically highly available once it runs on AWS?</strong></p>
+      <p><strong>A:</strong> No. AWS gives you the <em>building blocks</em> for high availability — multiple Availability Zones, load balancers, Multi-AZ databases, Auto Scaling — but it does not apply them for you. A single EC2 instance in one AZ with its database on the same instance is exactly as fragile as one physical server: if that AZ has an outage or the instance's host fails, the application is down. Some services are regional and multi-AZ by design (S3, DynamoDB, SQS, Lambda), but for EC2, RDS, and anything you deploy yourself, high availability is <em>your</em> design choice: run at least two instances in two AZs behind a load balancer, enable RDS Multi-AZ, and store state outside the instance. This is the shared responsibility model applied to reliability — see <a href="#stage-1">Global Infrastructure</a> and the <a href="#worked-example">worked example</a>.</p>
+
+      <h2 id="learning-flow">How to Study This Section</h2>
+      <p>Read the stages in order. Each stage exists because the previous one creates a new question.</p>
+      <ol>
+        <li><strong><a href="#stage-0">Cloud basics</a> and <a href="#stage-1">global infrastructure</a></strong> — learn what renting infrastructure means and where it physically runs. Watch for: <strong>Region vs. Availability Zone — the difference is</strong> scale and purpose. A Region is a whole geographic area you choose for latency and data-residency reasons; an AZ is one isolated failure domain <em>inside</em> a Region that you spread across for availability.</li>
+        <li><strong><a href="#stage-2">IAM and shared responsibility</a></strong> — before launching anything, decide who may do what. Watch for: <strong>IAM user vs. IAM role — the difference is</strong> the credential. A user has long-lived credentials tied to one person or program; a role has no permanent credentials and is <em>assumed</em>, handing out short-lived ones.</li>
+        <li><strong><a href="#stage-3">Networking</a></strong> — every EC2 instance, database, and load balancer lives in a VPC subnet, so the network comes before the servers. Watch for: <strong>security group vs. network ACL.</strong></li>
+        <li><strong><a href="#stage-4">Compute</a>, <a href="#stage-5">storage</a>, <a href="#stage-6">databases</a>, <a href="#stage-7">messaging</a></strong> — place the workload. For each service, ask the same three questions: what does AWS manage, what do I manage, and how does it survive an AZ failure?</li>
+        <li><strong><a href="#stage-8">Operate</a>, <a href="#stage-9">secure</a>, <a href="#stage-10">automate</a>, <a href="#stage-11">pay</a></strong> — then judge the whole design with the <a href="#stage-12">Well-Architected Framework</a>, and finish with the <a href="#worked-example">worked example</a> and <a href="#interview-checklist">interview checklist</a>.</li>
+        <li><strong>Next sections</strong> — for the vendor-neutral theory behind these services continue to <a href="../networking/00-networking-fundamentals.html">Networking Fundamentals</a>, <a href="../traffic/00-load-balancing.html">Load Balancing</a>, and <a href="../storage/storage-type.html">Storage Types</a>.</li>
+      </ol>
+
+      <div class="sd-progress" id="awsProgress">
+        <div class="sd-progress-bar"><span id="awsBar"></span></div>
+        <p class="sd-progress-text"><strong id="awsCount">0</strong> / <span id="awsTotal">13</span> stages covered
+          &nbsp;·&nbsp; <button type="button" class="sd-progress-reset" id="awsReset">reset</button></p>
+      </div>
+
+      <h2 id="stage-0"><input type="checkbox" data-stage="0"> Stage 0 — Cloud Basics: Why Rent Instead of Buy</h2>
+      <p class="stage-note">The vocabulary every other stage uses.</p>
+      <p><strong>Cloud computing</strong> is on-demand access to IT resources over the internet with pay-as-you-go pricing. It exists because the traditional model — buy hardware, wait for delivery, rack it, then run it for years — forces a team to predict demand far in advance and pay for it before earning anything from it.</p>
+      <ul>
+        <li><strong>CapEx vs. OpEx — the difference is</strong> when and how you pay. Capital expense is a large up-front hardware purchase; operating expense is paying per hour, per request, or per GB as you use it. AWS turns the first into the second.</li>
+        <li><strong>Elasticity:</strong> capacity grows and shrinks with demand, automatically if you configure Auto Scaling. This does NOT mean everything scales on its own — an EC2 instance you launched by hand stays exactly one instance until you change it.</li>
+        <li><strong>Service models — IaaS vs. PaaS vs. SaaS:</strong> with IaaS (EC2) you manage the OS and everything above it; with PaaS-style managed services (Elastic Beanstalk, RDS, Lambda) AWS manages the OS and runtime and you manage code, data and configuration; SaaS is a finished application you only use. The further up you go, the less you operate — and the less you can customise.</li>
+        <li><strong>Managed vs. self-managed:</strong> PostgreSQL on an EC2 instance is self-managed (you patch, back up, and fail over). RDS for PostgreSQL is managed (AWS patches, backs up, and fails over; you still design the schema and tune queries).</li>
+        <li><strong>How you talk to AWS:</strong> every action — console click, <code>aws</code> CLI command, SDK call, Terraform run — is ultimately an authenticated HTTPS API call. That is why IAM (Stage 2) governs all of them in exactly the same way.</li>
+      </ul>
+
+      <h2 id="stage-1"><input type="checkbox" data-stage="1"> Stage 1 — Global Infrastructure: Regions, AZs, Edge Locations</h2>
+      <p class="stage-note">Where your resources physically run, and how that decides availability and latency.</p>
+      <ul>
+        <li><strong>Region:</strong> a separate geographic area (for example <code>ap-south-1</code>, Mumbai, or <code>us-east-1</code>, N. Virginia). Regions are isolated from each other; most resources you create live in exactly one Region and are not copied elsewhere unless you set that up.</li>
+        <li><strong>Availability Zone (AZ):</strong> one or more discrete data centres inside a Region, with independent power, cooling and networking, connected to the other AZs by low-latency links (for example <code>ap-south-1a</code>, <code>ap-south-1b</code>). An AZ is the unit of failure you design around.</li>
+        <li><strong>Edge locations:</strong> many smaller sites, far more numerous than Regions, used by CloudFront (CDN) and Route 53 (DNS) to answer users from nearby.</li>
+        <li><strong>How to choose a Region:</strong> (1) data-residency / compliance rules, (2) latency to your users, (3) whether the services you need are available there, (4) price, which differs between Regions.</li>
+        <li><strong>Global vs. regional vs. zonal services:</strong> IAM and Route 53 are global; S3 buckets, SQS queues and DynamoDB tables are regional (already spread across AZs); an EC2 instance and an EBS volume are zonal — they live in one AZ and die with it.</li>
+      </ul>
+      <div class="sd-study-note warning"><span class="sd-note-title">Gotcha: an EBS volume cannot follow an instance to another AZ</span><p>Because EBS volumes are zonal, an instance in <code>ap-south-1a</code> cannot attach a volume in <code>ap-south-1b</code>. To move data across AZs you snapshot the volume (snapshots are stored regionally) and create a new volume from the snapshot in the target AZ.</p></div>
+
+      <h2 id="stage-2"><input type="checkbox" data-stage="2"> Stage 2 — Account, IAM &amp; the Shared Responsibility Model</h2>
+      <p class="stage-note">Who is allowed to do what — decided before anything is launched.</p>
+      <p><strong>IAM (Identity and Access Management)</strong> is the AWS service that decides whether an API call is allowed. It exists because every action in AWS is an API call, and without a central permission system anyone holding account credentials could delete every resource. IAM evaluates each request against policies: <strong>by default everything is denied</strong>, an explicit <code>Allow</code> grants access, and an explicit <code>Deny</code> always wins over any <code>Allow</code>.</p>
+      <ul>
+        <li><strong>Root user:</strong> the email address that created the account; it can do everything, including close the account, and IAM policies cannot restrict it. Enable MFA on it, create no access keys for it, and use it only for the few tasks that require it.</li>
+        <li><strong>IAM user:</strong> a long-lived identity with a password and/or access keys. Today the recommended way for humans to sign in is IAM Identity Center (single sign-on) with short-lived credentials rather than one IAM user per person.</li>
+        <li><strong>IAM group:</strong> a collection of users that share policies. A group is not an identity — it cannot be assumed or sign in.</li>
+        <li><strong>IAM role:</strong> an identity with permissions but no long-lived credentials; a trusted principal (an EC2 instance, a Lambda function, a user from another account, a Kubernetes service account) <em>assumes</em> it and receives temporary credentials from STS (Security Token Service).</li>
+        <li><strong>Policy:</strong> a JSON document listing <code>Effect</code>, <code>Action</code>, <code>Resource</code> and optional <code>Condition</code>. For example, <code>"Action": "s3:GetObject"</code> on <code>"Resource": "arn:aws:s3:::my-app-uploads/*"</code> lets the holder read objects from that one bucket only.</li>
+        <li><strong>Least privilege:</strong> grant only the actions and resources a job needs. Start narrow and widen on evidence — IAM Access Analyzer can generate a policy from what was actually used.</li>
+      </ul>
+      <p><strong>Why roles instead of access keys on a server:</strong> if you paste an access key into an EC2 instance's config file, the key never expires, and anyone who reads the file or the Git history owns those permissions. When you attach a role to the instance (through an instance profile) instead, the SDK fetches temporary credentials from the instance metadata service, and AWS rotates them automatically. The cause → effect chain is: no stored secret → nothing long-lived to leak → a leaked credential stops working within hours.</p>
+      <p><strong>Shared responsibility model:</strong> AWS is responsible for security <em>of</em> the cloud — physical data centres, hardware, network backbone, the hypervisor. You are responsible for security <em>in</em> the cloud — IAM, security groups, encryption settings, and the guest OS and application on EC2. The line moves with the service: on EC2 you patch the OS; on Lambda or RDS, AWS patches it, but the IAM permissions and data are still yours.</p>
+      <p><strong>Multi-account setup:</strong> larger organisations use AWS Organizations to split workloads into separate accounts (for example <code>prod</code>, <code>staging</code>, <code>security</code>), because an account is the strongest isolation boundary AWS has. Service Control Policies (SCPs) set the maximum permissions any identity in a member account can ever have.</p>
+
+      <h2 id="stage-3"><input type="checkbox" data-stage="3"> Stage 3 — Networking: VPC, Subnets, Security Groups, Route 53, ELB, CloudFront</h2>
+      <p class="stage-note">Every server, database and load balancer lives in a network you define. Theory behind it: <a href="../networking/00-networking-fundamentals.html">Networking Fundamentals</a>.</p>
+      <p>A <strong>VPC (Virtual Private Cloud)</strong> is your own logically isolated private network inside a Region, with an IP range you choose in CIDR notation (for example <code>10.0.0.0/16</code>). It exists so your resources get private IP addresses and only the paths you explicitly open lead in or out. Each Region gives a new account a <em>default VPC</em> with public subnets for quick experiments; production designs usually create their own.</p>
+      <ul>
+        <li><strong>Subnet:</strong> a slice of the VPC's IP range that lives in exactly one AZ (for example <code>10.0.1.0/24</code> in <code>ap-south-1a</code>). To survive an AZ failure, create matching subnets in at least two AZs.</li>
+        <li><strong>Public vs. private subnet — the difference is</strong> the route table. A subnet is "public" only because its route table sends <code>0.0.0.0/0</code> to an <strong>Internet Gateway</strong>. A private subnet has no such route, so nothing on the internet can reach its instances directly.</li>
+        <li><strong>NAT Gateway:</strong> lets instances in private subnets start outbound connections (for OS updates, calling external APIs) while still blocking inbound ones. It sits in a public subnet and is billed per hour plus per GB processed — a common surprise on the bill.</li>
+        <li><strong>VPC endpoints:</strong> let private resources reach AWS services such as S3 or DynamoDB without going through the internet or a NAT Gateway.</li>
+      </ul>
+      <h3>Security group vs. network ACL — the difference is state and scope</h3>
+      <table>
+        <thead><tr><th></th><th>Security group</th><th>Network ACL</th></tr></thead>
+        <tbody>
+          <tr><td>Attached to</td><td>An instance's network interface (ENI)</td><td>A whole subnet</td></tr>
+          <tr><td>State</td><td><strong>Stateful</strong> — return traffic for an allowed request is allowed automatically</td><td><strong>Stateless</strong> — return traffic needs its own rule (usually ephemeral ports 1024–65535)</td></tr>
+          <tr><td>Rules</td><td>Allow rules only</td><td>Allow <em>and</em> deny rules, evaluated in number order</td></tr>
+          <tr><td>Typical use</td><td>The main firewall: "the app servers accept port 8000 only from the load balancer's security group"</td><td>A coarse extra layer, for example blocking a known bad IP range for the whole subnet</td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li><strong>Route 53:</strong> AWS's DNS service — hosts your domain's records and supports routing policies (latency-based, weighted, failover) with health checks.</li>
+        <li><strong>Elastic Load Balancing:</strong> the <strong>Application Load Balancer (ALB)</strong> works at layer 7 (HTTP/HTTPS; routes by path or host header, terminates TLS); the <strong>Network Load Balancer (NLB)</strong> works at layer 4 (TCP/UDP; very high throughput, static IPs). Concepts: <a href="../traffic/00-load-balancing.html">Load Balancing</a>.</li>
+        <li><strong>CloudFront:</strong> AWS's CDN; caches content at edge locations close to users. Concepts: <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN</a>.</li>
+      </ul>
+
+      <h2 id="stage-4"><input type="checkbox" data-stage="4"> Stage 4 — Compute: EC2, Lambda, ECS, EKS, Fargate</h2>
+      <p class="stage-note">Where your code actually runs — and how much of the machine you must look after.</p>
+      <ul>
+        <li><strong>EC2 (Elastic Compute Cloud):</strong> virtual machines. You choose an <strong>AMI</strong> (the disk image: OS plus software), an <strong>instance type</strong> (CPU/memory family and size, for example <code>t3.micro</code>, <code>m7g.large</code>), a subnet and security groups. You own everything from the OS up. An <strong>Auto Scaling group</strong> keeps a desired number of instances running across AZs, replaces unhealthy ones, and scales on metrics such as CPU. See the <a href="../path/00-system-desing.html">EC2 Hosting Checklist</a>.</li>
+        <li><strong>Lambda:</strong> serverless functions. You upload code; AWS runs it in response to an event (an HTTP request via API Gateway, a new S3 object, an SQS message) and bills per request and per millisecond of run time. Limits to know: maximum 15 minutes per invocation, and a <strong>cold start</strong> — extra latency when a new execution environment must be created.</li>
+        <li><strong>ECS (Elastic Container Service):</strong> AWS's own container orchestrator — simpler than Kubernetes, deeply integrated with AWS.</li>
+        <li><strong>EKS (Elastic Kubernetes Service):</strong> managed Kubernetes — AWS runs the control plane (API server, etcd; see <a href="../kubernetes/00-index.html">Kubernetes</a>), you run workloads on worker nodes.</li>
+        <li><strong>Fargate:</strong> a serverless compute engine for ECS and EKS — you define a task or pod's CPU and memory and AWS runs it with no EC2 instances for you to manage.</li>
+      </ul>
+      <table>
+        <thead><tr><th></th><th>EC2</th><th>Containers on Fargate</th><th>Lambda</th></tr></thead>
+        <tbody>
+          <tr><td>You manage</td><td>OS, patching, runtime, scaling config</td><td>Container image, CPU/memory size</td><td>Function code and memory size</td></tr>
+          <tr><td>Billing</td><td>Per second the instance runs, busy or idle</td><td>Per second of vCPU and memory requested</td><td>Per request + per ms of execution</td></tr>
+          <tr><td>Best for</td><td>Long-running servers, special hardware, full control</td><td>Long-running containerised services without node management</td><td>Event-driven, spiky or low-traffic work under 15 minutes</td></tr>
+          <tr><td>Watch out for</td><td>Paying for idle capacity</td><td>Cost at steady high load compared with well-used EC2</td><td>Cold starts, time limit, cost at very high steady volume</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Instance purchase options:</strong> On-Demand (no commitment), Savings Plans / Reserved Instances (1- or 3-year commitment for a large discount), and <strong>Spot</strong> (spare capacity at a steep discount that AWS can reclaim with a two-minute warning — only for work that can be interrupted, such as batch jobs or stateless workers). See <a href="#stage-11">Stage 11</a>.</p>
+
+      <h2 id="stage-5"><input type="checkbox" data-stage="5"> Stage 5 — Storage: S3, EBS, EFS</h2>
+      <p class="stage-note">Object, block and file storage — the three shapes from <a href="../storage/storage-type.html">Storage Types</a>, as AWS services.</p>
+      <ul>
+        <li><strong>S3 (Simple Storage Service):</strong> object storage. You store objects (a file plus metadata) under keys in a <strong>bucket</strong>, accessed over HTTPS. Designed for 99.999999999% ("eleven nines") durability by storing data redundantly across multiple AZs. Since December 2020, S3 has strong read-after-write consistency for all objects. Storage classes (Standard, Standard-IA, Intelligent-Tiering, Glacier tiers) trade retrieval speed and cost against storage price; lifecycle rules move objects between them automatically.</li>
+        <li><strong>EBS (Elastic Block Store):</strong> a network-attached block disk for one EC2 instance, in one AZ. It behaves like a hard drive: you format it with a filesystem. Snapshots back it up incrementally to S3-backed storage.</li>
+        <li><strong>EFS (Elastic File System):</strong> a managed NFS file system that many instances, across AZs, can mount at the same time.</li>
+      </ul>
+      <div class="sd-study-note"><span class="sd-note-title">S3 vs. EBS vs. EFS — the difference is who can access it and how</span><p>EBS: one instance (usually), one AZ, a raw disk — use it for the OS and databases on EC2. EFS: many instances, many AZs, a shared POSIX file system — use it for shared content folders. S3: any client with permission, over HTTP, whole objects — use it for uploads, static assets, backups, logs and data lakes. S3 is NOT a file system: you cannot append to or edit part of an object in place; you rewrite the whole object.</p></div>
+      <div class="sd-study-note warning"><span class="sd-note-title">Gotcha: public buckets</span><p>Many data leaks are S3 buckets made public by mistake. New buckets have Block Public Access enabled by default — keep it on, and serve public files through CloudFront (with origin access control) or pre-signed URLs instead of making the bucket public.</p></div>
+
+      <h2 id="stage-6"><input type="checkbox" data-stage="6"> Stage 6 — Databases: RDS, Aurora, DynamoDB, ElastiCache</h2>
+      <p class="stage-note">Managed data stores — AWS runs the servers, you design the data. Concepts: <a href="../05-database/00-learning-path/00-index.html">Database Learning Path</a>.</p>
+      <ul>
+        <li><strong>RDS (Relational Database Service):</strong> managed PostgreSQL, MySQL, MariaDB, Oracle and SQL Server. AWS handles provisioning, patching, automated backups with point-in-time recovery, and failover.</li>
+        <li><strong>Aurora:</strong> AWS's MySQL- and PostgreSQL-compatible engine with a distributed storage layer that keeps six copies of data across three AZs; failover is typically faster than standard RDS, and up to 15 read replicas share the same storage.</li>
+        <li><strong>DynamoDB:</strong> a serverless key-value and document database with single-digit-millisecond latency at any scale. You design around access patterns (partition key + optional sort key) rather than joins. Reads are eventually consistent by default; strongly consistent reads are available on request.</li>
+        <li><strong>ElastiCache:</strong> managed Redis-compatible (Redis OSS / Valkey) and Memcached caches. Concepts: <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN</a>. Service deep dive with the official FAQ: <a href="01-elasticache.html">Amazon ElastiCache</a>.</li>
+      </ul>
+      <h3>RDS Multi-AZ vs. read replica — the difference is purpose</h3>
+      <p><strong>Multi-AZ</strong> is for <em>availability</em>: RDS keeps a standby in another AZ, replicated <em>synchronously</em>; if the primary fails, RDS flips the DNS endpoint to the standby, usually within a minute or two. In the classic Multi-AZ <em>instance</em> deployment the standby does NOT serve reads. <strong>Read replicas</strong> are for <em>read scaling</em>: they replicate <em>asynchronously</em>, serve read traffic, and can lag behind the primary (see <a href="../distributed-database/05-replication-lag.html">Replication Lag</a>). Caveat: the newer Multi-AZ <em>DB cluster</em> deployment (two readable standbys) blurs this line — say which one you mean.</p>
+
+      <h2 id="stage-7"><input type="checkbox" data-stage="7"> Stage 7 — Messaging &amp; Integration: SQS, SNS, EventBridge, Kinesis</h2>
+      <p class="stage-note">Decoupling services so one slow or failing part does not take down the rest. Concepts: <a href="../sqs/01-sqs.html">SQS Overview</a>, <a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a>.</p>
+      <ul>
+        <li><strong>SQS (Simple Queue Service):</strong> a managed message queue. Producers send messages; consumers poll, process and delete them. <strong>Standard</strong> queues give at-least-once delivery with best-effort ordering; <strong>FIFO</strong> queues give strict ordering per message group and exactly-once processing within a deduplication window. Failed messages move to a dead-letter queue after a set number of receives.</li>
+        <li><strong>SNS (Simple Notification Service):</strong> pub/sub. A publisher sends one message to a topic; SNS pushes a copy to every subscriber (SQS queues, Lambda functions, HTTP endpoints, email, SMS).</li>
+        <li><strong>EventBridge:</strong> an event bus that routes events by content-matching rules — from your services, from AWS services, and from SaaS partners — and also runs scheduled jobs.</li>
+        <li><strong>Kinesis Data Streams:</strong> an ordered, replayable stream split into shards, for high-volume real-time data such as clickstreams — AWS's closest managed equivalent to a Kafka topic (Amazon MSK is managed Kafka itself).</li>
+      </ul>
+      <div class="sd-study-note"><span class="sd-note-title">SQS vs. SNS — the difference is pull-to-one vs. push-to-many</span><p>In SQS, each message is processed by one consumer, which pulls it when ready. In SNS, each message is pushed to all subscribers immediately. The common "fan-out" pattern combines them: publish once to an SNS topic that has several SQS queues subscribed, so each downstream service gets its own durable copy and can process it at its own pace.</p></div>
+
+      <h2 id="stage-8"><input type="checkbox" data-stage="8"> Stage 8 — Observability &amp; Governance: CloudWatch, CloudTrail, Config</h2>
+      <p class="stage-note">Seeing what the system does and who changed it. Concepts: <a href="../observability-security/00-observability-fundamentals.html">Observability Fundamentals</a>.</p>
+      <ul>
+        <li><strong>CloudWatch:</strong> metrics (CPU, request count, queue depth), logs (CloudWatch Logs), alarms that act on metric thresholds (notify via SNS, trigger Auto Scaling), and dashboards.</li>
+        <li><strong>CloudTrail:</strong> an audit log of API calls in your account — who did what, from where, and when.</li>
+        <li><strong>AWS Config:</strong> records resource configuration over time and evaluates it against rules ("every S3 bucket must block public access").</li>
+        <li><strong>X-Ray:</strong> distributed tracing across services.</li>
+      </ul>
+      <div class="sd-study-note"><span class="sd-note-title">CloudWatch vs. CloudTrail — the difference is performance vs. audit</span><p>CloudWatch answers "how is my system behaving?" (latency is up, CPU is at 90%). CloudTrail answers "who changed my system?" (user X deleted security group Y at 14:02). When an incident starts right after a change, you need both: CloudWatch shows <em>when</em> behaviour changed, CloudTrail shows <em>what</em> changed.</p></div>
+
+      <h2 id="stage-9"><input type="checkbox" data-stage="9"> Stage 9 — Security Services: KMS, Secrets Manager, WAF, Shield, GuardDuty</h2>
+      <p class="stage-note">Protecting data and traffic beyond IAM. Concepts: <a href="../observability-security/01-application-security-fundamentals.html">Application Security Fundamentals</a>.</p>
+      <ul>
+        <li><strong>KMS (Key Management Service):</strong> creates and controls encryption keys; S3, EBS, RDS and most other services encrypt data at rest with KMS keys. Access to the key is itself governed by IAM and key policies — so encryption also becomes an access control.</li>
+        <li><strong>Secrets Manager vs. SSM Parameter Store — the difference is</strong> rotation and cost. Secrets Manager stores secrets such as database passwords and can rotate them automatically, at a per-secret monthly price; Parameter Store holds configuration and secrets (SecureString) with no built-in rotation and a free standard tier.</li>
+        <li><strong>WAF (Web Application Firewall):</strong> filters HTTP requests at CloudFront, ALB or API Gateway — SQL injection patterns, bad bots, and rate-based rules (see <a href="../traffic/01-rate-limiting-and-throttling.html">Rate Limiting</a>).</li>
+        <li><strong>Shield:</strong> DDoS protection. Shield Standard is automatic and free for all customers; Shield Advanced is a paid add-on with response-team support and cost protection.</li>
+        <li><strong>GuardDuty:</strong> threat detection that analyses CloudTrail, VPC flow logs and DNS logs for suspicious activity, such as credentials used from an unusual location.</li>
+        <li><strong>ACM (Certificate Manager):</strong> free public TLS certificates for ALB and CloudFront, renewed automatically.</li>
+      </ul>
+
+      <h2 id="stage-10"><input type="checkbox" data-stage="10"> Stage 10 — Infrastructure as Code &amp; Deployment</h2>
+      <p class="stage-note">Creating environments from files instead of console clicks. Concepts: <a href="../observability-security/02-cicd-and-deployment-strategies.html">CI/CD &amp; Deployment Strategies</a>.</p>
+      <p><strong>Infrastructure as Code (IaC)</strong> means describing resources (VPCs, instances, buckets) in version-controlled files that a tool turns into real infrastructure. It exists because console clicks are not repeatable: staging and production drift apart, nobody can review the change, and a lost Region cannot be rebuilt quickly.</p>
+      <ul>
+        <li><strong>CloudFormation:</strong> AWS's native IaC — YAML/JSON templates deployed as <em>stacks</em>; AWS tracks state and rolls back failed updates.</li>
+        <li><strong>CDK (Cloud Development Kit):</strong> write infrastructure in TypeScript, Python, Java and others; it synthesises CloudFormation templates.</li>
+        <li><strong>Terraform:</strong> a third-party, multi-cloud IaC tool (HCL language) that keeps its own state file — very common in industry.</li>
+        <li><strong>Deploy tooling:</strong> CodePipeline / CodeBuild / CodeDeploy, or GitHub Actions authenticating to AWS through an OIDC role (no stored access keys — the same reason as roles in Stage 2).</li>
+      </ul>
+
+      <h2 id="stage-11"><input type="checkbox" data-stage="11"> Stage 11 — Cost: Pricing Models, Budgets, Data Transfer</h2>
+      <p class="stage-note">Pay-as-you-go also means pay-for-what-you-forgot.</p>
+      <ul>
+        <li><strong>Pricing models:</strong> On-Demand, Savings Plans and Reserved Instances (commitment for a discount), Spot (deep discount, can be interrupted). Match the model to the workload: a steady baseline on a commitment, peaks on On-Demand, interruptible batch on Spot.</li>
+        <li><strong>Data transfer:</strong> data coming <em>into</em> AWS is generally free; data going <em>out</em> to the internet is billed per GB, and traffic between AZs is billed too. Chatty cross-AZ designs and NAT Gateway traffic are the classic hidden costs.</li>
+        <li><strong>Guard rails:</strong> set an AWS Budgets alert on day one, tag resources by project/owner, and use Cost Explorer to find what is spending.</li>
+        <li><strong>Free Tier:</strong> AWS offers free usage for new accounts, but its terms change (in 2025 AWS moved new accounts to a credit-based free plan) — always check the current Free Tier page and never assume a service is free. A forgotten NAT Gateway, Elastic IP, or large instance keeps billing after the tutorial ends.</li>
+      </ul>
+
+      <h2 id="stage-12"><input type="checkbox" data-stage="12"> Stage 12 — The Well-Architected Framework</h2>
+      <p class="stage-note">AWS's own checklist for judging a design — useful as an interview structure too.</p>
+      <p>The <strong>AWS Well-Architected Framework</strong> is a set of design principles and review questions grouped into six pillars. It exists so a design can be reviewed systematically instead of by gut feeling; the free Well-Architected Tool in the console walks through the questions for a workload.</p>
+      <ol>
+        <li><strong>Operational Excellence</strong> — run and improve the system: IaC, small reversible changes, runbooks, learning from failures.</li>
+        <li><strong>Security</strong> — least-privilege identity, traceability, encryption in transit and at rest, protection at every layer.</li>
+        <li><strong>Reliability</strong> — recover from failure automatically: multiple AZs, health checks, backups that are actually tested.</li>
+        <li><strong>Performance Efficiency</strong> — right resource types and sizes, use managed services, measure and experiment.</li>
+        <li><strong>Cost Optimization</strong> — pay only for what delivers value: right-sizing, pricing models, turning off idle resources.</li>
+        <li><strong>Sustainability</strong> — reduce the environmental impact of the workload: higher utilisation, efficient instance types (for example Graviton), less wasted data.</li>
+      </ol>
+
+      <h2 id="worked-example">Worked Example — A 3-Tier Web App on AWS</h2>
+      <p>This ties every stage together. Follow one HTTPS request from a user to the database and back, and note which stage each hop belongs to.</p>
+      <ol>
+        <li>The user's browser resolves <code>app.example.com</code> through <strong>Route 53</strong> (Stage 3), which returns the address of a <strong>CloudFront</strong> distribution.</li>
+        <li>CloudFront serves static files (JS, CSS, images) from an edge cache, fetched from an <strong>S3</strong> bucket (Stage 5) that is private and reachable only through CloudFront. <strong>WAF</strong> on CloudFront filters malicious requests (Stage 9).</li>
+        <li>API requests (<code>/api/*</code>) go on to an <strong>Application Load Balancer</strong> in public subnets in two AZs; it terminates TLS with an <strong>ACM</strong> certificate.</li>
+        <li>The ALB forwards to application servers — an <strong>EC2 Auto Scaling group</strong> or <strong>ECS on Fargate</strong> tasks (Stage 4) — in <em>private</em> subnets in both AZs. Their security group allows the app port only from the ALB's security group.</li>
+        <li>The application reads its database password from <strong>Secrets Manager</strong> using the task's or instance's <strong>IAM role</strong> (Stages 2 and 9) — no keys in code.</li>
+        <li>It queries <strong>RDS PostgreSQL Multi-AZ</strong> (Stage 6) in private subnets, checking <strong>ElastiCache</strong> first for hot reads.</li>
+        <li>Slow work (sending email, resizing an uploaded image) is put on an <strong>SQS</strong> queue (Stage 7) and handled by a <strong>Lambda</strong> function or worker, so the user's request returns quickly.</li>
+        <li><strong>CloudWatch</strong> collects metrics and logs and alarms on error rate; <strong>CloudTrail</strong> records every configuration change (Stage 8). The whole stack is defined in <strong>Terraform or CDK</strong> (Stage 10).</li>
+      </ol>
+      <p><strong>What happens when AZ <code>a</code> fails:</strong> the ALB's health checks mark targets in AZ <code>a</code> unhealthy → it sends all traffic to AZ <code>b</code> → the Auto Scaling group launches replacement capacity in AZ <code>b</code> → RDS Multi-AZ promotes the standby in AZ <code>b</code> and updates its DNS endpoint → the application reconnects. Users see a short blip, not an outage. This only works because every tier was deployed in two AZs from the start.</p>
+
+      <h2 id="hands-on">Hands-on Labs — Build It Yourself</h2>
+      <p>Reading is not enough for AWS; each lab below practises one or more stages. Set a budget alert first (Stage 11) and delete everything when done.</p>
+      <ol>
+        <li><strong>Secure the account:</strong> enable MFA on root, create an admin identity through IAM Identity Center, set a $5 AWS Budgets alert.</li>
+        <li><strong>Static site:</strong> host a static site in a private S3 bucket behind CloudFront with an ACM certificate.</li>
+        <li><strong>Custom VPC:</strong> build a VPC with public and private subnets in two AZs; launch an EC2 instance in the private subnet and connect to it with Session Manager (no SSH port, no public IP).</li>
+        <li><strong>Load-balanced app:</strong> put two EC2 instances (or an Auto Scaling group) behind an ALB; stop one and watch traffic shift.</li>
+        <li><strong>Serverless API:</strong> API Gateway → Lambda → DynamoDB, with the Lambda's IAM role limited to one table.</li>
+        <li><strong>Queue worker:</strong> S3 upload → event → SQS → Lambda that processes the file, with a dead-letter queue.</li>
+        <li><strong>IaC rebuild:</strong> recreate lab 4 with Terraform or CDK, destroy it, and recreate it in one command.</li>
+      </ol>
+
+      <h2 id="certifications">Certification Path</h2>
+      <p>Certifications are optional, but their exam guides are a good syllabus for what to learn next.</p>
+      <ul>
+        <li><strong>AWS Certified Cloud Practitioner</strong> — foundational: cloud concepts, core services, billing, shared responsibility (Stages 0–2, 11).</li>
+        <li><strong>AWS Certified Solutions Architect – Associate</strong> — the most useful one for system design: choosing and combining services for resilient, secure, cost-effective designs (all stages).</li>
+        <li><strong>Developer – Associate</strong> or <strong>SysOps Administrator / CloudOps Engineer – Associate</strong> — depending on whether you build applications or operate infrastructure.</li>
+        <li><strong>Professional / Specialty</strong> exams (Solutions Architect – Professional, DevOps Engineer – Professional, Security – Specialty) come after hands-on experience.</li>
+      </ul>
+      <p>Exam names and content are revised from time to time — check the official AWS Certification page for the current list.</p>
+
+      <h2 id="interview-checklist">Interview Checklist</h2>
+      <ul>
+        <li>Name the Region choice and why (users' location, compliance), and deploy every stateful and stateless tier across at least two AZs.</li>
+        <li>Put application servers and databases in private subnets; only the load balancer (and NAT Gateway) sits in public subnets.</li>
+        <li>Use IAM roles, never long-lived access keys, for anything running inside AWS; apply least privilege.</li>
+        <li>Say which compute model and why (EC2 vs. containers vs. Lambda), including what you manage and how it scales.</li>
+        <li>Separate storage by shape: S3 for objects, EBS for a single server's disk, EFS for a shared file system, RDS/DynamoDB for records.</li>
+        <li>Distinguish RDS Multi-AZ (availability) from read replicas (read scaling), and name the consistency trade-off of each.</li>
+        <li>Decouple slow or failure-prone work with SQS/SNS, and mention dead-letter queues.</li>
+        <li>Mention observability (CloudWatch metrics, logs, alarms; CloudTrail for audit), encryption with KMS, and secrets in Secrets Manager.</li>
+        <li>Call out cost drivers — NAT Gateway, cross-AZ and internet egress, idle instances — and a pricing model that fits the load.</li>
+      </ul>
+
+      <!-- ═══════════  END OF PAGE CONTENT  ═══════════ -->
+
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = "aws_roadmap_covered";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-stage]'));
+  var total = boxes.length;
+  var countEl = document.getElementById('awsCount');
+  var totalEl = document.getElementById('awsTotal');
+  var barEl = document.getElementById('awsBar');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  if (totalEl) totalEl.textContent = String(total);
+
+  function render() {
+    var n = 0;
+    boxes.forEach(function (b) {
+      if (b.checked) n++;
+      var h = b.closest('h2');
+      if (h) h.classList.toggle('done', b.checked);
+    });
+    if (countEl) countEl.textContent = String(n);
+    if (barEl) barEl.style.width = (total ? (n / total * 100) : 0) + "%";
+  }
+
+  boxes.forEach(function (b) {
+    var k = b.getAttribute('data-stage');
+    b.checked = saved[k] === true;
+    b.addEventListener('change', function () {
+      saved[k] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      render();
+    });
+  });
+
+  var reset = document.getElementById('awsReset');
+  if (reset) reset.addEventListener('click', function () {
+    saved = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    boxes.forEach(function (b) { b.checked = false; });
+    render();
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>

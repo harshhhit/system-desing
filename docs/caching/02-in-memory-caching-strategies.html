@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "02-in-memory-caching-strategies" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>In-Memory Caching Strategies · Infra Owl</title>
+<link rel="stylesheet" href="../assets/site.css?v=8">
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+</style>
+</head>
+<body>
+<div id="site-header-root"></div>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=7" data-root="../"></script>
+
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group" open><summary>In-Memory Caching</summary><ul><li><a class="active" href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main">
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Caching &amp; CDN / In-Memory Caching Strategies</p>
+      <h1 data-page-title>In-Memory Caching Strategies</h1>
+      <p class="sd-study-prompt" data-page-subtitle>Cache-aside, read-through, write-through, write-behind, write-around and refresh-ahead &mdash; who fills the cache, how writes keep it in sync, and why you delete instead of update.</p>
+
+      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+
+      <h2 id="interview-answer">Interview Answer — What Is a Caching Strategy?</h2>
+      <p>A <strong>caching strategy</strong> (also called a caching pattern) is the rule that decides which component reads from and writes to the cache, and in what order relative to the database. Read strategies decide how a missing value gets <em>into</em> the cache (cache-aside, read-through, refresh-ahead); write strategies decide how a changed value reaches both the cache and the database (write-through, write-behind, write-around).</p>
+      <p>Strategies exist because an in-memory cache and a database are two separate stores with no shared transaction. Every write therefore creates a window where the two can disagree, and every miss creates a moment where many callers may try to fill the same key. The strategy chooses where that window sits: write-through keeps the cache current at the cost of slower writes; write-behind makes writes fast at the risk of losing data; cache-aside keeps the cache simple and only holds data somebody has actually asked for.</p>
+      <p>In practice the default for Redis or Memcached in front of a relational database is <strong>cache-aside for reads + delete-the-key on write</strong>, with a TTL as a safety net. The other strategies are chosen when a specific requirement — write latency, always-warm keys, or a library that owns loading — outweighs that simplicity. The <a href="#comparison">comparison table</a> lists all six side by side.</p>
+
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"A caching strategy defines who fills the cache and how writes keep it in sync. My default is cache-aside: the app reads the cache, on a miss reads the database and stores the result with a TTL, and on a write it updates the database and then deletes the cache key. Write-through writes cache and database together so the cache is always current but writes are slower; write-behind writes only the cache and flushes to the database asynchronously — fastest, but data can be lost if the cache dies; write-around skips the cache on writes; and refresh-ahead reloads hot keys before they expire."</p>
+      </div>
+
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: On a write, should the application update the cached value or delete it?</strong></p>
+      <p><strong>A:</strong> Delete it, in most cases. Updating means two concurrent writers can set the database in order A → B but set the cache in order B → A, leaving the cache permanently holding A while the database holds B — and nothing corrects it until the TTL. Deleting is idempotent: whatever the order, the next read misses and loads the current database value. Deleting also avoids computing a cache value that may never be read. The remaining race (a slow reader re-inserting an old value right after the delete) is small and is handled with a short TTL, delayed double delete, or versioned keys — see <a href="#invalidate-vs-update">invalidate vs. update</a> and <a href="04-in-memory-cache-problems.html#stale-data">stale data</a>.</p>
+
+      <h2 id="terms">Terms used on this page</h2>
+      <ul>
+        <li><strong>Source of truth</strong> — the store whose value is correct by definition (here, the database).</li>
+        <li><strong>Cache fill</strong> — writing a value into the cache after reading it from the source of truth.</li>
+        <li><strong>Invalidation</strong> — removing (or versioning away) a cached value because the source of truth changed. <strong>Invalidation vs. eviction — the difference is</strong> the reason: invalidation removes a key because it is <em>wrong</em>; eviction (see <a href="03-in-memory-eviction-policies.html">Eviction Policies</a>) removes a key because the cache is <em>full</em>.</li>
+      </ul>
+
+      <h2 id="cache-aside">1. Cache-aside (lazy loading)</h2>
+      <p><strong>What it is:</strong> the application talks to both the cache and the database; the cache knows nothing about the database. <strong>Why it exists:</strong> it is the simplest pattern that works with any cache (Redis, Memcached, an in-process map) and any database, and it only caches data that is actually read.</p>
+      <p><strong>Read path, step by step:</strong></p>
+      <ol>
+        <li>The app calls <code>GET user:42</code> on Redis.</li>
+        <li><em>Hit</em> → return the value. Done.</li>
+        <li><em>Miss</em> → the app runs <code>SELECT * FROM users WHERE id = 42</code>.</li>
+        <li>The app stores the row: <code>SET user:42 &lt;json&gt; EX 300</code> (5-minute TTL) and returns it.</li>
+      </ol>
+      <p><strong>Write path:</strong> the app runs <code>UPDATE users …</code> on the database, then <code>DEL user:42</code>. The next read misses and reloads the new row.</p>
+      <pre><code>def get_user(user_id):
+    key = f"user:{user_id}"
+    cached = redis.get(key)
+    if cached is not None:
+        return json.loads(cached)
+    row = db.fetch_one("SELECT * FROM users WHERE id = %s", user_id)
+    redis.set(key, json.dumps(row), ex=300)
+    return row
+
+def update_user(user_id, fields):
+    db.execute("UPDATE users SET ... WHERE id = %s", user_id)
+    redis.delete(f"user:{user_id}")</code></pre>
+      <ul>
+        <li><strong>Pros:</strong> simple; resilient (if Redis is down, reads fall back to the database); the cache holds only requested data.</li>
+        <li><strong>Cons:</strong> the first read of every key is a miss (three trips: cache, DB, cache); a stale window exists between the DB write and the delete; every write path must remember to delete; many concurrent misses on one key cause a <a href="04-in-memory-cache-problems.html#thundering-herd">thundering herd</a>.</li>
+        <li><strong>Use when:</strong> read-heavy data, general purpose — this is the default.</li>
+      </ul>
+
+      <h2 id="read-through">2. Read-through</h2>
+      <p><strong>What it is:</strong> the application only ever asks the cache; on a miss, the <em>cache</em> (or a cache library) calls a loader function to fetch from the database, stores the result, and returns it. <strong>Cache-aside vs. read-through — the difference is</strong> who owns the miss path: in cache-aside the application code loads the database; in read-through the cache layer does, through a loader you register once.</p>
+      <pre><code>users = Caffeine.newBuilder()
+    .maximumSize(10_000)
+    .expireAfterWrite(Duration.ofMinutes(5))
+    .build(id -&gt; userRepository.findById(id));
+
+User u = users.get(42L);</code></pre>
+      <ul>
+        <li><strong>Pros:</strong> application code is shorter and consistent; a good library coalesces concurrent misses for the same key into one load (Caffeine's <code>LoadingCache</code> does), which prevents a stampede for free.</li>
+        <li><strong>Cons:</strong> the cache must know how to load data (coupling); plain Redis and Memcached don't do read-through on their own — you need a library or a provider such as Hazelcast <code>MapLoader</code>, NCache, or DynamoDB Accelerator (DAX), which is a read-through/write-through cache in front of DynamoDB.</li>
+      </ul>
+
+      <h2 id="write-through">3. Write-through</h2>
+      <p><strong>What it is:</strong> every write goes to the cache, and the cache layer synchronously writes it to the database before acknowledging. <strong>Why it exists:</strong> the cache is never stale for keys written through it, and a read right after a write is always a hit.</p>
+      <p><strong>Write path, step by step:</strong> app writes <code>user:42</code> → cache stores it → cache (or the library) writes the database → both succeed → acknowledge to the app. If the database write fails, the cache entry must be rolled back or removed, otherwise the cache holds a value the database never accepted.</p>
+      <ul>
+        <li><strong>Pros:</strong> cache and database agree for data written through the cache; reads after writes are fast.</li>
+        <li><strong>Cons:</strong> every write pays cache + database latency (no write speedup); the cache fills with data that may never be read (pair it with a TTL or eviction); writes that bypass the cache (a migration, another service) still leave it stale.</li>
+        <li><strong>Use when:</strong> data is read soon after it is written and staleness is unacceptable — e.g. a user's own settings page. Usually paired with read-through.</li>
+      </ul>
+
+      <h2 id="write-behind">4. Write-behind (write-back)</h2>
+      <p><strong>What it is:</strong> the app writes only to the cache, which acknowledges immediately; the cache flushes changes to the database asynchronously, often batched (every N ms or N writes). <strong>Why it exists:</strong> to absorb write bursts and make writes as fast as memory — e.g. view counters, likes, game scores, IoT readings.</p>
+      <p><strong>Cause → effect of a crash:</strong> app writes <code>views:post:9 = 1001</code> → cache acknowledges → the cache node crashes before the flush → the database still says 1000 → that write is lost, and the client was told it succeeded. That is why write-behind needs a durable buffer (Redis with AOF persistence and a replica, or a log such as Kafka between cache and database) for anything that matters.</p>
+      <ul>
+        <li><strong>Pros:</strong> lowest write latency; batching turns 1,000 increments into one <code>UPDATE … SET views = views + 1000</code>; the database is shielded from spikes.</li>
+        <li><strong>Cons:</strong> risk of data loss; the database is temporarily behind (other readers of the database see old data); ordering and retries of flushes need care; harder to operate.</li>
+        <li><strong>Use when:</strong> high write rates where a small loss window is acceptable, or where a durable log sits behind the cache.</li>
+      </ul>
+
+      <h2 id="write-around">5. Write-around</h2>
+      <p><strong>What it is:</strong> writes go straight to the database and skip the cache entirely (no update, often combined with a delete). Reads use cache-aside. <strong>Why it exists:</strong> to stop the cache filling with data that is written once and rarely read — log records, audit entries, bulk imports.</p>
+      <ul>
+        <li><strong>Pros:</strong> no cache pollution from write-heavy, read-rarely data.</li>
+        <li><strong>Cons:</strong> the first read after a write is always a miss. If an older copy is already cached and you don't delete it, reads are stale until the TTL — so "write-around" in practice usually means "write DB + delete key", which is exactly cache-aside's write path.</li>
+      </ul>
+
+      <h2 id="refresh-ahead">6. Refresh-ahead</h2>
+      <p><strong>What it is:</strong> the cache reloads a hot key <em>before</em> its TTL expires, in the background, so readers keep hitting a warm value. For example, with a 60-second TTL and a refresh factor of 0.8, a read after second 48 returns the current value immediately and triggers an asynchronous reload. Caffeine's <code>refreshAfterWrite</code> does this; HTTP's <code>stale-while-revalidate</code> is the same idea at the CDN.</p>
+      <ul>
+        <li><strong>Pros:</strong> hot keys never miss, so no latency spike and no <a href="04-in-memory-cache-problems.html#thundering-herd">stampede</a> at expiry.</li>
+        <li><strong>Cons:</strong> wasted reloads for keys that turn out not to be read again; it predicts what is hot, and a bad prediction spends database capacity for nothing.</li>
+      </ul>
+
+      <h2 id="comparison">Comparison: all six strategies</h2>
+      <table>
+        <tr><th>Strategy</th><th>Who loads on a miss</th><th>Write goes to</th><th>Write latency</th><th>Staleness risk</th><th>Data-loss risk</th><th>Typical use</th></tr>
+        <tr><td>Cache-aside</td><td>application</td><td>DB, then delete key</td><td>DB only</td><td>short window after write</td><td>none</td><td>default for Redis + SQL</td></tr>
+        <tr><td>Read-through</td><td>cache / library loader</td><td>(paired with a write strategy)</td><td>—</td><td>depends on the write strategy</td><td>none</td><td>Caffeine, DAX, Hazelcast</td></tr>
+        <tr><td>Write-through</td><td>—</td><td>cache → DB synchronously</td><td>cache + DB</td><td>low</td><td>none</td><td>read-after-write data</td></tr>
+        <tr><td>Write-behind</td><td>—</td><td>cache, DB later</td><td>cache only</td><td>DB lags the cache</td><td><strong>yes</strong>, on cache crash</td><td>counters, bursts</td></tr>
+        <tr><td>Write-around</td><td>application (cache-aside)</td><td>DB only</td><td>DB only</td><td>stale if old copy not deleted</td><td>none</td><td>write-once, read-rarely</td></tr>
+        <tr><td>Refresh-ahead</td><td>cache, before expiry</td><td>(paired with a write strategy)</td><td>—</td><td>up to one TTL</td><td>none</td><td>hot keys, predictable reads</td></tr>
+      </table>
+
+      <h2 id="invalidate-vs-update">Invalidate vs. update on write</h2>
+      <p>The concrete race that makes "update the cache" dangerous:</p>
+      <ol>
+        <li>Writer A sets <code>price = 10</code> in the DB.</li>
+        <li>Writer B sets <code>price = 12</code> in the DB (B's write is the latest).</li>
+        <li>Writer B sets the cache to 12.</li>
+        <li>Writer A (delayed by a GC pause) sets the cache to 10.</li>
+        <li>Result: DB = 12, cache = 10 — wrong until the TTL expires.</li>
+      </ol>
+      <p>With <code>DEL</code> instead, both writers delete the key and the next reader loads 12. The ordering of the two operations also matters: <strong>update the database first, then delete the cache</strong>. Deleting first opens a window where a reader misses, loads the <em>old</em> row from the database, and re-caches it before the write lands.</p>
+      <div class="sd-study-note warning"><span class="sd-note-title">This does NOT make cache-aside perfectly consistent</span><p>Even "DB first, then delete" has a rare race: a reader misses, reads the old row, stalls; the writer updates the DB and deletes the key; the reader then writes the old row into the cache. Mitigations: a TTL so the error is bounded, a <strong>delayed double delete</strong> (delete again ~1 second later), versioned values (only write if the version is newer), or Memcached-style <strong>leases</strong> (Facebook's approach: a miss gets a lease token; a delete invalidates outstanding leases, so the stale fill is rejected). Details: <a href="04-in-memory-cache-problems.html#stale-data">stale data &amp; race conditions</a>.</p></div>
+
+      <h2 id="dual-write">The dual-write problem and change-data-capture</h2>
+      <p>Writing the database and then deleting the cache is a <strong>dual write</strong>: two systems, no shared transaction. If the process crashes between the two steps, or the <code>DEL</code> fails on a network blip, the cache stays stale until the TTL. Two ways to close the gap:</p>
+      <ul>
+        <li><strong>Retry the delete</strong> through a queue (put "invalidate user:42" on a queue and retry until it succeeds).</li>
+        <li><strong>Change-data-capture (CDC)</strong> — a process tails the database's replication log (PostgreSQL WAL via Debezium, MySQL binlog) and deletes cache keys for every committed change. The cache is then invalidated for <em>every</em> write, including ones from other services or backfill scripts that don't know about the cache. See <a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a>.</li>
+      </ul>
+
+      <h2 id="choosing">How to choose</h2>
+      <ul>
+        <li>Read-heavy, a few seconds of staleness is fine → <strong>cache-aside + delete on write + TTL</strong>.</li>
+        <li>Using a caching library/provider that supports loaders → <strong>read-through</strong> (and get stampede protection for free).</li>
+        <li>Users must see their own write immediately → <strong>write-through</strong>, or cache-aside plus read-your-writes (read the writer's own data from the DB for a few seconds after they write).</li>
+        <li>Extreme write rate, small loss acceptable (counters, metrics) → <strong>write-behind</strong> with batching.</li>
+        <li>Write-once, read-rarely data → <strong>write-around</strong>.</li>
+        <li>A small set of very hot keys with predictable reads → add <strong>refresh-ahead</strong>.</li>
+      </ul>
+      <p>Whatever strategy fills the cache, memory is finite and entries age: continue with <a href="03-in-memory-eviction-policies.html">03. In-Memory Eviction Policies</a>. Earlier overview: <a href="00-caching-and-cdn-fundamentals.html#caching-strategies">Caching strategies</a> in the fundamentals page. Back to the <a href="caching-roadmap.html">Caching Roadmap</a>.</p>
+
+      <!-- ═══════════  END OF CONTENT  ═══════════ -->
+
+    </main>
+  </div>
+</div>
+
+</body>
+</html>
