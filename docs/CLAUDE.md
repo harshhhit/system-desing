@@ -29,7 +29,11 @@ the checklist below.**
    - set `window.PAGE_CONFIG = { id: "<slug>" };` in `<head>`
    - convert the shared content to plain semantic HTML (`h2`/`h3`/`p`/`ul`/`ol`/`table`) —
      match the existing pages' style, **no framework classes**, keep every bit of content
-   - paste it into the `═══ PAGE CONTENT ═══` block only
+   - paste it into the `═══ PAGE CONTENT ═══` block only, arranged in the template's
+     **lesson layout** (What you'll learn → Foundations → How it works → In production →
+     Review; see the comment in that block and the "Structure every content page as one
+     lesson" rule in the root `CLAUDE.md`). Only the site's own `sd-*` lesson classes are
+     allowed there (`sd-learn`, `sd-callout`, `sd-steps`, `sd-diagram`, `sd-takeaways`, `sd-next`)
    - if there's no lead sentence, delete the `<p ... data-page-subtitle>` line
 
 3. **Add to `assets/pages.js`:**
@@ -224,7 +228,9 @@ When you change `site.css` or `site-header.js`, bump the `?v=` query on both acr
   `<nav>`, so `regen-sidebars.js` never touches it.
 - **On this page** (`renderToc()`): built from the content's `<h2>`s when there are 3 or
   more. ≥1400px → sticky right-hand rail with the current section highlighted; narrower →
-  a collapsed box right after the lead line. `<h2>`s without an `id` get a slug id at
+  a collapsed box right after the lead line. It also shows "Section n of N" with a
+  progress meter, groups headings under part labels taken from `<h2 data-stage="…">`
+  (lesson pages), and ends with an "Up next" link to the next page in reading order. `<h2>`s without an `id` get a slug id at
   runtime; existing ids are never changed. Give an `<h2>` a stable `id` if you want to
   link to it from other pages.
 - **Previous / Next** (`renderPager()`): two cards at the end of the content (before a

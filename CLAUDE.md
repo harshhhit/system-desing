@@ -54,8 +54,10 @@ tiny redirect stubs remain at the old sub-site homepage paths (`docs/index.html`
   - **Introduce a term once, define it in one sentence, then reuse that exact term** —
     never silently switch to a synonym for a concept already named.
 
-- **Give each page's core concept an "Interview Answer" block.** Right after the page's
-  intro/subtitle (before the deep-dive sections), add a section titled
+- **Give each page's core concept an "Interview Answer" block.** On legacy pages, put it
+  right after the page's intro/subtitle (before the deep-dive sections); on lesson-layout
+  pages (`.sd-lesson`, see next rule) it opens the closing **Review** part instead, after
+  the production sections. Either way, add a section titled
   `Interview Answer — What is <the concept>?` in this exact three-part shape:
   1. A full explanatory answer (2–4 paragraphs) — the concept, why it exists, and how it
      fits into the surrounding system, following the AWS-doc-style rules above.
@@ -70,6 +72,28 @@ tiny redirect stubs remain at the old sub-site homepage paths (`docs/index.html`
   replacement — cross-reference the fuller section further down the page (an anchor
   link is fine) rather than duplicating it. See `docs/kubernetes/02-etcd.html`'s
   "Interview Answer — What Is etcd?" section for a worked example.
+
+- **Structure every content page as one lesson, not a Q&A list** (`<main class="sd-study-main sd-lesson">`;
+  skeleton + rules in `docs/_TEMPLATE-page.html`, worked example
+  `docs/kubernetes/01-kube-apiserver.html`). Reading order:
+  **What you'll learn** (`.sd-learn`, 3–6 objectives) → **Foundations** (what it is, why it
+  exists) → **How it works** (mechanism, components, diagram + `<ol class="sd-steps">`
+  walk-through) → **In production** (scaling/monitoring, failure table *Symptom → Root
+  cause → Detection → Fix*, performance/trade-offs, security) → **Review** (Interview Answer
+  block, Quick check, `.sd-takeaways`, `.sd-next` "What to Read Next"). Tag each `<h2>` with
+  `data-stage="Foundations|How it works|In production|Review"`; the right-hand "On this
+  page" rail groups by it automatically. Rules when converting an existing page:
+  merge overlapping sections into one authoritative explanation and link to its `#id`
+  elsewhere (never explain a concept twice); turn Q&A headings into concept headings, and
+  keep the questions as callouts / Quick check items; place diagrams right after the theory
+  they illustrate; keep every fact (rule 2), and check by diffing the old page's text
+  against the new one. Add an insight callout roughly every ~10 lines of substantial content,
+  where it helps, and never as a recap: `<aside class="sd-callout important|mistake|think|production|interview">`
+  with a `<p class="sd-callout-title">💡 Important</p>` (⚠️ Common mistake / 🧠 Think about it /
+  🔥 Production insight / 🎯 Interview tip) first line. If a diagram would clearly help but
+  doesn't exist, add a `sd-callout diagram` "🗺️ Diagram recommended" note. `--check` errors on
+  a `.sd-lesson` page that loses any of the required blocks. Pages not yet converted
+  keep working unchanged.
 
 - **All CSS lives in `assets/site.css`** (one copy per sub-site). It has three
   layers: design tokens + base element rules (global), the verbose two-column
