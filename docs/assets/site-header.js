@@ -780,6 +780,8 @@
       if (el.closest("[data-breadcrumb]") || el.closest("[data-page-subtitle]")) return;
       if (el.closest("[data-sd-ui]")) return;
       if (el.closest(".sd-note-card") || el.closest(".sd-note-form")) return;
+      if (el.closest(".sd-learn") || el.closest(".sd-next")) return;      // lesson nav blocks, not content
+      if (el.classList.contains("sd-callout-title")) return;
       var text = (el.textContent || "").replace(/\s+/g, " ").trim();
       if (text.length < 2) return;
       if (el.tagName === "LI" && text.length < LI_MIN_LEN) return; // paragraphs are the base unit
@@ -1046,7 +1048,8 @@
      rail to the right of the text and highlights the section being read; on
      narrower screens it's a collapsed box just above the content. Headings
      without an id get one (slug of their text) so the links can target them;
-     existing ids are never changed. ---- */
+     existing ids are never changed. Lesson pages (h2[data-stage]) get part
+     labels; every page gets a "Section n of N" meter and an "Up next" link. ---- */
   function renderToc() {
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", renderToc, { once: true });
@@ -1075,10 +1078,35 @@
     var sum = document.createElement("summary");
     sum.textContent = "On this page";
     toc.appendChild(sum);
+    // "Section n of N" + a thin progress meter, updated by spy() below
+    var where = document.createElement("div");
+    where.className = "sd-toc-where";
+    var whereText = document.createElement("span");
+    var meter = document.createElement("span");
+    meter.className = "sd-toc-meter";
+    var meterFill = document.createElement("span");
+    meter.appendChild(meterFill);
+    where.appendChild(whereText);
+    where.appendChild(meter);
+    toc.appendChild(where);
+
+    // lesson pages group their <h2>s into parts via data-stage="Foundations" etc.;
+    // a part label is emitted whenever the stage changes
     var list = document.createElement("ol");
     var links = [];
+    var stageLabels = [];
+    var lastStage = null;
     heads.forEach(function (h) {
       if (!h.id) h.id = slug(h.textContent.trim());
+      var stage = h.getAttribute("data-stage");
+      if (stage && stage !== lastStage) {
+        var sl = document.createElement("li");
+        sl.className = "sd-toc-stage";
+        sl.textContent = stage;
+        list.appendChild(sl);
+        lastStage = stage;
+      }
+      stageLabels.push(stage || lastStage);
       var li = document.createElement("li");
       var a = document.createElement("a");
       a.href = "#" + h.id;
@@ -1088,6 +1116,24 @@
       links.push(a);
     });
     toc.appendChild(list);
+
+    // "Up next": the following page in the sidebar's reading order, so the rail
+    // always answers "what do I read after this?"
+    if (entry) {
+      var order = readingOrder(), at = -1;
+      order.forEach(function (p, i) { if (p.href === entry.href) at = i; });
+      var nxt = at > -1 ? order[at + 1] : null;
+      if (nxt) {
+        var up = document.createElement("a");
+        up.className = "sd-toc-next";
+        up.href = root + nxt.href;
+        var k = document.createElement("span");
+        k.textContent = "Up next";
+        up.appendChild(k);
+        up.appendChild(document.createTextNode(nxt.title));
+        toc.appendChild(up);
+      }
+    }
 
     // inline spot: after the lead line / title, before the content proper
     var anchor = container.querySelector("[data-page-subtitle]") || container.querySelector("[data-page-title]");
@@ -1129,6 +1175,10 @@
       var cur = -1;
       heads.forEach(function (h, i) { if (h.getBoundingClientRect().top <= line) cur = i; });
       links.forEach(function (a, i) { a.classList.toggle("active", i === cur); });
+      var shown = Math.max(cur, 0);
+      whereText.textContent = "Section " + (shown + 1) + " of " + heads.length +
+        (stageLabels[shown] ? " · " + stageLabels[shown] : "");
+      meterFill.style.width = Math.round(((cur + 1) / heads.length) * 100) + "%";
     }
     window.addEventListener("scroll", function () {
       if (!ticking) { ticking = true; window.requestAnimationFrame(spy); }

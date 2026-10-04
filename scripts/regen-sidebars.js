@@ -333,6 +333,18 @@ for (const site of SITES) {
         if (!/data-page-title/.test(t)) warn(`${ref}: no data-page-title element (heading won't be filled)`);
         if (!/data-breadcrumb/.test(t)) warn(`${ref}: no data-breadcrumb element`);
       }
+      // lesson-layout pages (<main class="… sd-lesson">) must keep the full reading order
+      if (/<main[^>]*class="[^"]*\bsd-lesson\b/.test(orig)) {
+        const need = [
+          [/class="sd-learn"/, `a "What you'll learn" block (.sd-learn)`],
+          [/<h2[^>]*>\s*Interview Answer — /, `an "Interview Answer — …" <h2>`],
+          [/Simple interview version/, `a "Simple interview version" note`],
+          [/class="sd-takeaways"/, `a "Key Takeaways" list (.sd-takeaways)`],
+          [/class="sd-next"/, `a "What to Read Next" block (.sd-next)`],
+          [/class="sd-callout /, `at least one insight callout (.sd-callout)`],
+        ];
+        for (const [re, what] of need) if (!re.test(orig)) err(`${ref}: sd-lesson page is missing ${what}`);
+      }
       if (t !== orig) err(`${ref}: STALE baked output — run: node scripts/regen-sidebars.js`);
       if (t !== orig) updated++;
       continue;

@@ -195,6 +195,16 @@ li > .sd-note-marker, li > .sd-note-form, li > .sd-note-card { display: block; m
 .sd-toc a { color: var(--muted, #5b6472); }
 .sd-toc a:hover, .sd-toc a.active { color: var(--sd-c2, #8b5cf6); }
 .sd-toc a.active { font-weight: 700; }
+.sd-toc ol li.sd-toc-stage { list-style: none; margin: 0.7em 0 0.15em -1.3em; font-size: 0.68rem; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg, #14181f); }
+.sd-toc ol li.sd-toc-stage:first-child { margin-top: 0.3em; }
+.sd-toc-where { display: flex; flex-direction: column; gap: 0.3rem; margin: 0.45rem 0 0.2rem; font-size: 0.74rem; color: var(--muted, #5b6472); }
+.sd-toc-meter { display: block; height: 3px; border-radius: 3px; background: var(--border, #e4e7ec); overflow: hidden; }
+.sd-toc-meter > span { display: block; height: 100%; width: 0; background: var(--sd-c2); transition: width 0.2s var(--ease); }
+.sd-toc-next { display: block; margin-top: 0.8rem; padding-top: 0.6rem; border-top: 1px solid var(--border, #e4e7ec);
+  color: var(--fg, #14181f) !important; font-weight: 600; font-size: 0.84rem; text-decoration: none !important; }
+.sd-toc-next span { display: block; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted, #5b6472); }
+.sd-toc-next::after { content: " →"; color: var(--sd-c2); }
 @media (min-width: 1400px) {
   .sd-has-toc-rail { display: flex; justify-content: center; align-items: flex-start; gap: 2rem; }
   .sd-has-toc-rail > .sd-study-main, .sd-has-toc-rail > main { flex: 0 1 880px; min-width: 0; margin: 0; }
@@ -207,6 +217,7 @@ li > .sd-note-marker, li > .sd-note-form, li > .sd-note-card { display: block; m
     letter-spacing: 0.07em; color: var(--muted, #5b6472); }
   .sd-has-toc-rail > .sd-toc > summary::-webkit-details-marker { display: none; }
   .sd-has-toc-rail > .sd-toc ol { list-style: none; padding-left: 0; }
+  .sd-has-toc-rail > .sd-toc ol li.sd-toc-stage { margin-left: 0; }
 }
 
 /* ---- homepage hero ---- */
@@ -387,6 +398,57 @@ li > .sd-note-marker, li > .sd-note-form, li > .sd-note-card { display: block; m
 .sd-study-main h2:has(input[type="checkbox"]) { display: flex; align-items: flex-start; gap: 0.55rem; }
 .sd-study-main h2 input[type="checkbox"] { margin-top: 0.35rem; width: 1.05rem; height: 1.05rem; flex: none; cursor: pointer; accent-color: var(--sd-c1); }
 .sd-study-main h2.done { color: var(--muted, #5b6472); }
+
+/* ---- lesson layout (pages whose <main> carries .sd-lesson — see docs/_TEMPLATE-page.html).
+   Reading order: What you'll learn → theory (basics → how it works → components → flow)
+   → production → failures → interview → takeaways → what to read next.
+   h2[data-stage] groups the "On this page" rail into parts (site-header.js renderToc). ---- */
+.sd-lesson > p, .sd-lesson > ul, .sd-lesson > ol { max-width: 72ch; }
+.sd-lesson h2 { padding-top: 1.1rem; border-top: 1px solid var(--border, #e4e7ec); }
+.sd-lesson h2[data-stage]::before {
+  content: attr(data-stage); display: block; margin-bottom: 0.25rem; font-size: 0.7rem; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--sd-c2);
+}
+/* "What you'll learn" — the mental map shown right under the title */
+.sd-learn { margin: 1.6rem 0 0.4rem; padding: 1.05rem 1.25rem 0.9rem; border: 1px solid var(--border, #e4e7ec);
+  border-radius: var(--radius); background: var(--card-bg, #fff); box-shadow: var(--shadow); }
+.sd-lesson .sd-learn h2 { margin: 0 0 0.35rem; padding: 0; border: 0; font-size: 1.02rem; }
+.sd-learn > p { margin: 0 0 0.4rem; color: var(--muted, #5b6472); font-size: 0.92rem; }
+.sd-learn ul { list-style: none; padding-left: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.15rem 1.4rem; }
+.sd-learn li { position: relative; padding-left: 1.5em; }
+.sd-learn li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--sd-c9); font-weight: 800; }
+/* insight callouts — one every ~10 lines of substantial content, never a recap */
+.sd-callout { margin: 1.4rem 0; padding: 0.85rem 1.1rem; border-radius: var(--radius-sm); border: 1px solid;
+  --c: var(--sd-c2); border-color: color-mix(in srgb, var(--c) 30%, transparent); background: color-mix(in srgb, var(--c) 6%, transparent); }
+.sd-callout > :last-child { margin-bottom: 0; }
+.sd-callout > p { margin: 0.25em 0; }
+.sd-callout-title { display: block; margin: 0 0 0.2em !important; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.02em; color: color-mix(in srgb, var(--c) 75%, #14181f); }
+.sd-callout.important { --c: #3b82f6; }
+.sd-callout.mistake { --c: #e11d48; }
+.sd-callout.think { --c: #8b5cf6; }
+.sd-callout.production { --c: #ea580c; }
+.sd-callout.interview { --c: #059669; }
+.sd-callout.diagram { --c: #64748b; border-style: dashed; }
+/* numbered walk-through placed directly under a diagram */
+.sd-steps { list-style: none; counter-reset: sd-step; padding-left: 0 !important; margin: 1rem 0 1.4rem; }
+.sd-steps > li { counter-increment: sd-step; position: relative; padding: 0.15rem 0 0.55rem 2.6rem; margin: 0; }
+.sd-steps > li::before {
+  content: counter(sd-step); position: absolute; left: 0; top: 0.05rem; width: 1.75rem; height: 1.75rem; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800;
+  background: color-mix(in srgb, var(--sd-c2) 12%, transparent); color: var(--sd-c2);
+}
+.sd-steps > li:not(:last-child)::after { content: ""; position: absolute; left: 0.86rem; top: 1.95rem; bottom: 0.1rem; width: 2px; background: var(--border, #e4e7ec); }
+.sd-diagram { margin: 1.2rem 0 0.6rem; padding: 1rem; border: 1px solid var(--border, #e4e7ec); border-radius: var(--radius-sm); background: var(--card-bg, #fff); overflow-x: auto; }
+.sd-diagram + .sd-diagram-caption, .sd-diagram-caption { margin-top: 0; color: var(--muted, #5b6472); font-size: 0.86rem; }
+/* "Key takeaways" and "What to read next" — the closing pair of every lesson */
+.sd-takeaways { margin: 1rem 0; padding: 1rem 1.25rem 1rem 2.6rem; border-radius: var(--radius); background: var(--bg-alt, #f6f7f9); }
+.sd-takeaways li { margin: 0.4em 0; }
+.sd-next { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.8rem; margin: 1rem 0 0.5rem; }
+.sd-next a { display: block; padding: 0.85rem 1rem; border: 1px solid var(--border, #e4e7ec); border-radius: var(--radius-sm);
+  background: var(--card-bg, #fff); text-decoration: none !important; transition: border-color 0.18s var(--ease), transform 0.18s var(--ease); }
+.sd-next a:hover { border-color: var(--sd-c2); transform: translateY(-1px); }
+.sd-next strong { display: block; color: var(--fg, #14181f); font-size: 0.95rem; }
+.sd-next span { display: block; margin-top: 0.2rem; color: var(--muted, #5b6472); font-size: 0.85rem; }
 /* mobile nav drawer (site-header.js renderNavDrawer): the fab + backdrop only show below 860px */
 .sd-nav-fab, .sd-nav-backdrop { display: none; }
 @media (max-width: 860px) {
