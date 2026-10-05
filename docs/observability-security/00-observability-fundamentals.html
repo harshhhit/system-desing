@@ -13,28 +13,48 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Observability Fundamentals · Infra Owl</title>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=10">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
 
 <div id="site-header-root"></div>
-
 <script src="../assets/sitemap.js"></script>
 <script src="../assets/pages.js"></script>
-<script src="../assets/site-header.js?v=8" data-root="../"></script>
+<script src="../assets/site-header.js?v=9" data-root="../"></script>
 
 <div class="sd-study-layout">
-
   <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a class="active" href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
 
   <div class="sd-study-content">
-    <main class="sd-study-main">
-
+    <main class="sd-study-main sd-lesson" data-reminders="Explain metric → trace → log as a debugging chain with a real example|Compute the monthly error budget for a 99.9% SLO in minutes|Write a p99 latency PromQL query from memory">
       <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Observability, Security &amp; Ops / Observability Fundamentals</p>
       <h1 data-page-title>Observability Fundamentals</h1>
       <p class="sd-study-prompt" data-page-subtitle>The three pillars (metrics, logs, traces), Prometheus/Grafana, structured logging and correlation IDs, distributed tracing, SLI/SLO/SLA and error budgets, and alerting.</p>
 
-      <h2 id="page-map">Observability, Security &amp; Ops Page Map</h2>
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
+        <ul>
+          <li>Explain observability vs. monitoring</li>
+          <li>Say what metrics, logs and traces are each <em>for</em></li>
+          <li>Avoid the metric-cardinality trap in Prometheus</li>
+          <li>Propagate correlation IDs and trace context across services</li>
+          <li>Define SLIs, SLOs, SLAs and use an error budget</li>
+          <li>Design alerts on symptoms that stay actionable</li>
+        </ul>
+      </section>
+
+      <!-- 01 OVERVIEW -->
+      <h2 id="overview" data-stage="Overview">What Observability Is For</h2>
+      <p>Observability is the ability to understand what a running system is doing — and why — from the signals it emits, without shipping new code to investigate. It exists because modern systems fail in ways nobody predicted: in a system split across many services, a single slow request can have its cause three hops away, and without recorded signals you cannot reconstruct what happened after the fact.</p>
+
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>You cannot secure, deploy safely, or fix what you cannot see. Every later page in this section — security and CI/CD — leans on the signals defined here.</p>
+      </aside>
+
+      <h2 id="page-map" data-stage="Overview">Observability, Security &amp; Ops Page Map</h2>
       <p class="topic-map-legend">A block diagram of every Observability, Security &amp; Ops page on this site, in the order they build on each other, with the major parts of this page as their own blocks. Click any block to open that page or jump to that part. Read top to bottom: each layer assumes the one above it. The grey blocks at the bottom are related pages in other sections.</p>
       <nav class="topic-map" aria-label="Observability, Security and Ops page map" style="--map-accent: var(--sd-c10)">
         <div class="topic-map-row"><p class="topic-map-label">Start here: see the system</p><p class="topic-map-why">You cannot secure, deploy or fix what you cannot see, so learn the signals a running system emits first.</p><div class="topic-map-blocks">
@@ -66,20 +86,7 @@
         </div></div>
       </nav>
 
-      <h2 id="interview-answer">Interview Answer — What Is Observability?</h2>
-      <p>Observability is the ability to understand what a running system is doing — and why — from the signals it emits, without shipping new code to investigate. Those signals are the <a href="#three-pillars">three pillars</a>: <strong>metrics</strong> (numeric time series such as request rate and latency), <strong>logs</strong> (structured, timestamped events), and <strong>traces</strong> (the timed path of one request across every service it touched).</p>
-      <p>It exists because modern systems fail in ways nobody predicted. <strong>Monitoring vs. observability — the difference is</strong> that monitoring checks conditions you decided on in advance ("is CPU above 80%?"), while observability lets you answer a question you did not anticipate ("why did this user's checkout take 4 seconds at 3:12pm?"). In a system split across many services, a single slow request can have its cause three hops away, and without recorded signals you cannot reconstruct what happened after the fact.</p>
-      <p>The pillars work as a chain: a <strong>metric</strong> spike tells you something is wrong and when → a <strong>trace</strong> from that window shows which service in the call chain was slow → the <strong>log</strong> from that span shows the exact error or query. A <strong>correlation ID</strong> / trace ID propagated through every hop is what ties the three together. Reliability targets are then expressed as <strong>SLIs</strong> (what you measure), <strong>SLOs</strong> (the internal target), and <strong>SLAs</strong> (the external promise), and alerts fire on user-facing symptoms such as burning error budget too fast.</p>
-
-      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
-        <p>"Observability is being able to explain what a system is doing from the signals it emits — metrics, logs, and traces. Metrics tell me something is wrong and when, traces show which service in the request path was slow, and structured logs tied together by a correlation ID show exactly why. I define reliability as SLIs and SLOs with an error budget, and I alert on user-facing symptoms like error rate or latency, not on every possible cause."</p>
-      </div>
-
-      <h3>One important interview follow-up</h3>
-      <p><strong>Q: Why not add the user ID as a label on every metric, so we can see each user's latency?</strong></p>
-      <p><strong>A:</strong> Because every unique combination of metric name and label values is a separate time series. A <code>user_id</code> label with a million users turns one metric into a million series — this is the <strong>cardinality</strong> problem — and it can exhaust Prometheus's memory and make queries unusably slow. Metrics should carry low-cardinality labels such as status code, route, and region; per-user or per-request detail belongs in logs and traces, which are designed to hold high-cardinality data. See <a href="#metrics-prometheus">Metrics in practice</a> below.</p>
-
-      <h2 id="learning-flow">How to Study This Section</h2>
+      <h2 id="learning-flow" data-stage="Overview">How to Study This Section</h2>
       <p>This section covers running software in production: seeing what it does, keeping attackers out, and changing it without breaking it. Read the pages in this order, because each one relies on the one before:</p>
       <ol>
         <li><strong><a href="00-observability-fundamentals.html">00. Observability Fundamentals</a> (this page)</strong> — metrics, logs and traces, then SLOs and alerting. <em>Unlocks:</em> a way to detect and explain problems, which both later pages depend on. <em>Watch for:</em> SLO vs. SLA — the difference is that an SLO is an internal reliability target, while an SLA is an external promise to customers, often with penalties, and is usually set looser than the SLO so the team is warned before the contract is breached.</li>
@@ -87,74 +94,287 @@
         <li><strong><a href="02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></strong> — automated build, test and release, plus canary and blue-green rollouts and rollback. <em>Unlocks:</em> shipping often with less risk, because a bad release is detected by the metrics and alerts from step 1 and reversed before it spends the error budget. <em>Watch for:</em> continuous delivery vs. continuous deployment — the difference is that with continuous delivery every change is <em>ready</em> to release but a human approves production, while with continuous deployment every change that passes the pipeline goes to production automatically.</li>
       </ol>
 
-      <h2>Observability vs. monitoring</h2>
+      <!-- 02 CORE CONCEPTS -->
+      <h2 id="observability-vs-monitoring" data-stage="Core Concepts">Observability vs. Monitoring</h2>
       <p>Monitoring answers questions you already thought to ask ahead of time ("is CPU above 80%?").
-      <strong>Observability</strong> is about being able to answer questions you <em>didn't</em> anticipate —
-      "why did this specific user's request take 4 seconds at 3:12pm?" — by having enough raw signal recorded
-      to investigate after the fact, not just a dashboard that was pre-built for a known failure mode. This
-      page covers the general, cross-service version; <a href="../05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a> in the Database section covers the same pillars scoped specifically to a database.</p>
+ <strong>Observability</strong> is about being able to answer questions you <em>didn't</em> anticipate —
+ "why did this specific user's request take 4 seconds at 3:12pm?" — by having enough raw signal recorded
+ to investigate after the fact, not just a dashboard that was pre-built for a known failure mode. This
+ page covers the general, cross-service version; <a href="../05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a> in the Database section covers the same pillars scoped specifically to a database.</p>
 
-      <h2 id="three-pillars">The three pillars</h2>
+      <h2 id="three-pillars" data-stage="Core Concepts">The Three Pillars</h2>
       <table>
-      <tr><th>Pillar</th><th>What it captures</th><th>Best for</th></tr>
-      <tr><td><strong>Metrics</strong></td><td>Numeric time series — counters (only go up, e.g. total requests), gauges (go up or down, e.g. current memory), histograms (a distribution, e.g. latency buckets)</td><td>Trends, dashboards, alerting thresholds — cheap to store, low cardinality</td></tr>
-      <tr><td><strong>Logs</strong></td><td>Discrete, timestamped events, ideally structured (JSON key/value, not free-text) rather than a printed sentence</td><td>"What exactly happened on this one request/entity" — the detail metrics intentionally throw away</td></tr>
-      <tr><td><strong>Traces</strong></td><td>The path a single request took across every service it touched, broken into timed <strong>spans</strong> (one span per hop/operation)</td><td>"Where did the time actually go" across a multi-service call — the thing neither metrics nor logs alone can answer</td></tr>
+        <tr><th>Pillar</th><th>What it captures</th><th>Best for</th></tr>
+        <tr><td><strong>Metrics</strong></td><td>Numeric time series — counters (only go up, e.g. total requests), gauges (go up or down, e.g. current memory), histograms (a distribution, e.g. latency buckets)</td><td>Trends, dashboards, alerting thresholds — cheap to store, low cardinality</td></tr>
+        <tr><td><strong>Logs</strong></td><td>Discrete, timestamped events, ideally structured (JSON key/value, not free-text) rather than a printed sentence</td><td>"What exactly happened on this one request/entity" — the detail metrics intentionally throw away</td></tr>
+        <tr><td><strong>Traces</strong></td><td>The path a single request took across every service it touched, broken into timed <strong>spans</strong> (one span per hop/operation)</td><td>"Where did the time actually go" across a multi-service call — the thing neither metrics nor logs alone can answer</td></tr>
       </table>
       <p>The three are complementary, not substitutes: a metric's spike tells you <em>something</em> is wrong
-      and roughly when; a trace for a slow request from that window shows <em>which service</em> in the chain
-      was slow; a log from that specific span shows <em>why</em> (the exact error, the exact query). Losing any
-      one pillar leaves a real gap the other two can't fill.</p>
+ and roughly when; a trace for a slow request from that window shows <em>which service</em> in the chain
+ was slow; a log from that specific span shows <em>why</em> (the exact error, the exact query). Losing any
+ one pillar leaves a real gap the other two can't fill.</p>
 
-      <h2 id="metrics-prometheus">Metrics in practice: the Prometheus/Grafana model</h2>
+      <h3 id="golden-signals">What to measure first</h3>
+      <p>For any request-serving service, start with the four "golden signals": <strong>latency</strong> (p50/p95/p99, successful and failed requests separately), <strong>traffic</strong> (requests per second), <strong>errors</strong> (rate of failed requests) and <strong>saturation</strong> (how full the most constrained resource is — CPU, memory, connection pool, queue depth). The RED method (Rate, Errors, Duration) is the same idea for services; USE (Utilization, Saturation, Errors) is its counterpart for resources like disks and CPUs.</p>
+
+      <aside class="sd-callout mistake">
+        <p class="sd-callout-title">⚠️ Common mistake</p>
+        <p>Watching only the average latency. An average of 120 ms can hide a p99 of 4 s — the 1 in 100 requests that users actually complain about. Use histograms and track percentiles.</p>
+      </aside>
+
+      <!-- 03 ARCHITECTURE -->
+      <h2 id="architecture" data-stage="Architecture">How the Signals Flow</h2>
+      <div class="mermaid sd-diagram">flowchart LR
+    S1["Service A<br/>/metrics + JSON logs + spans"] --> P["Prometheus<br/>(scrapes /metrics)"]
+    S2["Service B"] --> P
+    S1 --> L["Log aggregation<br/>ELK · Loki"]
+    S2 --> L
+    S1 --> T["Trace backend<br/>Jaeger · Tempo"]
+    S2 --> T
+    P --> G["Grafana dashboards"]
+    L --> G
+    T --> G
+    P --> A["Alertmanager"] --> O["On-call (pager)"]
+</div>
+      <p class="sd-diagram-caption">Metrics are pulled; logs and spans are shipped out; one UI links them by time and trace ID; alerts come from metrics.</p>
+
+      <!-- 04 HOW IT WORKS -->
+      <h2 id="metrics-prometheus" data-stage="How It Works">Metrics in Practice: the Prometheus/Grafana Model</h2>
       <ul>
-      <li><strong>Pull-based scraping</strong> — Prometheus polls each service's <code>/metrics</code> HTTP endpoint on an interval, rather than services pushing metrics out — simpler service discovery, and a service that's down is visible as "scrape failed" rather than silently missing data.</li>
-      <li><strong>Cardinality</strong> — every unique combination of metric name + label values (e.g. <code>http_requests{status="500", path="/api/x", user_id="42"}</code>) is a separate time series. Putting a high-cardinality value like a raw user ID in a label can multiply storage and query cost by orders of magnitude — a very common real-world Prometheus mistake, and a strong interview signal to mention.</li>
-      <li><strong>Grafana</strong> queries Prometheus (or other backends) to render dashboards — it's a visualization layer, not a separate data store.</li>
+        <li><strong>Pull-based scraping</strong> — Prometheus polls each service's <code>/metrics</code> HTTP endpoint on an interval, rather than services pushing metrics out — simpler service discovery, and a service that's down is visible as "scrape failed" rather than silently missing data.</li>
+        <li><strong>Cardinality</strong> — every unique combination of metric name + label values (e.g. <code>http_requests{status="500", path="/api/x", user_id="42"}</code>) is a separate time series. Putting a high-cardinality value like a raw user ID in a label can multiply storage and query cost by orders of magnitude — a very common real-world Prometheus mistake, and a strong interview signal to mention.</li>
+        <li><strong>Grafana</strong> queries Prometheus (or other backends) to render dashboards — it's a visualization layer, not a separate data store.</li>
       </ul>
 
-      <h2 id="structured-logs">Logs: make them structured, and correlate them</h2>
+      <h2 id="structured-logs" data-stage="How It Works">Logs: Make Them Structured, and Correlate Them</h2>
       <ul>
-      <li><strong>Structured logging</strong> — emit JSON key/value fields instead of a formatted sentence, so logs are queryable/filterable (by <code>status=500</code>, by <code>user_id</code>) instead of requiring regex over free text.</li>
-      <li><strong>Log levels</strong> — DEBUG/INFO/WARN/ERROR, tunable per-environment so production doesn't pay the volume cost of debug-level logging by default.</li>
-      <li><strong>Correlation / request IDs</strong> — generate one ID at the edge (the API gateway, see <a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a>) and thread it through every downstream call and every log line for that request, so a single request's logs can be reassembled across every service it touched — the low-tech precursor to full distributed tracing below.</li>
-      <li><strong>Centralized aggregation</strong> (e.g. the ELK stack, or Grafana Loki) — ships every service's logs to one searchable place, since SSH-ing into individual instances to grep a log file doesn't scale past a handful of servers.</li>
+        <li><strong>Structured logging</strong> — emit JSON key/value fields instead of a formatted sentence, so logs are queryable/filterable (by <code>status=500</code>, by <code>user_id</code>) instead of requiring regex over free text.</li>
+        <li><strong>Log levels</strong> — DEBUG/INFO/WARN/ERROR, tunable per-environment so production doesn't pay the volume cost of debug-level logging by default.</li>
+        <li><strong>Correlation / request IDs</strong> — generate one ID at the edge (the API gateway, see <a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a>) and thread it through every downstream call and every log line for that request, so a single request's logs can be reassembled across every service it touched — the low-tech precursor to full distributed tracing below.</li>
+        <li><strong>Centralized aggregation</strong> (e.g. the ELK stack, or Grafana Loki) — ships every service's logs to one searchable place, since SSH-ing into individual instances to grep a log file doesn't scale past a handful of servers.</li>
       </ul>
 
-      <h2 id="distributed-tracing">Distributed tracing</h2>
+      <h2 id="distributed-tracing" data-stage="How It Works">Distributed Tracing</h2>
       <ul>
-      <li>A single incoming request gets a <strong>trace ID</strong>; each hop/operation within it (a service call, a DB query) is a <strong>span</strong> with its own start/end time and a reference to its parent span — together they reconstruct the full call tree with per-hop timing.</li>
-      <li><strong>Context propagation</strong> — the trace ID and current span ID travel with the request across process/service boundaries (typically an HTTP header, standardized as W3C <code>traceparent</code>), which is why every service in a traced system has to participate — one un-instrumented hop breaks the chain.</li>
-      <li><strong>Sampling</strong> — tracing every single request in a high-traffic system is often too expensive to store; systems sample a percentage (or always trace slow/error requests specifically — "tail-based" sampling) to keep cost bounded while still catching the interesting cases.</li>
+        <li>A single incoming request gets a <strong>trace ID</strong>; each hop/operation within it (a service call, a DB query) is a <strong>span</strong> with its own start/end time and a reference to its parent span — together they reconstruct the full call tree with per-hop timing.</li>
+        <li><strong>Context propagation</strong> — the trace ID and current span ID travel with the request across process/service boundaries (typically an HTTP header, standardized as W3C <code>traceparent</code>), which is why every service in a traced system has to participate — one un-instrumented hop breaks the chain.</li>
+        <li><strong>Sampling</strong> — tracing every single request in a high-traffic system is often too expensive to store; systems sample a percentage (or always trace slow/error requests specifically — "tail-based" sampling) to keep cost bounded while still catching the interesting cases.</li>
+      </ul>
+      <ol class="sd-steps">
+        <li><strong>Edge:</strong> the gateway receives a request with no <code>traceparent</code>, starts a trace and a root span.</li>
+        <li><strong>Hop:</strong> it calls Service A with <code>traceparent: 00-&lt;trace-id&gt;-&lt;span-id&gt;-01</code>; A creates a child span with that parent.</li>
+        <li><strong>Deeper:</strong> A's database query and its call to Service B become child spans of A's span, each with timings.</li>
+        <li><strong>Export:</strong> each service sends finished spans to the trace backend, which stitches them into one tree by trace ID.</li>
+        <li><strong>Correlate:</strong> every log line written during the request includes the same trace ID, so you can jump from a slow span to its logs.</li>
+      </ol>
+
+      <h2 id="sli-slo-sla" data-stage="How It Works">SLI, SLO, SLA, and Error Budgets</h2>
+      <ul>
+        <li><strong>SLI (Service Level Indicator)</strong> — the actual measured metric, e.g. "% of requests under 200ms."</li>
+        <li><strong>SLO (Service Level Objective)</strong> — the internal target for that SLI, e.g. "99.9% of requests under 200ms, measured over 30 days."</li>
+        <li><strong>SLA (Service Level Agreement)</strong> — an SLO turned into an external, often contractual, promise to customers — usually looser than the internal SLO, leaving margin.</li>
+        <li><strong>Error budget</strong> — <code>100% − SLO</code> is the amount of "badness" allowed before the SLO is breached (0.1% for a 99.9% SLO). It's a deliberate tool: once the budget for the period is spent, teams pause new feature risk and prioritize reliability work until it recovers — a concrete way to balance velocity against reliability instead of arguing about it abstractly every time.</li>
+      </ul>
+      <p><strong>Worked example:</strong> a 99.9% availability SLO over 30 days allows 0.1% × 43,200 minutes ≈ <strong>43 minutes</strong> of failure. A bad deploy that causes 20 minutes of errors spends almost half the month's budget.</p>
+
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>Why not set the SLO to 100%? (Every extra nine costs exponentially more, users can't tell 99.99% from 100% because their own network is less reliable, and a 100% target leaves zero budget for deploying anything.)</p>
+      </aside>
+
+      <h2 id="alerting" data-stage="How It Works">Alerting</h2>
+      <ul>
+        <li><strong>Alert on symptoms, not causes</strong> — page on "error rate is elevated" or "latency SLO is at risk," not on every individual possible cause ("disk is at 85%"); causes are for the dashboard/runbook you check once paged, not a separate page of their own.</li>
+        <li><strong>Alert fatigue</strong> — too many low-value or flapping alerts trains responders to ignore pages, which is worse than having no alert at all; every alert should be actionable and rare enough to stay meaningful.</li>
+        <li>Tie alerts back to the SLO/error-budget framing above where possible — "we're burning error budget too fast" is a more durable alerting philosophy than a pile of ad hoc thresholds accumulated over time.</li>
       </ul>
 
-      <h2 id="sli-slo-sla">SLI, SLO, SLA, and error budgets</h2>
+      <!-- 05 IMPLEMENTATION -->
+      <h2 id="implementation" data-stage="Implementation">Implementation</h2>
+      <h3 id="scrape-config">Prometheus scrape config</h3>
+      <pre><code>scrape_configs:
+  - job_name: api
+    scrape_interval: 15s
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["api-1:8000", "api-2:8000"]</code></pre>
       <ul>
-      <li><strong>SLI (Service Level Indicator)</strong> — the actual measured metric, e.g. "% of requests under 200ms."</li>
-      <li><strong>SLO (Service Level Objective)</strong> — the internal target for that SLI, e.g. "99.9% of requests under 200ms, measured over 30 days."</li>
-      <li><strong>SLA (Service Level Agreement)</strong> — an SLO turned into an external, often contractual, promise to customers — usually looser than the internal SLO, leaving margin.</li>
-      <li><strong>Error budget</strong> — <code>100% − SLO</code> is the amount of "badness" allowed before the SLO is breached (0.1% for a 99.9% SLO). It's a deliberate tool: once the budget for the period is spent, teams pause new feature risk and prioritize reliability work until it recovers — a concrete way to balance velocity against reliability instead of arguing about it abstractly every time.</li>
+        <li><code>scrape_interval: 15s</code> — how often Prometheus pulls; also the finest resolution of your graphs.</li>
+        <li><code>targets</code> — static here; in Kubernetes or EC2 you use service discovery so new instances are scraped automatically.</li>
+        <li>Each target gets an <code>up</code> series: <code>up == 0</code> means the scrape failed — the pull model's built-in "this service is down" signal.</li>
+      </ul>
+      <h3 id="promql">PromQL you'll actually use</h3>
+      <pre><code>sum(rate(http_requests_total{job="api"}[5m])) by (status)
+sum(rate(http_requests_total{job="api",status=~"5.."}[5m])) / sum(rate(http_requests_total{job="api"}[5m]))
+histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{job="api"}[5m])) by (le))</code></pre>
+      <ul>
+        <li><code>rate(counter[5m])</code> — per-second increase of a counter over 5 minutes; counters only make sense through <code>rate</code>/<code>increase</code>.</li>
+        <li>The second line is the <strong>error ratio</strong> (5xx ÷ all) — the usual SLI for availability.</li>
+        <li><code>histogram_quantile(0.99, … by (le))</code> — p99 latency from histogram buckets; <code>le</code> (bucket upper bound) must survive the aggregation.</li>
+      </ul>
+      <h3 id="log-example">A structured log line</h3>
+      <pre><code>{"ts":"2026-10-04T15:12:03Z","level":"error","service":"checkout","trace_id":"4bf92f3577b34da6a3ce929d0e0e4736","user_id":"42","route":"/api/orders","status":500,"duration_ms":4012,"msg":"payment provider timeout"}</code></pre>
+      <p>Every field is filterable; <code>trace_id</code> links it to the trace; <code>user_id</code> lives here (high cardinality is fine in logs), not in a metric label.</p>
+      <h3 id="alert-rule">An alert rule on a symptom</h3>
+      <pre><code>groups:
+  - name: api-slo
+    rules:
+      - alert: HighErrorRate
+        expr: sum(rate(http_requests_total{job="api",status=~"5.."}[5m])) / sum(rate(http_requests_total{job="api"}[5m])) &gt; 0.02
+        for: 10m
+        labels: { severity: page }
+        annotations:
+          summary: "API 5xx ratio above 2% for 10 minutes"
+          runbook: "https://wiki.example.com/runbooks/api-errors"</code></pre>
+      <ul>
+        <li><code>expr</code> — the user-facing symptom (error ratio), not a cause like CPU.</li>
+        <li><code>for: 10m</code> — must hold for 10 minutes before firing; filters out blips that would cause alert fatigue.</li>
+        <li><code>runbook</code> — every paging alert should link to what to check first.</li>
       </ul>
 
-      <h2 id="alerting">Alerting</h2>
+      <!-- 06 PRODUCTION -->
+      <h2 id="production" data-stage="Production">Production Usage</h2>
+      <table>
+        <tr><th></th><th>Low scale</th><th>High scale</th></tr>
+        <tr><td>Metrics</td><td>One Prometheus + Grafana.</td><td>Federated / remote-write to long-term storage (Thanos, Mimir, managed services); recording rules precompute expensive queries.</td></tr>
+        <tr><td>Logs</td><td>Everything at INFO, kept a few weeks.</td><td>Volume is the cost driver: sampling of noisy INFO logs, shorter retention for debug, tiered storage.</td></tr>
+        <tr><td>Traces</td><td>Trace everything.</td><td>Head-based sampling of a small percentage + tail-based capture of slow/error traces.</td></tr>
+        <tr><td>Alerts</td><td>A few threshold alerts.</td><td>SLO burn-rate alerts per service, routed to the owning team, each with a runbook.</td></tr>
+      </table>
+
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>Observability systems fail too — usually exactly during the incident, when log volume spikes. Watch your pipeline's own health (dropped logs, scrape duration, ingestion lag) and keep at least one signal path that doesn't depend on the system being observed.</p>
+      </aside>
+
+      <!-- 07 SECURITY -->
+      <h2 id="security" data-stage="Security">Security</h2>
       <ul>
-      <li><strong>Alert on symptoms, not causes</strong> — page on "error rate is elevated" or "latency SLO is at risk," not on every individual possible cause ("disk is at 85%"); causes are for the dashboard/runbook you check once paged, not a separate page of their own.</li>
-      <li><strong>Alert fatigue</strong> — too many low-value or flapping alerts trains responders to ignore pages, which is worse than having no alert at all; every alert should be actionable and rare enough to stay meaningful.</li>
-      <li>Tie alerts back to the SLO/error-budget framing above where possible — "we're burning error budget too fast" is a more durable alerting philosophy than a pile of ad hoc thresholds accumulated over time.</li>
+        <li><strong>Never log secrets or sensitive personal data</strong> — passwords, tokens, full card numbers, session cookies. Logs are copied widely and kept long; redact at the logger.</li>
+        <li><strong><code>/metrics</code> endpoints can leak internals</strong> (versions, hostnames, business counts) — expose them only on an internal port/network.</li>
+        <li><strong>Restrict access to log and trace backends</strong> — they contain request details for every user.</li>
+        <li><strong>Log security-relevant events</strong> (failed logins, permission denials, admin actions) so attacks are detectable — see <a href="01-application-security-fundamentals.html">Application Security Fundamentals</a>.</li>
       </ul>
 
-      <h2>Interview checklist</h2>
+      <!-- 08 PERFORMANCE -->
+      <h2 id="performance" data-stage="Performance &amp; Scalability">Performance &amp; Scalability</h2>
       <ul>
-      <li>Name all three pillars and, more importantly, say what each is <em>for</em> — interviewers listen for whether you know why you'd reach for a trace instead of a log, not just that both exist.</li>
-      <li>Bring up cardinality unprompted if metrics/labels come up — it's the detail that separates real Prometheus experience from a surface-level answer.</li>
-      <li>Mention correlation IDs / trace context propagation specifically when a design spans multiple services — "how do you debug a slow request across five services" is a very common follow-up.</li>
-      <li>Frame reliability targets as SLI → SLO → SLA, and use error budget language to justify a "pause features, fix reliability" call rather than treating uptime as a vague aspiration.</li>
-      <li>Justify alerting design around symptoms/actionability, not "alert on everything that could go wrong."</li>
+        <li><strong>Cardinality is the main cost lever for metrics</strong>: series count = product of label value counts. Keep labels to bounded sets (status class, route template, region).</li>
+        <li><strong>Log volume</strong> drives storage and ingestion cost; structured logs at the right level, plus sampling for high-volume success paths.</li>
+        <li><strong>Tracing overhead</strong> is small per span but storage isn't — hence sampling.</li>
+        <li><strong>Instrumentation on the hot path</strong> should be non-blocking: buffer and export asynchronously so a slow log/trace backend never slows requests.</li>
       </ul>
+
+      <!-- 09 TROUBLESHOOTING -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Failure Scenarios</h2>
+      <table>
+        <tr><th>Symptom</th><th>Possible cause</th><th>Detect</th><th>Fix</th><th>Prevent</th></tr>
+        <tr><td>Prometheus memory explodes, queries time out</td><td>High-cardinality label (user ID, request ID, raw URL).</td><td>Series count by metric (TSDB status page, <code>topk(10, count by (__name__)({__name__=~".+"}))</code>).</td><td>Drop/relabel the label; move the detail to logs.</td><td>Review new metrics' labels.</td></tr>
+        <tr><td>Traces stop at one service</td><td>That hop doesn't propagate <code>traceparent</code> (un-instrumented client, async queue).</td><td>Broken trees; orphan root spans downstream.</td><td>Instrument the client; carry context in message headers.</td><td>Shared instrumentation library.</td></tr>
+        <tr><td>Can't find a request's logs across services</td><td>No correlation ID, or not logged everywhere.</td><td>Logs lack <code>trace_id</code>/<code>request_id</code>.</td><td>Generate at the edge, propagate, log on every line.</td><td>Logger middleware adds it automatically.</td></tr>
+        <tr><td>On-call ignores pages</td><td>Alert fatigue: flapping, non-actionable cause alerts.</td><td>Pages per week; % acknowledged with no action.</td><td>Delete/merge alerts; alert on SLO burn.</td><td>Every alert has an owner and runbook.</td></tr>
+        <tr><td>Graph shows a gap during an outage</td><td>Scrapes failing (target down or overloaded).</td><td><code>up == 0</code>.</td><td>Alert on <code>up</code>; check target health.</td><td>Monitor the monitoring.</td></tr>
+      </table>
+      <h3 id="debug-workflow">Debugging workflow: from alert to root cause</h3>
+      <ol class="sd-steps">
+        <li><strong>Metric:</strong> what changed and when? Error ratio, latency percentiles, traffic, saturation — and which service/route.</li>
+        <li><strong>Correlate:</strong> deploys, config changes, traffic shifts in that window.</li>
+        <li><strong>Trace:</strong> open slow/failed traces from the window; find the span where time or errors concentrate.</li>
+        <li><strong>Log:</strong> filter logs by that trace ID / service / time for the exact error.</li>
+        <li><strong>Fix and confirm:</strong> roll back or patch; watch the SLI return to normal and the burn rate drop.</li>
+      </ol>
+
+      <!-- 10 BEST PRACTICES -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul>
+        <li><strong>Instrument the golden signals for every service</strong> — consistent dashboards make any service debuggable by anyone.</li>
+        <li><strong>Use histograms for latency</strong> and look at p95/p99.</li>
+        <li><strong>Propagate one trace/correlation ID end to end</strong> and log it on every line.</li>
+        <li><strong>Define SLOs with the product</strong> and alert on burn rate.</li>
+        <li><strong>Attach a runbook to every paging alert.</strong></li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul>
+        <li><strong>Unbounded label values</strong> in metrics.</li>
+        <li><strong>Free-text logs</strong> that need regex to query.</li>
+        <li><strong>Paging on causes</strong> (CPU, disk) that don't affect users yet — make them tickets or dashboard panels.</li>
+        <li><strong>Logging secrets or personal data.</strong></li>
+      </ul>
+
+      <!-- 11 INTERVIEW PREPARATION -->
+      <h2 id="interview-answer" data-stage="Interview Preparation">Interview Answer — What Is Observability?</h2>
+      <p>Observability is the ability to understand what a running system is doing — and why — from the signals it emits, without shipping new code to investigate. Those signals are the <a href="#three-pillars">three pillars</a>: <strong>metrics</strong> (numeric time series such as request rate and latency), <strong>logs</strong> (structured, timestamped events), and <strong>traces</strong> (the timed path of one request across every service it touched).</p>
+      <p>It exists because modern systems fail in ways nobody predicted. <strong>Monitoring vs. observability — the difference is</strong> that monitoring checks conditions you decided on in advance ("is CPU above 80%?"), while observability lets you answer a question you did not anticipate ("why did this user's checkout take 4 seconds at 3:12pm?"). In a system split across many services, a single slow request can have its cause three hops away, and without recorded signals you cannot reconstruct what happened after the fact.</p>
+      <p>The pillars work as a chain: a <strong>metric</strong> spike tells you something is wrong and when → a <strong>trace</strong> from that window shows which service in the call chain was slow → the <strong>log</strong> from that span shows the exact error or query. A <strong>correlation ID</strong> / trace ID propagated through every hop is what ties the three together. Reliability targets are then expressed as <strong>SLIs</strong> (what you measure), <strong>SLOs</strong> (the internal target), and <strong>SLAs</strong> (the external promise), and alerts fire on user-facing symptoms such as burning error budget too fast.</p>
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Observability is being able to explain what a system is doing from the signals it emits — metrics, logs, and traces. Metrics tell me something is wrong and when, traces show which service in the request path was slow, and structured logs tied together by a correlation ID show exactly why. I define reliability as SLIs and SLOs with an error budget, and I alert on user-facing symptoms like error rate or latency, not on every possible cause."</p>
+      </div>
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Why not add the user ID as a label on every metric, so we can see each user's latency?</strong></p>
+      <p><strong>A:</strong> Because every unique combination of metric name and label values is a separate time series. A <code>user_id</code> label with a million users turns one metric into a million series — this is the <strong>cardinality</strong> problem — and it can exhaust Prometheus's memory and make queries unusably slow. Metrics should carry low-cardinality labels such as status code, route, and region; per-user or per-request detail belongs in logs and traces, which are designed to hold high-cardinality data. See <a href="#metrics-prometheus">Metrics in practice</a> above.</p>
+
+      <h3 id="interview-checklist">Interview checklist</h3>
+      <ul>
+        <li>Name all three pillars and, more importantly, say what each is <em>for</em> — interviewers listen for whether you know why you'd reach for a trace instead of a log, not just that both exist.</li>
+        <li>Bring up cardinality unprompted if metrics/labels come up — it's the detail that separates real Prometheus experience from a surface-level answer.</li>
+        <li>Mention correlation IDs / trace context propagation specifically when a design spans multiple services — "how do you debug a slow request across five services" is a very common follow-up.</li>
+        <li>Frame reliability targets as SLI → SLO → SLA, and use error budget language to justify a "pause features, fix reliability" call rather than treating uptime as a vague aspiration.</li>
+        <li>Justify alerting design around symptoms/actionability, not "alert on everything that could go wrong."</li>
+      </ul>
+
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>What is each of metrics, logs and traces best at?</summary>
+          <p>Metrics: cheap trends and alerting ("something is wrong, when"). Traces: where time went across services ("which hop"). Logs: exact detail of one event ("why").</p></details>
+        <details class="sd-qa" data-level="basic"><summary>SLI vs. SLO vs. SLA?</summary>
+          <p>SLI is the measurement, SLO the internal target, SLA the external (often contractual) promise — usually looser than the SLO.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>Why prefer percentiles over averages for latency?</summary>
+          <p>Averages hide the tail: a fine mean can coexist with a terrible p99 that a meaningful share of users experience.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Why does Prometheus pull instead of services pushing?</summary>
+          <p>Service discovery decides what should exist; a target that is down shows as a failed scrape (<code>up == 0</code>) instead of silently missing data, and services don't need to know where the monitoring lives.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>How does a trace stay connected across five services?</summary>
+          <p>Context propagation: each hop passes the trace ID and parent span ID (W3C <code>traceparent</code>) to the next; every service must participate, or the chain breaks there.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>What is an error budget used for?</summary>
+          <p>It's 100% − SLO. While budget remains, teams ship; when it's spent, they pause risky changes and prioritise reliability — turning reliability vs. velocity into a measurable decision.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Why is a user_id metric label dangerous?</summary>
+          <p>Each label value combination is a new time series; a million users means a million series, exhausting memory and slowing queries. Put user-level detail in logs and traces.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Head-based vs. tail-based trace sampling?</summary>
+          <p>Head-based decides at the start (cheap, but may drop the interesting slow request); tail-based decides after the trace completes, keeping slow/error traces, at the cost of buffering spans.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Why alert on symptoms rather than causes?</summary>
+          <p>Symptoms (error rate, SLO burn) map to user pain and catch causes you didn't predict; cause alerts multiply, flap and fire without user impact, producing alert fatigue.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Checkout p99 jumped from 300 ms to 4 s at 15:10. Walk through your investigation.</summary>
+          <p>Confirm in metrics which route/service and exact start time → check deploys/config changes then → open slow traces from 15:10 to find the slow span (e.g. payment API call) → read that span's logs via trace ID for the error/timeout → roll back or mitigate, confirm p99 recovers.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Your Prometheus server keeps getting OOM-killed after a release. What do you suspect?</summary>
+          <p>The release added a high-cardinality label. Find the metrics with the most series, drop or relabel the label, and move that detail to logs.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>The team gets 40 pages a week and has started ignoring them. What do you change?</summary>
+          <p>Audit alerts: delete non-actionable ones, turn cause alerts into dashboard panels or tickets, add <code>for:</code> durations, and replace thresholds with SLO burn-rate alerts that each have an owner and runbook.</p></details>
+      </section>
+
+      <!-- 12 SUMMARY -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>Monitoring answers known questions; observability lets you answer new ones.</li>
+        <li>Metric (something's wrong, when) → trace (which service) → log (why), tied by a trace/correlation ID.</li>
+        <li>Golden signals: latency, traffic, errors, saturation — latency as percentiles.</li>
+        <li>Cardinality kills metric systems; high-cardinality detail belongs in logs and traces.</li>
+        <li>SLI → SLO → SLA; error budget = 100% − SLO, and it drives feature-vs-reliability calls.</li>
+        <li>Alert on symptoms, rarely, with runbooks.</li>
+      </ol>
+
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <div class="sd-next">
+        <a href="01-application-security-fundamentals.html"><strong>Application Security Fundamentals</strong><span>Which security events to log and alert on.</span></a>
+        <a href="02-cicd-and-deployment-strategies.html"><strong>CI/CD &amp; Deployment Strategies</strong><span>Using these signals to gate releases.</span></a>
+        <a href="../05-database/07-observability-capacity-and-operations/index.html"><strong>Database Observability &amp; Operations</strong><span>The same pillars for a database.</span></a>
+      </div>
 
     </main>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

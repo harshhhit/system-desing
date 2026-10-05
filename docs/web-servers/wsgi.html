@@ -12,224 +12,355 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WSGI Explained · Infra Owl</title>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=10">
 </head>
 <body>
+
 <div id="site-header-root"></div>
 <script src="../assets/sitemap.js"></script>
-<script src="../assets/pages.js"></script><script src="../assets/site-header.js?v=8" data-root="../"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=9" data-root="../"></script>
 
-<div class="layout">
-  <aside class="sidebar" id="sidebar"><a class="brand" href="../index.html">Infra Owl</a><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a class="active" href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
-  <div class="content-wrap">
-    <div class="topbar">
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
-      <span class="brand">🦉 Infra Owl</span>
-    </div>
-    <main>
-      <p class="breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Web Servers / WSGI Explained</p>
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a class="active" href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main sd-lesson" data-reminders="Write a minimal WSGI application callable from memory|Explain why sync Gunicorn workers need Nginx in front|Size Gunicorn workers for a 4-core box and explain the formula">
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Web Servers / WSGI Explained</p>
       <h1 data-page-title>WSGI Explained</h1>
-      <p>Got it ✅
-You want this whole explanation on <strong>WSGI, HTTP servers, and their role in Python web apps</strong> to be turned into <strong>top-tier, structured notes</strong> — like something a <strong>1% university student would prepare</strong>.</p>
-<p>That means:</p>
-<ul>
-<li>Deep but clear explanation.</li>
-<li>Step-by-step flow (from browser → server → Python app → response).</li>
-<li>Real-world usage examples.</li>
-<li>Comparisons (e.g., WSGI vs ASGI, Nginx vs Gunicorn).</li>
-<li>Diagrams (conceptual, I can describe them clearly).</li>
-<li>Interview-style Q&amp;A at the end.</li>
-</ul>
-<p>Let me draft it for you as <strong>well-structured notes</strong> 👇</p>
-<hr>
-<h2 id="interview-answer">Interview Answer — What Is WSGI?</h2>
-<p><strong>WSGI (Web Server Gateway Interface)</strong> is the Python standard, defined in PEP 3333, for how a web server passes an HTTP request to a Python web application and gets the response back. The application exposes a single callable — <code>application(environ, start_response)</code> — and any WSGI server (Gunicorn, uWSGI, Waitress) can run any WSGI framework (Django, Flask).</p>
-<p>WSGI exists so that servers and frameworks can be mixed freely. Without a shared interface, every framework would need its own server integration and every server would need to support each framework separately. With it, the cause → effect chain for a request is: the browser sends an HTTP request → Nginx terminates TLS, serves static files itself, and forwards the dynamic request to Gunicorn → Gunicorn converts the request into the <code>environ</code> dictionary and calls the Django application → Django returns the status, headers, and body → Gunicorn sends them back through Nginx to the browser.</p>
-<p>WSGI is <strong>synchronous</strong>: each worker handles one request at a time, so concurrency comes from running multiple worker processes or threads. <strong>ASGI (Asynchronous Server Gateway Interface)</strong> is its async successor, used by FastAPI and Django Channels with servers such as Uvicorn and Daphne; it supports long-lived connections such as WebSockets. See <a href="#6-why-use-both-nginx-and-gunicorn">why use both Nginx and Gunicorn</a> below.</p>
 
-<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
-  <p>"WSGI is the Python standard interface between a web server and a Python web application. A WSGI server like Gunicorn receives the request, calls the app's application(environ, start_response) callable, and returns the response, so any WSGI server can run any WSGI framework such as Django or Flask. In production, Nginx sits in front for TLS, static files, and proxying. WSGI is synchronous, one request per worker at a time; ASGI is the async successor used by FastAPI and for WebSockets."</p>
-</div>
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
+        <ul>
+          <li>Explain what WSGI is and why Python needs it</li>
+          <li>Follow a request from browser → Nginx → Gunicorn → Django and back</li>
+          <li>Compare WSGI and ASGI, and Gunicorn, uWSGI and Uvicorn</li>
+          <li>Write a minimal WSGI app and run it under Gunicorn</li>
+          <li>Size and tune Gunicorn workers</li>
+          <li>Debug worker timeouts and saturation</li>
+        </ul>
+      </section>
 
-<h3>One important interview follow-up</h3>
-<p><strong>Q: Is Gunicorn a web server that replaces Nginx?</strong></p>
-<p><strong>A:</strong> No. Gunicorn is a WSGI application server: it understands HTTP well enough to run Python workers, but it is not designed to face the internet directly. Its synchronous workers are tied up for as long as a client takes to send a request or receive a response, so slow clients can exhaust them; it is also not built for serving static files efficiently or managing TLS certificates. Nginx in front buffers slow clients, terminates TLS, serves static files, and load-balances across Gunicorn workers or instances — the two do different jobs.</p>
-
-<h1 id="📘-wsgi-http-servers-and-python-web-applications">📘 WSGI, HTTP Servers, and Python Web Applications</h1>
-<p><em>(University-Level Notes with Interview Questions)</em></p>
-<hr>
-<h2 id="1-introduction">1. Introduction</h2>
-<p>When you build a web app in <strong>Python</strong> (using Django, Flask, FastAPI, etc.), the app <strong>cannot directly talk to the internet</strong>. Browsers send <strong>HTTP requests</strong>, but your Python app only understands <strong>function calls and objects</strong>.</p>
-<p>👉 This is where <strong>WSGI (Web Server Gateway Interface)</strong> and <strong>ASGI (Asynchronous Server Gateway Interface)</strong> come into play.
+      <!-- 01 OVERVIEW -->
+      <h2 id="1-introduction" data-stage="Overview">The Problem WSGI Solves</h2>
+      <p>When you build a web app in <strong>Python</strong> (using Django, Flask, FastAPI, etc.), the app <strong>cannot directly talk to the internet</strong>. Browsers send <strong>HTTP requests</strong>, but your Python app only understands <strong>function calls and objects</strong>.</p>
+      <p>👉 This is where <strong>WSGI (Web Server Gateway Interface)</strong> and <strong>ASGI (Asynchronous Server Gateway Interface)</strong> come into play.
 They act as <strong>translators</strong> between your <strong>Python app</strong> and the <strong>outside world (browsers, clients, APIs, etc.)</strong>.</p>
-<hr>
-<h2 id="2-http-server--the-gateway-to-the-web">2. HTTP Server – The Gateway to the Web</h2>
-<p>An <strong>HTTP Server</strong> is a program that:</p>
-<ol>
-<li><p><strong>Listens</strong> for incoming HTTP requests (usually on port <code>80</code> or <code>443</code>).</p>
-</li>
-<li><p><strong>Parses</strong> the request (method, path, headers, body).</p>
-</li>
-<li><p><strong>Processes</strong> it:</p>
-<ul>
-<li>If the request is for <strong>static content</strong> (HTML, CSS, JS, images) → fetch from disk.</li>
-<li>If it’s for <strong>dynamic content</strong> (Python app) → forward to a WSGI/ASGI app server.</li>
-</ul>
-</li>
-<li><p><strong>Builds a response</strong> and sends it back to the browser.</p>
-</li>
-</ol>
-<p>📌 Example Flow:</p>
-<div class="mermaid">flowchart TD
-    A["Browser (Chrome/Firefox)"] -->|"sends HTTP request"| B["HTTP Server (Nginx/Apache)"]
-    B -->|"parses request"| C["WSGI/ASGI Server (Gunicorn/Uvicorn)"]
+      <p>This page zooms in on the Python step of the stack described in <a href="server.html">Web Servers</a>: the contract between the application server (Gunicorn, Uvicorn) and your framework.</p>
+
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>WSGI is a <strong>specification</strong>, not a program. Gunicorn implements the server side; Django and Flask implement the application side. Because both follow the same spec, any WSGI server can run any WSGI framework.</p>
+      </aside>
+
+      <!-- 02 CORE CONCEPTS -->
+      <h2 id="3-wsgi--web-server-gateway-interface" data-stage="Core Concepts">WSGI – Web Server Gateway Interface</h2>
+      <ul>
+        <li><strong>Definition:</strong> A standard protocol that defines how a Python web app communicates with a web server.</li>
+        <li><strong>Introduced:</strong> PEP 3333 (Python standard).</li>
+        <li><strong>Nature:</strong> Synchronous (one request per worker at a time).</li>
+      </ul>
+      <p>The whole contract is one callable: the server calls <code>application(environ, start_response)</code>, where <code>environ</code> is a dictionary describing the request (method, path, headers, body stream) and <code>start_response</code> is a function the app calls with the status and headers; the app returns an iterable of body bytes.</p>
+
+      <h2 id="4-asgi--the-modern-successor" data-stage="Core Concepts">ASGI – The Modern Successor</h2>
+      <ul>
+        <li><strong>Definition:</strong> Asynchronous Server Gateway Interface.</li>
+        <li><strong>Purpose:</strong> Designed for async frameworks (FastAPI, Django Channels).</li>
+        <li><strong>Supports:</strong> WebSockets, HTTP/2, long-lived connections.</li>
+      </ul>
+      <p>📌 <strong>Key Difference</strong>:</p>
+      <ul>
+        <li><strong>WSGI</strong> → Handles <strong>synchronous apps</strong> (blocking).</li>
+        <li><strong>ASGI</strong> → Handles <strong>asynchronous + synchronous apps</strong>.</li>
+      </ul>
+      <p><strong>WSGI vs. ASGI — the difference is</strong> what a worker does while waiting. A WSGI worker is blocked for the whole request, including time spent waiting on the database. An ASGI app is an <code>async</code> callable (<code>app(scope, receive, send)</code>), so one event loop can interleave thousands of waiting requests and hold WebSocket connections open.</p>
+
+      <h3 id="servers">Servers for each interface</h3>
+      <table>
+        <tr><th>Server</th><th>Interface</th><th>Notes</th></tr>
+        <tr><td><strong>Gunicorn</strong></td><td>WSGI (ASGI via Uvicorn workers)</td><td>“Green Unicorn”, widely used with Django/Flask.</td></tr>
+        <tr><td><strong>uWSGI</strong></td><td>WSGI</td><td>very powerful, but more complex.</td></tr>
+        <tr><td><strong>Waitress</strong></td><td>WSGI</td><td>pure Python, lightweight, used on Windows.</td></tr>
+        <tr><td><strong>Uvicorn</strong></td><td>ASGI</td><td>lightning fast, used with FastAPI.</td></tr>
+        <tr><td><strong>Daphne</strong></td><td>ASGI</td><td>created for Django Channels (websockets).</td></tr>
+        <tr><td><strong>Hypercorn</strong></td><td>ASGI</td><td>supports HTTP/2 and HTTP/3.</td></tr>
+      </table>
+
+      <h3 id="5-general-purpose-http-servers">General-purpose HTTP servers</h3>
+      <p>These are not Python-specific but widely used to serve <strong>static files</strong> and act as <strong>reverse proxies</strong>:</p>
+      <ul>
+        <li><strong>Apache HTTP Server (httpd):</strong> Oldest, feature-rich, but heavier.</li>
+        <li><strong>Nginx:</strong> Lightweight, high-performance, handles load balancing &amp; reverse proxy.</li>
+        <li><strong>Caddy:</strong> Auto HTTPS, modern.</li>
+        <li><strong>LiteSpeed:</strong> Optimized for hosting environments.</li>
+      </ul>
+
+      <aside class="sd-callout mistake">
+        <p class="sd-callout-title">⚠️ Common mistake</p>
+        <p>Calling Gunicorn "the web server." It's an application server: it speaks enough HTTP to run Python workers, but it isn't built to face the internet, terminate TLS or serve static files efficiently. That's Nginx's job — see <a href="#6-why-use-both-nginx-and-gunicorn">why use both</a>.</p>
+      </aside>
+
+      <!-- 03 ARCHITECTURE -->
+      <h2 id="8-visual-diagram-conceptual" data-stage="Architecture">Where Each Piece Sits</h2>
+      <div class="mermaid sd-diagram">flowchart TD
+    A["Browser (Chrome/Firefox)"] -->|"sends HTTP request"| B["Nginx/Apache<br/>(serves static files, SSL, reverse proxy)"]
+    B -->|"parses request, forwards dynamic requests"| C["Gunicorn/uWSGI/Uvicorn/Daphne<br/>(WSGI/ASGI app server)"]
     C -->|"calls Python app"| D["Python App (Django/Flask/FastAPI)"]
-    D -->|"returns response"| E["HTTP Server"]
-    E -->|"sends final response to browser"| F["Browser"]
-</div>
-<hr>
-<h2 id="3-wsgi--web-server-gateway-interface">3. WSGI – Web Server Gateway Interface</h2>
-<ul>
-<li><strong>Definition:</strong> A standard protocol that defines how a Python web app communicates with a web server.</li>
-<li><strong>Introduced:</strong> PEP 3333 (Python standard).</li>
-<li><strong>Nature:</strong> Synchronous (one request per worker at a time).</li>
-</ul>
-<h3 id="🔹-workflow-of-wsgi">🔹 Workflow of WSGI</h3>
-<ol>
-<li>Browser sends an HTTP request.</li>
-<li>Web server (like Nginx) forwards it to a <strong>WSGI server</strong> (like Gunicorn).</li>
-<li>WSGI server calls your <strong>Python app</strong> using a standard interface (<code>application(environ, start_response)</code>).</li>
-<li>Python app returns a response.</li>
-<li>WSGI server sends it back to the HTTP server → browser.</li>
-</ol>
-<h3 id="🔹-common-wsgi-servers">🔹 Common WSGI Servers</h3>
-<ul>
-<li><strong>Gunicorn</strong> – “Green Unicorn”, widely used with Django/Flask.</li>
-<li><strong>uWSGI</strong> – very powerful, but more complex.</li>
-<li><strong>Waitress</strong> – pure Python, lightweight, used on Windows.</li>
-</ul>
-<hr>
-<h2 id="4-asgi--the-modern-successor">4. ASGI – The Modern Successor</h2>
-<ul>
-<li><strong>Definition:</strong> Asynchronous Server Gateway Interface.</li>
-<li><strong>Purpose:</strong> Designed for async frameworks (FastAPI, Django Channels).</li>
-<li><strong>Supports:</strong> WebSockets, HTTP/2, long-lived connections.</li>
-</ul>
-<h3 id="🔹-popular-asgi-servers">🔹 Popular ASGI Servers</h3>
-<ul>
-<li><strong>Uvicorn</strong> – lightning fast, used with FastAPI.</li>
-<li><strong>Daphne</strong> – created for Django Channels (websockets).</li>
-<li><strong>Hypercorn</strong> – supports HTTP/2 and HTTP/3.</li>
-</ul>
-<p>📌 <strong>Key Difference</strong>:</p>
-<ul>
-<li><strong>WSGI</strong> → Handles <strong>synchronous apps</strong> (blocking).</li>
-<li><strong>ASGI</strong> → Handles <strong>asynchronous + synchronous apps</strong>.</li>
-</ul>
-<hr>
-<h2 id="5-general-purpose-http-servers">5. General-Purpose HTTP Servers</h2>
-<p>These are not Python-specific but widely used to serve <strong>static files</strong> and act as <strong>reverse proxies</strong>:</p>
-<ul>
-<li><strong>Apache HTTP Server (httpd):</strong> Oldest, feature-rich, but heavier.</li>
-<li><strong>Nginx:</strong> Lightweight, high-performance, handles load balancing &amp; reverse proxy.</li>
-<li><strong>Caddy:</strong> Auto HTTPS, modern.</li>
-<li><strong>LiteSpeed:</strong> Optimized for hosting environments.</li>
-</ul>
-<hr>
-<h2 id="6-why-use-both-nginx-and-gunicorn">6. Why Use Both Nginx and Gunicorn?</h2>
-<p>👉 Many Django/Flask deployments use <strong>Nginx + Gunicorn</strong> together.</p>
-<ul>
-<li><strong>Gunicorn (WSGI Server):</strong> Runs the Python app.</li>
-<li><strong>Nginx (HTTP Server):</strong> Handles static files, SSL termination, reverse proxy.</li>
-</ul>
-<p><strong>Flow:</strong></p>
-<div class="mermaid">flowchart LR
-    A["Browser"] --> B["Nginx"]
-    B --> C["Gunicorn"]
-    C --> D["Django App"]
-    D --> E["Gunicorn"]
-    E --> F["Nginx"]
-    F --> G["Browser"]
-</div>
-<p>✅ Benefits of Nginx in front:</p>
-<ul>
-<li>Serves static content efficiently.</li>
-<li>Manages SSL certificates.</li>
-<li>Provides load balancing.</li>
-<li>Protects Gunicorn from direct internet exposure.</li>
-</ul>
-<hr>
-<h2 id="7-example-deployment-stack">7. Example Deployment Stack</h2>
-<p>For a Django application:</p>
-<ul>
-<li><strong>Nginx</strong> → Handles incoming HTTP/HTTPS requests, serves static files.</li>
-<li><strong>Gunicorn</strong> → Runs Django as a WSGI application.</li>
-<li><strong>Django</strong> → Your Python web framework.</li>
-<li><strong>PostgreSQL/MySQL</strong> → Database.</li>
-</ul>
-<p>For a FastAPI application:</p>
-<ul>
-<li><strong>Nginx</strong> → Reverse proxy + SSL termination.</li>
-<li><strong>Uvicorn</strong> → Runs FastAPI as an ASGI app.</li>
-</ul>
-<hr>
-<h2 id="8-visual-diagram-conceptual">8. Visual Diagram (Conceptual)</h2>
-<div class="mermaid">flowchart TD
-    A["Browser"] -->|"HTTP request"| B["Nginx/Apache<br/>(serves static files, SSL, reverse proxy)"]
-    B -->|"forwards dynamic requests"| C["Gunicorn/uWSGI/Uvicorn/Daphne<br/>(WSGI/ASGI app server)"]
-    C -->|"calls"| D["Python App (Django/Flask/FastAPI)"]
-    D -->|"response"| E["Gunicorn/uWSGI/Uvicorn/Daphne"]
+    D -->|"returns response"| E["Gunicorn/uWSGI/Uvicorn/Daphne"]
     E --> F["Nginx/Apache"]
-    F --> G["Browser"]
+    F -->|"sends final response to browser"| G["Browser"]
 </div>
-<hr>
-<h2 id="9-modern-notes">9. Modern Notes</h2>
-<ul>
-<li><strong>WSGI</strong> is still the standard for <strong>Django &amp; Flask</strong>.</li>
-<li><strong>ASGI</strong> is the future for <strong>FastAPI, async Django apps</strong>.</li>
-<li>Most production setups use <strong>Nginx + Gunicorn/Uvicorn</strong>.</li>
-</ul>
-<hr>
-<h2 id="10-interview-questions">10. Interview Questions</h2>
-<h3 id="🔹-basic">🔹 Basic</h3>
-<ol>
-<li>What is WSGI, and why do we need it?</li>
-<li>How does an HTTP server differ from a WSGI server?</li>
-<li>Can Django run without WSGI?</li>
-</ol>
-<h3 id="🔹-intermediate">🔹 Intermediate</h3>
-<ol start="4">
-<li>Explain the request flow from a browser to a Django app.</li>
-<li>Why do we use Nginx in front of Gunicorn?</li>
-<li>Difference between Gunicorn and uWSGI.</li>
-<li>What is ASGI, and how is it different from WSGI?</li>
-</ol>
-<h3 id="🔹-advanced">🔹 Advanced</h3>
-<ol start="8">
-<li>How would you scale a Django app running on Gunicorn?</li>
-<li>How does Nginx handle SSL termination in a Django deployment?</li>
-<li>Can a single server handle both static and dynamic content? Pros/cons?</li>
-</ol>
-<hr>
-<p>✅ With this structure, you now have <strong>clear, step-by-step notes</strong> with enough depth to crack <strong>interviews</strong> and explain to <strong>anyone new to web servers in Python</strong>.</p>
-<hr>
-<p>Would you like me to also make a <strong>real-world case study</strong> (e.g., &quot;How Instagram uses WSGI/ASGI at scale&quot;) so it feels even more practical?</p>
+      <p class="sd-diagram-caption">The browser only ever talks to the HTTP server; the Python app only ever sees a function call from the app server.</p>
+
+      <h3 id="2-http-server--the-gateway-to-the-web">HTTP Server – The Gateway to the Web</h3>
+      <p>An <strong>HTTP Server</strong> is a program that:</p>
+      <ol>
+        <li><strong>Listens</strong> for incoming HTTP requests (usually on port <code>80</code> or <code>443</code>).</li>
+        <li><strong>Parses</strong> the request (method, path, headers, body).</li>
+        <li><strong>Processes</strong> it:
+          <ul>
+            <li>If the request is for <strong>static content</strong> (HTML, CSS, JS, images) → fetch from disk.</li>
+            <li>If it’s for <strong>dynamic content</strong> (Python app) → forward to a WSGI/ASGI app server.</li>
+          </ul>
+        </li>
+        <li><strong>Builds a response</strong> and sends it back to the browser.</li>
+      </ol>
+
+      <h3 id="7-example-deployment-stack">Example deployment stacks</h3>
+      <p>For a Django application:</p>
+      <ul>
+        <li><strong>Nginx</strong> → Handles incoming HTTP/HTTPS requests, serves static files.</li>
+        <li><strong>Gunicorn</strong> → Runs Django as a WSGI application.</li>
+        <li><strong>Django</strong> → Your Python web framework.</li>
+        <li><strong>PostgreSQL/MySQL</strong> → Database.</li>
+      </ul>
+      <p>For a FastAPI application:</p>
+      <ul>
+        <li><strong>Nginx</strong> → Reverse proxy + SSL termination.</li>
+        <li><strong>Uvicorn</strong> → Runs FastAPI as an ASGI app.</li>
+      </ul>
+
+      <!-- 04 HOW IT WORKS -->
+      <h2 id="workflow" data-stage="How It Works">Workflow of WSGI</h2>
+      <ol class="sd-steps">
+        <li>Browser sends an HTTP request.</li>
+        <li>Web server (like Nginx) forwards it to a <strong>WSGI server</strong> (like Gunicorn).</li>
+        <li>WSGI server calls your <strong>Python app</strong> using a standard interface (<code>application(environ, start_response)</code>).</li>
+        <li>Python app returns a response.</li>
+        <li>WSGI server sends it back to the HTTP server → browser.</li>
+      </ol>
+
+      <h3 id="gunicorn-workers">Inside Gunicorn: the pre-fork worker model</h3>
+      <ol class="sd-steps">
+        <li><strong>Arbiter starts.</strong> The Gunicorn master ("arbiter") binds the socket and forks N worker processes. With <code>--preload</code>, the app is imported once in the master before forking, saving memory.</li>
+        <li><strong>A worker accepts a connection.</strong> Workers share the listening socket; whichever is free accepts the next connection.</li>
+        <li><strong>Translate.</strong> The worker parses the HTTP request into <code>environ</code> and calls the WSGI callable.</li>
+        <li><strong>Block.</strong> A <em>sync</em> worker is now busy until the app returns — including every millisecond spent waiting on the database or an external API.</li>
+        <li><strong>Supervise.</strong> The arbiter restarts any worker that crashes or stays silent longer than <code>--timeout</code> (default 30 s).</li>
+      </ol>
+      <p>Cause → effect: concurrency equals the number of workers (× threads for <code>gthread</code> workers). Three sync workers = at most three requests in flight; the fourth waits in the socket backlog. Async worker classes (<code>gevent</code>, or <code>uvicorn.workers.UvicornWorker</code> for ASGI apps) let one worker interleave many waiting requests.</p>
+
+      <h2 id="6-why-use-both-nginx-and-gunicorn" data-stage="How It Works">Why Use Both Nginx and Gunicorn?</h2>
+      <p>👉 Many Django/Flask deployments use <strong>Nginx + Gunicorn</strong> together.</p>
+      <ul>
+        <li><strong>Gunicorn (WSGI Server):</strong> Runs the Python app.</li>
+        <li><strong>Nginx (HTTP Server):</strong> Handles static files, SSL termination, reverse proxy.</li>
+      </ul>
+      <p><strong>Flow:</strong> Browser → Nginx → Gunicorn → Django App → Gunicorn → Nginx → Browser (the same path as the <a href="#8-visual-diagram-conceptual">diagram above</a>).</p>
+      <p>✅ Benefits of Nginx in front:</p>
+      <ul>
+        <li>Serves static content efficiently.</li>
+        <li>Manages SSL certificates.</li>
+        <li>Provides load balancing.</li>
+        <li>Protects Gunicorn from direct internet exposure.</li>
+      </ul>
+      <p>The deeper reason is the worker model above: a sync worker held open by a slow mobile client for 10 seconds serves nobody else for those 10 seconds. Nginx buffers the slow client and hands Gunicorn a complete request. How Nginx itself handles thousands of connections is explained in <a href="server.html#nginx-internals">Web Servers → How Nginx Handles a Connection</a>.</p>
+
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>A FastAPI app runs under Uvicorn, which is async. Does it still benefit from Nginx in front? (Yes for TLS, static files, request limits and load balancing across instances — but the slow-client argument is weaker, because an async server doesn't block a worker per connection.)</p>
+      </aside>
+
+      <!-- 05 IMPLEMENTATION -->
+      <h2 id="implementation" data-stage="Implementation">Implementation</h2>
+      <h3 id="minimal-wsgi">A complete WSGI application</h3>
+      <pre><code>def application(environ, start_response):
+    path = environ["PATH_INFO"]
+    body = f"Hello from {path}".encode()
+    start_response("200 OK", [("Content-Type", "text/plain"), ("Content-Length", str(len(body)))])
+    return [body]</code></pre>
+      <ul>
+        <li><code>environ</code> — request data as a dict: <code>PATH_INFO</code>, <code>REQUEST_METHOD</code>, <code>QUERY_STRING</code>, headers as <code>HTTP_*</code> keys, body as <code>wsgi.input</code>.</li>
+        <li><code>start_response(status, headers)</code> — tells the server the status line and headers.</li>
+        <li><code>return [body]</code> — an iterable of bytes; Django's and Flask's <code>application</code> objects are just more elaborate versions of this function.</li>
+      </ul>
+      <h3 id="run-gunicorn">Running it</h3>
+      <pre><code>gunicorn app:application --workers 3 --bind 127.0.0.1:8000
+gunicorn myproject.wsgi:application --workers 5 --threads 2 --worker-class gthread --timeout 30 --max-requests 1000 --max-requests-jitter 100
+uvicorn main:app --host 127.0.0.1 --port 8000 --workers 4</code></pre>
+      <ul>
+        <li><code>app:application</code> — module <code>app</code>, callable <code>application</code>.</li>
+        <li><code>--workers</code> — process count; a common starting point from Gunicorn's docs is <code>(2 × CPU cores) + 1</code>, then adjust by measuring.</li>
+        <li><code>--threads 2 --worker-class gthread</code> — each process handles 2 requests concurrently (helps I/O-bound apps).</li>
+        <li><code>--timeout 30</code> — kill workers silent for 30 s; must be shorter than Nginx's <code>proxy_read_timeout</code> or slow requests show up as 502s (see <a href="server.html#troubleshooting">Web Servers → Troubleshooting</a>).</li>
+        <li><code>--max-requests 1000 --max-requests-jitter 100</code> — recycle each worker after ~1000 requests, containing slow memory leaks; jitter stops all workers restarting at once.</li>
+        <li><code>uvicorn main:app --workers 4</code> — the ASGI equivalent for FastAPI.</li>
+      </ul>
+      <p>The Nginx side of this stack (<code>proxy_pass</code>, forwarded headers, static files) is shown in <a href="server.html#implementation">Web Servers → Implementation</a>.</p>
+
+      <!-- 06 PRODUCTION -->
+      <h2 id="9-modern-notes" data-stage="Production">Production Usage</h2>
+      <ul>
+        <li><strong>WSGI</strong> is still the standard for <strong>Django &amp; Flask</strong>.</li>
+        <li><strong>ASGI</strong> is the future for <strong>FastAPI, async Django apps</strong>.</li>
+        <li>Most production setups use <strong>Nginx + Gunicorn/Uvicorn</strong>.</li>
+      </ul>
+      <table>
+        <tr><th></th><th>Low scale</th><th>High scale</th></tr>
+        <tr><td>Topology</td><td>One VM: Nginx + Gunicorn via Unix socket.</td><td>Load balancer → many instances/Pods, each running Gunicorn (often without per-instance Nginx; the LB/Ingress does TLS and static goes to a CDN).</td></tr>
+        <tr><td>Scaling</td><td>Add workers until CPU or memory is used.</td><td>Scale instances horizontally; tune workers per instance; move long work to background queues.</td></tr>
+        <tr><td>Bottleneck</td><td>Worker count.</td><td>Database connections: workers × instances can exceed the DB's connection limit — add a pooler (see <a href="../05-database/05a-connection-management-and-database-proxies/index.html">Connection Management</a>).</td></tr>
+      </table>
+      <h3 id="observability">Signals to watch</h3>
+      <ul>
+        <li><strong>Busy vs. idle workers</strong> — all busy means requests are queuing; latency rises even with low CPU.</li>
+        <li><strong>Worker restarts / <code>WORKER TIMEOUT</code></strong> in Gunicorn logs — slow requests or hangs.</li>
+        <li><strong>Memory per worker</strong> — growth over time means a leak (contained by <code>--max-requests</code>).</li>
+        <li><strong>Upstream response time</strong> from Nginx's log vs. total request time.</li>
+      </ul>
+
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>Each worker opens its own database connections. 4 instances × 9 workers × a pool of 5 = 180 connections — more than a default PostgreSQL <code>max_connections</code> of 100. Scaling the web tier can take the database down.</p>
+      </aside>
+
+      <!-- 07 SECURITY -->
+      <h2 id="security" data-stage="Security">Security</h2>
+      <ul>
+        <li><strong>Bind Gunicorn to localhost or a Unix socket</strong> so only the proxy can reach it.</li>
+        <li><strong>Trust forwarded headers only from the proxy</strong> — Gunicorn's <code>--forwarded-allow-ips</code>, Django's <code>SECURE_PROXY_SSL_HEADER</code>, Flask's <code>ProxyFix</code>.</li>
+        <li><strong>Never run <code>DEBUG=True</code> or the dev server</strong> (<code>runserver</code>, <code>flask run</code>) in production — they leak stack traces and settings.</li>
+        <li><strong>Run workers as an unprivileged user.</strong></li>
+      </ul>
+
+      <!-- 08 PERFORMANCE -->
+      <h2 id="performance" data-stage="Performance &amp; Scalability">Performance &amp; Scalability</h2>
+      <ul>
+        <li><strong>Throughput ≈ concurrent workers ÷ average request time.</strong> 9 sync workers at 100 ms ≈ 90 req/s per instance.</li>
+        <li><strong>CPU-bound apps:</strong> more processes (up to cores × ~2); threads don't help because of the GIL.</li>
+        <li><strong>I/O-bound apps:</strong> threads (<code>gthread</code>) or async (gevent / ASGI) raise concurrency cheaply.</li>
+        <li><strong>Memory</strong> limits worker count: each process holds the whole framework; <code>--preload</code> shares the imported code pages via copy-on-write.</li>
+        <li><strong>Horizontal scaling</strong> works because workers are stateless — keep sessions and caches in Redis, not process memory.</li>
+      </ul>
+
+      <!-- 09 TROUBLESHOOTING -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Failure Scenarios</h2>
+      <table>
+        <tr><th>Symptom</th><th>Possible cause</th><th>Detect</th><th>Fix</th><th>Prevent</th></tr>
+        <tr><td>502 for slow requests; <code>[CRITICAL] WORKER TIMEOUT</code></td><td>Request exceeded Gunicorn <code>--timeout</code>; worker killed.</td><td>Gunicorn log; Nginx "upstream prematurely closed connection".</td><td>Fix the slow path or move it to a background job.</td><td>Align timeouts; outbound call timeouts.</td></tr>
+        <tr><td>Latency climbs under load, CPU low</td><td>All sync workers waiting on I/O.</td><td>Busy-worker count at max; DB/API latency high.</td><td>More workers/threads, async workers, more instances.</td><td>Load test; capacity plan.</td></tr>
+        <tr><td>Memory grows until OOM kill</td><td>Leak in app code or too many workers per host.</td><td>RSS per worker over time; kernel OOM logs.</td><td><code>--max-requests</code> recycling; fewer workers; fix leak.</td><td>Memory alerts per worker.</td></tr>
+        <tr><td>"FATAL: too many connections" from the DB</td><td>Workers × instances × pool size exceeds <code>max_connections</code>.</td><td>DB connection count.</td><td>Smaller pools, PgBouncer.</td><td>Compute the connection budget before scaling.</td></tr>
+        <tr><td>Static files 404 in production</td><td>Dev server served them; production needs <code>collectstatic</code> + Nginx/CDN.</td><td>404s for <code>/static/</code>.</td><td>Run <code>collectstatic</code>; configure Nginx <code>location /static/</code>.</td><td>Deployment checklist.</td></tr>
+      </table>
+      <h3 id="debug-workflow">Debugging workflow</h3>
+      <ol class="sd-steps">
+        <li><strong>Is the app server up?</strong> <code>systemctl status gunicorn</code>, <code>ss -ltnp | grep 8000</code>.</li>
+        <li><strong>Bypass Nginx:</strong> <code>curl -i http://127.0.0.1:8000/health</code>.</li>
+        <li><strong>Read the app server log:</strong> <code>journalctl -u gunicorn -f</code> for timeouts, tracebacks, worker boots.</li>
+        <li><strong>Check saturation:</strong> busy workers vs. configured; DB connection count.</li>
+        <li><strong>Profile the slow endpoint</strong> with traces before touching worker counts.</li>
+      </ol>
+
+      <!-- 10 BEST PRACTICES -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul>
+        <li><strong>Put Nginx (or an LB/Ingress) in front</strong> for TLS, static files and slow-client buffering.</li>
+        <li><strong>Start with (2 × cores) + 1 workers and measure</strong> — the right number depends on CPU vs. I/O mix.</li>
+        <li><strong>Use async (ASGI) when you need WebSockets or massive I/O concurrency</strong>.</li>
+        <li><strong>Recycle workers</strong> with <code>--max-requests</code> + jitter.</li>
+        <li><strong>Budget database connections</strong> across all workers and instances.</li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul>
+        <li><strong>Exposing Gunicorn directly to the internet.</strong></li>
+        <li><strong>Long blocking work in a request</strong> — use a task queue.</li>
+        <li><strong>Raising <code>--timeout</code> to hide slow endpoints.</strong></li>
+        <li><strong>Calling blocking libraries inside async ASGI handlers</strong> — it stalls the whole event loop.</li>
+      </ul>
+
+      <!-- 11 INTERVIEW PREPARATION -->
+      <h2 id="interview-answer" data-stage="Interview Preparation">Interview Answer — What Is WSGI?</h2>
+      <p><strong>WSGI (Web Server Gateway Interface)</strong> is the Python standard, defined in PEP 3333, for how a web server passes an HTTP request to a Python web application and gets the response back. The application exposes a single callable — <code>application(environ, start_response)</code> — and any WSGI server (Gunicorn, uWSGI, Waitress) can run any WSGI framework (Django, Flask).</p>
+      <p>WSGI exists so that servers and frameworks can be mixed freely. Without a shared interface, every framework would need its own server integration and every server would need to support each framework separately. With it, the cause → effect chain for a request is: the browser sends an HTTP request → Nginx terminates TLS, serves static files itself, and forwards the dynamic request to Gunicorn → Gunicorn converts the request into the <code>environ</code> dictionary and calls the Django application → Django returns the status, headers, and body → Gunicorn sends them back through Nginx to the browser.</p>
+      <p>WSGI is <strong>synchronous</strong>: each worker handles one request at a time, so concurrency comes from running multiple worker processes or threads. <strong>ASGI (Asynchronous Server Gateway Interface)</strong> is its async successor, used by FastAPI and Django Channels with servers such as Uvicorn and Daphne; it supports long-lived connections such as WebSockets. See <a href="#6-why-use-both-nginx-and-gunicorn">why use both Nginx and Gunicorn</a> above.</p>
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"WSGI is the Python standard interface between a web server and a Python web application. A WSGI server like Gunicorn receives the request, calls the app's application(environ, start_response) callable, and returns the response, so any WSGI server can run any WSGI framework such as Django or Flask. In production, Nginx sits in front for TLS, static files, and proxying. WSGI is synchronous, one request per worker at a time; ASGI is the async successor used by FastAPI and for WebSockets."</p>
+      </div>
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Is Gunicorn a web server that replaces Nginx?</strong></p>
+      <p><strong>A:</strong> No. Gunicorn is a WSGI application server: it understands HTTP well enough to run Python workers, but it is not designed to face the internet directly. Its synchronous workers are tied up for as long as a client takes to send a request or receive a response, so slow clients can exhaust them; it is also not built for serving static files efficiently or managing TLS certificates. Nginx in front buffers slow clients, terminates TLS, serves static files, and load-balances across Gunicorn workers or instances — the two do different jobs.</p>
+
+      <section class="sd-interview" id="10-interview-questions" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>What is WSGI, and why do we need it?</summary>
+          <p>A Python standard (PEP 3333) for how a server calls a web app: <code>application(environ, start_response)</code>. It decouples servers from frameworks, so any WSGI server runs any WSGI framework.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>How does an HTTP server differ from a WSGI server?</summary>
+          <p>The HTTP server (Nginx) owns client connections, TLS and static files and forwards dynamic requests; the WSGI server (Gunicorn) manages Python worker processes and translates HTTP into WSGI calls.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>Can Django run without WSGI?</summary>
+          <p>Django needs some server interface: it ships both a WSGI entry point (<code>wsgi.py</code>) and, since Django 3.0, an ASGI one (<code>asgi.py</code>), so it can run under Uvicorn/Daphne instead. The <code>runserver</code> dev server is for development only.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Explain the request flow from a browser to a Django app.</summary>
+          <p>Browser → DNS/TCP/TLS to Nginx → Nginx serves static or proxies to Gunicorn → a Gunicorn worker builds <code>environ</code> and calls Django's WSGI app → middleware, URL routing, view, DB queries → response back through Gunicorn and Nginx.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Why do we use Nginx in front of Gunicorn?</summary>
+          <p>Sync Gunicorn workers would be held by slow clients; Nginx buffers them, terminates TLS, serves static files, enforces limits and load-balances, and keeps Gunicorn off the internet.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Difference between Gunicorn and uWSGI.</summary>
+          <p>Gunicorn: pure-Python pre-fork server, few options, easy to run. uWSGI: written in C, extremely configurable (its own <code>uwsgi</code> protocol, many plugins), but complex, and the project has been in maintenance mode. Gunicorn is the usual default.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>What is ASGI, and how is it different from WSGI?</summary>
+          <p>ASGI is the async interface (<code>async app(scope, receive, send)</code>). WSGI blocks a worker per request; ASGI lets one event loop interleave many requests and supports WebSockets and long-lived connections.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>How would you scale a Django app running on Gunicorn?</summary>
+          <p>Tune workers/threads per instance by measuring; run more stateless instances behind a load balancer; move slow work to a task queue; cache; put a connection pooler in front of the DB; serve static from a CDN.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>How does Nginx handle SSL termination in a Django deployment?</summary>
+          <p>Nginx holds the certificate and does the TLS handshake, then proxies plain HTTP to Gunicorn with <code>X-Forwarded-Proto: https</code>. Django must trust that header (<code>SECURE_PROXY_SSL_HEADER</code>) or it will think requests are HTTP — breaking secure cookies and redirects.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Can a single server handle both static and dynamic content? Pros/cons?</summary>
+          <p>Yes (Django can serve static via WhiteNoise; Nginx can do both with a proxy). One process is simpler, but serving static through Python workers wastes expensive workers; Nginx or a CDN serves static far more efficiently.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Users see 502s only on the report-export endpoint, which takes ~45 s. Why?</summary>
+          <p>Gunicorn's 30 s worker timeout kills the worker before Nginx's 60 s timeout; Nginx sees a closed connection → 502. Make export asynchronous (queue + download link) rather than raising timeouts.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>After scaling from 2 to 8 instances, the site gets slower and the DB logs connection errors. Why?</summary>
+          <p>Total DB connections = instances × workers × pool size, now above the DB limit. Add PgBouncer or shrink pools; scale the web tier only within the DB's connection budget.</p></details>
+      </section>
+
+      <!-- 12 SUMMARY -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>WSGI is a spec (PEP 3333): <code>application(environ, start_response)</code>; servers and frameworks are interchangeable.</li>
+        <li>WSGI is synchronous — concurrency = workers × threads; ASGI is async and supports WebSockets.</li>
+        <li>Nginx in front protects sync workers from slow clients and handles TLS/static.</li>
+        <li>Gunicorn workers: start at (2 × cores) + 1, measure, recycle with <code>--max-requests</code>.</li>
+        <li>Gunicorn <code>--timeout</code> &lt; Nginx timeout, or slow requests become 502s.</li>
+        <li>Workers × instances × pool size must fit the database's connection limit.</li>
+      </ol>
+      <p>✅ With this structure, you now have <strong>clear, step-by-step notes</strong> with enough depth to crack <strong>interviews</strong> and explain to <strong>anyone new to web servers in Python</strong>.</p>
+
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <div class="sd-next">
+        <a href="server.html"><strong>Web Servers</strong><span>The Nginx side of the stack, and its failure modes.</span></a>
+        <a href="../05-database/05a-connection-management-and-database-proxies/index.html"><strong>Connection Management</strong><span>Why workers × instances can exhaust the database.</span></a>
+        <a href="../traffic/00-load-balancing.html"><strong>Load Balancing</strong><span>Scaling to many Gunicorn instances.</span></a>
+      </div>
 
       <div class="page-footer">
         <span>Section: Web Servers</span>
         <span>Source: <code>wsgi.md</code></span>
       </div>
+
     </main>
   </div>
 </div>
-<script>
-  const t = document.getElementById('menuToggle');
-  const s = document.getElementById('sidebar');
-  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
-</script>
+
 <script>
   mermaid.initialize({ startOnLoad: true, theme: 'default' });
 </script>
-
 </body>
 </html>

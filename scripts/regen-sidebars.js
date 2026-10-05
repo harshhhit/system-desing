@@ -344,6 +344,19 @@ for (const site of SITES) {
           [/class="sd-callout /, `at least one insight callout (.sd-callout)`],
         ];
         for (const [re, what] of need) if (!re.test(orig)) err(`${ref}: sd-lesson page is missing ${what}`);
+        // data-stage must be one of the 12 standard parts (or a legacy lesson stage), so the
+        // outline numbering in site-header.js stays the same on every page
+        const STAGES = ["Overview", "Core Concepts", "Architecture", "How It Works", "Implementation",
+          "Production", "Security", "Performance & Scalability", "Troubleshooting", "Best Practices",
+          "Interview Preparation", "Summary",
+          "Start here", "Foundations", "How it works", "In production", "Review"];
+        for (const m of orig.matchAll(/data-stage="([^"]*)"/g)) {
+          const s = m[1].replace(/&amp;/g, "&");
+          if (!STAGES.includes(s)) err(`${ref}: unknown data-stage "${s}" (use one of: ${STAGES.slice(0, 12).join(", ")})`);
+        }
+        for (const m of orig.matchAll(/class="sd-qa"[^>]*data-level="([^"]*)"/g))
+          if (!["basic", "intermediate", "advanced", "scenario"].includes(m[1]))
+            err(`${ref}: sd-qa has unknown data-level "${m[1]}" (basic|intermediate|advanced|scenario)`);
       }
       if (t !== orig) err(`${ref}: STALE baked output — run: node scripts/regen-sidebars.js`);
       if (t !== orig) updated++;

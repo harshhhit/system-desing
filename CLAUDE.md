@@ -56,8 +56,8 @@ tiny redirect stubs remain at the old sub-site homepage paths (`docs/index.html`
 
 - **Give each page's core concept an "Interview Answer" block.** On legacy pages, put it
   right after the page's intro/subtitle (before the deep-dive sections); on lesson-layout
-  pages (`.sd-lesson`, see next rule) it opens the closing **Review** part instead, after
-  the production sections. Either way, add a section titled
+  pages (`.sd-lesson`, see next rule) it opens the **Interview Preparation** part instead
+  (the older five-stage lessons: the **Review** part), after the production sections. Either way, add a section titled
   `Interview Answer — What is <the concept>?` in this exact three-part shape:
   1. A full explanatory answer (2–4 paragraphs) — the concept, why it exists, and how it
      fits into the surrounding system, following the AWS-doc-style rules above.
@@ -73,27 +73,60 @@ tiny redirect stubs remain at the old sub-site homepage paths (`docs/index.html`
   link is fine) rather than duplicating it. See `docs/kubernetes/02-etcd.html`'s
   "Interview Answer — What Is etcd?" section for a worked example.
 
-- **Structure every content page as one lesson, not a Q&A list** (`<main class="sd-study-main sd-lesson">`;
-  skeleton + rules in `docs/_TEMPLATE-page.html`, worked example
-  `docs/kubernetes/01-kube-apiserver.html`). Reading order:
-  **What you'll learn** (`.sd-learn`, 3–6 objectives) → **Foundations** (what it is, why it
-  exists) → **How it works** (mechanism, components, diagram + `<ol class="sd-steps">`
-  walk-through) → **In production** (scaling/monitoring, failure table *Symptom → Root
-  cause → Detection → Fix*, performance/trade-offs, security) → **Review** (Interview Answer
-  block, Quick check, `.sd-takeaways`, `.sd-next` "What to Read Next"). Tag each `<h2>` with
-  `data-stage="Foundations|How it works|In production|Review"`; the right-hand "On this
-  page" rail groups by it automatically. Rules when converting an existing page:
-  merge overlapping sections into one authoritative explanation and link to its `#id`
-  elsewhere (never explain a concept twice); turn Q&A headings into concept headings, and
-  keep the questions as callouts / Quick check items; place diagrams right after the theory
-  they illustrate; keep every fact (rule 2), and check by diffing the old page's text
-  against the new one. Add an insight callout roughly every ~10 lines of substantial content,
-  where it helps, and never as a recap: `<aside class="sd-callout important|mistake|think|production|interview">`
-  with a `<p class="sd-callout-title">💡 Important</p>` (⚠️ Common mistake / 🧠 Think about it /
+- **Structure every content page as one topic in 12 standard parts, not a Q&A list**
+  (`<main class="sd-study-main sd-lesson">`; skeleton + rules in `docs/_TEMPLATE-page.html`,
+  worked example `docs/web-servers/server.html`). Tag every `<h2>` with `data-stage=` one of,
+  in this order: **Overview** (what / why / when + `.sd-learn` "What you'll learn") →
+  **Core Concepts** (mental model, terminology table, "X vs. Y") → **Architecture** (components,
+  diagram) → **How It Works** (lifecycle, diagram + `<ol class="sd-steps">`) → **Implementation**
+  (config / commands / code, each followed by what its important lines do) → **Production**
+  (real topology, low scale vs. high scale, trade-offs, observability signals) → **Security** →
+  **Performance & Scalability** (bottleneck → symptom → lever) → **Troubleshooting** (failure
+  table *Symptom → Possible cause → Detect → Debug → Fix → Prevent* + a debugging workflow with
+  real commands) → **Best Practices** (Do / Avoid, each with its reason) → **Interview
+  Preparation** (Interview Answer block + question bank) → **Summary** ("What Should I Remember?"
+  `.sd-takeaways`, optional `<ul class="sd-commands">` quick commands, `.sd-next`).
+  `site-header.js` numbers the parts (01–12, the same number on every page), builds the left
+  outline and mobile part chips from them, and labels each heading ("04 · How It Works").
+  **Leave out a part the topic genuinely doesn't need** — never an empty heading, never invented
+  facts to fill a part. Inside the parts follow the memory pattern WHY → WHAT → HOW → FLOW →
+  EXAMPLE → PRODUCTION → FAILURE → FIX → INTERVIEW. Rules when converting an existing page:
+  map every old block to its new part first (old → new), merge overlapping sections into one
+  authoritative explanation and link to its `#id` elsewhere (never explain a concept twice —
+  but theory, config, failure and interview views of the same thing are different purposes, not
+  duplicates); turn Q&A headings into concept headings and move the questions into the
+  question bank; place diagrams right after the theory they illustrate; keep every fact
+  (rule 2), and check by diffing the old page's text against the new one. Add an insight
+  callout roughly every ~10 lines of substantial content, where it helps, and never as a recap:
+  `<aside class="sd-callout important|mistake|think|production|interview">` with a
+  `<p class="sd-callout-title">💡 Important</p>` (⚠️ Common mistake / 🧠 Think about it /
   🔥 Production insight / 🎯 Interview tip) first line. If a diagram would clearly help but
   doesn't exist, add a `sd-callout diagram` "🗺️ Diagram recommended" note. `--check` errors on
-  a `.sd-lesson` page that loses any of the required blocks. Pages not yet converted
-  keep working unchanged.
+  a `.sd-lesson` page that loses any of the required blocks or uses an unknown `data-stage` /
+  `data-level`. The older five-stage lesson labels (Start here / Foundations / How it works /
+  In production / Review — `kubernetes/01-kube-apiserver.html`) still validate but render
+  unnumbered; convert them when the page is next touched. Pages not yet converted keep working
+  unchanged.
+
+- **Interview question bank** (Interview Preparation part): `<section class="sd-interview">`
+  holding `<details class="sd-qa" data-level="basic|intermediate|advanced|scenario"><summary>
+  Question</summary> answer…</details>`. Prefer questions that test understanding ("why does X
+  use…", "what happens internally when…", "what would you check if…", "what changes at
+  scale…") over "what is X?"; answers concise but complete. Scenario questions describe a
+  production symptom. The study panel moves them out of the page into its Interview tab and
+  leaves a pointer; the long-form Interview Answer block stays in the page.
+
+- **Every content page has a study panel** (`site-header.js` → `renderStudyPanel`): a right-hand
+  column on desktop (≥ 1280px), below the content on narrower screens, with tabs **Interview**
+  (the page's `.sd-qa` bank by level; on pages without one, questions harvested from the
+  Interview Answer block, its follow-up, "Quick check" items, 🎯 callouts and "…?" headings),
+  **Notes** (per-page scratchpad + the pinned 🗒️ notes, downloadable as .md), **Reminders**
+  (per-page checklist: optional `data-reminders="a|b|c"` on `<main>` + generic suggestions +
+  your own), **Review** (anything flagged with the "＋ Review" button on each `<h2>` or question,
+  listed site-wide), and **Commands** (CLI lines and short diagnostic SQL found in `<pre>` blocks,
+  plus any `.sd-commands` list). State is per-viewer `localStorage`. It's automatic — **never
+  hand-add it**; the page outline that used to be the right rail now sits at the top of the
+  left sidebar.
 
 - **All CSS lives in `assets/site.css`** (one copy per sub-site). It has three
   layers: design tokens + base element rules (global), the verbose two-column

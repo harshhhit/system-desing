@@ -11,159 +11,326 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Types of Cache · Infra Owl</title>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=10">
 <style>
   .sd-study-main h3 { margin-top: 1.6rem; }
   .stage-note { color: var(--muted); font-size: 0.92rem; margin-top: -0.2rem; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
+
 <div id="site-header-root"></div>
 <script src="../assets/sitemap.js"></script>
 <script src="../assets/pages.js"></script>
-<script src="../assets/site-header.js?v=8" data-root="../"></script>
+<script src="../assets/site-header.js?v=9" data-root="../"></script>
 
 <div class="sd-study-layout">
   <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group" open><summary>Types of Cache</summary><ul><li><a class="active" href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
 
   <div class="sd-study-content">
-    <main class="sd-study-main">
+    <main class="sd-study-main sd-lesson" data-reminders="List the cache layers from CPU to CDN with rough hit latencies|Explain near cache and how its L1 gets invalidated|Explain why MySQL removed its query cache">
       <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Caching &amp; CDN / Types of Cache</p>
       <h1 data-page-title>Types of Cache</h1>
       <p class="sd-study-prompt" data-page-subtitle>Every kind of cache on one page &mdash; hardware, OS page cache, browser and Service Worker, DNS, CDN, reverse proxy, API gateway, in-process, distributed, near cache, session, negative cache, and the database's own buffer pool, query cache and materialized views.</p>
 
-      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
+        <ul>
+          <li>Classify any cache as private/shared, local/distributed, memory/disk, read/write</li>
+          <li>Name every cache layer from the CPU to the CDN and what cost it removes</li>
+          <li>Choose the right layer for a given piece of data</li>
+          <li>Explain near caches, negative caches and session caches</li>
+          <li>Find which layer served a stale response</li>
+        </ul>
+      </section>
 
-      <h2 id="interview-answer">Interview Answer — What Types of Cache Are There?</h2>
-      <p>A cache is any smaller, faster store that keeps a copy of data whose source of truth is slower or farther away. "Types of cache" is the list of <strong>places</strong> such a copy can live along a request's path: in the CPU, in the operating system, in the user's browser or app, in the network (DNS, CDN, reverse proxy, API gateway), in the application (in-process memory or a shared store such as Redis), and inside the database itself.</p>
-      <p>The types exist because each layer removes a different cost. A browser cache removes the network trip entirely; a CDN removes the long-distance trip to the origin; a reverse proxy removes the application's work; Redis removes the database query; the database buffer pool removes the disk read; the CPU cache removes the RAM read. The cause → effect chain is: the closer to the user a copy lives → the more work it saves per hit → but the more copies exist and the harder it is to invalidate them all when the data changes.</p>
-      <p>Two axes classify every type: <strong>who shares the copy</strong> (private to one user or process vs. shared by everyone) and <strong>where it runs</strong> (local to the process vs. distributed over the network). A real request usually misses through several types in order — browser → CDN → reverse proxy → application cache → database buffer pool → disk — before it reaches the source of truth. The <a href="#summary-table">summary table</a> at the end lists every type side by side.</p>
+      <!-- 01 OVERVIEW -->
+      <h2 id="overview" data-stage="Overview">Why There Are So Many Kinds of Cache</h2>
+      <p>A cache is any smaller, faster store holding a copy of slower or farther data. Every hop a request makes — CPU to RAM, process to Redis, app to database, user to origin — has a cost, and each type of cache exists to remove one specific hop. This page is the catalogue; the <a href="00-caching-and-cdn-fundamentals.html">fundamentals page</a> covers strategies, eviction and invalidation that apply to all of them.</p>
 
-      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
-        <p>"Caches exist at every layer: the browser and mobile app cache responses per user; DNS and the CDN cache at the network edge; a reverse proxy or API gateway caches whole responses in front of the app; the application caches objects in its own memory or in a shared store like Redis; and the database keeps hot pages in its buffer pool. The closer a cache is to the user, the more it saves on a hit, but the harder it is to invalidate — so I pick the layer per data type: static assets at the CDN, shared hot objects in Redis, and tiny rarely-changing data in-process."</p>
-      </div>
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>For any cache, ask two questions: <em>which cost does it remove?</em> and <em>who invalidates it?</em> If you can't answer the second, you've added a source of stale data.</p>
+      </aside>
 
-      <h3>One important interview follow-up</h3>
-      <p><strong>Q: If I already have Redis, is an in-process cache redundant?</strong></p>
-      <p><strong>A:</strong> Not necessarily — they solve different costs. Redis still costs a network round trip (~0.5–1 ms) and serialization on every read; an in-process cache costs microseconds. For a very hot key (a feature-flag set, a config blob, a celebrity profile) that network trip dominates and can even saturate one Redis shard, so a small in-process cache with a short TTL in front of Redis — a <a href="#near-cache">near cache</a> — removes it. The catch is that N application instances now hold N independent copies that go stale independently, so it only suits data that tolerates a few seconds of staleness or has a push-based invalidation channel.</p>
+<h2 id="classification" data-stage="Core Concepts">How to Classify Any Cache</h2>
+ <p>Before the list, four distinctions that apply to every type. Naming them lets you describe a new cache in one sentence.</p>
+ <table>
+ <tr><th>Distinction</th><th>The difference is…</th><th>Example</th></tr>
+ <tr><td><strong>Private vs. shared</strong></td><td>whether one user/process owns the copy or many readers share it. A shared cache must never store one user's private data under a key another user can hit.</td><td>Browser cache (private) vs. CDN (shared). <code>Cache-Control: private</code> tells shared caches to stay out.</td></tr>
+ <tr><td><strong>Local vs. distributed</strong></td><td>whether the cache lives inside the process that reads it or across the network on separate nodes.</td><td>Caffeine / <code>functools.lru_cache</code> (local) vs. Redis Cluster (distributed).</td></tr>
+ <tr><td><strong>In-memory vs. on-disk</strong></td><td>whether entries live in RAM (fast, lost on restart, small) or on disk/SSD (slower, survives restart, large).</td><td>Memcached (RAM) vs. Nginx <code>proxy_cache</code> files, the browser disk cache.</td></tr>
+ <tr><td><strong>Read cache vs. write buffer</strong></td><td>whether the cache speeds up reads of existing data or absorbs writes and flushes them later. A write buffer holds data that is not yet in the source of truth, so losing it loses data.</td><td>CDN (read cache) vs. a disk controller's write-back cache or write-behind Redis (write buffer).</td></tr>
+ </table>
+ 
 
-      <h2 id="classification">How to classify any cache</h2>
-      <p>Before the list, four distinctions that apply to every type. Naming them lets you describe a new cache in one sentence.</p>
+      <aside class="sd-callout mistake">
+        <p class="sd-callout-title">⚠️ Common mistake</p>
+        <p>Treating a shared cache like a private one. A CDN, reverse proxy or API gateway that caches a per-user response under a key without the user in it will serve that response to the next person who asks.</p>
+      </aside>
+
+      <!-- 03 ARCHITECTURE -->
+<h2 id="summary-table" data-stage="Architecture">Every Type Side by Side</h2>
+      <div class="mermaid sd-diagram">flowchart LR
+    U["User device<br/>browser · SW · app storage"] --> N["Network<br/>DNS · CDN"]
+    N --> P["Your edge<br/>reverse proxy · API gateway"]
+    P --> A["Application<br/>in-process (L1) → Redis (L2)"]
+    A --> D["Database<br/>buffer pool · MVs"]
+    D --> O["OS page cache → disk cache → disk"]
+</div>
+      <p class="sd-diagram-caption">A request misses through these groups left to right; the CPU caches sit underneath every box.</p>
+
+ <table>
+ <tr><th>Type</th><th>Examples</th><th>Hit latency</th><th>Shared by</th><th>Who controls freshness</th></tr>
+ <tr><td>CPU L1/L2/L3</td><td>on-die SRAM</td><td>~1–40 ns</td><td>core / socket</td><td>hardware coherence protocol</td></tr>
+ <tr><td>OS page cache</td><td>Linux page cache</td><td>~µs</td><td>all processes on the host</td><td>kernel</td></tr>
+ <tr><td>Browser HTTP cache</td><td>Chrome memory/disk cache</td><td>~0 ms (no request)</td><td>one user</td><td><code>Cache-Control</code>, <code>ETag</code></td></tr>
+ <tr><td>Service Worker / app storage</td><td>Cache API, IndexedDB, SWR</td><td>~ms</td><td>one user</td><td>your client code</td></tr>
+ <tr><td>DNS cache</td><td>resolvers, OS, JVM</td><td>~0–20 ms</td><td>everyone using that resolver</td><td>record TTL</td></tr>
+ <tr><td>CDN edge</td><td>CloudFront, Cloudflare, Fastly</td><td>~10–50 ms</td><td>users near a PoP</td><td><code>s-maxage</code>, purge API</td></tr>
+ <tr><td>Reverse proxy</td><td>Varnish, Nginx</td><td>~1 ms</td><td>all users of that server</td><td>headers + proxy config</td></tr>
+ <tr><td>API gateway</td><td>API Gateway, Kong</td><td>~1–5 ms</td><td>all callers (per key)</td><td>gateway TTL</td></tr>
+ <tr><td>In-process</td><td>Caffeine, <code>lru_cache</code></td><td>~ns–µs</td><td>one process</td><td>your code (TTL, size)</td></tr>
+ <tr><td>Distributed</td><td>Redis, Memcached</td><td>~0.5–1 ms</td><td>all app instances</td><td>your code (TTL, invalidation)</td></tr>
+ <tr><td>Near cache (L1+L2)</td><td>Caffeine + Redis, Hazelcast</td><td>µs (L1) / ms (L2)</td><td>process + cluster</td><td>TTL + invalidation messages</td></tr>
+ <tr><td>DB buffer pool</td><td><code>shared_buffers</code>, InnoDB</td><td>~µs</td><td>that DB instance</td><td>database (always consistent)</td></tr>
+ <tr><td>Materialized view</td><td>PostgreSQL MV</td><td>a normal query</td><td>all DB clients</td><td>refresh schedule</td></tr>
+ </table>
+ <div class="sd-study-note warning"><span class="sd-note-title">This does NOT mean "use every layer"</span><p>Each added layer is another copy to invalidate and another place a bug can serve stale or wrong data. Add a layer only when you can name the cost it removes (network distance, application CPU, database load) and the staleness it is allowed to introduce.</p></div>
+ <p>Deep dive per type: <a href="01a-browser-caching.html">01a. Browser</a>, <a href="01b-cdn-caching.html">01b. CDN</a>, <a href="01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway</a>, <a href="01d-database-caching.html">01d. Database</a>, <a href="01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware</a>.</p>
+ <p>Next: <a href="02-in-memory-caching-strategies.html">02. In-Memory Caching Strategies</a> — how the application cache is filled and kept in sync. Back to the <a href="caching-roadmap.html">Caching Roadmap</a>.</p>
+ 
+ 
+
+      <!-- 04 HOW IT WORKS -->
+<h2 id="hardware-caches" data-stage="How It Works">1. Hardware caches</h2>
+ <p class="stage-note">Deep dive: <a href="01e-dns-os-hardware-caching.html#cpu-cache">01e. DNS, OS &amp; Hardware Caching</a>.</p>
+ <p>Hardware caches are memory built into the CPU and storage devices. You don't configure them in system design, but they explain <em>why</em> in-memory caches are fast and why data layout matters.</p>
+ <h3 id="cpu-cache">CPU caches (L1, L2, L3)</h3>
+ <p>What it is: small SRAM memories on the CPU die that hold recently used 64-byte <strong>cache lines</strong> from RAM. L1 (~32–64 KB per core, ~1 ns), L2 (~256 KB–2 MB per core, ~4 ns), L3 (tens of MB shared by all cores, ~10–40 ns); RAM is ~80–100 ns. Why it exists: without it the CPU would wait ~100 cycles on every memory access. Consequence for software: a sequential array scan is fast (spatial locality — the next element is already in the cache line), while pointer-chasing through a linked list misses constantly. This is also why multithreaded code suffers from <strong>false sharing</strong> — two cores writing different variables on the same cache line keep invalidating each other's copy.</p>
+ <h3 id="tlb">TLB (Translation Lookaside Buffer)</h3>
+ <p>A cache of virtual-to-physical page-address translations. Every memory access needs a translation; the TLB avoids walking the page tables each time. Huge pages (2 MB instead of 4 KB) are used by databases and Redis-like systems partly to reduce TLB misses — though Redis specifically recommends disabling <em>transparent</em> huge pages because they slow down its fork-based snapshots.</p>
+ <h3 id="disk-cache">Disk and controller caches</h3>
+ <p>SSDs and RAID controllers have their own DRAM cache. As a read cache it is harmless; as a <strong>write-back cache</strong> it acknowledges a write before it reaches durable media — which is why databases depend on battery- or capacitor-backed controllers or on <code>fsync</code> semantics to avoid losing acknowledged writes on power failure.</p>
+ <h2 id="os-caches" data-stage="How It Works">2. Operating-system caches</h2>
+ <p class="stage-note">Deep dive: <a href="01e-dns-os-hardware-caching.html#page-cache">01e. DNS, OS &amp; Hardware Caching</a>.</p>
+ <h3 id="page-cache">Page cache (file-system cache)</h3>
+ <p>What it is: the kernel keeps recently read file blocks in otherwise unused RAM, so the second read of a file comes from memory, not disk. Why it matters in system design: Kafka relies on it instead of its own cache (consumers reading recent messages hit the page cache); PostgreSQL deliberately relies on it as a second layer behind <code>shared_buffers</code> (which is why the common guidance is ~25% of RAM for <code>shared_buffers</code> and leave the rest to the OS). Gotcha: <code>free</code> shows this memory as "buff/cache" — it is not a leak; the kernel releases it when applications need memory.</p>
+ <h3 id="os-dns-cache">OS DNS resolver cache</h3>
+ <p>The OS (e.g. <code>systemd-resolved</code>, or the macOS/Windows DNS client) caches name → IP answers for the record's TTL, so a process doesn't repeat a DNS lookup on every connection. Language runtimes can add their own layer — the JVM caches successful lookups (<code>networkaddress.cache.ttl</code>), which historically caused services to keep connecting to an old IP after a failover.</p>
+ <h2 id="client-caches" data-stage="How It Works">3. Client-side caches</h2>
+ <p class="stage-note">Deep dive: <a href="01a-browser-caching.html">01a. Browser Caching</a>.</p>
+ <h3 id="browser-cache">Browser HTTP cache</h3>
+ <p>What it is: the browser stores HTTP responses (in a memory cache for the current tab session and a disk cache across sessions) and reuses them according to the response's <code>Cache-Control</code>, <code>ETag</code>, and <code>Last-Modified</code> headers. Why it exists: a hit costs zero network — the fastest request is the one never sent. How it works:</p>
+ <ol>
+ <li>The first response says <code>Cache-Control: max-age=31536000, immutable</code> for <code>app.3f9a1c.js</code> → the browser stores it.</li>
+ <li>For a year, every page that references that URL uses the stored copy without contacting the server (a <strong>fresh hit</strong>).</li>
+ <li>For a response with <code>Cache-Control: no-cache</code> and an <code>ETag</code>, the browser sends <code>If-None-Match</code> every time → the server answers <code>304 Not Modified</code> with no body if unchanged (a <strong>revalidation</strong>: a round trip, but no payload).</li>
+ </ol>
+ <p><strong><code>no-cache</code> vs. <code>no-store</code> — the difference is</strong> that <code>no-cache</code> may store but must revalidate before every use, while <code>no-store</code> must not store the response at all (use it for banking pages and anything with secrets). Gotcha: you cannot purge a browser cache remotely — so long-lived assets must use <strong>fingerprinted URLs</strong> (a content hash in the filename); a new deploy changes the URL instead of trying to invalidate the old one.</p>
+ <h3 id="service-worker-cache">Service Worker cache (Cache Storage API)</h3>
+ <p>A programmable cache: a Service Worker script intercepts the page's requests and decides whether to answer from <code>caches.open(...)</code>, the network, or both (cache-first, network-first, stale-while-revalidate). It powers offline-capable Progressive Web Apps. Unlike the HTTP cache it ignores <code>Cache-Control</code> — your code owns freshness, so a bug can pin users to an old version of the app.</p>
+ <h3 id="app-storage-cache">Application storage as a cache (localStorage, IndexedDB, mobile caches)</h3>
+ <p>Web apps cache API data in <code>localStorage</code> / IndexedDB; mobile apps cache in SQLite, on-disk image caches, or HTTP client caches (OkHttp, <code>URLCache</code>). Front-end data libraries (React Query, SWR, Apollo Client) keep an in-memory response cache with stale-while-revalidate semantics. Limit: this data is on the user's device — never cache secrets there, and assume it may be stale or cleared at any time.</p>
+ <h2 id="network-caches" data-stage="How It Works">4. Network and edge caches</h2>
+ <p class="stage-note">Deep dives: <a href="01e-dns-os-hardware-caching.html#dns-path">DNS caching</a>, <a href="01b-cdn-caching.html">01b. CDN Caching</a>, <a href="01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a>.</p>
+ <h3 id="dns-cache">DNS caching (recursive resolvers)</h3>
+ <p>What it is: recursive resolvers (your ISP's, 8.8.8.8, 1.1.1.1, Route 53 Resolver in a VPC) cache DNS answers for the record's TTL, and also cache "this name does not exist" answers (negative caching, bounded by the SOA record). Why it matters: DNS TTL decides how fast a DNS-based failover or migration takes effect. Lower the TTL (e.g. 3600 → 60 seconds) <em>before</em> a planned migration, because resolvers that cached the old answer keep it until the old TTL expires. Gotcha: some resolvers and clients ignore low TTLs, so never rely on DNS alone for instant failover.</p>
+ <h3 id="cdn-cache">CDN (edge) cache</h3>
+ <p>What it is: a shared HTTP cache operated in many Points of Presence (PoPs) worldwide — CloudFront, Cloudflare, Fastly, Akamai. It stores responses near users so a hit avoids the long trip to the origin. Layers inside a CDN: edge PoP → regional cache → optional <strong>origin shield</strong> (one designated PoP that all edges fetch through, so the origin sees one miss per object instead of one per PoP). Controlled by <code>Cache-Control</code> / <code>s-maxage</code> and the <strong>cache key</strong> (host + path + selected query strings/headers/cookies — every extra item in the cache key lowers the hit ratio). Full detail: <a href="00-caching-and-cdn-fundamentals.html#cdn">CDN: caching at the edge</a>.</p>
+ <h3 id="reverse-proxy-cache">Reverse-proxy cache</h3>
+ <p>What it is: a proxy in front of your application servers that stores whole HTTP responses — Varnish, Nginx <code>proxy_cache</code>, Apache Traffic Server. Why it exists: it serves repeated responses without running application code at all, and it can apply <strong>micro-caching</strong> (caching a dynamic page for 1–5 seconds) which collapses a burst of identical requests into one backend call. Nginx's <code>proxy_cache_lock on</code> additionally makes concurrent misses wait for the first one — built-in stampede protection. Difference from a CDN: same idea, but it lives in your datacenter next to the app, so it saves application work, not geographic distance.</p>
+ <h3 id="api-gateway-cache">API gateway cache</h3>
+ <p>API gateways (Amazon API Gateway stage caching, Kong's proxy-cache plugin, Apigee) cache responses per method + path + selected parameters for a TTL. Useful for read-heavy public APIs. Gotcha: the cache key must include every parameter that changes the response — especially the caller's identity or tenant, otherwise one user's response is served to another.</p>
+ <h3 id="forward-proxy-cache">Forward-proxy cache</h3>
+ <p>A proxy on the client side of the network (a corporate Squid proxy, historically ISP proxies) that caches for many users behind it. Less relevant today because HTTPS hides responses from it, but it is the reason <code>Cache-Control: private</code> exists.</p>
+ <h2 id="application-caches" data-stage="How It Works">5. Application caches (the in-memory caches you design)</h2>
+ <p class="stage-note">Deep dives: <a href="02-in-memory-caching-strategies.html">02. Strategies</a>, <a href="03-in-memory-eviction-policies.html">03. Eviction Policies</a>, <a href="04-in-memory-cache-problems.html">04. Cache Problems</a>.</p>
+ <p>This is the layer the rest of this section's deep-dive pages focus on: <a href="02-in-memory-caching-strategies.html">strategies</a>, <a href="03-in-memory-eviction-policies.html">eviction policies</a>, and <a href="04-in-memory-cache-problems.html">problems such as the thundering herd</a>.</p>
+ <h3 id="in-process-cache">In-process (local) cache</h3>
+ <p>What it is: a map inside the application's own memory, with size limits and TTLs — Caffeine or Guava (Java), <code>functools.lru_cache</code> / <code>cachetools</code> (Python), <code>lru-cache</code> (Node.js), <code>MemoryCache</code> (.NET). Why use it: reads cost nanoseconds to microseconds, no network, no serialization. Limits: memory is per-process and lost on restart; with N instances there are N copies that are invalidated independently, so instance A may serve a new value while instance B still serves the old one. Best for small, hot, rarely changing data: configuration, feature flags, country lists, compiled templates.</p>
+ <h3 id="distributed-cache">Distributed (remote) cache</h3>
+ <p>What it is: a separate cache service shared by every application instance over the network — Redis, Memcached, Valkey, Amazon ElastiCache / MemoryDB, Hazelcast. (See <a href="../aws/01-elasticache.html">Amazon ElastiCache</a> for the managed AWS version.) Why use it: one shared copy (all instances see the same value), capacity beyond one machine's memory via sharding, and the cache survives application deploys. Cost: a network round trip (~0.5–1 ms in the same zone) and serialization per read, plus a new piece of infrastructure that can fail. <strong>Distributed cache vs. in-process cache — the difference is</strong> one consistent shared copy with a network hop vs. many fast independent copies.</p>
+ <h3 id="near-cache">Near cache (two-level / L1 + L2)</h3>
+ <p>What it is: an in-process cache (L1) in front of a distributed cache (L2). A read checks L1 → then L2 → then the database. Why: it removes the network hop for the hottest keys and protects a single Redis shard from a hot key. The hard part is invalidating L1 on every instance: options are a short L1 TTL (seconds), pub/sub invalidation messages, or Redis 6+ <strong>client-side caching</strong> (the <code>CLIENT TRACKING</code> command — Redis remembers which keys each client read and pushes an invalidation message when they change). Hazelcast and Apache Ignite have a built-in near cache.</p>
+ <h3 id="session-cache">Session cache</h3>
+ <p>Storing login sessions in Redis/Memcached so any application instance can serve any user (stateless app servers). Note the change in role: here the cache is effectively the <em>primary</em> store for sessions — evicting a session logs the user out — so it needs a no-eviction or volatile-only eviction policy, replication, and possibly persistence. See <a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a>.</p>
+ <h3 id="object-page-fragment">Object, full-page, and fragment caches</h3>
+ <ul>
+ <li><strong>Object cache</strong> — caches a domain object (<code>user:42</code> → serialized JSON). The most common application-cache use.</li>
+ <li><strong>Full-page cache</strong> — caches the whole rendered HTML page (WordPress page caches, Varnish). Only works when the page is identical for everyone who hits that key.</li>
+ <li><strong>Fragment cache</strong> — caches parts of a page (a product-description block, a sidebar) and assembles them per request (Rails fragment caching, Edge Side Includes at the CDN). Lets a mostly-shared page have a small personalised part.</li>
+ </ul>
+ <h3 id="memoization">Memoization and computation caches</h3>
+ <p>Caching the <em>result of a function</em> keyed by its inputs — a pure function's output never goes stale, so memoization has no invalidation problem at all. Extended to expensive computations: rendered thumbnails, ML model inference results, aggregated dashboards, LLM prompt caches. Build systems use the same idea (Bazel remote cache, Docker layer cache, CI dependency caches): the key is a hash of the inputs, so correctness is automatic.</p>
+ <h3 id="negative-cache">Negative cache</h3>
+ <p>Caching the fact that something does <strong>not</strong> exist ("user 999 not found") for a short TTL. It prevents repeated lookups for missing keys from reaching the database — the main defence against <a href="04-in-memory-cache-problems.html#penetration">cache penetration</a>. DNS does the same with NXDOMAIN answers.</p>
+ <h2 id="data-layer-caches" data-stage="How It Works">6. Data-layer caches (inside the database)</h2>
+ <p class="stage-note">Deep dive: <a href="01d-database-caching.html">01d. Database Caching</a>.</p>
+ <h3 id="buffer-pool">Database buffer pool / buffer cache</h3>
+ <p>What it is: the database's own in-memory cache of data and index pages — PostgreSQL <code>shared_buffers</code>, MySQL InnoDB buffer pool (<code>innodb_buffer_pool_size</code>, often 50–75% of RAM on a dedicated server), Oracle buffer cache, MongoDB WiredTiger cache. Why it matters: if the working set (hot tables + indexes) fits in the buffer pool, most queries never touch disk — often the single biggest database performance factor. It uses its own eviction policy (PostgreSQL: clock-sweep; InnoDB: an LRU with a "young/old" midpoint insertion so one large table scan doesn't flush the hot pages). See <a href="../05-database/03-querying-and-performance/08-indxing.html">Indexing</a>.</p>
+ <h3 id="query-cache">Query / result cache</h3>
+ <p>Caching the result set of a query keyed by its SQL text. MySQL's built-in query cache was <strong>removed in MySQL 8.0</strong> because every write to a table invalidated all cached queries on that table, and the global lock around it hurt concurrency on multi-core servers — a clear example of a cache that cost more than it saved on write-heavy workloads. Today result caching is done in the application (usually Redis, keyed by query + parameters) or in a SQL-aware proxy such as ProxySQL, which can cache the results of queries matching configured rules for a TTL. Note that a connection proxy such as Amazon RDS Proxy pools connections but does not cache results.</p>
+ <h3 id="materialized-view">Materialized views and precomputed tables</h3>
+ <p>A materialized view stores the result of a query as a table and is refreshed on a schedule or incrementally (<code>REFRESH MATERIALIZED VIEW</code> in PostgreSQL). It is a cache that lives inside the database and can be indexed. Same trade-off as every cache: fast reads, results as stale as the last refresh. Denormalized read models in CQRS are the same idea at the architecture level — see <a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a>.</p>
+ <h3 id="orm-cache">ORM caches (first- and second-level)</h3>
+ <p>Hibernate's <strong>first-level cache</strong> is per session/transaction (the same entity loaded twice in one transaction is one object); its <strong>second-level cache</strong> is shared across sessions and backed by Ehcache, Infinispan, or Redis. Gotcha: any write that bypasses the ORM (raw SQL, another service) leaves the second-level cache stale.</p>
+ <h3 id="replica-as-cache">Read replicas (a cache-like layer)</h3>
+ <p>A read replica is not a cache — it is a full copy that is updated by replication, not by eviction and TTL — but it plays a similar role (offloading reads) and shares the same staleness problem: see <a href="../distributed-database/05-replication-lag.html">Replication Lag</a>. <strong>Replica vs. cache — the difference is</strong> that a replica holds <em>all</em> data and answers any query, while a cache holds a <em>subset</em> and answers only key lookups it has seen.</p>
+ 
+
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>A product page is identical for everyone except a "Hi, Priya" header. Which cache types can serve it? (CDN or reverse proxy with fragment caching / ESI for the shared part, and the personal part filled by the client or an edge function — or mark the whole page <code>private</code> and lose the shared cache.)</p>
+      </aside>
+
+      <!-- 05 IMPLEMENTATION -->
+      <h2 id="implementation" data-stage="Implementation">Implementation: Picking the Layer per Data Type</h2>
       <table>
-        <tr><th>Distinction</th><th>The difference is…</th><th>Example</th></tr>
-        <tr><td><strong>Private vs. shared</strong></td><td>whether one user/process owns the copy or many readers share it. A shared cache must never store one user's private data under a key another user can hit.</td><td>Browser cache (private) vs. CDN (shared). <code>Cache-Control: private</code> tells shared caches to stay out.</td></tr>
-        <tr><td><strong>Local vs. distributed</strong></td><td>whether the cache lives inside the process that reads it or across the network on separate nodes.</td><td>Caffeine / <code>functools.lru_cache</code> (local) vs. Redis Cluster (distributed).</td></tr>
-        <tr><td><strong>In-memory vs. on-disk</strong></td><td>whether entries live in RAM (fast, lost on restart, small) or on disk/SSD (slower, survives restart, large).</td><td>Memcached (RAM) vs. Nginx <code>proxy_cache</code> files, the browser disk cache.</td></tr>
-        <tr><td><strong>Read cache vs. write buffer</strong></td><td>whether the cache speeds up reads of existing data or absorbs writes and flushes them later. A write buffer holds data that is not yet in the source of truth, so losing it loses data.</td><td>CDN (read cache) vs. a disk controller's write-back cache or write-behind Redis (write buffer).</td></tr>
+        <tr><th>Data</th><th>Layer</th><th>Why</th></tr>
+        <tr><td>Fingerprinted JS/CSS/images</td><td>Browser + CDN, 1-year TTL</td><td>Never changes under the same URL; nothing to invalidate.</td></tr>
+        <tr><td>Public product page</td><td>CDN with short TTL + <code>stale-while-revalidate</code></td><td>Shared by everyone; seconds of staleness is fine.</td></tr>
+        <tr><td>User profile object</td><td>Redis (cache-aside, delete on write)</td><td>Shared across instances; must be invalidated on edit.</td></tr>
+        <tr><td>Feature flags, config</td><td>In-process with 30 s TTL (near cache)</td><td>Read on every request; network hop would dominate.</td></tr>
+        <tr><td>"User not found" lookups</td><td>Negative cache, 60 s TTL</td><td>Stops repeated misses reaching the DB.</td></tr>
+        <tr><td>Dashboard aggregates</td><td>Materialized view refreshed every 5 min</td><td>Expensive query; minutes of staleness acceptable.</td></tr>
+        <tr><td>Login sessions</td><td>Redis with replication, no eviction of sessions</td><td>Here the cache is the primary store.</td></tr>
       </table>
+      <pre><code>from functools import lru_cache
 
-      <h2 id="hardware-caches">1. Hardware caches</h2>
-      <p class="stage-note">Deep dive: <a href="01e-dns-os-hardware-caching.html#cpu-cache">01e. DNS, OS &amp; Hardware Caching</a>.</p>
-      <p>Hardware caches are memory built into the CPU and storage devices. You don't configure them in system design, but they explain <em>why</em> in-memory caches are fast and why data layout matters.</p>
-      <h3 id="cpu-cache">CPU caches (L1, L2, L3)</h3>
-      <p>What it is: small SRAM memories on the CPU die that hold recently used 64-byte <strong>cache lines</strong> from RAM. L1 (~32–64 KB per core, ~1 ns), L2 (~256 KB–2 MB per core, ~4 ns), L3 (tens of MB shared by all cores, ~10–40 ns); RAM is ~80–100 ns. Why it exists: without it the CPU would wait ~100 cycles on every memory access. Consequence for software: a sequential array scan is fast (spatial locality — the next element is already in the cache line), while pointer-chasing through a linked list misses constantly. This is also why multithreaded code suffers from <strong>false sharing</strong> — two cores writing different variables on the same cache line keep invalidating each other's copy.</p>
-      <h3 id="tlb">TLB (Translation Lookaside Buffer)</h3>
-      <p>A cache of virtual-to-physical page-address translations. Every memory access needs a translation; the TLB avoids walking the page tables each time. Huge pages (2 MB instead of 4 KB) are used by databases and Redis-like systems partly to reduce TLB misses — though Redis specifically recommends disabling <em>transparent</em> huge pages because they slow down its fork-based snapshots.</p>
-      <h3 id="disk-cache">Disk and controller caches</h3>
-      <p>SSDs and RAID controllers have their own DRAM cache. As a read cache it is harmless; as a <strong>write-back cache</strong> it acknowledges a write before it reaches durable media — which is why databases depend on battery- or capacitor-backed controllers or on <code>fsync</code> semantics to avoid losing acknowledged writes on power failure.</p>
-
-      <h2 id="os-caches">2. Operating-system caches</h2>
-      <p class="stage-note">Deep dive: <a href="01e-dns-os-hardware-caching.html#page-cache">01e. DNS, OS &amp; Hardware Caching</a>.</p>
-      <h3 id="page-cache">Page cache (file-system cache)</h3>
-      <p>What it is: the kernel keeps recently read file blocks in otherwise unused RAM, so the second read of a file comes from memory, not disk. Why it matters in system design: Kafka relies on it instead of its own cache (consumers reading recent messages hit the page cache); PostgreSQL deliberately relies on it as a second layer behind <code>shared_buffers</code> (which is why the common guidance is ~25% of RAM for <code>shared_buffers</code> and leave the rest to the OS). Gotcha: <code>free</code> shows this memory as "buff/cache" — it is not a leak; the kernel releases it when applications need memory.</p>
-      <h3 id="os-dns-cache">OS DNS resolver cache</h3>
-      <p>The OS (e.g. <code>systemd-resolved</code>, or the macOS/Windows DNS client) caches name → IP answers for the record's TTL, so a process doesn't repeat a DNS lookup on every connection. Language runtimes can add their own layer — the JVM caches successful lookups (<code>networkaddress.cache.ttl</code>), which historically caused services to keep connecting to an old IP after a failover.</p>
-
-      <h2 id="client-caches">3. Client-side caches</h2>
-      <p class="stage-note">Deep dive: <a href="01a-browser-caching.html">01a. Browser Caching</a>.</p>
-      <h3 id="browser-cache">Browser HTTP cache</h3>
-      <p>What it is: the browser stores HTTP responses (in a memory cache for the current tab session and a disk cache across sessions) and reuses them according to the response's <code>Cache-Control</code>, <code>ETag</code>, and <code>Last-Modified</code> headers. Why it exists: a hit costs zero network — the fastest request is the one never sent. How it works:</p>
-      <ol>
-        <li>The first response says <code>Cache-Control: max-age=31536000, immutable</code> for <code>app.3f9a1c.js</code> → the browser stores it.</li>
-        <li>For a year, every page that references that URL uses the stored copy without contacting the server (a <strong>fresh hit</strong>).</li>
-        <li>For a response with <code>Cache-Control: no-cache</code> and an <code>ETag</code>, the browser sends <code>If-None-Match</code> every time → the server answers <code>304 Not Modified</code> with no body if unchanged (a <strong>revalidation</strong>: a round trip, but no payload).</li>
-      </ol>
-      <p><strong><code>no-cache</code> vs. <code>no-store</code> — the difference is</strong> that <code>no-cache</code> may store but must revalidate before every use, while <code>no-store</code> must not store the response at all (use it for banking pages and anything with secrets). Gotcha: you cannot purge a browser cache remotely — so long-lived assets must use <strong>fingerprinted URLs</strong> (a content hash in the filename); a new deploy changes the URL instead of trying to invalidate the old one.</p>
-      <h3 id="service-worker-cache">Service Worker cache (Cache Storage API)</h3>
-      <p>A programmable cache: a Service Worker script intercepts the page's requests and decides whether to answer from <code>caches.open(...)</code>, the network, or both (cache-first, network-first, stale-while-revalidate). It powers offline-capable Progressive Web Apps. Unlike the HTTP cache it ignores <code>Cache-Control</code> — your code owns freshness, so a bug can pin users to an old version of the app.</p>
-      <h3 id="app-storage-cache">Application storage as a cache (localStorage, IndexedDB, mobile caches)</h3>
-      <p>Web apps cache API data in <code>localStorage</code> / IndexedDB; mobile apps cache in SQLite, on-disk image caches, or HTTP client caches (OkHttp, <code>URLCache</code>). Front-end data libraries (React Query, SWR, Apollo Client) keep an in-memory response cache with stale-while-revalidate semantics. Limit: this data is on the user's device — never cache secrets there, and assume it may be stale or cleared at any time.</p>
-
-      <h2 id="network-caches">4. Network and edge caches</h2>
-      <p class="stage-note">Deep dives: <a href="01e-dns-os-hardware-caching.html#dns-path">DNS caching</a>, <a href="01b-cdn-caching.html">01b. CDN Caching</a>, <a href="01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a>.</p>
-      <h3 id="dns-cache">DNS caching (recursive resolvers)</h3>
-      <p>What it is: recursive resolvers (your ISP's, 8.8.8.8, 1.1.1.1, Route 53 Resolver in a VPC) cache DNS answers for the record's TTL, and also cache "this name does not exist" answers (negative caching, bounded by the SOA record). Why it matters: DNS TTL decides how fast a DNS-based failover or migration takes effect. Lower the TTL (e.g. 3600 → 60 seconds) <em>before</em> a planned migration, because resolvers that cached the old answer keep it until the old TTL expires. Gotcha: some resolvers and clients ignore low TTLs, so never rely on DNS alone for instant failover.</p>
-      <h3 id="cdn-cache">CDN (edge) cache</h3>
-      <p>What it is: a shared HTTP cache operated in many Points of Presence (PoPs) worldwide — CloudFront, Cloudflare, Fastly, Akamai. It stores responses near users so a hit avoids the long trip to the origin. Layers inside a CDN: edge PoP → regional cache → optional <strong>origin shield</strong> (one designated PoP that all edges fetch through, so the origin sees one miss per object instead of one per PoP). Controlled by <code>Cache-Control</code> / <code>s-maxage</code> and the <strong>cache key</strong> (host + path + selected query strings/headers/cookies — every extra item in the cache key lowers the hit ratio). Full detail: <a href="00-caching-and-cdn-fundamentals.html#cdn">CDN: caching at the edge</a>.</p>
-      <h3 id="reverse-proxy-cache">Reverse-proxy cache</h3>
-      <p>What it is: a proxy in front of your application servers that stores whole HTTP responses — Varnish, Nginx <code>proxy_cache</code>, Apache Traffic Server. Why it exists: it serves repeated responses without running application code at all, and it can apply <strong>micro-caching</strong> (caching a dynamic page for 1–5 seconds) which collapses a burst of identical requests into one backend call. Nginx's <code>proxy_cache_lock on</code> additionally makes concurrent misses wait for the first one — built-in stampede protection. Difference from a CDN: same idea, but it lives in your datacenter next to the app, so it saves application work, not geographic distance.</p>
-      <h3 id="api-gateway-cache">API gateway cache</h3>
-      <p>API gateways (Amazon API Gateway stage caching, Kong's proxy-cache plugin, Apigee) cache responses per method + path + selected parameters for a TTL. Useful for read-heavy public APIs. Gotcha: the cache key must include every parameter that changes the response — especially the caller's identity or tenant, otherwise one user's response is served to another.</p>
-      <h3 id="forward-proxy-cache">Forward-proxy cache</h3>
-      <p>A proxy on the client side of the network (a corporate Squid proxy, historically ISP proxies) that caches for many users behind it. Less relevant today because HTTPS hides responses from it, but it is the reason <code>Cache-Control: private</code> exists.</p>
-
-      <h2 id="application-caches">5. Application caches (the in-memory caches you design)</h2>
-      <p class="stage-note">Deep dives: <a href="02-in-memory-caching-strategies.html">02. Strategies</a>, <a href="03-in-memory-eviction-policies.html">03. Eviction Policies</a>, <a href="04-in-memory-cache-problems.html">04. Cache Problems</a>.</p>
-      <p>This is the layer the rest of this section's deep-dive pages focus on: <a href="02-in-memory-caching-strategies.html">strategies</a>, <a href="03-in-memory-eviction-policies.html">eviction policies</a>, and <a href="04-in-memory-cache-problems.html">problems such as the thundering herd</a>.</p>
-      <h3 id="in-process-cache">In-process (local) cache</h3>
-      <p>What it is: a map inside the application's own memory, with size limits and TTLs — Caffeine or Guava (Java), <code>functools.lru_cache</code> / <code>cachetools</code> (Python), <code>lru-cache</code> (Node.js), <code>MemoryCache</code> (.NET). Why use it: reads cost nanoseconds to microseconds, no network, no serialization. Limits: memory is per-process and lost on restart; with N instances there are N copies that are invalidated independently, so instance A may serve a new value while instance B still serves the old one. Best for small, hot, rarely changing data: configuration, feature flags, country lists, compiled templates.</p>
-      <h3 id="distributed-cache">Distributed (remote) cache</h3>
-      <p>What it is: a separate cache service shared by every application instance over the network — Redis, Memcached, Valkey, Amazon ElastiCache / MemoryDB, Hazelcast. (See <a href="../aws/01-elasticache.html">Amazon ElastiCache</a> for the managed AWS version.) Why use it: one shared copy (all instances see the same value), capacity beyond one machine's memory via sharding, and the cache survives application deploys. Cost: a network round trip (~0.5–1 ms in the same zone) and serialization per read, plus a new piece of infrastructure that can fail. <strong>Distributed cache vs. in-process cache — the difference is</strong> one consistent shared copy with a network hop vs. many fast independent copies.</p>
-      <h3 id="near-cache">Near cache (two-level / L1 + L2)</h3>
-      <p>What it is: an in-process cache (L1) in front of a distributed cache (L2). A read checks L1 → then L2 → then the database. Why: it removes the network hop for the hottest keys and protects a single Redis shard from a hot key. The hard part is invalidating L1 on every instance: options are a short L1 TTL (seconds), pub/sub invalidation messages, or Redis 6+ <strong>client-side caching</strong> (the <code>CLIENT TRACKING</code> command — Redis remembers which keys each client read and pushes an invalidation message when they change). Hazelcast and Apache Ignite have a built-in near cache.</p>
-      <h3 id="session-cache">Session cache</h3>
-      <p>Storing login sessions in Redis/Memcached so any application instance can serve any user (stateless app servers). Note the change in role: here the cache is effectively the <em>primary</em> store for sessions — evicting a session logs the user out — so it needs a no-eviction or volatile-only eviction policy, replication, and possibly persistence. See <a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a>.</p>
-      <h3 id="object-page-fragment">Object, full-page, and fragment caches</h3>
+@lru_cache(maxsize=1024)
+def country_name(code: str) -&gt; str:
+    return db.fetch_country(code)</code></pre>
       <ul>
-        <li><strong>Object cache</strong> — caches a domain object (<code>user:42</code> → serialized JSON). The most common application-cache use.</li>
-        <li><strong>Full-page cache</strong> — caches the whole rendered HTML page (WordPress page caches, Varnish). Only works when the page is identical for everyone who hits that key.</li>
-        <li><strong>Fragment cache</strong> — caches parts of a page (a product-description block, a sidebar) and assembles them per request (Rails fragment caching, Edge Side Includes at the CDN). Lets a mostly-shared page have a small personalised part.</li>
+        <li><code>@lru_cache(maxsize=1024)</code> — an in-process LRU cache keyed by the arguments; perfect for small, static reference data.</li>
+        <li>No TTL: entries live until evicted or the process restarts — fine for country names, wrong for anything that changes (use <code>cachetools.TTLCache</code> there).</li>
       </ul>
-      <h3 id="memoization">Memoization and computation caches</h3>
-      <p>Caching the <em>result of a function</em> keyed by its inputs — a pure function's output never goes stale, so memoization has no invalidation problem at all. Extended to expensive computations: rendered thumbnails, ML model inference results, aggregated dashboards, LLM prompt caches. Build systems use the same idea (Bazel remote cache, Docker layer cache, CI dependency caches): the key is a hash of the inputs, so correctness is automatic.</p>
-      <h3 id="negative-cache">Negative cache</h3>
-      <p>Caching the fact that something does <strong>not</strong> exist ("user 999 not found") for a short TTL. It prevents repeated lookups for missing keys from reaching the database — the main defence against <a href="04-in-memory-cache-problems.html#penetration">cache penetration</a>. DNS does the same with NXDOMAIN answers.</p>
 
-      <h2 id="data-layer-caches">6. Data-layer caches (inside the database)</h2>
-      <p class="stage-note">Deep dive: <a href="01d-database-caching.html">01d. Database Caching</a>.</p>
-      <h3 id="buffer-pool">Database buffer pool / buffer cache</h3>
-      <p>What it is: the database's own in-memory cache of data and index pages — PostgreSQL <code>shared_buffers</code>, MySQL InnoDB buffer pool (<code>innodb_buffer_pool_size</code>, often 50–75% of RAM on a dedicated server), Oracle buffer cache, MongoDB WiredTiger cache. Why it matters: if the working set (hot tables + indexes) fits in the buffer pool, most queries never touch disk — often the single biggest database performance factor. It uses its own eviction policy (PostgreSQL: clock-sweep; InnoDB: an LRU with a "young/old" midpoint insertion so one large table scan doesn't flush the hot pages). See <a href="../05-database/03-querying-and-performance/08-indxing.html">Indexing</a>.</p>
-      <h3 id="query-cache">Query / result cache</h3>
-      <p>Caching the result set of a query keyed by its SQL text. MySQL's built-in query cache was <strong>removed in MySQL 8.0</strong> because every write to a table invalidated all cached queries on that table, and the global lock around it hurt concurrency on multi-core servers — a clear example of a cache that cost more than it saved on write-heavy workloads. Today result caching is done in the application (usually Redis, keyed by query + parameters) or in a SQL-aware proxy such as ProxySQL, which can cache the results of queries matching configured rules for a TTL. Note that a connection proxy such as Amazon RDS Proxy pools connections but does not cache results.</p>
-      <h3 id="materialized-view">Materialized views and precomputed tables</h3>
-      <p>A materialized view stores the result of a query as a table and is refreshed on a schedule or incrementally (<code>REFRESH MATERIALIZED VIEW</code> in PostgreSQL). It is a cache that lives inside the database and can be indexed. Same trade-off as every cache: fast reads, results as stale as the last refresh. Denormalized read models in CQRS are the same idea at the architecture level — see <a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a>.</p>
-      <h3 id="orm-cache">ORM caches (first- and second-level)</h3>
-      <p>Hibernate's <strong>first-level cache</strong> is per session/transaction (the same entity loaded twice in one transaction is one object); its <strong>second-level cache</strong> is shared across sessions and backed by Ehcache, Infinispan, or Redis. Gotcha: any write that bypasses the ORM (raw SQL, another service) leaves the second-level cache stale.</p>
-      <h3 id="replica-as-cache">Read replicas (a cache-like layer)</h3>
-      <p>A read replica is not a cache — it is a full copy that is updated by replication, not by eviction and TTL — but it plays a similar role (offloading reads) and shares the same staleness problem: see <a href="../distributed-database/05-replication-lag.html">Replication Lag</a>. <strong>Replica vs. cache — the difference is</strong> that a replica holds <em>all</em> data and answers any query, while a cache holds a <em>subset</em> and answers only key lookups it has seen.</p>
+      <!-- 06 PRODUCTION -->
+      <h2 id="production" data-stage="Production">Production Usage</h2>
+      <p>A typical high-traffic web stack uses four or five of these at once: browser + CDN for static and public content, a reverse proxy for micro-caching bursts, Redis for shared objects and sessions, a small in-process cache for config, and a well-sized database buffer pool underneath. At low scale, the browser cache, CDN and buffer pool alone often suffice — add Redis when database read load or latency actually demands it.</p>
+      <h3 id="observability">Signals to watch per layer</h3>
+      <ul>
+        <li><strong>CDN:</strong> hit ratio, origin request rate, bytes served from edge.</li>
+        <li><strong>Reverse proxy:</strong> <code>$upstream_cache_status</code> (HIT/MISS/EXPIRED/STALE) in access logs.</li>
+        <li><strong>Redis:</strong> hit ratio, evictions, memory, p99 latency.</li>
+        <li><strong>Database:</strong> buffer cache hit ratio (PostgreSQL <code>pg_stat_database.blks_hit</code> vs. <code>blks_read</code>).</li>
+        <li><strong>Host:</strong> page cache size (<code>free -h</code> "buff/cache") — large is good, not a leak.</li>
+      </ul>
 
-      <h2 id="summary-table">Summary: every type side by side</h2>
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>When data changes, list every layer that may hold a copy and how each one learns about it. A "fixed in the database" bug that users still see is almost always a forgotten layer — usually the CDN, the browser, or an in-process cache on some instances.</p>
+      </aside>
+
+      <!-- 07 SECURITY -->
+      <h2 id="security" data-stage="Security">Security</h2>
+      <ul>
+        <li><strong>Shared caches must never store private data under a shared key</strong> — use <code>Cache-Control: private</code>/<code>no-store</code> and put identity/tenant in gateway cache keys.</li>
+        <li><strong>Client-side caches live on the user's device</strong> — never store secrets in localStorage, IndexedDB or app caches.</li>
+        <li><strong>Session caches hold credentials-equivalent data</strong> — protect Redis with auth, TLS and network isolation.</li>
+      </ul>
+
+      <!-- 09 TROUBLESHOOTING -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Finding Which Layer Served Stale Data</h2>
+      <ol class="sd-steps">
+        <li><strong>Bypass the browser:</strong> hard reload or <code>curl -I</code> — if fresh, it was the browser cache.</li>
+        <li><strong>Read the CDN headers:</strong> <code>Age</code> and the hit/miss header; request the origin directly to compare.</li>
+        <li><strong>Check the proxy:</strong> <code>$upstream_cache_status</code> in Nginx logs.</li>
+        <li><strong>Check the app caches:</strong> <code>redis-cli GET</code> the key; compare instances for in-process caches (one instance stale = local cache).</li>
+        <li><strong>Check the database layer:</strong> materialized view last refresh; replica lag.</li>
+      </ol>
       <table>
-        <tr><th>Type</th><th>Examples</th><th>Hit latency</th><th>Shared by</th><th>Who controls freshness</th></tr>
-        <tr><td>CPU L1/L2/L3</td><td>on-die SRAM</td><td>~1–40 ns</td><td>core / socket</td><td>hardware coherence protocol</td></tr>
-        <tr><td>OS page cache</td><td>Linux page cache</td><td>~µs</td><td>all processes on the host</td><td>kernel</td></tr>
-        <tr><td>Browser HTTP cache</td><td>Chrome memory/disk cache</td><td>~0 ms (no request)</td><td>one user</td><td><code>Cache-Control</code>, <code>ETag</code></td></tr>
-        <tr><td>Service Worker / app storage</td><td>Cache API, IndexedDB, SWR</td><td>~ms</td><td>one user</td><td>your client code</td></tr>
-        <tr><td>DNS cache</td><td>resolvers, OS, JVM</td><td>~0–20 ms</td><td>everyone using that resolver</td><td>record TTL</td></tr>
-        <tr><td>CDN edge</td><td>CloudFront, Cloudflare, Fastly</td><td>~10–50 ms</td><td>users near a PoP</td><td><code>s-maxage</code>, purge API</td></tr>
-        <tr><td>Reverse proxy</td><td>Varnish, Nginx</td><td>~1 ms</td><td>all users of that server</td><td>headers + proxy config</td></tr>
-        <tr><td>API gateway</td><td>API Gateway, Kong</td><td>~1–5 ms</td><td>all callers (per key)</td><td>gateway TTL</td></tr>
-        <tr><td>In-process</td><td>Caffeine, <code>lru_cache</code></td><td>~ns–µs</td><td>one process</td><td>your code (TTL, size)</td></tr>
-        <tr><td>Distributed</td><td>Redis, Memcached</td><td>~0.5–1 ms</td><td>all app instances</td><td>your code (TTL, invalidation)</td></tr>
-        <tr><td>Near cache (L1+L2)</td><td>Caffeine + Redis, Hazelcast</td><td>µs (L1) / ms (L2)</td><td>process + cluster</td><td>TTL + invalidation messages</td></tr>
-        <tr><td>DB buffer pool</td><td><code>shared_buffers</code>, InnoDB</td><td>~µs</td><td>that DB instance</td><td>database (always consistent)</td></tr>
-        <tr><td>Materialized view</td><td>PostgreSQL MV</td><td>a normal query</td><td>all DB clients</td><td>refresh schedule</td></tr>
+        <tr><th>Symptom</th><th>Likely layer</th><th>Fix</th></tr>
+        <tr><td>Only some requests show the old value</td><td>In-process cache on some instances</td><td>Short L1 TTL or pub/sub invalidation.</td></tr>
+        <tr><td>Old value only for users in one region</td><td>One CDN PoP</td><td>Purge; check cache key.</td></tr>
+        <tr><td>Service still connects to an old IP after failover</td><td>DNS / JVM DNS cache</td><td>Lower TTLs; set <code>networkaddress.cache.ttl</code>.</td></tr>
+        <tr><td>Report shows yesterday's numbers</td><td>Materialized view</td><td>Refresh; adjust schedule.</td></tr>
       </table>
-      <div class="sd-study-note warning"><span class="sd-note-title">This does NOT mean "use every layer"</span><p>Each added layer is another copy to invalidate and another place a bug can serve stale or wrong data. Add a layer only when you can name the cost it removes (network distance, application CPU, database load) and the staleness it is allowed to introduce.</p></div>
 
-      <p>Deep dive per type: <a href="01a-browser-caching.html">01a. Browser</a>, <a href="01b-cdn-caching.html">01b. CDN</a>, <a href="01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway</a>, <a href="01d-database-caching.html">01d. Database</a>, <a href="01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware</a>.</p>
-      <p>Next: <a href="02-in-memory-caching-strategies.html">02. In-Memory Caching Strategies</a> — how the application cache is filled and kept in sync. Back to the <a href="caching-roadmap.html">Caching Roadmap</a>.</p>
+      <!-- 10 BEST PRACTICES -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul>
+        <li><strong>Pick the layer per data type</strong>, by the cost it removes and the staleness it can tolerate.</li>
+        <li><strong>Fingerprint static assets</strong> so browser and CDN caches never need invalidation.</li>
+        <li><strong>Size the database buffer pool</strong> to hold the working set before adding external caches.</li>
+        <li><strong>Document every layer that caches each entity</strong> and how it's invalidated.</li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul>
+        <li><strong>Adding layers without a named cost to remove.</strong></li>
+        <li><strong>In-process caches for data that must be consistent across instances</strong>, unless you add invalidation.</li>
+        <li><strong>Evicting sessions</strong> — a session cache isn't a cache in the usual sense.</li>
+      </ul>
 
-      <!-- ═══════════  END OF CONTENT  ═══════════ -->
+      <!-- 11 INTERVIEW PREPARATION -->
+<h2 id="interview-answer" data-stage="Interview Preparation">Interview Answer — What Types of Cache Are There?</h2>
+ <p>A cache is any smaller, faster store that keeps a copy of data whose source of truth is slower or farther away. "Types of cache" is the list of <strong>places</strong> such a copy can live along a request's path: in the CPU, in the operating system, in the user's browser or app, in the network (DNS, CDN, reverse proxy, API gateway), in the application (in-process memory or a shared store such as Redis), and inside the database itself.</p>
+ <p>The types exist because each layer removes a different cost. A browser cache removes the network trip entirely; a CDN removes the long-distance trip to the origin; a reverse proxy removes the application's work; Redis removes the database query; the database buffer pool removes the disk read; the CPU cache removes the RAM read. The cause → effect chain is: the closer to the user a copy lives → the more work it saves per hit → but the more copies exist and the harder it is to invalidate them all when the data changes.</p>
+ <p>Two axes classify every type: <strong>who shares the copy</strong> (private to one user or process vs. shared by everyone) and <strong>where it runs</strong> (local to the process vs. distributed over the network). A real request usually misses through several types in order — browser → CDN → reverse proxy → application cache → database buffer pool → disk — before it reaches the source of truth. The <a href="#summary-table">summary table</a> at the end lists every type side by side.</p>
+ <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+ <p>"Caches exist at every layer: the browser and mobile app cache responses per user; DNS and the CDN cache at the network edge; a reverse proxy or API gateway caches whole responses in front of the app; the application caches objects in its own memory or in a shared store like Redis; and the database keeps hot pages in its buffer pool. The closer a cache is to the user, the more it saves on a hit, but the harder it is to invalidate — so I pick the layer per data type: static assets at the CDN, shared hot objects in Redis, and tiny rarely-changing data in-process."</p>
+ </div>
+ <h3>One important interview follow-up</h3>
+ <p><strong>Q: If I already have Redis, is an in-process cache redundant?</strong></p>
+ <p><strong>A:</strong> Not necessarily — they solve different costs. Redis still costs a network round trip (~0.5–1 ms) and serialization on every read; an in-process cache costs microseconds. For a very hot key (a feature-flag set, a config blob, a celebrity profile) that network trip dominates and can even saturate one Redis shard, so a small in-process cache with a short TTL in front of Redis — a <a href="#near-cache">near cache</a> — removes it. The catch is that N application instances now hold N independent copies that go stale independently, so it only suits data that tolerates a few seconds of staleness or has a push-based invalidation channel.</p>
+ 
+
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>What's the difference between a private and a shared cache?</summary>
+          <p>A private cache (browser) serves one user; a shared cache (CDN, proxy) serves many, so it must never store one user's private response under a key others can hit.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>Why doesn't "buff/cache" memory in <code>free</code> mean a leak?</summary>
+          <p>It's the OS page cache using idle RAM for file blocks; the kernel gives it back when applications need memory.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What does a CDN origin shield do?</summary>
+          <p>All edge PoPs fetch through one designated PoP, so the origin sees one miss per object instead of one per PoP.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Distributed cache vs. in-process cache?</summary>
+          <p>One consistent shared copy with a network hop vs. many microsecond-fast copies that go stale independently. Combine them as a near cache for hot keys.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>What is a negative cache and what problem does it solve?</summary>
+          <p>Caching "not found" for a short TTL, so repeated lookups for missing keys (often attacks — cache penetration) don't reach the database.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Is a read replica a cache?</summary>
+          <p>Not exactly: it holds all data and answers any query, updated by replication; a cache holds a subset for key lookups. Both serve possibly stale reads.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Why did MySQL remove its query cache?</summary>
+          <p>Any write to a table invalidated all its cached queries, and a global lock serialized access — on write-heavy, multi-core workloads it cost more than it saved.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>How do you invalidate the L1 of a near cache on every instance?</summary>
+          <p>Short L1 TTLs, pub/sub invalidation messages, or Redis client-side caching (<code>CLIENT TRACKING</code>) where Redis pushes invalidations for keys a client read.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Why does a session store need a different eviction policy from a cache?</summary>
+          <p>The sessions are the primary copy; evicting one logs a user out. Use <code>noeviction</code> or volatile-only eviction, replication and possibly persistence.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>After a database failover, one Java service keeps failing for an hour. Others recovered. Why?</summary>
+          <p>The JVM cached the old IP (<code>networkaddress.cache.ttl</code>) or DNS TTLs were long; the service keeps connecting to the dead primary. Lower the JVM DNS TTL and record TTLs.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>A fixed price shows correctly on some page loads and wrongly on others. Where do you look?</summary>
+          <p>Per-instance in-process caches — some instances refreshed, others haven't. Add invalidation or shorten the L1 TTL.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Redis CPU is maxed on one node by a single celebrity profile key. Fix?</summary>
+          <p>Hot key: add a near cache (in-process L1 with a short TTL) or replicate that key across nodes with random suffixes.</p></details>
+      </section>
+
+      <!-- 12 SUMMARY -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>Every cache type removes one hop: device, network distance, app work, DB query, disk read, RAM read.</li>
+        <li>Classify by private/shared, local/distributed, memory/disk, read cache/write buffer.</li>
+        <li>Closer to the user = bigger saving per hit, harder to invalidate.</li>
+        <li>Near cache = in-process L1 + Redis L2 for hot keys; invalidation is the hard part.</li>
+        <li>Session stores and write buffers are not ordinary caches — losing them loses data.</li>
+        <li>When data changes, enumerate every layer that may hold it.</li>
+      </ol>
+
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <div class="sd-next">
+        <a href="01a-browser-caching.html"><strong>Browser Caching</strong><span>The first layer in depth.</span></a>
+        <a href="01b-cdn-caching.html"><strong>CDN Caching</strong><span>PoPs, shields, cache keys, purge.</span></a>
+        <a href="02-in-memory-caching-strategies.html"><strong>In-Memory: Caching Strategies</strong><span>How the application cache is filled and kept in sync.</span></a>
+      </div>
 
     </main>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

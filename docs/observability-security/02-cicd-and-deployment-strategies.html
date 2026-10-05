@@ -13,98 +13,313 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CI/CD &amp; Deployment Strategies · Infra Owl</title>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=10">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
 
 <div id="site-header-root"></div>
-
 <script src="../assets/sitemap.js"></script>
 <script src="../assets/pages.js"></script>
-<script src="../assets/site-header.js?v=8" data-root="../"></script>
+<script src="../assets/site-header.js?v=9" data-root="../"></script>
 
 <div class="sd-study-layout">
-
   <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a class="active" href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
 
   <div class="sd-study-content">
-    <main class="sd-study-main">
-
+    <main class="sd-study-main sd-lesson" data-reminders="Explain CI vs. continuous delivery vs. continuous deployment in one sentence each|Walk an expand-and-contract column rename across three releases|Choose a deploy strategy for a risky payment change and justify it">
       <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Observability, Security &amp; Ops / CI/CD &amp; Deployment Strategies</p>
       <h1 data-page-title>CI/CD &amp; Deployment Strategies</h1>
       <p class="sd-study-prompt" data-page-subtitle>CI vs CD vs continuous deployment, a typical pipeline, blue-green vs canary vs rolling deploys, the testing pyramid, feature flags, and rollback strategy.</p>
 
-      <h2 id="interview-answer">Interview Answer — What Is CI/CD?</h2>
-      <p>CI/CD is an automated pipeline that takes every code change from commit to a production-ready (or production-deployed) release. <strong>Continuous Integration (CI)</strong> builds and tests every change as soon as it is pushed. <strong>Continuous Delivery (CD)</strong> additionally packages every passing change into a deployable artifact, so the code is always releasable and a human decides when to ship. <strong>Continuous Deployment</strong> removes that manual gate, so every change that passes all checks goes to production automatically.</p>
-      <p>It exists because manual, infrequent releases are risky: large batches of changes are hard to test and hard to debug when they break, and hand-run deploy steps are easy to get wrong. With a pipeline, the cause → effect chain is: a developer pushes a change → the pipeline builds one immutable artifact (typically a container image) → tests and security scans run and stop the pipeline on the first failure → the same artifact is deployed to staging, then production → automated checks verify the rollout.</p>
-      <p>How the new version replaces the old one is the <a href="#deployment-strategies">deployment strategy</a>: <strong>rolling</strong> (replace instances in batches), <strong>blue-green</strong> (run the full new version beside the old and switch traffic at once), or <strong>canary</strong> (send a small share of real traffic to the new version and increase it while metrics stay healthy). <strong>Feature flags</strong> add a second layer by separating <em>deploying</em> code from <em>releasing</em> a feature.</p>
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
+        <ul>
+          <li>Distinguish CI, continuous delivery and continuous deployment precisely</li>
+          <li>Describe the stages of a typical pipeline and why each exists</li>
+          <li>Choose between recreate, rolling, blue-green and canary</li>
+          <li>Justify the shape of the testing pyramid</li>
+          <li>Use feature flags to separate deploy from release</li>
+          <li>Plan a rollback that survives database migrations</li>
+        </ul>
+      </section>
 
-      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
-        <p>"CI means every change is automatically built and tested on push. Continuous delivery means every passing change is packaged into an artifact that's always ready to release, and continuous deployment goes further and ships it to production automatically. The pipeline builds one immutable artifact, tests and scans it, deploys it with a strategy like rolling, blue-green, or canary, and verifies it with monitoring. Feature flags let me deploy code dark and turn features on separately, and I plan the rollback before I deploy."</p>
-      </div>
+      <!-- 01 OVERVIEW -->
+      <h2 id="overview" data-stage="Overview">Why CI/CD Exists</h2>
+      <p>CI/CD is an automated pipeline that takes every code change from commit to a production-ready (or production-deployed) release. It exists because manual, infrequent releases are risky: large batches of changes are hard to test and hard to debug when they break, and hand-run deploy steps are easy to get wrong. Small, frequent, automated releases make each change easy to verify and easy to undo.</p>
 
-      <h3>One important interview follow-up</h3>
-      <p><strong>Q: With blue-green deployment, can I always roll back instantly by switching traffic back to blue?</strong></p>
-      <p><strong>A:</strong> Only for the application code. Switching the router back is instant, but if the release ran a database migration — dropped a column, renamed a field, changed a format — and green has already written real data in the new shape, the old blue version may no longer work against that database. That is why schema changes should be backward-compatible and additive (the <strong>expand-and-contract</strong> pattern: add the new column, deploy code that handles both, remove the old column in a later release), so both versions can run against the same schema. See <a href="#rollback-strategy">Rollback strategy</a> below.</p>
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>Build the artifact <strong>once</strong>. The exact image that passed tests in staging is the one promoted to production — rebuilding per environment means production runs something that was never tested.</p>
+      </aside>
 
-      <h2>CI, CD, and continuous deployment — three different promises</h2>
+      <!-- 02 CORE CONCEPTS -->
+      <h2 id="ci-cd-cd" data-stage="Core Concepts">CI, CD, and Continuous Deployment — Three Different Promises</h2>
       <ul>
-      <li><strong>Continuous Integration (CI)</strong> — every code change is automatically built and tested as soon as it's pushed, so integration problems (two people's changes conflicting, a break nobody noticed) surface in minutes, not at the end of a long-lived branch.</li>
-      <li><strong>Continuous Delivery (CD)</strong> — every change that passes CI is automatically packaged into a deployable artifact and is <em>always</em> in a releasable state — but a human still decides when to actually ship it.</li>
-      <li><strong>Continuous Deployment</strong> — the same pipeline, minus the manual gate: every change that passes all checks deploys to production automatically. The distinction between this and continuous delivery is entirely about whether a human clicks "deploy," not about the pipeline itself.</li>
+        <li><strong>Continuous Integration (CI)</strong> — every code change is automatically built and tested as soon as it's pushed, so integration problems (two people's changes conflicting, a break nobody noticed) surface in minutes, not at the end of a long-lived branch.</li>
+        <li><strong>Continuous Delivery (CD)</strong> — every change that passes CI is automatically packaged into a deployable artifact and is <em>always</em> in a releasable state — but a human still decides when to actually ship it.</li>
+        <li><strong>Continuous Deployment</strong> — the same pipeline, minus the manual gate: every change that passes all checks deploys to production automatically. The distinction between this and continuous delivery is entirely about whether a human clicks "deploy," not about the pipeline itself.</li>
       </ul>
+      <table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><strong>Artifact</strong></td><td>The versioned, immutable output of the build (usually a container image tagged with the commit SHA).</td></tr>
+        <tr><td><strong>Environment</strong></td><td>A place the artifact runs: dev, staging, production.</td></tr>
+        <tr><td><strong>Deploy vs. release</strong></td><td>Deploy = new code is running; release = users get the new behaviour. Feature flags separate them.</td></tr>
+        <tr><td><strong>Blast radius</strong></td><td>How many users a bad change can affect before it is stopped.</td></tr>
+      </table>
 
-      <h2>A typical pipeline</h2>
-      <ol>
-      <li><strong>Build</strong> — compile/bundle the code, produce a versioned, immutable artifact (a container image is the common case today).</li>
-      <li><strong>Test</strong> — run the automated test suite (see the testing pyramid below) against the build; fail fast and stop the pipeline on the first failure rather than deploying anyway.</li>
-      <li><strong>Security/quality gates</strong> — dependency vulnerability scanning, static analysis, license checks — automated versions of the checks in <a href="01-application-security-fundamentals.html">Application Security Fundamentals</a>'s "vulnerable/outdated components" row.</li>
-      <li><strong>Deploy</strong> — push the artifact to an environment using one of the strategies below, typically staging first, then production.</li>
-      <li><strong>Verify</strong> — automated smoke tests and/or a monitored rollout window (see <a href="00-observability-fundamentals.html">Observability Fundamentals</a>) before calling the deploy complete.</li>
+      <!-- 03 ARCHITECTURE -->
+      <h2 id="pipeline" data-stage="Architecture">A Typical Pipeline</h2>
+      <div class="mermaid sd-diagram">flowchart LR
+    C["git push"] --> B["Build<br/>immutable image:sha"]
+    B --> T["Test<br/>unit → integration"]
+    T --> Q["Security / quality gates"]
+    Q --> S["Deploy to staging<br/>+ smoke / e2e"]
+    S --> G{"Manual approval?<br/>(delivery: yes,<br/>deployment: no)"}
+    G --> P["Deploy to prod<br/>rolling · blue-green · canary"]
+    P --> V["Verify: SLO metrics<br/>auto-rollback on breach"]
+</div>
+      <p class="sd-diagram-caption">One artifact flows left to right; any failed stage stops it.</p>
+      <ol class="sd-steps">
+        <li><strong>Build</strong> — compile/bundle the code, produce a versioned, immutable artifact (a container image is the common case today).</li>
+        <li><strong>Test</strong> — run the automated test suite (see the testing pyramid below) against the build; fail fast and stop the pipeline on the first failure rather than deploying anyway.</li>
+        <li><strong>Security/quality gates</strong> — dependency vulnerability scanning, static analysis, license checks — automated versions of the checks in <a href="01-application-security-fundamentals.html">Application Security Fundamentals</a>'s "vulnerable/outdated components" row.</li>
+        <li><strong>Deploy</strong> — push the artifact to an environment using one of the strategies below, typically staging first, then production.</li>
+        <li><strong>Verify</strong> — automated smoke tests and/or a monitored rollout window (see <a href="00-observability-fundamentals.html">Observability Fundamentals</a>) before calling the deploy complete.</li>
       </ol>
 
-      <h2 id="deployment-strategies">Deployment strategies</h2>
+      <!-- 04 HOW IT WORKS -->
+      <h2 id="deployment-strategies" data-stage="How It Works">Deployment Strategies</h2>
       <table>
-      <tr><th>Strategy</th><th>How it works</th><th>Rollback speed</th><th>Cost / complexity</th></tr>
-      <tr><td>Recreate</td><td>Stop the old version entirely, then start the new one</td><td>Slow — redeploy the old version from scratch</td><td>Simplest, but guarantees downtime during the swap</td></tr>
-      <tr><td>Rolling</td><td>Replace instances a few at a time, waiting for each batch to become healthy before moving to the next</td><td>Moderate — roll forward with the old version, same gradual process</td><td>No extra infrastructure needed; both versions briefly serve traffic side by side, so both must be compatible with the current data/API contract</td></tr>
-      <tr><td>Blue-green</td><td>Deploy the new version ("green") fully, alongside the still-running old version ("blue"); flip the load balancer/router to green all at once once it's verified</td><td>Fast — flip the router back to blue</td><td>Needs double the running capacity during the switch, but the cutover itself is instant and the rollback is just as instant</td></tr>
-      <tr><td>Canary</td><td>Route a small percentage of real traffic to the new version, watch its error rate/latency, then progressively increase the percentage if it looks healthy</td><td>Fast — route the canary's traffic slice back to the old version</td><td>Most operationally involved (needs traffic-splitting and close monitoring), but limits the blast radius of a bad deploy to a small slice of real users instead of all of them</td></tr>
+        <tr><th>Strategy</th><th>How it works</th><th>Rollback speed</th><th>Cost / complexity</th></tr>
+        <tr><td>Recreate</td><td>Stop the old version entirely, then start the new one</td><td>Slow — redeploy the old version from scratch</td><td>Simplest, but guarantees downtime during the swap</td></tr>
+        <tr><td>Rolling</td><td>Replace instances a few at a time, waiting for each batch to become healthy before moving to the next</td><td>Moderate — roll forward with the old version, same gradual process</td><td>No extra infrastructure needed; both versions briefly serve traffic side by side, so both must be compatible with the current data/API contract</td></tr>
+        <tr><td>Blue-green</td><td>Deploy the new version ("green") fully, alongside the still-running old version ("blue"); flip the load balancer/router to green all at once once it's verified</td><td>Fast — flip the router back to blue</td><td>Needs double the running capacity during the switch, but the cutover itself is instant and the rollback is just as instant</td></tr>
+        <tr><td>Canary</td><td>Route a small percentage of real traffic to the new version, watch its error rate/latency, then progressively increase the percentage if it looks healthy</td><td>Fast — route the canary's traffic slice back to the old version</td><td>Most operationally involved (needs traffic-splitting and close monitoring), but limits the blast radius of a bad deploy to a small slice of real users instead of all of them</td></tr>
       </table>
       <div class="sd-study-note tip"><span class="sd-note-title">These aren't mutually exclusive</span><p>A canary deploy is commonly done <em>as</em> a rolling or blue-green deploy with an extra "watch a small slice first" gate in front of it — they answer different questions (how do old/new versions coexist during rollout vs. how much real traffic sees the new version before it's trusted) and often combine.</p></div>
 
-      <h2>The testing pyramid</h2>
+      <h3 id="canary-steps">A canary rollout, step by step</h3>
+      <ol class="sd-steps">
+        <li>Deploy the new version next to the old; route 5% of traffic to it.</li>
+        <li>Compare the canary's error rate and p99 latency against the old version over a fixed window.</li>
+        <li>Healthy → 25% → 50% → 100%, re-checking at each step.</li>
+        <li>Unhealthy at any step → route the slice back to the old version; only 5–25% of users were exposed, briefly.</li>
+      </ol>
+
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>During a rolling deploy, v1 and v2 serve traffic at the same time. What breaks if v2 starts writing a new JSON field that v1's code rejects? (v1 instances fail on records v2 wrote — so every change must be compatible with the previous version in both directions.)</p>
+      </aside>
+
+      <h2 id="testing-pyramid" data-stage="How It Works">The Testing Pyramid</h2>
       <ul>
-      <li><strong>Unit tests</strong> — the base of the pyramid: fast, isolated, test one function/class in isolation from the network and other services. Should be the large majority of the suite because they're cheap to run and pinpoint failures precisely.</li>
-      <li><strong>Integration tests</strong> — verify that a service correctly talks to its real (or realistically faked) dependencies — a database, a queue. Fewer than unit tests; slower, but catch the class of bug unit tests structurally can't (a wrong SQL query that's syntactically valid, a wire-format mismatch).</li>
-      <li><strong>End-to-end tests</strong> — drive the whole system through a real user-facing flow. The fewest of the three — slow, often flaky, expensive to maintain — reserved for the handful of flows that matter most (checkout, login), not exhaustive coverage.</li>
-      <li><strong>Contract testing</strong> — for microservices specifically: instead of a slow, brittle e2e test spanning every service, each consumer and provider of an API independently verify against a shared contract (e.g. Pact) that their expectations still match, without either side needing the other actually running.</li>
+        <li><strong>Unit tests</strong> — the base of the pyramid: fast, isolated, test one function/class in isolation from the network and other services. Should be the large majority of the suite because they're cheap to run and pinpoint failures precisely.</li>
+        <li><strong>Integration tests</strong> — verify that a service correctly talks to its real (or realistically faked) dependencies — a database, a queue. Fewer than unit tests; slower, but catch the class of bug unit tests structurally can't (a wrong SQL query that's syntactically valid, a wire-format mismatch).</li>
+        <li><strong>End-to-end tests</strong> — drive the whole system through a real user-facing flow. The fewest of the three — slow, often flaky, expensive to maintain — reserved for the handful of flows that matter most (checkout, login), not exhaustive coverage.</li>
+        <li><strong>Contract testing</strong> — for microservices specifically: instead of a slow, brittle e2e test spanning every service, each consumer and provider of an API independently verify against a shared contract (e.g. Pact) that their expectations still match, without either side needing the other actually running.</li>
       </ul>
 
-      <h2>Feature flags</h2>
+      <h2 id="feature-flags" data-stage="How It Works">Feature Flags</h2>
       <p>Decouple <em>deploying</em> code from <em>releasing</em> a feature: ship the new code path behind a flag
-      that's off by default, deploy it safely (it has zero behavioral effect while off), then flip the flag on —
-      for everyone at once, for a percentage (a form of canarying at the feature level rather than the
-      infrastructure level), or for specific users. This also makes "rollback" instant and cheap for a bad
-      feature specifically: flip the flag off, no redeploy needed at all.</p>
+ that's off by default, deploy it safely (it has zero behavioral effect while off), then flip the flag on —
+ for everyone at once, for a percentage (a form of canarying at the feature level rather than the
+ infrastructure level), or for specific users. This also makes "rollback" instant and cheap for a bad
+ feature specifically: flip the flag off, no redeploy needed at all.</p>
 
-      <h2 id="rollback-strategy">Rollback strategy</h2>
+      <h2 id="rollback-strategy" data-stage="How It Works">Rollback Strategy</h2>
       <ul>
-      <li>Decide the rollback mechanism <em>before</em> deploying, not while an incident is already happening — for infrastructure-level issues that's redeploying the previous artifact (fast with blue-green, slower with recreate); for a bad feature specifically, a feature flag flip is faster than either.</li>
-      <li>Database migrations complicate rollback the most: a migration that's already run and been written to by the new code often can't simply be reversed once real writes have happened — favor backward-compatible, additive migrations (add a column, don't rename/drop one in the same release) so the previous code version can still run against the new schema if a rollback is needed.</li>
+        <li>Decide the rollback mechanism <em>before</em> deploying, not while an incident is already happening — for infrastructure-level issues that's redeploying the previous artifact (fast with blue-green, slower with recreate); for a bad feature specifically, a feature flag flip is faster than either.</li>
+        <li>Database migrations complicate rollback the most: a migration that's already run and been written to by the new code often can't simply be reversed once real writes have happened — favor backward-compatible, additive migrations (add a column, don't rename/drop one in the same release) so the previous code version can still run against the new schema if a rollback is needed.</li>
+      </ul>
+      <h3 id="expand-contract">Expand and contract, for a column rename</h3>
+      <ol class="sd-steps">
+        <li><strong>Release 1 (expand):</strong> add <code>full_name</code>; code writes both <code>name</code> and <code>full_name</code>, reads <code>name</code>. Backfill old rows.</li>
+        <li><strong>Release 2:</strong> code reads <code>full_name</code>, still writes both. Rolling back to release 1 is safe.</li>
+        <li><strong>Release 3 (contract):</strong> stop writing <code>name</code>; a later migration drops it once no running version uses it.</li>
+      </ol>
+
+      <aside class="sd-callout mistake">
+        <p class="sd-callout-title">⚠️ Common mistake</p>
+        <p>Shipping a destructive migration (drop/rename) in the same release as the code that needs it. The moment the migration runs, the previous version can no longer start — so "instant rollback" no longer exists.</p>
+      </aside>
+
+      <!-- 05 IMPLEMENTATION -->
+      <h2 id="implementation" data-stage="Implementation">Implementation</h2>
+      <h3 id="pipeline-yaml">A minimal pipeline (GitHub Actions)</h3>
+      <pre><code>name: ci
+on: [push]
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make test
+      - run: docker build -t registry.example.com/api:${{ github.sha }} .
+      - run: docker push registry.example.com/api:${{ github.sha }}</code></pre>
+      <ul>
+        <li><code>on: [push]</code> — every push triggers CI.</li>
+        <li><code>make test</code> before <code>docker build</code> — fail fast; nothing is published if tests fail.</li>
+        <li>Tag <code>:${{ github.sha }}</code> — the immutable artifact; deploys reference this exact tag, never <code>latest</code>.</li>
+      </ul>
+      <h3 id="rolling-k8s">Rolling update settings (Kubernetes)</h3>
+      <pre><code>spec:
+  replicas: 6
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1</code></pre>
+      <ul>
+        <li><code>maxUnavailable: 1</code> — at most one Pod below the desired count during the rollout (capacity stays ≥ 5/6).</li>
+        <li><code>maxSurge: 1</code> — at most one extra Pod above the desired count, so the rollout needs little spare capacity.</li>
+        <li>A new Pod only counts as available once its <strong>readiness probe</strong> passes — that is the "wait for each batch to become healthy" step.</li>
+      </ul>
+      <pre><code>kubectl rollout status deployment/api
+kubectl rollout undo deployment/api</code></pre>
+      <ul>
+        <li><code>rollout status</code> — waits and reports whether the rollout completed.</li>
+        <li><code>rollout undo</code> — rolls back to the previous ReplicaSet (the previous artifact).</li>
       </ul>
 
-      <h2>Interview checklist</h2>
+      <!-- 06 PRODUCTION -->
+      <h2 id="production" data-stage="Production">Production Usage</h2>
+      <table>
+        <tr><th></th><th>Small team / low traffic</th><th>High traffic</th></tr>
+        <tr><td>Strategy</td><td>Rolling deploys; a short maintenance window is acceptable for risky migrations.</td><td>Canary with automated analysis, per region, behind feature flags.</td></tr>
+        <tr><td>Gate</td><td>Manual approval to production (continuous delivery).</td><td>Automated metric gates; continuous deployment for most services.</td></tr>
+        <tr><td>Verification</td><td>Smoke test + watching dashboards.</td><td>Automatic rollback when the canary's error rate or latency breaches the SLO.</td></tr>
+      </table>
+      <h3 id="delivery-metrics">Signals to watch</h3>
       <ul>
-      <li>Distinguish CI (build+test on every change) from CD (always releasable) from continuous deployment (auto-ships) precisely — these get conflated constantly, and being precise is a cheap, clear signal.</li>
-      <li>Pick a deployment strategy by the actual constraint: zero extra infrastructure → rolling; instant, safe cutover → blue-green; minimizing blast radius of an unknown-risk change → canary.</li>
-      <li>Know the testing pyramid's shape (many unit, fewer integration, fewest e2e) and be ready to justify <em>why</em> that shape, not just name the layers.</li>
-      <li>If the design involves a schema change, mention backward-compatible migrations specifically — it's the detail that makes a rollback plan actually credible.</li>
+        <li><strong>Deploy frequency</strong> and <strong>lead time</strong> (commit → production) — how fast changes flow.</li>
+        <li><strong>Change failure rate</strong> — % of deploys causing incidents or rollbacks.</li>
+        <li><strong>Time to restore</strong> — how fast a bad change is undone.</li>
+        <li>During a rollout: error rate and p99 of new vs. old version, side by side.</li>
       </ul>
+
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>Annotate dashboards with deploy events. The first question in most incidents is "what changed?" — a vertical line on the latency graph at 15:08 labelled "api v2.41" answers it in seconds.</p>
+      </aside>
+
+      <!-- 07 SECURITY -->
+      <h2 id="security" data-stage="Security">Security of the Pipeline</h2>
+      <ul>
+        <li><strong>The pipeline can deploy to production, so it is a production credential.</strong> Least-privilege CI tokens, short-lived cloud credentials (OIDC) instead of long-lived keys in CI secrets.</li>
+        <li><strong>Supply chain:</strong> pin dependency and action versions, sign images, verify signatures at deploy time — the "software/data integrity failures" category in <a href="01-application-security-fundamentals.html#owasp-top-10">OWASP Top 10</a>.</li>
+        <li><strong>Scan in the pipeline:</strong> dependencies, container images, committed secrets.</li>
+        <li><strong>Protect the main branch:</strong> required reviews and passing checks before merge.</li>
+      </ul>
+
+      <!-- 09 TROUBLESHOOTING -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Failure Scenarios</h2>
+      <table>
+        <tr><th>Symptom</th><th>Possible cause</th><th>Detect</th><th>Fix</th><th>Prevent</th></tr>
+        <tr><td>Errors spike right after a deploy</td><td>Bad release.</td><td>Deploy annotation aligned with error rate.</td><td>Roll back (router flip / <code>rollout undo</code> / flag off) first, debug second.</td><td>Canary + automatic rollback.</td></tr>
+        <tr><td>Rollback doesn't fix it</td><td>Destructive migration already applied; old code incompatible with new schema.</td><td>Old version errors on missing/renamed columns.</td><td>Roll forward with a fix.</td><td>Expand-and-contract migrations.</td></tr>
+        <tr><td>Rolling deploy stalls</td><td>New Pods never pass readiness (crash, bad config).</td><td><code>kubectl rollout status</code> hangs; Pods in CrashLoopBackOff.</td><td>Fix config/image; undo the rollout.</td><td>Staging with production-like config.</td></tr>
+        <tr><td>Works in staging, fails in prod</td><td>Artifact rebuilt per env, or config drift.</td><td>Different image digests; diff configs.</td><td>Promote the same digest; reconcile config.</td><td>Build once, config as code.</td></tr>
+        <tr><td>Pipeline is flaky; people re-run until green</td><td>Flaky (usually e2e) tests.</td><td>Same commit passes and fails.</td><td>Quarantine and fix flaky tests.</td><td>Keep e2e tests few; push coverage down the pyramid.</td></tr>
+      </table>
+
+      <!-- 10 BEST PRACTICES -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul>
+        <li><strong>Build once, promote the same artifact</strong> — what you tested is what you ship.</li>
+        <li><strong>Keep changes small and frequent</strong> — small diffs are easy to verify and to revert.</li>
+        <li><strong>Plan the rollback before the deploy</strong> — and make migrations backward-compatible.</li>
+        <li><strong>Gate production on SLO metrics</strong>, not just on tests passing.</li>
+        <li><strong>Use feature flags</strong> for risky behaviour changes — and remove stale flags.</li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul>
+        <li><strong>Deploying <code>latest</code></strong> — you can't tell what's running or roll back to it.</li>
+        <li><strong>Big-bang releases</strong> of many changes at once.</li>
+        <li><strong>An inverted pyramid</strong> of slow, flaky e2e tests.</li>
+        <li><strong>Long-lived CI credentials</strong> with broad production access.</li>
+      </ul>
+
+      <!-- 11 INTERVIEW PREPARATION -->
+      <h2 id="interview-answer" data-stage="Interview Preparation">Interview Answer — What Is CI/CD?</h2>
+      <p>CI/CD is an automated pipeline that takes every code change from commit to a production-ready (or production-deployed) release. <strong>Continuous Integration (CI)</strong> builds and tests every change as soon as it is pushed. <strong>Continuous Delivery (CD)</strong> additionally packages every passing change into a deployable artifact, so the code is always releasable and a human decides when to ship. <strong>Continuous Deployment</strong> removes that manual gate, so every change that passes all checks goes to production automatically.</p>
+      <p>It exists because manual, infrequent releases are risky: large batches of changes are hard to test and hard to debug when they break, and hand-run deploy steps are easy to get wrong. With a pipeline, the cause → effect chain is: a developer pushes a change → the pipeline builds one immutable artifact (typically a container image) → tests and security scans run and stop the pipeline on the first failure → the same artifact is deployed to staging, then production → automated checks verify the rollout.</p>
+      <p>How the new version replaces the old one is the <a href="#deployment-strategies">deployment strategy</a>: <strong>rolling</strong> (replace instances in batches), <strong>blue-green</strong> (run the full new version beside the old and switch traffic at once), or <strong>canary</strong> (send a small share of real traffic to the new version and increase it while metrics stay healthy). <strong>Feature flags</strong> add a second layer by separating <em>deploying</em> code from <em>releasing</em> a feature.</p>
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"CI means every change is automatically built and tested on push. Continuous delivery means every passing change is packaged into an artifact that's always ready to release, and continuous deployment goes further and ships it to production automatically. The pipeline builds one immutable artifact, tests and scans it, deploys it with a strategy like rolling, blue-green, or canary, and verifies it with monitoring. Feature flags let me deploy code dark and turn features on separately, and I plan the rollback before I deploy."</p>
+      </div>
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: With blue-green deployment, can I always roll back instantly by switching traffic back to blue?</strong></p>
+      <p><strong>A:</strong> Only for the application code. Switching the router back is instant, but if the release ran a database migration — dropped a column, renamed a field, changed a format — and green has already written real data in the new shape, the old blue version may no longer work against that database. That is why schema changes should be backward-compatible and additive (the <strong>expand-and-contract</strong> pattern: add the new column, deploy code that handles both, remove the old column in a later release), so both versions can run against the same schema. See <a href="#rollback-strategy">Rollback strategy</a> above.</p>
+
+      <h3 id="interview-checklist">Interview checklist</h3>
+      <ul>
+        <li>Distinguish CI (build+test on every change) from CD (always releasable) from continuous deployment (auto-ships) precisely — these get conflated constantly, and being precise is a cheap, clear signal.</li>
+        <li>Pick a deployment strategy by the actual constraint: zero extra infrastructure → rolling; instant, safe cutover → blue-green; minimizing blast radius of an unknown-risk change → canary.</li>
+        <li>Know the testing pyramid's shape (many unit, fewer integration, fewest e2e) and be ready to justify <em>why</em> that shape, not just name the layers.</li>
+        <li>If the design involves a schema change, mention backward-compatible migrations specifically — it's the detail that makes a rollback plan actually credible.</li>
+      </ul>
+
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>Continuous delivery vs. continuous deployment?</summary>
+          <p>Same pipeline; delivery keeps every change releasable but a human approves production, deployment ships automatically when checks pass.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>Why should the pipeline build one immutable artifact?</summary>
+          <p>So the exact thing tested is the thing deployed, and rollback means redeploying a known previous artifact.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>Why is the testing pyramid shaped that way?</summary>
+          <p>Unit tests are fast, cheap and precise, so most coverage goes there; integration tests catch wiring bugs; e2e tests are slow and flaky, so keep only the critical flows.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>When would you pick blue-green over canary?</summary>
+          <p>Blue-green when you want an instant, all-at-once cutover and rollback and can afford double capacity; canary when the change's risk is unknown and you want to limit blast radius with real traffic.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>What constraint does a rolling deploy put on your code?</summary>
+          <p>Old and new versions serve traffic simultaneously, so APIs, message formats and schema must be compatible across both versions.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>How do feature flags change rollback?</summary>
+          <p>A bad feature is turned off by flipping the flag — no redeploy. Deploy and release become separate decisions.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Why can't blue-green always roll back instantly?</summary>
+          <p>Destructive migrations plus new-shape writes mean the old version may not run against the database any more. Use expand-and-contract migrations.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>How would you automate canary analysis?</summary>
+          <p>Compare the canary's SLIs (error ratio, p99) against the baseline over fixed windows with thresholds; promote on pass, auto-rollback on breach, and require enough traffic for the comparison to be meaningful.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>What makes a CI/CD pipeline a security risk, and how do you reduce it?</summary>
+          <p>It holds credentials that can deploy to production and executes third-party code. Use short-lived OIDC credentials, least privilege, pinned/signed dependencies and images, and protected branches.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Error rate doubles 3 minutes after a deploy. What do you do first?</summary>
+          <p>Roll back (or flip the flag) immediately to restore service, then investigate with the deploy diff, traces and logs. Restore first, debug second.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>You need to rename a heavily used column with zero downtime. Plan it.</summary>
+          <p>Expand: add the new column and dual-write, backfill. Switch reads to the new column. Contract: stop writing the old one, drop it in a later release once no version uses it. Each step is independently rollback-safe.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Deploys pass staging but fail in production regularly. What do you investigate?</summary>
+          <p>Whether the same artifact digest is promoted, config/secret drift between environments, production-only dependencies or data volume, and whether staging tests cover the failing paths.</p></details>
+      </section>
+
+      <!-- 12 SUMMARY -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>CI = build + test every change; continuous delivery = always releasable; continuous deployment = ships automatically.</li>
+        <li>Build one immutable artifact and promote it through environments.</li>
+        <li>Rolling (no extra infra), blue-green (instant switch), canary (small blast radius) — and they combine.</li>
+        <li>Many unit tests, fewer integration, fewest e2e; contract tests between services.</li>
+        <li>Feature flags separate deploy from release and make feature rollback instant.</li>
+        <li>Migrations decide whether rollback is real — expand and contract.</li>
+      </ol>
+      <h3 id="quick-commands">Quick commands</h3>
+      <ul class="sd-commands">
+        <li><code>kubectl rollout status deployment/api</code> — watch a rollout</li>
+        <li><code>kubectl rollout undo deployment/api</code> — roll back to the previous version</li>
+        <li><code>kubectl rollout history deployment/api</code> — list revisions</li>
+      </ul>
+
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <div class="sd-next">
+        <a href="00-observability-fundamentals.html"><strong>Observability Fundamentals</strong><span>The signals that gate and verify a rollout.</span></a>
+        <a href="../traffic/00-load-balancing.html"><strong>Load Balancing</strong><span>Health checks and draining behind every deploy strategy.</span></a>
+        <a href="../05-database/02a-schema-design-and-migrations/index.html"><strong>Schema Design and Migrations</strong><span>Safe schema change in depth.</span></a>
+      </div>
 
     </main>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>
