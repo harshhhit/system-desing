@@ -11,115 +11,299 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reverse Proxy &amp; API Gateway Caching · Infra Owl</title>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=10">
 <style>
   .sd-study-main h3 { margin-top: 1.6rem; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
+
 <div id="site-header-root"></div>
 <script src="../assets/sitemap.js"></script>
 <script src="../assets/pages.js"></script>
-<script src="../assets/site-header.js?v=8" data-root="../"></script>
+<script src="../assets/site-header.js?v=9" data-root="../"></script>
 
 <div class="sd-study-layout">
   <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group" open><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a class="active" href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
 
   <div class="sd-study-content">
-    <main class="sd-study-main">
+    <main class="sd-study-main sd-lesson" data-reminders="Write the Nginx proxy_cache block with lock and use_stale from memory|Explain Varnish purge vs. ban|Explain why API gateway cache keys must include identity">
       <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Caching &amp; CDN / Reverse Proxy &amp; API Gateway Caching</p>
       <h1 data-page-title>Reverse Proxy &amp; API Gateway Caching</h1>
       <p class="sd-study-prompt" data-page-subtitle>Nginx <code>proxy_cache</code>, micro-caching, Varnish grace and bans, API Gateway and Kong response caching, and caching GraphQL &mdash; saving application work in front of your servers.</p>
 
-      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
+        <ul>
+          <li>Explain what a reverse-proxy cache saves compared with a CDN</li>
+          <li>Configure Nginx <code>proxy_cache</code> with stampede protection and stale serving</li>
+          <li>Use micro-caching to absorb bursts on dynamic pages</li>
+          <li>Compare Nginx, Varnish and API gateway caches</li>
+          <li>Cache GraphQL/POST APIs safely</li>
+          <li>Avoid serving one user's response to another</li>
+        </ul>
+      </section>
 
-      <h2 id="interview-answer">Interview Answer — What Is Reverse-Proxy Caching?</h2>
-      <p><strong>Reverse-proxy caching</strong> is a server that sits in front of your application servers — Nginx, Varnish, HAProxy, Envoy, or an API gateway — storing complete HTTP responses and returning them for matching requests without calling the application at all. It is the same idea as a CDN, but it runs inside your own infrastructure, next to the application, rather than in PoPs near users.</p>
-      <p>It exists to save <strong>application work</strong>, not network distance. Rendering a product page may take 80 ms of CPU and five database queries; returning a stored copy from the proxy takes under a millisecond. The cause → effect chain: 2,000 users request <code>/products/42</code> in one second → the first request misses and goes to the app → the proxy stores the response for, say, 10 seconds → the other 1,999 requests are served from the proxy → the app renders that page once per 10 seconds instead of 2,000 times per second.</p>
-      <p>It fits between the CDN and the application cache: the CDN handles public content near users; the reverse proxy catches what reaches your data centre (including CDN misses and traffic that bypasses the CDN); Redis caches the <em>objects</em> the application uses to build responses. An <strong>API gateway cache</strong> is the same mechanism configured on a managed gateway, keyed on API parameters.</p>
+      <!-- 01 OVERVIEW -->
+      <h2 id="overview" data-stage="Overview">What a Reverse-Proxy Cache Is For</h2>
+      <p>A reverse-proxy cache stores whole HTTP responses in front of your application servers, so repeated requests never run application code. It sits in your own datacenter or VPC: a CDN saves <em>distance</em>, a reverse-proxy cache saves <em>application work</em>.</p>
 
-      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
-        <p>"A reverse-proxy cache like Nginx or Varnish sits in front of the app servers and stores full HTTP responses, so repeated requests are answered without running application code. It's most useful for public pages and APIs with many identical requests — even micro-caching a dynamic page for one second collapses a traffic spike into one backend call per second. I configure the cache key carefully, lock concurrent misses so only one request hits the backend, and serve stale content while updating or when the backend errors. API gateways offer the same per-endpoint response caching."</p>
-      </div>
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>A reverse-proxy cache is only safe for responses that are identical for everyone who shares the cache key. Anything personalised must bypass it — or include the identity in the key.</p>
+      </aside>
 
-      <h3>One important interview follow-up</h3>
-      <p><strong>Q: If I already have a CDN, why add a reverse-proxy cache?</strong></p>
-      <p><strong>A:</strong> Often you don't need one — but they cover different gaps. The CDN has many PoPs, each missing independently (unless you use an origin shield), and some traffic never goes through the CDN (internal services, other regions, API clients calling the origin directly). A reverse proxy in front of the app gives one shared cache for <em>all</em> of that, with request collapsing and stale-on-error close to the application, plus features like micro-caching and cache purging under your full control. If the CDN has an origin shield and all traffic passes through it, the proxy cache is often redundant.</p>
+      <!-- 02 CORE CONCEPTS -->
+      <h2 id="core-concepts" data-stage="Core Concepts">Core Concepts</h2>
+      <table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><strong>Cache key</strong></td><td>The request parts that identify a stored response (Nginx default: <code>$scheme$proxy_host$request_uri</code>).</td></tr>
+        <tr><td><strong>Cache lock / coalescing</strong></td><td>Only one request per key goes upstream on a miss; the others wait for it.</td></tr>
+        <tr><td><strong>Stale serving / grace</strong></td><td>Serving an expired copy while refreshing, or while the upstream is failing.</td></tr>
+        <tr><td><strong>Bypass</strong></td><td>Skipping the cache for some requests (logged-in users, POSTs).</td></tr>
+        <tr><td><strong>Micro-caching</strong></td><td>Caching dynamic responses for 1–5 seconds.</td></tr>
+      </table>
+      <p><strong>Reverse-proxy cache vs. CDN — the difference is</strong> location and purpose: the CDN is many PoPs near users that save network distance; the reverse proxy is next to the app and saves CPU and database work, including for traffic that never touched the CDN.</p>
 
-      <h2 id="nginx">Nginx <code>proxy_cache</code></h2>
-      <p>Nginx stores cached responses as files on disk, with keys and metadata in a shared-memory zone. A typical configuration:</p>
-      <pre><code>proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=app:100m
-                 max_size=10g inactive=60m use_temp_path=off;
+      <!-- 03 ARCHITECTURE -->
+      <h2 id="architecture" data-stage="Architecture">Where It Sits</h2>
+      <div class="mermaid sd-diagram">flowchart LR
+    U["Users"] --> C["CDN"]
+    C -->|miss| P["Reverse proxy cache<br/>Nginx · Varnish · API gateway"]
+    I["Internal / API clients"] --> P
+    P -->|"miss (one per key, locked)"| A["App servers"]
+    A --> R[("Redis object cache")]
+    A --> D[("Database")]
+</div>
+      <p class="sd-diagram-caption">The proxy catches CDN misses and direct traffic; the app's own object cache sits behind it.</p>
+<h2 data-stage="Architecture" id="sidecar-mesh">Other proxy caches</h2>
+ <ul>
+ <li><strong>Envoy</strong> has an HTTP cache filter; service meshes generally don't cache by default — caching between internal services is usually done in the calling service (in-process) or in Redis.</li>
+ <li><strong>Forward proxies</strong> (Squid) cache on the client side for many users; mostly historical now that HTTPS hides responses from them.</li>
+ <li><strong>Load balancers</strong> (AWS ALB/NLB) do <em>not</em> cache — put CloudFront in front of the ALB for response caching. See <a href="../traffic/00-load-balancing.html">Load Balancing</a>.</li>
+ </ul>
+ 
 
+      <!-- 04 HOW IT WORKS -->
+      <h2 id="how-it-works" data-stage="How It Works">How a Request Flows Through the Proxy Cache</h2>
+      <ol class="sd-steps">
+        <li><strong>Bypass check:</strong> session cookie, <code>Authorization</code>, or a non-GET method → skip the cache and proxy straight through.</li>
+        <li><strong>Build the key</strong> and look it up in the shared-memory index.</li>
+        <li><strong>Fresh hit</strong> → serve from disk/memory; the app is never called.</li>
+        <li><strong>Miss or expired</strong> → if another request is already fetching this key, wait (lock); otherwise fetch from upstream.</li>
+        <li><strong>Upstream slow or failing</strong> → serve the stale copy if allowed.</li>
+        <li><strong>Store</strong> the response if its status and headers make it cacheable; set the status header (HIT/MISS/…).</li>
+      </ol>
+<h2 data-stage="How It Works" id="micro-caching">Micro-caching</h2>
+ <p><strong>What it is:</strong> caching dynamic pages for a very short time — 1 to 5 seconds. <strong>Why it works:</strong> for a page receiving 1,000 requests/second, a 1-second TTL means the backend renders it once per second instead of 1,000 times, and users see content at most one second old — invisible for news, listings, scores, or search results. Combined with <code>proxy_cache_lock</code> and <code>use_stale updating</code>, it flattens traffic spikes (a link on a popular site, a TV mention) that would otherwise overload the application. Limit: only for responses that are the same for everyone who shares the key.</p>
+ 
+
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>You add a fourth Nginx instance behind the load balancer and the overall cache hit ratio drops. Why? (Each instance has its own cache; requests for the same URL now spread over more cold caches. Consistent-hash routing by URL fixes it.)</p>
+      </aside>
+
+<h2 data-stage="How It Works" id="graphql">Caching GraphQL and POST APIs</h2>
+ <p>HTTP caches key on URL and generally cache only <code>GET</code>. GraphQL typically sends every query as <code>POST /graphql</code>, so proxies and CDNs can't cache it. Common fixes: <strong>persisted queries</strong> (the client sends a hash of a pre-registered query via <code>GET /graphql?id=abc&amp;variables=…</code>, which is cacheable), or caching at the resolver/object level in Redis instead. See <a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a>.</p>
+ 
+
+      <!-- 05 IMPLEMENTATION -->
+<h2 data-stage="Implementation" id="nginx">Nginx <code>proxy_cache</code></h2>
+ <p>Nginx stores cached responses as files on disk, with keys and metadata in a shared-memory zone. A typical configuration:</p>
+ <pre><code>proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=app:100m
+ max_size=10g inactive=60m use_temp_path=off;
 server {
-  location / {
-    proxy_pass http://app_upstream;
-    proxy_cache app;
-    proxy_cache_key "$scheme$host$request_uri";
-    proxy_cache_valid 200 301 10m;
-    proxy_cache_valid 404 1m;
-    proxy_cache_lock on;
-    proxy_cache_use_stale error timeout updating http_500 http_502 http_503;
-    proxy_cache_background_update on;
-    add_header X-Cache-Status $upstream_cache_status;
-  }
+ location / {
+ proxy_pass http://app_upstream;
+ proxy_cache app;
+ proxy_cache_key "$scheme$host$request_uri";
+ proxy_cache_valid 200 301 10m;
+ proxy_cache_valid 404 1m;
+ proxy_cache_lock on;
+ proxy_cache_use_stale error timeout updating http_500 http_502 http_503;
+ proxy_cache_background_update on;
+ add_header X-Cache-Status $upstream_cache_status;
+ }
 }</code></pre>
+ <ul>
+ <li><code>keys_zone=app:100m</code> — shared memory for keys (about 8,000 keys per MB); <code>max_size</code> caps disk; <code>inactive=60m</code> removes entries not accessed for an hour, regardless of freshness.</li>
+ <li><code>proxy_cache_valid</code> — TTLs per status code, used when the upstream sends no caching headers (upstream <code>Cache-Control</code>/<code>Expires</code> take priority).</li>
+ <li><code>proxy_cache_lock on</code> — only one request per key goes upstream on a miss; others wait. Built-in <a href="04-in-memory-cache-problems.html#thundering-herd">stampede protection</a>.</li>
+ <li><code>proxy_cache_use_stale … updating</code> + <code>proxy_cache_background_update on</code> — stale-while-revalidate: serve the stale copy while one background request refreshes it; also serve stale when the upstream errors.</li>
+ <li><code>$upstream_cache_status</code> — <code>HIT</code>, <code>MISS</code>, <code>EXPIRED</code>, <code>STALE</code>, <code>UPDATING</code>, <code>BYPASS</code>; expose it in a header or logs to measure hit ratio.</li>
+ </ul>
+ <p>Gotcha: by default Nginx does not cache responses that carry <code>Set-Cookie</code> or <code>Cache-Control: private/no-store</code>, and it only caches <code>GET</code>/<code>HEAD</code>. Use <code>proxy_cache_bypass</code> / <code>proxy_no_cache</code> to skip caching for logged-in users (e.g. when a session cookie is present).</p>
+ 
+      <pre><code>map $http_cookie $skip_cache {
+    default 0;
+    ~*sessionid 1;
+}
+proxy_cache_bypass $skip_cache;
+proxy_no_cache $skip_cache;</code></pre>
       <ul>
-        <li><code>keys_zone=app:100m</code> — shared memory for keys (about 8,000 keys per MB); <code>max_size</code> caps disk; <code>inactive=60m</code> removes entries not accessed for an hour, regardless of freshness.</li>
-        <li><code>proxy_cache_valid</code> — TTLs per status code, used when the upstream sends no caching headers (upstream <code>Cache-Control</code>/<code>Expires</code> take priority).</li>
-        <li><code>proxy_cache_lock on</code> — only one request per key goes upstream on a miss; others wait. Built-in <a href="04-in-memory-cache-problems.html#thundering-herd">stampede protection</a>.</li>
-        <li><code>proxy_cache_use_stale … updating</code> + <code>proxy_cache_background_update on</code> — stale-while-revalidate: serve the stale copy while one background request refreshes it; also serve stale when the upstream errors.</li>
-        <li><code>$upstream_cache_status</code> — <code>HIT</code>, <code>MISS</code>, <code>EXPIRED</code>, <code>STALE</code>, <code>UPDATING</code>, <code>BYPASS</code>; expose it in a header or logs to measure hit ratio.</li>
+        <li><code>map … $skip_cache</code> — sets a flag to 1 when the request carries a <code>sessionid</code> cookie.</li>
+        <li><code>proxy_cache_bypass</code> — don't <em>serve</em> from cache for those requests; <code>proxy_no_cache</code> — don't <em>store</em> their responses. You need both.</li>
       </ul>
-      <p>Gotcha: by default Nginx does not cache responses that carry <code>Set-Cookie</code> or <code>Cache-Control: private/no-store</code>, and it only caches <code>GET</code>/<code>HEAD</code>. Use <code>proxy_cache_bypass</code> / <code>proxy_no_cache</code> to skip caching for logged-in users (e.g. when a session cookie is present).</p>
+<h2 data-stage="Implementation" id="varnish">Varnish</h2>
+ <p>Varnish is a dedicated HTTP cache (memory-first) configured with <strong>VCL</strong> (Varnish Configuration Language), which gives request-by-request control over the cache key, TTLs, and bypass rules. Concepts worth knowing:</p>
+ <ul>
+ <li><strong>Grace mode</strong> — how long past its TTL an object may be served while a fetch refreshes it (Varnish's stale-while-revalidate / stale-if-error).</li>
+ <li><strong>Request coalescing</strong> — built in: concurrent misses for the same object wait on one backend fetch.</li>
+ <li><strong>Purge vs. ban — the difference is</strong> scope and timing: a <em>purge</em> removes one specific object immediately; a <em>ban</em> is a rule (e.g. "every URL matching <code>^/products/42</code>") checked lazily against objects when they're next requested — good for invalidating many objects at once.</li>
+ <li>Varnish doesn't terminate TLS itself; it is usually paired with a TLS terminator (Hitch, Nginx, or a load balancer) in front.</li>
+ </ul>
+ 
+<h2 data-stage="Implementation" id="api-gateway">API gateway caching</h2>
+ <p>Managed and self-hosted API gateways can cache responses per endpoint:</p>
+ <ul>
+ <li><strong>Amazon API Gateway (REST APIs)</strong> — per-stage cache with a size you provision (from 0.5 GB), a default TTL of 300 seconds (maximum 3,600), and per-method settings. You choose which path/query parameters and headers form the cache key. Clients can request a fresh response with <code>Cache-Control: max-age=0</code> only if you allow it (the <code>execute-api:InvalidateCache</code> permission) — otherwise any caller could bypass your cache. Note: HTTP APIs (the newer, cheaper API Gateway type) don't have built-in caching.</li>
+ <li><strong>Kong</strong> — the <code>proxy-cache</code> plugin (memory strategy) caches by method, path, and configured parameters/headers.</li>
+ <li><strong>Apigee, Azure API Management</strong> — similar response-cache policies with keys and TTLs.</li>
+ </ul>
+ <div class="sd-study-note warning"><span class="sd-note-title">Gotcha: identity must be in the key</span><p>If <code>GET /me/orders</code> is cached by path alone, the first caller's orders are returned to every caller. For any user- or tenant-specific endpoint, include the user/tenant identifier (or the authorisation header) in the cache key — or don't cache that endpoint at the gateway at all.</p></div>
+ 
 
-      <h2 id="micro-caching">Micro-caching</h2>
-      <p><strong>What it is:</strong> caching dynamic pages for a very short time — 1 to 5 seconds. <strong>Why it works:</strong> for a page receiving 1,000 requests/second, a 1-second TTL means the backend renders it once per second instead of 1,000 times, and users see content at most one second old — invisible for news, listings, scores, or search results. Combined with <code>proxy_cache_lock</code> and <code>use_stale updating</code>, it flattens traffic spikes (a link on a popular site, a TV mention) that would otherwise overload the application. Limit: only for responses that are the same for everyone who shares the key.</p>
-
-      <h2 id="varnish">Varnish</h2>
-      <p>Varnish is a dedicated HTTP cache (memory-first) configured with <strong>VCL</strong> (Varnish Configuration Language), which gives request-by-request control over the cache key, TTLs, and bypass rules. Concepts worth knowing:</p>
+      <!-- 06 PRODUCTION -->
+      <h2 id="production" data-stage="Production">Production Usage</h2>
+      <table>
+        <tr><th></th><th>Low scale</th><th>High scale</th></tr>
+        <tr><td>Setup</td><td>One Nginx with <code>proxy_cache</code> in front of the app.</td><td>A dedicated cache tier (Varnish/Nginx) with URL-hash routing, or rely on CDN + origin shield and skip the proxy cache.</td></tr>
+        <tr><td>Invalidation</td><td>Short TTLs.</td><td>Purge/ban APIs wired to content events; tags.</td></tr>
+        <tr><td>Main value</td><td>Absorbs bursts on public pages.</td><td>Protects the app during traffic spikes and origin incidents (stale-if-error).</td></tr>
+      </table>
+      <h3 id="observability">Signals to watch</h3>
       <ul>
-        <li><strong>Grace mode</strong> — how long past its TTL an object may be served while a fetch refreshes it (Varnish's stale-while-revalidate / stale-if-error).</li>
-        <li><strong>Request coalescing</strong> — built in: concurrent misses for the same object wait on one backend fetch.</li>
-        <li><strong>Purge vs. ban — the difference is</strong> scope and timing: a <em>purge</em> removes one specific object immediately; a <em>ban</em> is a rule (e.g. "every URL matching <code>^/products/42</code>") checked lazily against objects when they're next requested — good for invalidating many objects at once.</li>
-        <li>Varnish doesn't terminate TLS itself; it is usually paired with a TLS terminator (Hitch, Nginx, or a load balancer) in front.</li>
+        <li><strong>$upstream_cache_status distribution</strong> (HIT/MISS/EXPIRED/STALE/UPDATING/BYPASS) from access logs.</li>
+        <li><strong>Upstream request rate vs. client request rate</strong> — the offload you get.</li>
+        <li><strong>Cache disk usage vs. <code>max_size</code></strong> and eviction churn.</li>
+        <li><strong>STALE count</strong> — high values mean the upstream is erroring and the cache is hiding it.</li>
       </ul>
 
-      <h2 id="api-gateway">API gateway caching</h2>
-      <p>Managed and self-hosted API gateways can cache responses per endpoint:</p>
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>Stale serving can hide an outage from users and from you. Alert on the STALE share of responses, or your app can be down for an hour while dashboards fed by the proxy look healthy.</p>
+      </aside>
+
+      <!-- 07 SECURITY -->
+      <h2 id="security" data-stage="Security">Security</h2>
       <ul>
-        <li><strong>Amazon API Gateway (REST APIs)</strong> — per-stage cache with a size you provision (from 0.5 GB), a default TTL of 300 seconds (maximum 3,600), and per-method settings. You choose which path/query parameters and headers form the cache key. Clients can request a fresh response with <code>Cache-Control: max-age=0</code> only if you allow it (the <code>execute-api:InvalidateCache</code> permission) — otherwise any caller could bypass your cache. Note: HTTP APIs (the newer, cheaper API Gateway type) don't have built-in caching.</li>
-        <li><strong>Kong</strong> — the <code>proxy-cache</code> plugin (memory strategy) caches by method, path, and configured parameters/headers.</li>
-        <li><strong>Apigee, Azure API Management</strong> — similar response-cache policies with keys and TTLs.</li>
+        <li><strong>Bypass on identity</strong> — session cookies and <code>Authorization</code> must skip shared caching unless the identity is in the key.</li>
+        <li><strong>Respect <code>private</code>/<code>no-store</code></strong> — Nginx does by default; don't override with <code>proxy_ignore_headers</code> on personalised routes.</li>
+        <li><strong>Unkeyed inputs</strong> that change the response enable cache poisoning — the same risk as at the <a href="01b-cdn-caching.html#security">CDN</a>.</li>
+        <li><strong>Restrict purge/ban endpoints</strong> to internal callers; an open purge API lets anyone empty your cache.</li>
       </ul>
-      <div class="sd-study-note warning"><span class="sd-note-title">Gotcha: identity must be in the key</span><p>If <code>GET /me/orders</code> is cached by path alone, the first caller's orders are returned to every caller. For any user- or tenant-specific endpoint, include the user/tenant identifier (or the authorisation header) in the cache key — or don't cache that endpoint at the gateway at all.</p></div>
 
-      <h2 id="graphql">Caching GraphQL and POST APIs</h2>
-      <p>HTTP caches key on URL and generally cache only <code>GET</code>. GraphQL typically sends every query as <code>POST /graphql</code>, so proxies and CDNs can't cache it. Common fixes: <strong>persisted queries</strong> (the client sends a hash of a pre-registered query via <code>GET /graphql?id=abc&amp;variables=…</code>, which is cacheable), or caching at the resolver/object level in Redis instead. See <a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">GraphQL vs REST</a>.</p>
-
-      <h2 id="sidecar-mesh">Other proxy caches</h2>
+      <!-- 08 PERFORMANCE -->
+      <h2 id="performance" data-stage="Performance &amp; Scalability">Performance &amp; Scalability</h2>
       <ul>
-        <li><strong>Envoy</strong> has an HTTP cache filter; service meshes generally don't cache by default — caching between internal services is usually done in the calling service (in-process) or in Redis.</li>
-        <li><strong>Forward proxies</strong> (Squid) cache on the client side for many users; mostly historical now that HTTPS hides responses from them.</li>
-        <li><strong>Load balancers</strong> (AWS ALB/NLB) do <em>not</em> cache — put CloudFront in front of the ALB for response caching. See <a href="../traffic/00-load-balancing.html">Load Balancing</a>.</li>
+        <li><strong>A hit costs under a millisecond</strong> vs. tens of milliseconds of rendering and queries.</li>
+        <li><strong>Lock + stale</strong> turn a burst of N identical misses into one upstream request.</li>
+        <li><strong>Scaling out proxies splits the cache</strong>; route by URL hash or add a shared tier.</li>
+        <li><strong>Disk vs. memory:</strong> Nginx caches on disk (fast with the OS page cache); Varnish is memory-first.</li>
       </ul>
 
-      <h2 id="checklist">Checklist</h2>
-      <ul>
-        <li>Cache only responses that are identical for everyone sharing the key; bypass on session cookies or <code>Authorization</code>.</li>
-        <li>Turn on miss locking (<code>proxy_cache_lock</code>, Varnish coalescing) and stale serving (<code>use_stale</code>, grace).</li>
-        <li>Expose the cache status in a header/log and track hit ratio.</li>
-        <li>Plan invalidation: short TTLs, purge/ban APIs, or versioned URLs.</li>
-        <li>With several proxy instances, each has its own cache — hit ratio per instance drops as you scale out; consistent-hash routing of URLs to proxies (or a single shared tier) fixes it.</li>
+      <!-- 09 TROUBLESHOOTING -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Failure Scenarios</h2>
+      <table>
+        <tr><th>Symptom</th><th>Possible cause</th><th>Detect</th><th>Fix</th><th>Prevent</th></tr>
+        <tr><td>Always MISS</td><td>Upstream sends <code>Set-Cookie</code> or <code>private</code>; method isn't GET/HEAD; key includes a changing value.</td><td><code>X-Cache-Status</code> header; response headers.</td><td>Remove <code>Set-Cookie</code> on public responses; fix key.</td><td>Test cacheability per route.</td></tr>
+        <tr><td>User sees another user's data</td><td>Personalised route cached without bypass/identity key.</td><td>Reports; <code>HIT</code> on a personalised URL.</td><td>Purge; add bypass rules.</td><td>Default-bypass on session cookies.</td></tr>
+        <tr><td>Content stays stale after an edit</td><td>Long <code>proxy_cache_valid</code>; no purge.</td><td><code>X-Cache-Status: HIT</code> after change.</td><td>Purge/ban; shorten TTL.</td><td>Event-driven purge.</td></tr>
+        <tr><td>Backend hammered during spikes despite cache</td><td>No <code>proxy_cache_lock</code>; many concurrent misses.</td><td>Upstream RPS ≈ client RPS during expiry.</td><td>Enable lock + background update.</td><td>Load test expiry behaviour.</td></tr>
+      </table>
+      <h3 id="debug-workflow">Debugging workflow</h3>
+      <ol class="sd-steps">
+        <li><code>curl -sI https://example.com/products/42 | grep -i x-cache-status</code> twice — expect MISS then HIT.</li>
+        <li>If still MISS, inspect upstream headers: <code>curl -sI http://127.0.0.1:8000/products/42</code> for <code>Set-Cookie</code>/<code>Cache-Control</code>.</li>
+        <li>Check bypass conditions (cookies, method) and the configured key.</li>
+        <li>Check disk: <code>du -sh /var/cache/nginx</code> against <code>max_size</code>.</li>
+      </ol>
+
+      <!-- 10 BEST PRACTICES -->
+<h2 data-stage="Best Practices" id="checklist">Checklist</h2>
+ <ul>
+ <li>Cache only responses that are identical for everyone sharing the key; bypass on session cookies or <code>Authorization</code>.</li>
+ <li>Turn on miss locking (<code>proxy_cache_lock</code>, Varnish coalescing) and stale serving (<code>use_stale</code>, grace).</li>
+ <li>Expose the cache status in a header/log and track hit ratio.</li>
+ <li>Plan invalidation: short TTLs, purge/ban APIs, or versioned URLs.</li>
+ <li>With several proxy instances, each has its own cache — hit ratio per instance drops as you scale out; consistent-hash routing of URLs to proxies (or a single shared tier) fixes it.</li>
+ </ul>
+ <p>Previous: <a href="01b-cdn-caching.html">01b. CDN Caching</a>. Next: <a href="01d-database-caching.html">01d. Database Caching</a>. Related: <a href="../web-servers/server.html">Web Servers</a>. Back to the <a href="caching-roadmap.html">Caching Roadmap</a>.</p>
+ 
+ 
+
+      <!-- 11 INTERVIEW PREPARATION -->
+<h2 data-stage="Interview Preparation" id="interview-answer">Interview Answer — What Is Reverse-Proxy Caching?</h2>
+ <p><strong>Reverse-proxy caching</strong> is a server that sits in front of your application servers — Nginx, Varnish, HAProxy, Envoy, or an API gateway — storing complete HTTP responses and returning them for matching requests without calling the application at all. It is the same idea as a CDN, but it runs inside your own infrastructure, next to the application, rather than in PoPs near users.</p>
+ <p>It exists to save <strong>application work</strong>, not network distance. Rendering a product page may take 80 ms of CPU and five database queries; returning a stored copy from the proxy takes under a millisecond. The cause → effect chain: 2,000 users request <code>/products/42</code> in one second → the first request misses and goes to the app → the proxy stores the response for, say, 10 seconds → the other 1,999 requests are served from the proxy → the app renders that page once per 10 seconds instead of 2,000 times per second.</p>
+ <p>It fits between the CDN and the application cache: the CDN handles public content near users; the reverse proxy catches what reaches your data centre (including CDN misses and traffic that bypasses the CDN); Redis caches the <em>objects</em> the application uses to build responses. An <strong>API gateway cache</strong> is the same mechanism configured on a managed gateway, keyed on API parameters.</p>
+ <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+ <p>"A reverse-proxy cache like Nginx or Varnish sits in front of the app servers and stores full HTTP responses, so repeated requests are answered without running application code. It's most useful for public pages and APIs with many identical requests — even micro-caching a dynamic page for one second collapses a traffic spike into one backend call per second. I configure the cache key carefully, lock concurrent misses so only one request hits the backend, and serve stale content while updating or when the backend errors. API gateways offer the same per-endpoint response caching."</p>
+ </div>
+ <h3>One important interview follow-up</h3>
+ <p><strong>Q: If I already have a CDN, why add a reverse-proxy cache?</strong></p>
+ <p><strong>A:</strong> Often you don't need one — but they cover different gaps. The CDN has many PoPs, each missing independently (unless you use an origin shield), and some traffic never goes through the CDN (internal services, other regions, API clients calling the origin directly). A reverse proxy in front of the app gives one shared cache for <em>all</em> of that, with request collapsing and stale-on-error close to the application, plus features like micro-caching and cache purging under your full control. If the CDN has an origin shield and all traffic passes through it, the proxy cache is often redundant.</p>
+ 
+
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>What does a reverse-proxy cache save that a CDN doesn't?</summary>
+          <p>Application work for all traffic reaching your datacenter — including CDN misses from many PoPs and clients that bypass the CDN.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>Why does Nginx refuse to cache some responses by default?</summary>
+          <p>Responses with <code>Set-Cookie</code> or <code>Cache-Control: private/no-store</code>, and non-GET/HEAD methods, may be user-specific or unsafe to share.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What is micro-caching?</summary>
+          <p>Caching dynamic pages for 1–5 seconds so bursts of identical requests cost one render per TTL.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>What do <code>proxy_cache_lock</code> and <code>proxy_cache_use_stale updating</code> do together?</summary>
+          <p>Lock lets one request per key refresh; use_stale + background update serves the old copy to everyone else meanwhile — stampede protection with zero waiting.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Varnish purge vs. ban?</summary>
+          <p>Purge removes one object now; ban is a lazily-applied rule that invalidates every matching object when next requested.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Why can't proxies cache typical GraphQL traffic, and what helps?</summary>
+          <p>Queries go as POST to one URL. Persisted queries over GET make them cacheable; otherwise cache in the resolver layer.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Why does adding proxy instances lower the hit ratio, and how do you fix it?</summary>
+          <p>Each instance caches independently, so the same URL misses on each. Route URLs by consistent hash to proxies, or use a single shared cache tier.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>When is caching at the API gateway dangerous?</summary>
+          <p>For user- or tenant-specific endpoints keyed by path only — the first caller's response is served to everyone. Include identity in the key or don't cache.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Does an AWS ALB cache responses?</summary>
+          <p>No. Put CloudFront (or a proxy cache) in front for response caching.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>A news homepage at 3,000 req/s takes the app down during breaking news. Quick fix?</summary>
+          <p>Micro-cache the homepage for 1–2 s at the proxy with lock and stale-while-updating; the backend renders it about once per second per proxy.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>After enabling proxy caching, users report seeing the wrong cart. Why?</summary>
+          <p>Cart pages were cached without bypassing on the session cookie. Purge, add <code>proxy_cache_bypass</code>/<code>proxy_no_cache</code> on the cookie, and mark responses <code>private</code>.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>The app was down for 40 minutes but nobody was paged. How did that happen?</summary>
+          <p><code>proxy_cache_use_stale error timeout</code> kept serving stale pages. Alert on upstream errors and the STALE share, not only on client-facing status codes.</p></details>
+      </section>
+
+      <!-- 12 SUMMARY -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>Reverse-proxy cache saves application work; CDN saves distance.</li>
+        <li>Nginx: key, per-status TTLs, <code>proxy_cache_lock</code>, <code>use_stale</code> + background update.</li>
+        <li>Micro-caching (1–5 s) absorbs bursts on dynamic public pages.</li>
+        <li>Bypass on session cookies/Authorization; identity in gateway keys.</li>
+        <li>Multiple proxies = split caches; route by URL hash.</li>
+        <li>Monitor cache status — stale serving can mask outages.</li>
+      </ol>
+      <h3 id="quick-commands">Quick commands</h3>
+      <ul class="sd-commands">
+        <li><code>curl -sI https://example.com/products/42 | grep -i x-cache-status</code> — HIT or MISS</li>
+        <li><code>du -sh /var/cache/nginx</code> — cache size on disk</li>
       </ul>
 
-      <p>Previous: <a href="01b-cdn-caching.html">01b. CDN Caching</a>. Next: <a href="01d-database-caching.html">01d. Database Caching</a>. Related: <a href="../web-servers/server.html">Web Servers</a>. Back to the <a href="caching-roadmap.html">Caching Roadmap</a>.</p>
-
-      <!-- ═══════════  END OF CONTENT  ═══════════ -->
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <div class="sd-next">
+        <a href="01d-database-caching.html"><strong>Database Caching</strong><span>The caches inside the database.</span></a>
+        <a href="01b-cdn-caching.html"><strong>CDN Caching</strong><span>The same ideas at the edge.</span></a>
+        <a href="../web-servers/server.html"><strong>Web Servers</strong><span>The Nginx reverse proxy itself.</span></a>
+      </div>
 
     </main>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

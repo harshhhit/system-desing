@@ -30,10 +30,13 @@ the checklist below.**
    - convert the shared content to plain semantic HTML (`h2`/`h3`/`p`/`ul`/`ol`/`table`) —
      match the existing pages' style, **no framework classes**, keep every bit of content
    - paste it into the `═══ PAGE CONTENT ═══` block only, arranged in the template's
-     **lesson layout** (What you'll learn → Foundations → How it works → In production →
-     Review; see the comment in that block and the "Structure every content page as one
-     lesson" rule in the root `CLAUDE.md`). Only the site's own `sd-*` lesson classes are
-     allowed there (`sd-learn`, `sd-callout`, `sd-steps`, `sd-diagram`, `sd-takeaways`, `sd-next`)
+     **12-part topic layout** (Overview → Core Concepts → Architecture → How It Works →
+     Implementation → Production → Security → Performance & Scalability → Troubleshooting →
+     Best Practices → Interview Preparation → Summary, each `<h2>` tagged `data-stage`; omit
+     parts the topic doesn't need; see the comment in that block and the "Structure every
+     content page as one topic in 12 standard parts" rule in the root `CLAUDE.md`). Only the
+     site's own `sd-*` classes are allowed there (`sd-learn`, `sd-callout`, `sd-steps`,
+     `sd-diagram`, `sd-takeaways`, `sd-next`, `sd-interview` + `sd-qa`, `sd-commands`)
    - if there's no lead sentence, delete the `<p ... data-page-subtitle>` line
 
 3. **Add to `assets/pages.js`:**

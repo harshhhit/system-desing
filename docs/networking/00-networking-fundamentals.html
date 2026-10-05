@@ -13,28 +13,54 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Networking Fundamentals · Infra Owl</title>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=10">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
 
 <div id="site-header-root"></div>
-
 <script src="../assets/sitemap.js"></script>
 <script src="../assets/pages.js"></script>
-<script src="../assets/site-header.js?v=8" data-root="../"></script>
+<script src="../assets/site-header.js?v=9" data-root="../"></script>
 
 <div class="sd-study-layout">
-
   <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a class="active" href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
 
   <div class="sd-study-content">
-    <main class="sd-study-main">
-
+    <main class="sd-study-main sd-lesson" data-reminders="Count the round trips for a cold HTTPS request with TLS 1.2 and with TLS 1.3|Walk the DNS resolution chain root → TLD → authoritative from memory|Explain why HTTP/2 still has head-of-line blocking and how QUIC removes it">
       <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Networking / Networking Fundamentals</p>
       <h1 data-page-title>Networking Fundamentals</h1>
       <p class="sd-study-prompt" data-page-subtitle>TCP vs UDP, the TCP handshake, DNS resolution end to end, the TLS handshake, HTTP/1.1 vs HTTP/2 vs HTTP/3, and WebSockets vs gRPC vs plain HTTP.</p>
 
-      <h2 id="page-map">Networking Page Map</h2>
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
+        <ul>
+          <li>List what happens on the network before one HTTPS request is answered</li>
+          <li>Choose TCP or UDP from the delivery guarantees you need</li>
+          <li>Walk DNS resolution, the TCP handshake and the TLS handshake step by step</li>
+          <li>Compare HTTP/1.1, HTTP/2 and HTTP/3 and their head-of-line blocking</li>
+          <li>Pick plain HTTP, WebSockets or gRPC for a given data flow</li>
+          <li>Debug DNS, connection and TLS failures with <code>dig</code>, <code>curl</code> and <code>openssl</code></li>
+        </ul>
+      </section>
+
+      <!-- 01 OVERVIEW -->
+      <h2 id="why-it-matters" data-stage="Overview">Why This Layer Matters for System Design</h2>
+      <p>Every "should we cache this," "how many round trips does this take," and "why is this API slow from
+ one region and fast from another" question ultimately comes down to what's happening below the
+ application layer — how a connection gets established, how a name becomes an address, and how much of
+ that has to happen again for every single request. This page is the plumbing that
+ <a href="../01-front-end/graphql/http/04-client-server-model.html">Client-Server Model, End to End</a>
+ and <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a> both sit
+ on top of.</p>
+
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>Latency at this layer is counted in <strong>round trips</strong>, not bytes. A 150 ms round trip times four setup round trips is 600 ms before the first byte of your response — no amount of faster application code fixes that; only fewer round trips (reuse, caching, edges) do.</p>
+      </aside>
+
+      <h2 id="page-map" data-stage="Overview">Networking Page Map</h2>
       <p class="topic-map-legend">A block diagram of the Networking section. It is a single page today, so the blocks are this page's own sub-topics (click to jump), in the order a request actually uses them: transport first, then naming and encryption, then the application protocols on top. Dashed blocks are planned topics with no page yet. The grey blocks at the bottom are related pages in other sections.</p>
       <nav class="topic-map" aria-label="Networking page map" style="--map-accent: var(--sd-c3)">
         <div class="topic-map-row"><p class="topic-map-label">Start here</p><p class="topic-map-why">The whole picture first: what happens on the wire before one HTTP request can be answered, and why each step costs latency.</p><div class="topic-map-blocks">
@@ -72,21 +98,7 @@
         </div></div>
       </nav>
 
-
-      <h2 id="interview-answer">Interview Answer — What Happens on the Network When a Client Calls a Server?</h2>
-      <p>Networking fundamentals, for system design, are the steps that must happen below the application before a single HTTP request can be answered: a <strong>DNS</strong> lookup turns a hostname into an IP address, a <strong>TCP</strong> handshake opens a reliable connection to that IP, a <strong>TLS</strong> handshake agrees on encryption keys on top of that connection, and only then does the <strong>HTTP</strong> request and response flow.</p>
-      <p>These steps matter because each one costs one or more network round trips. The cause → effect chain for a first HTTPS request to a new host is: DNS lookup (up to several round trips if nothing is cached) → TCP handshake (one round trip) → TLS handshake (one round trip with TLS 1.3, two with TLS 1.2) → the HTTP request itself. For a user 150 ms away, that setup alone can cost half a second — which is why real systems reuse connections (keep-alive, connection pools), cache DNS answers, resume TLS sessions, and put CDN edges close to users.</p>
-      <p>The protocol choices built on top follow from the same trade-offs. <strong>TCP</strong> guarantees ordered, reliable delivery; <strong>UDP</strong> does not, but has no handshake or retransmission delay. <strong>HTTP/2</strong> multiplexes many requests on one TCP connection; <strong>HTTP/3</strong> runs over QUIC on UDP to remove TCP's head-of-line blocking. <strong>WebSockets</strong> and <strong>gRPC streaming</strong> exist for cases where the server must push data without the client asking.</p>
-
-      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
-        <p>"Before an HTTPS request is answered, the client resolves the hostname with DNS, opens a TCP connection with a three-way handshake, negotiates encryption with a TLS handshake, and then sends the HTTP request. Each step costs round trips, so systems reuse connections, cache DNS, resume TLS sessions, and use CDNs to cut latency. TCP gives reliable ordered delivery, UDP trades that for speed, HTTP/2 multiplexes requests over one connection, HTTP/3 moves to QUIC over UDP, and WebSockets or gRPC streaming are used when the server needs to push data."</p>
-      </div>
-
-      <h3>One important interview follow-up</h3>
-      <p><strong>Q: HTTP/2 multiplexes requests on one connection — doesn't that fully solve head-of-line blocking?</strong></p>
-      <p><strong>A:</strong> No. HTTP/2 removes head-of-line blocking at the HTTP layer — a slow response no longer blocks the responses queued behind it. But all those streams still share one TCP connection, and TCP delivers bytes strictly in order, so one lost packet stalls every stream on the connection until it is retransmitted. HTTP/3 fixes this by running over QUIC on UDP, where each stream is ordered independently, so a lost packet only delays its own stream. See <a href="#http-versions">HTTP/1.1 vs. HTTP/2 vs. HTTP/3</a> below.</p>
-
-      <h2 id="learning-flow">How to Study This Section</h2>
+      <h2 id="learning-flow" data-stage="Overview">How to Study This Section</h2>
       <p>Read this page in the same order a real HTTPS request uses the network. Each step answers a question the previous step leaves open.</p>
       <ol>
         <li><strong><a href="#tcp-vs-udp">TCP vs. UDP</a> and <a href="#tcp-handshake">the TCP handshake</a></strong> — learn what the transport layer guarantees and what a new connection costs (one round trip before any data). This unlocks why connection reuse (keep-alive, connection pools) matters so much. Watch for: <strong>TCP vs. UDP — the difference is</strong> that TCP guarantees delivery and ordering by retransmitting and reordering, while UDP sends each datagram once with no guarantee; UDP is not "faster" in general, it simply skips the handshake and never waits for a lost packet.</li>
@@ -97,103 +109,315 @@
         <li><strong>Next sections</strong> — continue to <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a> (how to avoid paying these round trips at all) and <a href="../traffic/00-load-balancing.html">Load Balancing</a> (how traffic is spread across many servers once it arrives).</li>
       </ol>
 
-      <h2 id="why-it-matters">Why this layer matters for system design</h2>
-      <p>Every "should we cache this," "how many round trips does this take," and "why is this API slow from
-      one region and fast from another" question ultimately comes down to what's happening below the
-      application layer — how a connection gets established, how a name becomes an address, and how much of
-      that has to happen again for every single request. This page is the plumbing that
-      <a href="../01-front-end/graphql/http/04-client-server-model.html">Client-Server Model, End to End</a>
-      and <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a> both sit
-      on top of.</p>
-
-      <h2 id="tcp-vs-udp">TCP vs. UDP</h2>
+      <!-- 02 CORE CONCEPTS -->
+      <h2 id="tcp-vs-udp" data-stage="Core Concepts">TCP vs. UDP</h2>
       <table>
-      <tr><th></th><th>TCP</th><th>UDP</th></tr>
-      <tr><td>Connection</td><td>Connection-oriented — a handshake before any data flows</td><td>Connectionless — just send the packet</td></tr>
-      <tr><td>Reliability</td><td>Guarantees delivery and order (retransmits lost packets, buffers out-of-order ones)</td><td>None — packets can be lost, duplicated, or arrive out of order and nothing fixes it for you</td></tr>
-      <tr><td>Flow / congestion control</td><td>Built in — slows down automatically when the network is congested</td><td>None — the application has to implement its own if it needs it</td></tr>
-      <tr><td>Overhead</td><td>Higher — handshake, acks, retransmission bookkeeping</td><td>Minimal — just a small header</td></tr>
-      <tr><td>Used by</td><td>HTTP/1.1, HTTP/2, most APIs, databases, anything needing correctness</td><td>DNS queries, video/voice streaming, gaming, HTTP/3 (QUIC runs over UDP — see below)</td></tr>
-      <tr><td>Pick it when</td><td>losing or reordering a byte is unacceptable (an API call, a file transfer)</td><td>a late or dropped packet is better than a delayed one (a live video frame arriving stale is useless anyway)</td></tr>
+        <tr><th></th><th>TCP</th><th>UDP</th></tr>
+        <tr><td>Connection</td><td>Connection-oriented — a handshake before any data flows</td><td>Connectionless — just send the packet</td></tr>
+        <tr><td>Reliability</td><td>Guarantees delivery and order (retransmits lost packets, buffers out-of-order ones)</td><td>None — packets can be lost, duplicated, or arrive out of order and nothing fixes it for you</td></tr>
+        <tr><td>Flow / congestion control</td><td>Built in — slows down automatically when the network is congested</td><td>None — the application has to implement its own if it needs it</td></tr>
+        <tr><td>Overhead</td><td>Higher — handshake, acks, retransmission bookkeeping</td><td>Minimal — just a small header</td></tr>
+        <tr><td>Used by</td><td>HTTP/1.1, HTTP/2, most APIs, databases, anything needing correctness</td><td>DNS queries, video/voice streaming, gaming, HTTP/3 (QUIC runs over UDP — see below)</td></tr>
+        <tr><td>Pick it when</td><td>losing or reordering a byte is unacceptable (an API call, a file transfer)</td><td>a late or dropped packet is better than a delayed one (a live video frame arriving stale is useless anyway)</td></tr>
       </table>
 
-      <h2 id="tcp-handshake">The TCP handshake</h2>
-      <ol>
-      <li><strong>SYN</strong> — client sends a synchronize packet with an initial sequence number, proposing a connection.</li>
-      <li><strong>SYN-ACK</strong> — server acknowledges and sends its own sequence number back.</li>
-      <li><strong>ACK</strong> — client acknowledges the server's number; the connection is now open.</li>
+      <h3 id="terminology">Terms used on this page</h3>
+      <table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><strong>RTT (round-trip time)</strong></td><td>Time for a packet to reach the other side and a reply to come back. Setup costs are counted in RTTs.</td></tr>
+        <tr><td><strong>Head-of-line (HOL) blocking</strong></td><td>One delayed item holding up everything queued behind it.</td></tr>
+        <tr><td><strong>TTL (DNS)</strong></td><td>How long a resolver may cache a DNS answer before asking again.</td></tr>
+        <tr><td><strong>Keep-alive / connection pool</strong></td><td>Reusing an open connection for many requests so the handshakes are paid once.</td></tr>
+        <tr><td><strong>QUIC</strong></td><td>A transport protocol over UDP with built-in TLS 1.3 and independent streams; HTTP/3 runs on it.</td></tr>
+      </table>
+
+      <!-- 03 ARCHITECTURE -->
+      <h2 id="architecture" data-stage="Architecture">The Layers a Request Crosses</h2>
+      <div class="mermaid sd-diagram">sequenceDiagram
+    participant C as Client
+    participant R as DNS resolver
+    participant S as Server
+    C->>R: Where is example.com? (cached? stop here)
+    R-->>C: 93.184.216.34 (cached for TTL)
+    C->>S: SYN
+    S-->>C: SYN-ACK
+    C->>S: ACK + TLS ClientHello
+    S-->>C: ServerHello + certificate + key share
+    C->>S: Finished + HTTP GET (encrypted)
+    S-->>C: HTTP response (encrypted)
+</div>
+      <p class="sd-diagram-caption">A cold HTTPS request with TLS 1.3: DNS, then 1 RTT for TCP, 1 RTT for TLS, then the request. TLS 1.2 adds one more RTT; QUIC merges TCP + TLS into one.</p>
+      <table>
+        <tr><th>Layer</th><th>Protocol</th><th>Question it answers</th><th>First-time cost</th></tr>
+        <tr><td>Naming</td><td>DNS (over UDP, usually)</td><td>Which IP is this name?</td><td>0 RTT if cached, up to several if cold</td></tr>
+        <tr><td>Transport</td><td>TCP or UDP/QUIC</td><td>How do bytes get there reliably?</td><td>1 RTT (TCP)</td></tr>
+        <tr><td>Security</td><td>TLS</td><td>Is this the real server, and how do we encrypt?</td><td>1 RTT (1.3) / 2 RTT (1.2)</td></tr>
+        <tr><td>Application</td><td>HTTP/1.1, /2, /3, WebSocket, gRPC</td><td>What is being asked and answered?</td><td>1 RTT per request (less with multiplexing)</td></tr>
+      </table>
+
+      <!-- 04 HOW IT WORKS -->
+      <h2 id="tcp-handshake" data-stage="How It Works">The TCP Handshake</h2>
+      <ol class="sd-steps">
+        <li><strong>SYN</strong> — client sends a synchronize packet with an initial sequence number, proposing a connection.</li>
+        <li><strong>SYN-ACK</strong> — server acknowledges and sends its own sequence number back.</li>
+        <li><strong>ACK</strong> — client acknowledges the server's number; the connection is now open.</li>
       </ol>
       <p>That's one full round trip before a single byte of actual data (or TLS negotiation) can begin — the
-      reason connection reuse (HTTP keep-alive, connection pooling to a database — see
-      <a href="../05-database/05a-connection-management-and-database-proxies/index.html">Connection Management and Database Proxies</a>)
-      matters so much: paying the handshake cost once and reusing the connection for many requests is far
-      cheaper than paying it per request. Closing a connection (FIN/ACK from each side, four steps) has its own
-      smaller cost, and a server holding many connections in that teardown state is a real resource-exhaustion
-      concern under high request-per-second load.</p>
+ reason connection reuse (HTTP keep-alive, connection pooling to a database — see
+ <a href="../05-database/05a-connection-management-and-database-proxies/index.html">Connection Management and Database Proxies</a>)
+ matters so much: paying the handshake cost once and reusing the connection for many requests is far
+ cheaper than paying it per request. Closing a connection (FIN/ACK from each side, four steps) has its own
+ smaller cost, and a server holding many connections in that teardown state is a real resource-exhaustion
+ concern under high request-per-second load.</p>
 
-      <h2 id="dns-resolution">DNS resolution, end to end</h2>
+      <h2 id="dns-resolution" data-stage="How It Works">DNS Resolution, End to End</h2>
       <p>Turning <code>example.com</code> into an IP address before a TCP handshake can even start:</p>
-      <ol>
-      <li>Check the browser's own DNS cache, then the OS cache — if the name was resolved recently and its TTL hasn't expired, stop here.</li>
-      <li>Query a <strong>recursive resolver</strong> (the ISP's, or a public one like <code>8.8.8.8</code>/<code>1.1.1.1</code>) which does the rest of the walk on the client's behalf.</li>
-      <li>Resolver asks a <strong>root server</strong> — "who handles <code>.com</code>?" — gets back the <strong>TLD server</strong>'s address.</li>
-      <li>Resolver asks the <strong>TLD server</strong> — "who handles <code>example.com</code>?" — gets back the domain's <strong>authoritative name server</strong>.</li>
-      <li>Resolver asks the <strong>authoritative server</strong> for the actual <code>A</code>/<code>AAAA</code> record, caches the answer for its TTL, and returns it to the client.</li>
+      <ol class="sd-steps">
+        <li>Check the browser's own DNS cache, then the OS cache — if the name was resolved recently and its TTL hasn't expired, stop here.</li>
+        <li>Query a <strong>recursive resolver</strong> (the ISP's, or a public one like <code>8.8.8.8</code>/<code>1.1.1.1</code>) which does the rest of the walk on the client's behalf.</li>
+        <li>Resolver asks a <strong>root server</strong> — "who handles <code>.com</code>?" — gets back the <strong>TLD server</strong>'s address.</li>
+        <li>Resolver asks the <strong>TLD server</strong> — "who handles <code>example.com</code>?" — gets back the domain's <strong>authoritative name server</strong>.</li>
+        <li>Resolver asks the <strong>authoritative server</strong> for the actual <code>A</code>/<code>AAAA</code> record, caches the answer for its TTL, and returns it to the client.</li>
       </ol>
       <p>Every one of those hops is a full round trip the first time (a "cold" lookup can add tens to hundreds
-      of milliseconds), which is why DNS caching and short-but-not-too-short TTLs matter, and why CDN/GSLB
-      routing (see <a href="../traffic/00-load-balancing.html">Load Balancing</a>) exploits this same lookup to
-      return a different, nearer IP depending on where the query came from.</p>
+ of milliseconds), which is why DNS caching and short-but-not-too-short TTLs matter, and why CDN/GSLB
+ routing (see <a href="../traffic/00-load-balancing.html">Load Balancing</a>) exploits this same lookup to
+ return a different, nearer IP depending on where the query came from.</p>
 
-      <h2 id="tls-handshake">The TLS handshake</h2>
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>You lower a record's TTL from 1 hour to 60 seconds right before migrating servers. Why must you do it <em>at least an hour before</em> the migration? (Resolvers that cached the old record keep it for the old TTL; the new short TTL only applies once they re-fetch.)</p>
+      </aside>
+
+      <h2 id="tls-handshake" data-stage="How It Works">The TLS Handshake</h2>
       <p>HTTPS is HTTP over a TCP connection that's had TLS negotiated on top of it first — so a fresh HTTPS
-      request pays for the TCP handshake <em>and</em> the TLS handshake before any HTTP request/response
-      happens.</p>
-      <ul>
-      <li><strong>ClientHello</strong> — client sends the TLS versions and cipher suites it supports, plus a random value.</li>
-      <li><strong>ServerHello + certificate</strong> — server picks a cipher suite, sends its certificate (proving identity, signed by a CA the client trusts) and its own random value.</li>
-      <li><strong>Key exchange</strong> — both sides derive the same shared symmetric session key without ever sending it over the wire (Diffie-Hellman in practice), which then encrypts everything else in the session — symmetric crypto is far cheaper than the asymmetric crypto used just to set that key up.</li>
-      <li><strong>Finished</strong> — both sides confirm the handshake succeeded; encrypted application data (the actual HTTP request) can now flow.</li>
-      </ul>
+ request pays for the TCP handshake <em>and</em> the TLS handshake before any HTTP request/response
+ happens.</p>
+      <ol class="sd-steps">
+        <li><strong>ClientHello</strong> — client sends the TLS versions and cipher suites it supports, plus a random value.</li>
+        <li><strong>ServerHello + certificate</strong> — server picks a cipher suite, sends its certificate (proving identity, signed by a CA the client trusts) and its own random value.</li>
+        <li><strong>Key exchange</strong> — both sides derive the same shared symmetric session key without ever sending it over the wire (Diffie-Hellman in practice), which then encrypts everything else in the session — symmetric crypto is far cheaper than the asymmetric crypto used just to set that key up.</li>
+        <li><strong>Finished</strong> — both sides confirm the handshake succeeded; encrypted application data (the actual HTTP request) can now flow.</li>
+      </ol>
       <p><strong>TLS 1.3</strong> cut this from two round trips to one (and offers a "0-RTT" resumption mode for
-      returning clients) — one of the concrete reasons upgrading matters, not just a version-number bump.
-      <strong>Session resumption</strong> (a session ticket/ID from a previous connection) skips the full
-      handshake on reconnect entirely, which is why a client that closes and reopens connections to the same
-      host repeatedly is far more expensive than one that keeps a connection alive.</p>
+ returning clients) — one of the concrete reasons upgrading matters, not just a version-number bump.
+ <strong>Session resumption</strong> (a session ticket/ID from a previous connection) skips the full
+ handshake on reconnect entirely, which is why a client that closes and reopens connections to the same
+ host repeatedly is far more expensive than one that keeps a connection alive.</p>
 
-      <h2 id="http-versions">HTTP/1.1 vs. HTTP/2 vs. HTTP/3</h2>
+      <h2 id="http-versions" data-stage="How It Works">HTTP/1.1 vs. HTTP/2 vs. HTTP/3</h2>
       <table>
-      <tr><th></th><th>HTTP/1.1</th><th>HTTP/2</th><th>HTTP/3</th></tr>
-      <tr><td>Transport</td><td>TCP</td><td>TCP</td><td><strong>QUIC</strong> — over UDP</td></tr>
-      <tr><td>Multiplexing</td><td>No — one request waits for the previous one to finish per connection (browsers work around this by opening several parallel connections)</td><td>Yes — many requests/responses interleaved on a single connection</td><td>Yes, and without HTTP/2's remaining weakness (below)</td></tr>
-      <tr><td>Head-of-line blocking</td><td>Severe — a slow response blocks everything behind it on that connection</td><td>Fixed at the HTTP layer, but still present at the <em>TCP</em> layer — one lost packet stalls every multiplexed stream until it's retransmitted</td><td>Fixed at both layers — QUIC's streams are independent, so a lost packet only stalls the one stream it belongs to</td></tr>
-      <tr><td>Header compression</td><td>None — headers sent in full, every request</td><td>HPACK</td><td>QPACK (HPACK adapted for QUIC's out-of-order delivery)</td></tr>
-      <tr><td>Connection setup</td><td>TCP handshake, then TLS handshake, separately</td><td>Same as HTTP/1.1</td><td>QUIC folds the transport and TLS 1.3 handshake into a single round trip (0-RTT on resumption)</td></tr>
-      <tr><td>Server push</td><td>No</td><td>Yes (in practice, little-used and being deprecated in browsers)</td><td>No (removed)</td></tr>
+        <tr><th></th><th>HTTP/1.1</th><th>HTTP/2</th><th>HTTP/3</th></tr>
+        <tr><td>Transport</td><td>TCP</td><td>TCP</td><td><strong>QUIC</strong> — over UDP</td></tr>
+        <tr><td>Multiplexing</td><td>No — one request waits for the previous one to finish per connection (browsers work around this by opening several parallel connections)</td><td>Yes — many requests/responses interleaved on a single connection</td><td>Yes, and without HTTP/2's remaining weakness (below)</td></tr>
+        <tr><td>Head-of-line blocking</td><td>Severe — a slow response blocks everything behind it on that connection</td><td>Fixed at the HTTP layer, but still present at the <em>TCP</em> layer — one lost packet stalls every multiplexed stream until it's retransmitted</td><td>Fixed at both layers — QUIC's streams are independent, so a lost packet only stalls the one stream it belongs to</td></tr>
+        <tr><td>Header compression</td><td>None — headers sent in full, every request</td><td>HPACK</td><td>QPACK (HPACK adapted for QUIC's out-of-order delivery)</td></tr>
+        <tr><td>Connection setup</td><td>TCP handshake, then TLS handshake, separately</td><td>Same as HTTP/1.1</td><td>QUIC folds the transport and TLS 1.3 handshake into a single round trip (0-RTT on resumption)</td></tr>
+        <tr><td>Server push</td><td>No</td><td>Yes (in practice, little-used and being deprecated in browsers)</td><td>No (removed)</td></tr>
       </table>
 
-      <h2 id="websockets-grpc-http">WebSockets vs. gRPC vs. plain HTTP</h2>
+      <aside class="sd-callout mistake">
+        <p class="sd-callout-title">⚠️ Common mistake</p>
+        <p>"HTTP/2 solved head-of-line blocking." Only at the HTTP layer. On a lossy mobile network, one dropped TCP packet still stalls <em>every</em> stream on the connection — sometimes making HTTP/2 slower than HTTP/1.1's several parallel connections. That is the specific problem HTTP/3 exists for.</p>
+      </aside>
+
+      <h2 id="websockets-grpc-http" data-stage="How It Works">WebSockets vs. gRPC vs. Plain HTTP</h2>
       <table>
-      <tr><th></th><th>Plain HTTP (polling)</th><th>WebSockets</th><th>gRPC</th></tr>
-      <tr><td>Direction</td><td>Client-initiated request/response only</td><td>Full-duplex — either side can push at any time, over one long-lived connection</td><td>Request/response by default; also supports client/server/bidirectional streaming</td></tr>
-      <tr><td>Protocol</td><td>Text-based HTTP, usually JSON</td><td>Its own framed protocol after an HTTP Upgrade handshake</td><td>HTTP/2 + Protocol Buffers (binary, schema-defined)</td></tr>
-      <tr><td>Best for</td><td>Simple request/response, cacheable resources, public APIs</td><td>Live, bidirectional, low-latency use cases — chat, live cursors, trading tickers, notifications</td><td>Internal service-to-service calls where a shared schema and low serialization overhead matter more than human-readability</td></tr>
-      <tr><td>Watch out for</td><td>Polling too often wastes requests; too rarely feels laggy — see also long-polling as a middle ground (hold the request open until there's something to return)</td><td>Stateful connection ties a client to one server instance — see <a href="../traffic/00-load-balancing.html">session affinity</a>; needs its own reconnect/heartbeat logic</td><td>Not human-readable on the wire, and browser support needs a proxy (gRPC-Web) since browsers can't drive raw HTTP/2 streams directly</td></tr>
+        <tr><th></th><th>Plain HTTP (polling)</th><th>WebSockets</th><th>gRPC</th></tr>
+        <tr><td>Direction</td><td>Client-initiated request/response only</td><td>Full-duplex — either side can push at any time, over one long-lived connection</td><td>Request/response by default; also supports client/server/bidirectional streaming</td></tr>
+        <tr><td>Protocol</td><td>Text-based HTTP, usually JSON</td><td>Its own framed protocol after an HTTP Upgrade handshake</td><td>HTTP/2 + Protocol Buffers (binary, schema-defined)</td></tr>
+        <tr><td>Best for</td><td>Simple request/response, cacheable resources, public APIs</td><td>Live, bidirectional, low-latency use cases — chat, live cursors, trading tickers, notifications</td><td>Internal service-to-service calls where a shared schema and low serialization overhead matter more than human-readability</td></tr>
+        <tr><td>Watch out for</td><td>Polling too often wastes requests; too rarely feels laggy — see also long-polling as a middle ground (hold the request open until there's something to return)</td><td>Stateful connection ties a client to one server instance — see <a href="../traffic/00-load-balancing.html">session affinity</a>; needs its own reconnect/heartbeat logic</td><td>Not human-readable on the wire, and browser support needs a proxy (gRPC-Web) since browsers can't drive raw HTTP/2 streams directly</td></tr>
       </table>
       <div class="sd-study-note tip"><span class="sd-note-title">Pick by direction of data flow, then by audience</span><p>If only the client ever initiates, plain HTTP is enough. If the server needs to push without being asked, that's WebSockets (browser-facing) or gRPC streaming (service-to-service). If it's internal microservice traffic where every caller controls their own client, gRPC's schema and binary framing usually win over hand-rolled JSON HTTP.</p></div>
 
-      <h2 id="interview-checklist">Interview checklist</h2>
+      <!-- 05 IMPLEMENTATION -->
+      <h2 id="implementation" data-stage="Implementation">Implementation: Seeing Each Layer Yourself</h2>
+      <pre><code>dig example.com +noall +answer
+dig +trace example.com
+curl -o /dev/null -s -w "dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appconnect} ttfb=%{time_starttransfer} total=%{time_total}\n" https://example.com/
+openssl s_client -connect example.com:443 -servername example.com
+curl -sI --http2 https://example.com/
+ss -tan state time-wait | wc -l</code></pre>
       <ul>
-      <li>Separate the three costs of "a fresh HTTPS request to a new host": DNS lookup, TCP handshake, TLS handshake — and know that connection reuse and session resumption are how real systems avoid paying them repeatedly.</li>
-      <li>Justify TCP vs. UDP by whether ordered, guaranteed delivery is actually required, not by default.</li>
-      <li>If the design streams or pushes data to a client, name WebSockets/gRPC explicitly and say why plain request/response polling doesn't fit.</li>
-      <li>Know that HTTP/2 fixed application-level head-of-line blocking but not the TCP-level one — and that's specifically what HTTP/3 (QUIC) fixes.</li>
-      <li>DNS and CDN routing are the same trick — the first lookup can point a client at a different, nearer server depending on where the query originated.</li>
+        <li><code>dig … +answer</code> — the record and its remaining TTL as your resolver sees it.</li>
+        <li><code>dig +trace</code> — performs the root → TLD → authoritative walk itself, showing each hop from <a href="#dns-resolution">DNS resolution</a>.</li>
+        <li><code>curl -w</code> — cumulative timestamps: <code>time_namelookup</code> (DNS done), <code>time_connect</code> (TCP done), <code>time_appconnect</code> (TLS done), <code>time_starttransfer</code> (first response byte). Subtract neighbours to get each layer's cost.</li>
+        <li><code>openssl s_client … -servername</code> — performs the TLS handshake and prints the certificate chain, negotiated protocol and cipher; <code>-servername</code> sends SNI so the server picks the right certificate.</li>
+        <li><code>curl --http2</code> — confirms which HTTP version was negotiated (the status line shows <code>HTTP/2</code>).</li>
+        <li><code>ss -tan state time-wait</code> — counts sockets in TIME_WAIT, the teardown state from <a href="#tcp-handshake">the TCP handshake</a> section.</li>
       </ul>
+
+      <!-- 06 PRODUCTION -->
+      <h2 id="production" data-stage="Production">Production Usage</h2>
+      <table>
+        <tr><th></th><th>Low scale</th><th>High scale</th></tr>
+        <tr><td>Connection setup</td><td>Mostly invisible; a few new connections per second.</td><td>Thousands of handshakes/s cost real CPU (TLS) and sockets — keep-alive, pooling and TLS session resumption become mandatory.</td></tr>
+        <tr><td>DNS</td><td>One record, long TTL.</td><td>GeoDNS/GSLB with short TTLs, health-checked records, anycast resolvers.</td></tr>
+        <tr><td>Where TLS ends</td><td>On the app server or a single proxy.</td><td>At CDN edges and load balancers close to users, cutting the TLS RTTs to the nearest PoP.</td></tr>
+        <tr><td>Protocols</td><td>HTTP/1.1 is fine.</td><td>HTTP/2 or HTTP/3 to clients; gRPC between services; WebSockets need LB idle-timeout and affinity tuning.</td></tr>
+      </table>
+      <h3 id="observability">Signals to watch</h3>
+      <table>
+        <tr><th>Signal</th><th>What it tells you</th></tr>
+        <tr><td>DNS lookup time / resolver errors (SERVFAIL, NXDOMAIN rate)</td><td>Resolver health and misconfigured records.</td></tr>
+        <tr><td>TCP connect time</td><td>Network distance and server accept-queue pressure.</td></tr>
+        <tr><td>TLS handshake time and handshake failures</td><td>Certificate problems, CPU-bound TLS, missing session resumption.</td></tr>
+        <tr><td>TCP retransmission rate</td><td>Packet loss — the trigger for HTTP/2 HOL stalls.</td></tr>
+        <tr><td>New vs. reused connections; TIME_WAIT count</td><td>Whether keep-alive/pooling is actually working.</td></tr>
+        <tr><td>Certificate expiry (days left)</td><td>The most common entirely preventable outage.</td></tr>
+      </table>
+
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>Measure from where your users are. A dashboard built from a server in the same region as your backend shows a 1 ms RTT and hides the 200 ms round trips your users in another continent pay four times per cold request — which is exactly the cost CDN edges remove.</p>
+      </aside>
+
+      <!-- 07 SECURITY -->
+      <h2 id="security" data-stage="Security">Security</h2>
+      <ul>
+        <li><strong>Certificate validation is the whole point of TLS identity</strong> — the client checks the chain up to a trusted CA, the expiry date and that the hostname matches. Disabling verification (<code>curl -k</code>, <code>verify=False</code>) in production code makes man-in-the-middle attacks trivial.</li>
+        <li><strong>Allow only TLS 1.2+</strong> (prefer 1.3); older versions and weak ciphers have known attacks.</li>
+        <li><strong>HSTS</strong> (<code>Strict-Transport-Security</code> header) tells browsers to refuse plain HTTP for your domain, closing the downgrade window on the first redirect.</li>
+        <li><strong>0-RTT data can be replayed</strong> by an attacker who captures it, so servers should accept only idempotent requests (like <code>GET</code>) in TLS 1.3 / QUIC early data.</li>
+        <li><strong>DNS answers can be spoofed or hijacked</strong>; DNSSEC signs records, and registrar account security (MFA, registry lock) protects against domain takeover.</li>
+        <li><strong>WebSockets</strong> carry no automatic CSRF-style origin protection — check the <code>Origin</code> header and authenticate the upgrade request.</li>
+      </ul>
+
+      <!-- 08 PERFORMANCE -->
+      <h2 id="performance" data-stage="Performance &amp; Scalability">Performance &amp; Scalability</h2>
+      <table>
+        <tr><th>Lever</th><th>What it removes</th></tr>
+        <tr><td>Keep-alive / connection pooling</td><td>The TCP + TLS handshakes on every request after the first.</td></tr>
+        <tr><td>TLS 1.3 + session resumption</td><td>One RTT (1.3), or the full handshake (resumption) on reconnect.</td></tr>
+        <tr><td>DNS caching with sensible TTLs</td><td>The resolution walk on repeat lookups.</td></tr>
+        <tr><td>CDN / edge termination</td><td>Long-distance RTTs: handshakes complete against a nearby PoP.</td></tr>
+        <tr><td>HTTP/2 multiplexing</td><td>Extra parallel connections and HTTP-level HOL blocking.</td></tr>
+        <tr><td>HTTP/3 (QUIC)</td><td>TCP-level HOL blocking on lossy networks; merges transport + TLS setup.</td></tr>
+      </table>
+      <p><strong>Bottlenecks at scale:</strong> ephemeral ports and TIME_WAIT sockets when a client opens a new connection per request; TLS handshake CPU on servers without resumption; file-descriptor limits for servers holding many long-lived WebSocket connections.</p>
+
+      <!-- 09 TROUBLESHOOTING -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Failure Scenarios</h2>
+      <table>
+        <tr><th>Symptom</th><th>Possible cause</th><th>Detect / debug</th><th>Fix</th><th>Prevent</th></tr>
+        <tr><td>"Could not resolve host"</td><td>Missing/typo'd record, NXDOMAIN, resolver down.</td><td><code>dig name</code>, <code>dig @1.1.1.1 name</code> (compare resolvers), <code>dig +trace</code>.</td><td>Fix the record; use a working resolver.</td><td>Record changes via IaC + review; monitor resolution.</td></tr>
+        <tr><td>Some users still hit the old server after a migration</td><td>Old answer cached until its TTL expires.</td><td><code>dig</code> shows the old IP with remaining TTL.</td><td>Keep the old server serving until TTLs expire.</td><td>Lower TTL well before migrations.</td></tr>
+        <tr><td>Connection refused</td><td>Nothing listening on that port (service down, wrong port).</td><td><code>nc -vz host 443</code> fails fast; <code>ss -ltnp</code> on the server.</td><td>Start the service / fix the port.</td><td>Health checks.</td></tr>
+        <tr><td>Connection timeout</td><td>Firewall/security group dropping packets, wrong route, host down.</td><td><code>nc -vz</code> hangs; check security groups and routes.</td><td>Open the port from the right source.</td><td>Network config as code.</td></tr>
+        <tr><td>TLS error: certificate expired / name mismatch / unknown CA</td><td>Expired cert, cert for another hostname, missing intermediate in the chain.</td><td><code>openssl s_client -connect host:443 -servername host</code> shows chain, dates and verify result.</td><td>Renew; serve the full chain; correct SAN.</td><td>Automated renewal + expiry alerts.</td></tr>
+        <tr><td>WebSocket connections drop every N seconds</td><td>LB/proxy idle timeout shorter than the app's heartbeat interval.</td><td>Disconnects at a fixed interval.</td><td>Heartbeat more often than the idle timeout, or raise the timeout.</td><td>Configure timeouts for long-lived connections explicitly.</td></tr>
+        <tr><td>Client can't open new connections ("cannot assign requested address")</td><td>Ephemeral port exhaustion from a connection per request.</td><td><code>ss -tan state time-wait | wc -l</code> very high.</td><td>Reuse connections (keep-alive, pools).</td><td>Pooled HTTP/DB clients by default.</td></tr>
+      </table>
+      <h3 id="debug-workflow">Debugging workflow</h3>
+      <ol class="sd-steps">
+        <li><strong>Name:</strong> <code>dig name</code> — right IP? Compare with another resolver.</li>
+        <li><strong>Reachability:</strong> <code>nc -vz host port</code> — refused (nothing listening) vs. timeout (packets dropped).</li>
+        <li><strong>TLS:</strong> <code>openssl s_client -connect host:443 -servername host</code> — chain, expiry, hostname.</li>
+        <li><strong>HTTP:</strong> <code>curl -v</code> — status, headers, negotiated protocol.</li>
+        <li><strong>Timing:</strong> <code>curl -w</code> breakdown — which layer is slow?</li>
+        <li><strong>Server side:</strong> <code>ss -ltnp</code>, connection counts, retransmits.</li>
+      </ol>
+
+      <!-- 10 BEST PRACTICES -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul>
+        <li><strong>Reuse connections everywhere</strong> (HTTP keep-alive, DB/HTTP client pools) — the handshakes are the expensive part.</li>
+        <li><strong>Terminate TLS close to users</strong> (CDN/edge) and enable TLS 1.3 + resumption.</li>
+        <li><strong>Plan TTLs around changes</strong> — lower them before migrations, raise them when stable.</li>
+        <li><strong>Choose the protocol by data-flow direction</strong>: request/response → HTTP; server push → WebSockets / gRPC streaming.</li>
+        <li><strong>Alert on certificate expiry</strong> weeks in advance.</li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul>
+        <li><strong>Disabling certificate verification</strong> to "fix" a TLS error.</li>
+        <li><strong>Choosing UDP "because it's faster"</strong> when you then need to rebuild reliability on top.</li>
+        <li><strong>Very long TTLs on records you may need to fail over.</strong></li>
+        <li><strong>Opening a new connection per request</strong> in service-to-service clients.</li>
+      </ul>
+
+      <!-- 11 INTERVIEW PREPARATION -->
+      <h2 id="interview-answer" data-stage="Interview Preparation">Interview Answer — What Happens on the Network When a Client Calls a Server?</h2>
+      <p>Networking fundamentals, for system design, are the steps that must happen below the application before a single HTTP request can be answered: a <strong>DNS</strong> lookup turns a hostname into an IP address, a <strong>TCP</strong> handshake opens a reliable connection to that IP, a <strong>TLS</strong> handshake agrees on encryption keys on top of that connection, and only then does the <strong>HTTP</strong> request and response flow.</p>
+      <p>These steps matter because each one costs one or more network round trips. The cause → effect chain for a first HTTPS request to a new host is: DNS lookup (up to several round trips if nothing is cached) → TCP handshake (one round trip) → TLS handshake (one round trip with TLS 1.3, two with TLS 1.2) → the HTTP request itself. For a user 150 ms away, that setup alone can cost half a second — which is why real systems reuse connections (keep-alive, connection pools), cache DNS answers, resume TLS sessions, and put CDN edges close to users.</p>
+      <p>The protocol choices built on top follow from the same trade-offs. <strong>TCP</strong> guarantees ordered, reliable delivery; <strong>UDP</strong> does not, but has no handshake or retransmission delay. <strong>HTTP/2</strong> multiplexes many requests on one TCP connection; <strong>HTTP/3</strong> runs over QUIC on UDP to remove TCP's head-of-line blocking. <strong>WebSockets</strong> and <strong>gRPC streaming</strong> exist for cases where the server must push data without the client asking.</p>
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Before an HTTPS request is answered, the client resolves the hostname with DNS, opens a TCP connection with a three-way handshake, negotiates encryption with a TLS handshake, and then sends the HTTP request. Each step costs round trips, so systems reuse connections, cache DNS, resume TLS sessions, and use CDNs to cut latency. TCP gives reliable ordered delivery, UDP trades that for speed, HTTP/2 multiplexes requests over one connection, HTTP/3 moves to QUIC over UDP, and WebSockets or gRPC streaming are used when the server needs to push data."</p>
+      </div>
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: HTTP/2 multiplexes requests on one connection — doesn't that fully solve head-of-line blocking?</strong></p>
+      <p><strong>A:</strong> No. HTTP/2 removes head-of-line blocking at the HTTP layer — a slow response no longer blocks the responses queued behind it. But all those streams still share one TCP connection, and TCP delivers bytes strictly in order, so one lost packet stalls every stream on the connection until it is retransmitted. HTTP/3 fixes this by running over QUIC on UDP, where each stream is ordered independently, so a lost packet only delays its own stream. See <a href="#http-versions">HTTP/1.1 vs. HTTP/2 vs. HTTP/3</a> above.</p>
+
+      <h3 id="interview-checklist">Interview checklist</h3>
+      <ul>
+        <li>Separate the three costs of "a fresh HTTPS request to a new host": DNS lookup, TCP handshake, TLS handshake — and know that connection reuse and session resumption are how real systems avoid paying them repeatedly.</li>
+        <li>Justify TCP vs. UDP by whether ordered, guaranteed delivery is actually required, not by default.</li>
+        <li>If the design streams or pushes data to a client, name WebSockets/gRPC explicitly and say why plain request/response polling doesn't fit.</li>
+        <li>Know that HTTP/2 fixed application-level head-of-line blocking but not the TCP-level one — and that's specifically what HTTP/3 (QUIC) fixes.</li>
+        <li>DNS and CDN routing are the same trick — the first lookup can point a client at a different, nearer server depending on where the query originated.</li>
+      </ul>
+
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>How many round trips does a cold HTTPS request cost before the response starts?</summary>
+          <p>DNS (0 if cached, several if cold) + 1 for TCP + 1 for TLS 1.3 (2 for TLS 1.2) + 1 for the HTTP request/response. QUIC merges TCP and TLS into one.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>When would you pick UDP over TCP?</summary>
+          <p>When a late packet is worthless and you'd rather skip it than wait — live voice/video, games, DNS queries — or when you build your own transport on top (QUIC).</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What's the difference between TLS and HTTPS?</summary>
+          <p>TLS is the encryption and identity layer; HTTPS is ordinary HTTP sent over a TLS connection.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Why do connection pools and keep-alive matter so much?</summary>
+          <p>They pay the TCP and TLS handshakes once and reuse the connection for many requests. Without them every request pays 2–3 extra RTTs plus TLS CPU, and high-rate clients exhaust ephemeral ports with TIME_WAIT sockets.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>How does a DNS TTL affect failover?</summary>
+          <p>Resolvers keep serving the cached answer until the TTL expires, so a region failover via DNS takes effect only as caches expire. Short TTLs speed failover but increase resolver load and lookup latency.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>WebSockets or polling for a live notifications feed?</summary>
+          <p>WebSockets (or SSE) if the server must push promptly — one long-lived connection instead of repeated requests. Plan for reconnects, heartbeats, LB idle timeouts and affinity, since the connection is stateful.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Why does HTTP/2 still suffer head-of-line blocking, and how does HTTP/3 fix it?</summary>
+          <p>All HTTP/2 streams share one TCP connection, and TCP delivers bytes in order, so one lost packet stalls every stream. QUIC orders each stream independently over UDP, so loss only delays the affected stream.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>What's the risk of TLS 1.3 0-RTT?</summary>
+          <p>Early data can be captured and replayed, so the server might execute it twice. Accept only idempotent requests as 0-RTT.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Why might gRPC be a bad fit for a browser-facing API?</summary>
+          <p>Browsers can't drive raw HTTP/2 streams, so gRPC needs a gRPC-Web proxy; the binary protobuf payloads also aren't human-readable or cacheable like plain HTTP/JSON. It shines for internal service-to-service calls.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>An API is fast from the US but slow from Asia; server time is identical. What do you check?</summary>
+          <p>Round trips: <code>curl -w</code> from Asia to split DNS / TCP / TLS / TTFB. Long RTTs multiplied by setup handshakes dominate. Fix with connection reuse, TLS termination at a nearby edge/CDN, TLS 1.3, and caching.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Some clients fail TLS with "unable to get local issuer certificate" but browsers work. Why?</summary>
+          <p>The server isn't sending the intermediate certificate. Browsers often fetch or cache intermediates; strict clients (curl, mobile apps, other services) don't. Serve the full chain; verify with <code>openssl s_client</code>.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>A service starts failing outbound calls with "cannot assign requested address" under load. Why?</summary>
+          <p>Ephemeral port exhaustion: it opens a new TCP connection per request, leaving thousands in TIME_WAIT. Use keep-alive and a connection pool.</p></details>
+      </section>
+
+      <!-- 12 SUMMARY -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>Before one HTTPS response: DNS → TCP (1 RTT) → TLS (1 RTT in 1.3, 2 in 1.2) → HTTP.</li>
+        <li>Latency is dominated by round trips; reuse, caching, resumption and edges remove them.</li>
+        <li>TCP = reliable, ordered; UDP = no handshake, no waiting for lost packets.</li>
+        <li>DNS TTLs govern both lookup latency and how fast a failover takes effect.</li>
+        <li>HTTP/2 multiplexes but keeps TCP HOL blocking; HTTP/3 (QUIC) removes it.</li>
+        <li>Pick protocols by data-flow direction: HTTP for request/response, WebSockets/gRPC streaming for push.</li>
+        <li>Never disable certificate verification; automate renewal and alert on expiry.</li>
+      </ol>
+      <h3 id="quick-commands">Quick commands</h3>
+      <ul class="sd-commands">
+        <li><code>dig +trace example.com</code> — walk DNS resolution</li>
+        <li><code>nc -vz example.com 443</code> — refused vs. timeout</li>
+        <li><code>openssl s_client -connect example.com:443 -servername example.com</code> — inspect TLS</li>
+        <li><code>curl -o /dev/null -s -w "dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appconnect} ttfb=%{time_starttransfer}\n" https://example.com/</code> — per-layer timing</li>
+      </ul>
+
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <div class="sd-next">
+        <a href="../caching/00-caching-and-cdn-fundamentals.html"><strong>Caching &amp; CDN Fundamentals</strong><span>How to avoid paying these round trips at all.</span></a>
+        <a href="../traffic/00-load-balancing.html"><strong>Load Balancing</strong><span>How traffic is spread once it arrives.</span></a>
+        <a href="../01-front-end/graphql/http/04-client-server-model.html"><strong>Client-Server Model, End to End</strong><span>The same path from the browser's point of view.</span></a>
+      </div>
 
     </main>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

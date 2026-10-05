@@ -17,7 +17,10 @@
      [data-stat-topics] / [data-stat-pages] -> counts (index pages)
      [data-weekly-target]   -> "this week's reading target" widget (homepage)
      .sidebar               -> a search box that filters the nav
-     content <h2>s (3+)     -> an "On this page" contents list
+     content <h2>s (3+)     -> a numbered topic outline (left sidebar on desktop,
+                               collapsed box + pinned part chips on mobile)
+     the content area        -> a study panel to its right (Interview / Notes /
+                               Reminders / Review / Commands), below it on narrow screens
      end of the content     -> previous / next page cards
      every <p> (and every substantial <li>) in the content area -> a "🗒️+"
                                             note marker, or the note you already saved there
@@ -551,6 +554,7 @@
     Array.prototype.forEach.call(container.querySelectorAll(sel), function (el) {
       if (el.closest("[data-breadcrumb]")) return;               // skip the nav trail
       if (el.closest("[data-sd-ui]")) return;                    // injected UI (contents, pager)
+      if (el.closest(".sd-interview .sd-qa")) return;            // moves into the study panel
       for (var k = 0; k < taken.length; k++) {
         if (taken[k].contains(el)) return;                       // already inside a chunk
       }
@@ -781,6 +785,7 @@
       if (el.closest("[data-sd-ui]")) return;
       if (el.closest(".sd-note-card") || el.closest(".sd-note-form")) return;
       if (el.closest(".sd-learn") || el.closest(".sd-next")) return;      // lesson nav blocks, not content
+      if (el.closest(".sd-interview .sd-qa")) return;                     // moves into the study panel
       if (el.classList.contains("sd-callout-title")) return;
       var text = (el.textContent || "").replace(/\s+/g, " ").trim();
       if (text.length < 2) return;
@@ -1043,13 +1048,24 @@
     if (footer) container.insertBefore(pager, footer); else container.appendChild(pager);
   }
 
-  /* ---- "On this page": a contents list built from the content's <h2>s
-     (only when there are 3+). On wide screens (≥1400px) it sits in a sticky
-     rail to the right of the text and highlights the section being read; on
-     narrower screens it's a collapsed box just above the content. Headings
-     without an id get one (slug of their text) so the links can target them;
-     existing ids are never changed. Lesson pages (h2[data-stage]) get part
-     labels; every page gets a "Section n of N" meter and an "Up next" link. ---- */
+  /* ---- topic outline: a numbered contents list built from the content's <h2>s
+     (only when there are 3+). Topic pages tag each <h2> with data-stage="…";
+     the twelve standard parts (STAGE_ORDER) always carry the same number on
+     every page — "09 Troubleshooting" means the same thing everywhere — and a
+     part a topic doesn't need is simply absent (never an empty heading).
+     Older lesson stages ("Foundations", "In production" …) keep their label
+     unnumbered. Desktop (> 860px): the outline sits at the top of the LEFT
+     sidebar, above the site navigation, and highlights the part being read.
+     Narrow screens: a collapsed "On this page" box above the content, plus a
+     horizontal strip of part chips pinned in the sticky bar. Headings without
+     an id get one (slug of their text); existing ids are never changed. ---- */
+  var STAGE_ORDER = ["Overview", "Core Concepts", "Architecture", "How It Works", "Implementation",
+    "Production", "Security", "Performance & Scalability", "Troubleshooting", "Best Practices",
+    "Interview Preparation", "Summary"];
+  function stageNum(stage) {
+    var i = STAGE_ORDER.indexOf(stage);
+    return i === -1 ? "" : (i < 9 ? "0" : "") + (i + 1);
+  }
   function renderToc() {
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", renderToc, { once: true });
@@ -1058,7 +1074,7 @@
     var container = findReadableEl();
     if (!container) return;
     var heads = Array.prototype.filter.call(container.querySelectorAll("h2"), function (h) {
-      return !h.closest("[data-sd-ui]") && (h.textContent || "").trim();
+      return !h.closest("[data-sd-ui]") && !h.closest(".sd-learn") && (h.textContent || "").trim();
     });
     if (heads.length < 3) return;
 
@@ -1090,23 +1106,36 @@
     where.appendChild(meter);
     toc.appendChild(where);
 
-    // lesson pages group their <h2>s into parts via data-stage="Foundations" etc.;
-    // a part label is emitted whenever the stage changes
+    // a part label is emitted whenever data-stage changes; numbered parts also
+    // label the heading itself (h2[data-stage-label] — see site.css)
     var list = document.createElement("ol");
     var links = [];
     var stageLabels = [];
+    var stages = [];          // [{label, head}] — one per part, for the mobile chip strip
     var lastStage = null;
-    heads.forEach(function (h) {
+    heads.forEach(function (h, i) {
       if (!h.id) h.id = slug(h.textContent.trim());
       var stage = h.getAttribute("data-stage");
+      var num = stage ? stageNum(stage) : "";
+      if (stage) h.setAttribute("data-stage-label", (num ? num + " · " : "") + stage);
       if (stage && stage !== lastStage) {
         var sl = document.createElement("li");
         sl.className = "sd-toc-stage";
-        sl.textContent = stage;
+        var sa = document.createElement("a");
+        sa.href = "#" + h.id;
+        if (num) {
+          var sn = document.createElement("span");
+          sn.className = "sd-toc-num";
+          sn.textContent = num;
+          sa.appendChild(sn);
+        }
+        sa.appendChild(document.createTextNode(stage));
+        sl.appendChild(sa);
         list.appendChild(sl);
+        stages.push({ label: (num ? num + " " : "") + stage, head: i });
         lastStage = stage;
       }
-      stageLabels.push(stage || lastStage);
+      stageLabels.push(stage ? (num ? num + " " : "") + stage : (lastStage || ""));
       var li = document.createElement("li");
       var a = document.createElement("a");
       a.href = "#" + h.id;
@@ -1117,8 +1146,7 @@
     });
     toc.appendChild(list);
 
-    // "Up next": the following page in the sidebar's reading order, so the rail
-    // always answers "what do I read after this?"
+    // "Up next": the following page in the sidebar's reading order
     if (entry) {
       var order = readingOrder(), at = -1;
       order.forEach(function (p, i) { if (p.href === entry.href) at = i; });
@@ -1135,25 +1163,37 @@
       }
     }
 
-    // inline spot: after the lead line / title, before the content proper
-    var anchor = container.querySelector("[data-page-subtitle]") || container.querySelector("[data-page-title]");
-    function placeInline() {
-      if (anchor) anchor.insertAdjacentElement("afterend", toc);
-      else container.insertBefore(toc, container.firstChild);
-      toc.open = false;
+    // mobile: a horizontal, pinned strip of part chips (lesson pages only)
+    var strip = null, chips = [];
+    if (stages.length >= 2 && stickyStrip) {
+      strip = document.createElement("nav");
+      strip.className = "sd-stage-strip";
+      strip.setAttribute("aria-label", "Parts of this page");
+      stages.forEach(function (s) {
+        var c = document.createElement("a");
+        c.href = "#" + heads[s.head].id;
+        c.textContent = s.label;
+        strip.appendChild(c);
+        chips.push({ a: c, head: s.head });
+      });
+      stickyStrip.appendChild(strip);
+      syncStickyHeight();
     }
-    // rail spot: next to the content column, only when it's a real column
-    var railHost = /^(MAIN)$/.test(container.tagName) || container.classList.contains("sd-study-main")
-      ? container.parentElement : null;
-    var mq = window.matchMedia ? window.matchMedia("(min-width: 1400px)") : null;
+
+    var sidebar = document.querySelector(".sidebar");
+    var anchor = container.querySelector("[data-page-subtitle]") || container.querySelector("[data-page-title]");
+    var mq = window.matchMedia ? window.matchMedia("(min-width: 861px)") : null;
     function place() {
-      if (railHost && mq && mq.matches) {
-        railHost.classList.add("sd-has-toc-rail");
-        container.insertAdjacentElement("afterend", toc);
+      if (sidebar && mq && mq.matches) {
+        // desktop: top of the left sidebar, above the search box + site nav
+        toc.classList.add("sd-toc-side");
+        sidebar.insertBefore(toc, sidebar.querySelector(".sd-nav-search") || sidebar.querySelector("nav"));
         toc.open = true;
       } else {
-        if (railHost) railHost.classList.remove("sd-has-toc-rail");
-        placeInline();
+        toc.classList.remove("sd-toc-side");
+        if (anchor) anchor.insertAdjacentElement("afterend", toc);
+        else container.insertBefore(toc, container.firstChild);
+        toc.open = false;
       }
     }
     place();
@@ -1161,13 +1201,13 @@
       if (mq.addEventListener) mq.addEventListener("change", place);
       else if (mq.addListener) mq.addListener(place);
     }
-    // the rail stays open; clicking its title shouldn't collapse it
+    // the sidebar outline stays open; clicking its title shouldn't collapse it
     sum.addEventListener("click", function (ev) {
-      if (railHost && railHost.classList.contains("sd-has-toc-rail")) ev.preventDefault();
+      if (toc.classList.contains("sd-toc-side")) ev.preventDefault();
     });
 
     // highlight the section currently at the top of the reading area
-    var ticking = false;
+    var ticking = false, lastChip = null;
     function spy() {
       ticking = false;
       var line = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--sd-sticky-h")) || 0;
@@ -1179,11 +1219,625 @@
       whereText.textContent = "Section " + (shown + 1) + " of " + heads.length +
         (stageLabels[shown] ? " · " + stageLabels[shown] : "");
       meterFill.style.width = Math.round(((cur + 1) / heads.length) * 100) + "%";
+      if (chips.length) {
+        var on = null;
+        chips.forEach(function (c) { if (c.head <= shown) on = c; });
+        chips.forEach(function (c) { c.a.classList.toggle("active", c === on); });
+        if (on && on !== lastChip && strip.offsetParent !== null) {
+          strip.scrollTo({ left: on.a.offsetLeft - 12, behavior: "smooth" });
+        }
+        lastChip = on;
+      }
+      if (toc.classList.contains("sd-toc-side") && links[shown] && sidebar) {
+        // keep the active outline entry visible inside the scrolling sidebar
+        var r = links[shown].getBoundingClientRect(), sr = sidebar.getBoundingClientRect();
+        if (r.top < sr.top + 40 || r.bottom > sr.bottom - 40) {
+          sidebar.scrollTop += r.top - sr.top - sr.height / 3;
+        }
+      }
     }
     window.addEventListener("scroll", function () {
       if (!ticking) { ticking = true; window.requestAnimationFrame(spy); }
     }, { passive: true });
     spy();
+  }
+
+  /* ---- study panel: the revision workspace to the RIGHT of the content
+     (≥ 1280px; below the content on narrower screens). It never holds theory —
+     only the layer you revise and practise with:
+       Interview  – questions grouped Basic / Intermediate / Advanced / Scenario.
+                    Topic pages author them in <section class="sd-interview"> as
+                    <details class="sd-qa" data-level="…"><summary>Q</summary>…A…</details>;
+                    those are MOVED here (the page keeps a pointer). Pages without
+                    that section get questions harvested (copied) from what they
+                    already have: the Interview Answer block, its follow-up Q&A,
+                    "Quick check" items, 🎯 interview callouts, and "…?" headings.
+       Notes      – a free-form scratchpad for this page (+ the inline 🗒️ notes)
+       Reminders  – a per-page checklist: suggested items + your own
+       Review     – headings / questions you flagged "review later", site-wide
+       Commands   – CLI lines found in this page's code blocks, with copy buttons
+     All state is per-viewer localStorage (no server), like the inline notes. ---- */
+  var PAD_KEY = "sdnotes_pad_" + map.siteId;
+  var REM_KEY = "sdnotes_reminders_" + map.siteId;
+  var REVIEW_KEY = "sdnotes_review_" + map.siteId;
+  var PANEL_TAB_KEY = "sdnotes_panel_tab";
+  var PANEL_HIDE_KEY = "sdnotes_panel_hidden";
+  function readJSON(key) {
+    try { return JSON.parse(localStorage.getItem(key) || "{}") || {}; } catch (e) { return {}; }
+  }
+  function writeJSON(key, o) {
+    try { localStorage.setItem(key, JSON.stringify(o)); } catch (e) {}
+  }
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function cleanText(n) { return (n.textContent || "").replace(/\s+/g, " ").trim(); }
+
+  var QA_LEVELS = [["basic", "Basic"], ["intermediate", "Intermediate"], ["advanced", "Advanced"], ["scenario", "Scenario"]];
+  var CMD_RE = /^(?:\$\s+|#\s+(?=sudo|kubectl))?(?:sudo\s+)?(kubectl|kubeadm|etcdctl|crictl|helm|aws|eksctl|terraform|docker|podman|nginx|curl|wget|dig|nslookup|host|nc|ping|traceroute|mtr|ss|netstat|lsof|tcpdump|openssl|systemctl|journalctl|ps|top|htop|free|df|du|vmstat|iostat|tail|less|grep|awk|git|gh|gitleaks|psql|pg_dump|pg_restore|pg_isready|pgbouncer|mysql|mysqldump|redis-cli|mongosh|gunicorn|uvicorn|python3?|pip3?|npm|npx|node|yarn|ssh|scp|kafka-[\w-]+|ab|wrk|hey|watch|ulimit|sysctl|iptables|nft|ip|certbot|htpasswd|openssl)\b/;
+
+  function renderStudyPanel() {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", renderStudyPanel, { once: true });
+      return;
+    }
+    var container = findReadableEl();
+    if (!container || !container.parentNode) return;
+    if (!/\S/.test(container.textContent || "") || (container.textContent || "").length < 400) return;
+    var pageKey = entry ? entry.href : window.location.pathname;
+    var pageTitle = (entry && entry.title) || cleanText(container.querySelector("h1") || { textContent: document.title });
+
+    var panel = el("aside", "sd-panel");
+    panel.setAttribute("data-sd-ui", "");
+    panel.setAttribute("aria-label", "Study panel");
+    var head = el("div", "sd-panel-head");
+    head.appendChild(el("span", "sd-panel-title", "Study panel"));
+    var hideBtn = el("button", "sd-panel-hide", "Hide ⟩");
+    hideBtn.type = "button";
+    hideBtn.title = "Hide the study panel (widens the content)";
+    head.appendChild(hideBtn);
+    panel.appendChild(head);
+    var tabBar = el("div", "sd-panel-tabs");
+    tabBar.setAttribute("role", "tablist");
+    panel.appendChild(tabBar);
+    var tabs = {};
+    function addTab(key, label) {
+      var b = el("button", "sd-panel-tab");
+      b.type = "button";
+      b.setAttribute("role", "tab");
+      b.appendChild(document.createTextNode(label));
+      var badge = el("span", "sd-panel-badge");
+      b.appendChild(badge);
+      var body = el("div", "sd-panel-body");
+      body.setAttribute("role", "tabpanel");
+      body.hidden = true;
+      tabBar.appendChild(b);
+      panel.appendChild(body);
+      tabs[key] = { btn: b, body: body, badge: badge };
+      b.addEventListener("click", function () { showTab(key, true); });
+      return body;
+    }
+    function setBadge(key, n) { if (tabs[key]) tabs[key].badge.textContent = n ? String(n) : ""; }
+    function showTab(key, remember) {
+      Object.keys(tabs).forEach(function (k) {
+        var on = k === key;
+        tabs[k].body.hidden = !on;
+        tabs[k].btn.classList.toggle("active", on);
+        tabs[k].btn.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      if (remember) { try { localStorage.setItem(PANEL_TAB_KEY, key); } catch (e) {} }
+    }
+
+    /* -- Interview -- */
+    var ivBody = addTab("interview", "Interview");
+    var bank = container.querySelector(".sd-interview");
+    var qas = [];           // {level, node}
+    var tips = [];
+    function mkQA(level, qText, answerNodes, jumpTo) {
+      var d = el("details", "sd-qa");
+      d.setAttribute("data-level", level);
+      d.appendChild(el("summary", null, qText));
+      var ans = el("div", "sd-qa-a");
+      answerNodes.forEach(function (n) { ans.appendChild(n); });
+      if (jumpTo && jumpTo.id) {
+        var j = el("a", "sd-qa-jump", "↳ Read it on the page");
+        j.href = "#" + jumpTo.id;
+        ans.appendChild(j);
+      }
+      d.appendChild(ans);
+      return d;
+    }
+    function textP(s) { return el("p", null, s); }
+    function cloneClean(n) {
+      var c = n.cloneNode(true);
+      Array.prototype.forEach.call(c.querySelectorAll(".sd-note-marker,.sd-note-card,.sd-note-form,[data-sd-ui],.sd-callout-title,.sd-note-title"),
+        function (x) { x.remove(); });
+      c.removeAttribute("id");
+      Array.prototype.forEach.call(c.querySelectorAll("[id]"), function (x) { x.removeAttribute("id"); });
+      return c;
+    }
+    if (bank) {
+      Array.prototype.forEach.call(bank.querySelectorAll(".sd-qa"), function (d) {
+        qas.push({ level: d.getAttribute("data-level") || "basic", node: d });
+      });
+      Array.prototype.forEach.call(bank.querySelectorAll(".sd-callout.interview"), function (c) { tips.push(c); });
+    } else {
+      var headsAll = Array.prototype.slice.call(container.querySelectorAll("h2,h3,h4"));
+      headsAll.forEach(function (h) {
+        var t = cleanText(h);
+        if (/^Interview Answer/i.test(t)) {
+          var concept = t.replace(/^Interview Answer\s*[—–-]\s*/i, "").replace(/\?$/, "");
+          var note = null, sib = h.nextElementSibling;
+          while (sib && !/^H[12]$/.test(sib.tagName)) {
+            if (sib.classList.contains("sd-study-note") && /Simple interview version/i.test(sib.textContent)) { note = sib; break; }
+            sib = sib.nextElementSibling;
+          }
+          if (note) {
+            var parts = Array.prototype.map.call(note.querySelectorAll("p"), cloneClean);
+            if (!h.id) h.id = "interview-answer";
+            qas.push({ level: "basic", node: mkQA("basic", "In 30 seconds: " + concept.replace(/^what is\s+/i, "what is ") + "?", parts, h) });
+          }
+        } else if (/^One important interview follow-up/i.test(t)) {
+          var s = h.nextElementSibling, q = null, ans = [];
+          while (s && !/^H[1-4]$/.test(s.tagName)) {
+            var st = cleanText(s);
+            if (!q && /^Q[:.]/.test(st)) q = st.replace(/^Q[:.]\s*/, "");
+            else if (q && !s.classList.contains("sd-callout")) {
+              var c = cloneClean(s);
+              var strong = c.querySelector("strong");
+              if (strong && /^A[:.]?$/.test(cleanText(strong))) strong.remove();
+              ans.push(c);
+            }
+            s = s.nextElementSibling;
+          }
+          if (q && ans.length) qas.push({ level: "intermediate", node: mkQA("intermediate", q, ans, h) });
+        } else if (/^Quick check$/i.test(t)) {
+          var list = h.nextElementSibling;
+          if (list && /^(UL|OL)$/.test(list.tagName)) {
+            Array.prototype.forEach.call(list.children, function (li) {
+              var strong = li.querySelector("strong");
+              if (!strong) return;
+              var c = cloneClean(li);
+              var qs = c.querySelector("strong");
+              var qt = cleanText(qs);
+              qs.remove();
+              var a = el("p");
+              while (c.firstChild) a.appendChild(c.firstChild);
+              qas.push({ level: "basic", node: mkQA("basic", qt, [a], h) });
+            });
+          }
+        } else if (/\?$/.test(t) && h.tagName !== "H4" && !h.hasAttribute("data-stage") && !h.closest("[data-sd-ui]")) {
+          // a "…?" heading on a Q&A-style page; lesson headings (h2[data-stage]) are concepts, not questions
+          if (!h.id) h.id = t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);
+          qas.push({ level: "intermediate", node: mkQA("intermediate", t, [textP("Answered in this section of the page.")], h) });
+        }
+      });
+      Array.prototype.forEach.call(container.querySelectorAll(".sd-callout.interview"), function (c) {
+        tips.push(cloneClean(c));
+      });
+    }
+    // level filter chips
+    var counts = {};
+    qas.forEach(function (q) { counts[q.level] = (counts[q.level] || 0) + 1; });
+    if (qas.length) {
+      var filt = el("div", "sd-qa-filter");
+      var chipAll = el("button", "active", "All " + qas.length);
+      chipAll.type = "button";
+      filt.appendChild(chipAll);
+      var chipEls = [chipAll];
+      QA_LEVELS.forEach(function (lv) {
+        if (!counts[lv[0]]) return;
+        var b = el("button", null, lv[1] + " " + counts[lv[0]]);
+        b.type = "button";
+        b.setAttribute("data-level", lv[0]);
+        filt.appendChild(b);
+        chipEls.push(b);
+      });
+      var toggleAll = el("button", "sd-qa-toggle", "Show answers");
+      toggleAll.type = "button";
+      filt.appendChild(toggleAll);
+      ivBody.appendChild(filt);
+      var groups = el("div", "sd-qa-groups");
+      QA_LEVELS.forEach(function (lv) {
+        var mine = qas.filter(function (q) { return q.level === lv[0]; });
+        if (!mine.length) return;
+        var g = el("section", "sd-qa-group");
+        g.setAttribute("data-level", lv[0]);
+        g.appendChild(el("h4", null, lv[1]));
+        mine.forEach(function (q) { g.appendChild(q.node); });
+        groups.appendChild(g);
+      });
+      // anything with an unknown level still shows, last
+      var other = qas.filter(function (q) { return !QA_LEVELS.some(function (lv) { return lv[0] === q.level; }); });
+      if (other.length) {
+        var og = el("section", "sd-qa-group");
+        og.appendChild(el("h4", null, "More"));
+        other.forEach(function (q) { og.appendChild(q.node); });
+        groups.appendChild(og);
+      }
+      ivBody.appendChild(groups);
+      chipEls.forEach(function (b) {
+        b.addEventListener("click", function () {
+          var lv = b.getAttribute("data-level");
+          chipEls.forEach(function (x) { x.classList.toggle("active", x === b); });
+          Array.prototype.forEach.call(groups.children, function (g) {
+            g.hidden = !!lv && g.getAttribute("data-level") !== lv;
+          });
+        });
+      });
+      var allOpen = false;
+      toggleAll.addEventListener("click", function () {
+        allOpen = !allOpen;
+        Array.prototype.forEach.call(groups.querySelectorAll("details.sd-qa"), function (d) { d.open = allOpen; });
+        toggleAll.textContent = allOpen ? "Hide answers" : "Show answers";
+      });
+    } else {
+      ivBody.appendChild(el("p", "sd-panel-empty", "No interview questions on this page yet."));
+    }
+    if (tips.length) {
+      var tw = el("div", "sd-qa-tips");
+      tw.appendChild(el("h4", null, "Interview tips"));
+      tips.forEach(function (t) { tw.appendChild(t); });
+      ivBody.appendChild(tw);
+    }
+    setBadge("interview", qas.length);
+    if (bank) {
+      // the page keeps its heading + a pointer, so the outline entry still lands somewhere useful
+      var ptr = el("p", "sd-interview-moved");
+      ptr.setAttribute("data-sd-ui", "");
+      ptr.appendChild(document.createTextNode("The " + qas.length + " interview questions for this topic (Basic → Scenario) are in the "));
+      var open = el("button", null, "Interview tab of the study panel");
+      open.type = "button";
+      open.addEventListener("click", function () {
+        showTab("interview", true);
+        if (row.classList.contains("sd-panel-off")) setHidden(false);
+        panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+      ptr.appendChild(open);
+      ptr.appendChild(document.createTextNode("."));
+      var firstQa = bank.querySelector(".sd-qa");
+      if (firstQa) firstQa.parentNode.insertBefore(ptr, firstQa); else bank.appendChild(ptr);
+    }
+
+    /* -- Notes -- */
+    var noteBody = addTab("notes", "Notes");
+    var pads = readJSON(PAD_KEY);
+    noteBody.appendChild(el("p", "sd-panel-hint", "Your scratchpad for this page — saved in this browser as you type."));
+    var prefixes = el("div", "sd-pad-prefixes");
+    [["❓", "Don't understand: "], ["🙋", "Question: "], ["💡", "My example: "], ["🎯", "My interview answer: "],
+     ["⌨️", "Command to remember: "], ["↻", "Revisit: "]].forEach(function (p) {
+      var b = el("button", null, p[0] + " " + p[1].replace(/: $/, ""));
+      b.type = "button";
+      b.addEventListener("click", function () {
+        var v = pad.value;
+        pad.value = v + (v && !/\n$/.test(v) ? "\n" : "") + p[1];
+        pad.focus();
+        pad.selectionStart = pad.selectionEnd = pad.value.length;
+        savePad();
+      });
+      prefixes.appendChild(b);
+    });
+    noteBody.appendChild(prefixes);
+    var pad = el("textarea", "sd-pad");
+    pad.placeholder = "Things I don't understand, questions, my own examples, my interview answer, commands to remember, topics to revisit…";
+    pad.value = (pads[pageKey] && pads[pageKey].text) || "";
+    noteBody.appendChild(pad);
+    var padStatus = el("p", "sd-panel-hint");
+    noteBody.appendChild(padStatus);
+    var padTimer = null;
+    function savePad() {
+      clearTimeout(padTimer);
+      padTimer = setTimeout(function () {
+        var store = readJSON(PAD_KEY);
+        if (pad.value.trim()) store[pageKey] = { text: pad.value, ts: Date.now(), title: pageTitle };
+        else delete store[pageKey];
+        writeJSON(PAD_KEY, store);
+        padStatus.textContent = pad.value.trim() ? "Saved." : "";
+        setBadge("notes", noteCount());
+      }, 300);
+    }
+    pad.addEventListener("input", savePad);
+    var inlineBox = el("div", "sd-pad-inline");
+    noteBody.appendChild(inlineBox);
+    function noteCount() {
+      return (pad.value.trim() ? 1 : 0) + document.querySelectorAll(".sd-note-card").length;
+    }
+    function paintInline() {
+      inlineBox.replaceChildren();
+      var cards = container.querySelectorAll(".sd-note-card");
+      if (!cards.length) {
+        inlineBox.appendChild(el("p", "sd-panel-hint", "Tip: the 🗒️+ next to any paragraph pins a note right there."));
+        return;
+      }
+      inlineBox.appendChild(el("h4", null, "Notes pinned on this page (" + cards.length + ")"));
+      var ul = el("ul");
+      Array.prototype.forEach.call(cards, function (card) {
+        var li = el("li");
+        var b = el("button", null, cleanText(card.querySelector(".sd-note-text") || card).slice(0, 90));
+        b.type = "button";
+        b.addEventListener("click", function () { card.scrollIntoView({ behavior: "smooth", block: "center" }); });
+        li.appendChild(b);
+        ul.appendChild(li);
+      });
+      inlineBox.appendChild(ul);
+    }
+    paintInline();
+    var exportBtn = el("button", "sd-panel-btn", "⬇ Download this page's notes (.md)");
+    exportBtn.type = "button";
+    exportBtn.addEventListener("click", function () {
+      var out = "# " + pageTitle + "\n\n";
+      if (pad.value.trim()) out += "## Scratchpad\n\n" + pad.value.trim() + "\n\n";
+      var cards = container.querySelectorAll(".sd-note-card");
+      if (cards.length) {
+        out += "## Pinned notes\n\n";
+        Array.prototype.forEach.call(cards, function (card) {
+          out += "- " + cleanText(card.querySelector(".sd-note-text") || card) + "\n";
+        });
+      }
+      var a = el("a");
+      a.href = URL.createObjectURL(new Blob([out], { type: "text/markdown" }));
+      a.download = (pageKey.split("/").pop() || "notes").replace(/\.html$/, "") + "-notes.md";
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+    noteBody.appendChild(exportBtn);
+    setBadge("notes", noteCount());
+    container.addEventListener("click", function (ev) {
+      // inline notes are added/removed inside the content — keep the list fresh
+      if (ev.target.closest && ev.target.closest(".sd-note-actions")) setTimeout(function () { paintInline(); setBadge("notes", noteCount()); }, 0);
+    });
+
+    /* -- Reminders -- */
+    var remBody = addTab("reminders", "Reminders");
+    var shortTitle = pageTitle.replace(/\s*[:(—].*$/, "");
+    var seeds = [];
+    var authored = container.closest("[data-reminders]") || container.querySelector("[data-reminders]");
+    if (authored) {
+      authored.getAttribute("data-reminders").split("|").forEach(function (s) { s = s.trim(); if (s) seeds.push(s); });
+    }
+    seeds.push("Explain " + shortTitle + " out loud without notes");
+    if (container.querySelector("svg, .mermaid, .sd-diagram, .topic-map, pre.diagram")) seeds.push("Redraw the main diagram from memory");
+    if (container.querySelector("pre")) seeds.push("Re-type the key config / commands from memory");
+    if (/troubleshoot|failure|symptom/i.test(container.textContent)) seeds.push("Walk through one failure scenario: symptom → cause → fix");
+    if (qas.length) seeds.push("Answer every interview question without peeking");
+    var remList = el("ul", "sd-rem-list");
+    remBody.appendChild(remList);
+    var addRow = el("form", "sd-rem-add");
+    var addIn = el("input");
+    addIn.type = "text";
+    addIn.placeholder = "Add a reminder for this topic…";
+    var addBtn = el("button", null, "Add");
+    addBtn.type = "submit";
+    addRow.appendChild(addIn); addRow.appendChild(addBtn);
+    remBody.appendChild(addRow);
+    function remState() {
+      var all = readJSON(REM_KEY);
+      var s = all[pageKey] || {};
+      s.done = s.done || {}; s.custom = s.custom || []; s.hidden = s.hidden || [];
+      return { all: all, s: s };
+    }
+    function remSave(st) { st.s.title = pageTitle; st.all[pageKey] = st.s; writeJSON(REM_KEY, st.all); }
+    function paintRem() {
+      var st = remState();
+      remList.replaceChildren();
+      var items = seeds.filter(function (t) { return st.s.hidden.indexOf(t) === -1; }).concat(st.s.custom);
+      var open = 0;
+      items.forEach(function (t) {
+        var li = el("li");
+        var lab = el("label");
+        var cb = el("input");
+        cb.type = "checkbox";
+        cb.checked = !!st.s.done[t];
+        if (!cb.checked) open++;
+        lab.appendChild(cb);
+        lab.appendChild(el("span", null, t));
+        li.classList.toggle("done", cb.checked);
+        cb.addEventListener("change", function () {
+          var s2 = remState();
+          if (cb.checked) s2.s.done[t] = Date.now(); else delete s2.s.done[t];
+          remSave(s2); paintRem();
+        });
+        var del = el("button", "sd-rem-del", "×");
+        del.type = "button";
+        del.setAttribute("aria-label", "Remove reminder");
+        del.addEventListener("click", function () {
+          var s2 = remState();
+          var ci = s2.s.custom.indexOf(t);
+          if (ci > -1) s2.s.custom.splice(ci, 1); else s2.s.hidden.push(t);
+          delete s2.s.done[t];
+          remSave(s2); paintRem();
+        });
+        li.appendChild(lab);
+        li.appendChild(del);
+        remList.appendChild(li);
+      });
+      setBadge("reminders", open);
+    }
+    addRow.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var t = addIn.value.trim();
+      if (!t) return;
+      var st = remState();
+      if (st.s.custom.indexOf(t) === -1 && seeds.indexOf(t) === -1) st.s.custom.push(t);
+      var hi = st.s.hidden.indexOf(t);
+      if (hi > -1) st.s.hidden.splice(hi, 1);
+      remSave(st);
+      addIn.value = "";
+      paintRem();
+    });
+    paintRem();
+
+    /* -- Review ("things to review"): flag any <h2> or interview question -- */
+    var revBody = addTab("review", "Review");
+    function revAll() { return readJSON(REVIEW_KEY); }
+    function revToggle(id, label) {
+      var all = revAll();
+      var p = all[pageKey] || { title: pageTitle, items: {} };
+      p.title = pageTitle;
+      if (p.items[id]) delete p.items[id]; else p.items[id] = { label: label, ts: Date.now() };
+      if (Object.keys(p.items).length) all[pageKey] = p; else delete all[pageKey];
+      writeJSON(REVIEW_KEY, all);
+      paintReview();
+      return !!(all[pageKey] && all[pageKey].items[id]);
+    }
+    function isFlagged(id) { var p = revAll()[pageKey]; return !!(p && p.items[id]); }
+    var flagBtns = {};
+    function flagButton(id, label, cls) {
+      var b = el("button", "sd-flag " + (cls || ""));
+      b.type = "button";
+      b.setAttribute("data-sd-ui", "");
+      function paint(on) {
+        b.classList.toggle("on", on);
+        b.textContent = on ? "↻ In review" : "＋ Review";
+        b.title = on ? "Remove from your review list" : "Add to your review list (Study panel → Review)";
+      }
+      paint(isFlagged(id));
+      b.addEventListener("click", function (ev) { ev.preventDefault(); ev.stopPropagation(); paint(revToggle(id, label)); });
+      flagBtns[id] = paint;
+      return b;
+    }
+    Array.prototype.forEach.call(container.querySelectorAll("h2[id]"), function (h) {
+      if (h.closest("[data-sd-ui]") || h.closest(".sd-learn")) return;
+      h.appendChild(flagButton("h:" + h.id, cleanText(h)));
+    });
+    Array.prototype.forEach.call(panel.querySelectorAll("details.sd-qa"), function (d) {
+      var q = cleanText(d.querySelector("summary"));
+      var id = "q:" + hashStr(q);
+      d.setAttribute("data-review-id", id);
+      var b = flagButton(id, q, "sd-flag-q");
+      var a = d.querySelector(".sd-qa-a") || d;
+      a.appendChild(b);
+    });
+    function paintReview() {
+      revBody.replaceChildren();
+      var all = revAll();
+      var mine = all[pageKey] ? all[pageKey].items : {};
+      var ids = Object.keys(mine);
+      revBody.appendChild(el("p", "sd-panel-hint", "Flag a section heading or an interview question with ＋ Review and it lands here — and on every page's Review tab."));
+      if (ids.length) {
+        revBody.appendChild(el("h4", null, "On this page"));
+        var ul = el("ul", "sd-rev-list");
+        ids.forEach(function (id) {
+          var li = el("li");
+          var go = el("button", "sd-rev-go", mine[id].label);
+          go.type = "button";
+          go.addEventListener("click", function () {
+            if (id.indexOf("h:") === 0) {
+              var t = document.getElementById(id.slice(2));
+              if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+            } else {
+              var d = panel.querySelector('details[data-review-id="' + id + '"]');
+              if (d) { showTab("interview", true); d.open = true; d.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
+            }
+          });
+          var x = el("button", "sd-rem-del", "×");
+          x.type = "button";
+          x.setAttribute("aria-label", "Remove from review");
+          x.addEventListener("click", function () { revToggle(id); if (flagBtns[id]) flagBtns[id](false); });
+          li.appendChild(go); li.appendChild(x);
+          ul.appendChild(li);
+        });
+        revBody.appendChild(ul);
+      }
+      var others = Object.keys(all).filter(function (k) { return k !== pageKey; });
+      if (others.length) {
+        revBody.appendChild(el("h4", null, "Elsewhere on the site"));
+        var ul2 = el("ul", "sd-rev-list");
+        others.forEach(function (k) {
+          var li = el("li");
+          var a = el("a", null, all[k].title || k);
+          a.href = root + k;
+          li.appendChild(a);
+          li.appendChild(el("span", "sd-rev-count", String(Object.keys(all[k].items).length)));
+          ul2.appendChild(li);
+        });
+        revBody.appendChild(ul2);
+      }
+      if (!ids.length && !others.length) revBody.appendChild(el("p", "sd-panel-empty", "Nothing flagged yet."));
+      setBadge("review", ids.length);
+    }
+    paintReview();
+
+    /* -- Commands: CLI lines from the page's code blocks (+ an authored .sd-commands list) -- */
+    var cmds = [], seenCmd = {};
+    function addCmd(text, src) {
+      text = text.replace(/^\$\s+/, "").trim();
+      var key = text.replace(/^sudo\s+/, "");                     // "sudo nginx -t" = "nginx -t"
+      if (!text || text.length > 200 || seenCmd[key]) return;     // (whole SQL queries are added directly below)
+      seenCmd[key] = true;
+      cmds.push({ text: text, src: src });
+    }
+    Array.prototype.forEach.call(container.querySelectorAll(".sd-commands code"), function (c) { addCmd(cleanText(c), c); });
+    var SQL_RE = /^(SELECT|SHOW|EXPLAIN|WITH|SET|ALTER SYSTEM|VACUUM|ANALYZE|REINDEX|CREATE (UNIQUE )?INDEX)\b/i;
+    Array.prototype.forEach.call(container.querySelectorAll("pre"), function (pre) {
+      if (pre.classList.contains("mermaid") || pre.closest(".mermaid")) return;
+      var whole = (pre.textContent || "").trim();
+      var nLines = whole.split("\n").length;
+      if (SQL_RE.test(whole) && nLines <= 15 && whole.length <= 900) {   // a diagnostic query: keep it whole
+        if (!seenCmd[whole]) { seenCmd[whole] = true; cmds.push({ text: whole, src: pre }); }
+        return;
+      }
+      whole.split("\n").forEach(function (line) {
+        var l = line.trim();
+        if (CMD_RE.test(l) && !/^(ps|top|free|host|ip|watch|less|python3?|node)\s*[:=(]/.test(l)) addCmd(l, pre);
+      });
+    });
+    if (cmds.length) {
+      var cmdBody = addTab("commands", "Commands");
+      cmdBody.appendChild(el("p", "sd-panel-hint", "Every command and diagnostic query found in this page's code blocks."));
+      var cl = el("ul", "sd-cmd-list");
+      cmds.forEach(function (c) {
+        var li = el("li");
+        var code = el("code", null, c.text);
+        li.appendChild(code);
+        var acts = el("span", "sd-cmd-acts");
+        var cp = el("button", null, "Copy");
+        cp.type = "button";
+        cp.addEventListener("click", function () {
+          function ok() { cp.textContent = "Copied"; setTimeout(function () { cp.textContent = "Copy"; }, 1200); }
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(c.text).then(ok, function () {});
+          else {
+            var ta = el("textarea"); ta.value = c.text; document.body.appendChild(ta); ta.select();
+            try { document.execCommand("copy"); ok(); } catch (e) {}
+            ta.remove();
+          }
+        });
+        var go = el("button", null, "↳");
+        go.type = "button";
+        go.title = "Show where it's explained";
+        go.addEventListener("click", function () { c.src.scrollIntoView({ behavior: "smooth", block: "center" }); });
+        acts.appendChild(cp); acts.appendChild(go);
+        li.appendChild(acts);
+        cl.appendChild(li);
+      });
+      cmdBody.appendChild(cl);
+      setBadge("commands", cmds.length);
+    }
+
+    /* -- place it: wrap the content column + panel in one row -- */
+    var row = el("div", "sd-panel-row");
+    container.parentNode.insertBefore(row, container);
+    row.appendChild(container);
+    row.appendChild(panel);
+
+    var showBtn = el("button", "sd-panel-show", "⟨ Study panel");
+    showBtn.type = "button";
+    showBtn.setAttribute("data-sd-ui", "");
+    row.appendChild(showBtn);
+    function setHidden(h) {
+      row.classList.toggle("sd-panel-off", h);
+      try { if (h) localStorage.setItem(PANEL_HIDE_KEY, "1"); else localStorage.removeItem(PANEL_HIDE_KEY); } catch (e) {}
+    }
+    hideBtn.addEventListener("click", function () { setHidden(true); });
+    showBtn.addEventListener("click", function () { setHidden(false); });
+    try { if (localStorage.getItem(PANEL_HIDE_KEY) === "1") row.classList.add("sd-panel-off"); } catch (e) {}
+
+    var start = null;
+    try { start = localStorage.getItem(PANEL_TAB_KEY); } catch (e) {}
+    if (!start || !tabs[start]) start = "interview";
+    showTab(start, false);
   }
 
   /* ---- page <title> / <h1> / subtitle / breadcrumb, from SITE_PAGES ---- */
@@ -1351,6 +2005,7 @@
   renderNotes();
   renderToc();
   renderPager();
+  renderStudyPanel();
   markCoveredLinks();
   // the baked sidebar is parsed after this script runs, so re-mark it once it exists
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", markCoveredLinks, { once: true });

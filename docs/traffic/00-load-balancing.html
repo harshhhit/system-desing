@@ -13,28 +13,54 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Load Balancing · Infra Owl</title>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=10">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
 
 <div id="site-header-root"></div>
-
 <script src="../assets/sitemap.js"></script>
 <script src="../assets/pages.js"></script>
-<script src="../assets/site-header.js?v=8" data-root="../"></script>
+<script src="../assets/site-header.js?v=9" data-root="../"></script>
 
 <div class="sd-study-layout">
-
   <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a class="active" href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
 
   <div class="sd-study-content">
-    <main class="sd-study-main">
-
+    <main class="sd-study-main sd-lesson" data-reminders="Explain L4 vs. L7 with one routing example each|Pick an algorithm for long-lived WebSocket connections and justify it|Explain why a deep health check can take every backend out at once">
       <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Traffic Management / Load Balancing</p>
       <h1 data-page-title>Load Balancing</h1>
       <p class="sd-study-prompt" data-page-subtitle>L4 vs L7, algorithms (round robin, least connections, consistent hashing), health checks, sticky sessions, and global vs local load balancing.</p>
 
-      <h2 id="page-map">Traffic Management Page Map</h2>
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
+        <ul>
+          <li>Explain why a single server needs a load balancer in front of it</li>
+          <li>Choose between an L4 and an L7 load balancer</li>
+          <li>Pick a balancing algorithm that fits the workload</li>
+          <li>Tune health checks without causing flapping or outages</li>
+          <li>Explain why sticky sessions are a trade-off, not a free feature</li>
+          <li>Separate "which region" (GSLB) from "which instance" (local LB)</li>
+        </ul>
+      </section>
+
+      <!-- 01 OVERVIEW -->
+      <h2 id="why-load-balancing" data-stage="Overview">Why Load Balancing Exists</h2>
+      <p>A single server has a ceiling — on connections, CPU, memory — and a single point of failure. A load
+ balancer sits in front of a pool of backend instances, spreads incoming traffic across them, and stops
+ sending traffic to any instance that stops responding. That gets you two things at once: horizontal
+ scalability (add more instances, handle more traffic) and availability (one instance dying doesn't take
+ the service down). Almost everything else in this note is either "how do you pick which instance gets
+ this request" or "how do you know an instance is actually healthy."</p>
+      <p><strong>When you need it:</strong> as soon as a service runs on more than one instance — for capacity, for zero-downtime deploys, or simply so one crashed instance isn't an outage.</p>
+
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>A load balancer only provides availability if it knows which backends are healthy. Without <a href="#health-checks">health checks</a>, a dead backend keeps receiving its share of requests and the balancer simply spreads the outage.</p>
+      </aside>
+
+      <h2 id="page-map" data-stage="Overview">Traffic Management Page Map</h2>
       <p class="topic-map-legend">A block diagram of the Traffic Management section, in the order the ideas build on each other. Click any block to open that page or jump to that part of this page. Read top to bottom: first how traffic is spread across servers, then how the system protects itself from too much of it. Dashed blocks are planned topics with no page yet; grey blocks at the bottom are related pages in other sections.</p>
       <nav class="topic-map" aria-label="Traffic Management page map" style="--map-accent: var(--sd-c4)">
         <div class="topic-map-row"><p class="topic-map-label">Start here</p><p class="topic-map-why">A load balancer is the first thing traffic meets, so learn what it is and why a single server is not enough.</p><div class="topic-map-blocks">
@@ -69,21 +95,7 @@
         </div></div>
       </nav>
 
-
-      <h2 id="interview-answer">Interview Answer — What Is a Load Balancer?</h2>
-      <p>A load balancer is a component that sits in front of a pool of backend instances, receives every incoming request or connection, and forwards each one to a healthy backend chosen by an algorithm such as round robin or least connections. To the client, the whole pool looks like one address.</p>
-      <p>It exists because a single server has a hard ceiling on connections, CPU, and memory, and is a single point of failure. With a load balancer in front, you scale by adding instances behind the same address (horizontal scaling), and you survive instance failures because <a href="#health-checks">health checks</a> take a failing instance out of rotation. The cause → effect chain is: an instance stops answering its health check → after the failure threshold the load balancer marks it unhealthy → new requests go only to the remaining instances → clients see no outage, only slightly more load per instance.</p>
-      <p>Load balancers differ by the layer they work at. A <strong>Layer 4</strong> load balancer (for example AWS NLB) sees only IP addresses and ports and forwards connections; a <strong>Layer 7</strong> load balancer (for example AWS ALB, Nginx, Envoy) parses the HTTP request and can route by path, header, or cookie and terminate TLS. At global scale, a separate tier — DNS-based or anycast <strong>global server load balancing</strong> — first picks the region, then a local load balancer picks the instance.</p>
-
-      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
-        <p>"A load balancer sits in front of a pool of servers and spreads incoming traffic across them, so I can scale horizontally and survive instance failures. It uses an algorithm like round robin or least connections to pick a backend, and health checks to stop sending traffic to instances that fail. An L4 balancer forwards connections by IP and port; an L7 balancer understands HTTP and can route by path or header and terminate TLS. For multiple regions, DNS or anycast picks the region first, and a local load balancer picks the instance."</p>
-      </div>
-
-      <h3>One important interview follow-up</h3>
-      <p><strong>Q: Should I just turn on sticky sessions so each user always hits the same server?</strong></p>
-      <p><strong>A:</strong> Only if you must. <a href="#session-affinity">Sticky sessions</a> make a user's requests depend on one specific instance, so that instance becomes a single point of failure for those users — if it dies, their in-memory session is lost — and it makes load uneven and scale-in harder, because you cannot remove an instance without breaking its users' sessions. The usual better design is to keep backends stateless and move session state to a shared store such as Redis or a signed token, so any instance can serve any request and the load balancer can pick freely.</p>
-
-      <h2 id="learning-flow">How to Study This Section</h2>
+      <h2 id="learning-flow" data-stage="Overview">How to Study This Section</h2>
       <p>Traffic Management answers two questions in order: how do we spread requests across many servers, and how do we stop too many requests from overwhelming them anyway?</p>
       <ol>
         <li><strong><a href="#why-load-balancing">Why load balancing exists</a></strong> — one server has a capacity ceiling and is a single point of failure. This unlocks horizontal scaling: add instances behind one address.</li>
@@ -93,73 +105,296 @@
         <li><strong><a href="01-rate-limiting-and-throttling.html">Rate Limiting &amp; Throttling</a></strong> — adding servers raises capacity but never makes it unlimited. This step unlocks protecting that capacity per client. Watch for: <strong>load balancing vs. rate limiting — the difference is</strong> that a load balancer decides <em>where</em> a request goes, while a rate limiter decides <em>whether</em> it is allowed at all. A load balancer alone does not stop one abusive client from overloading every backend.</li>
       </ol>
 
-      <h2 id="why-load-balancing">Why load balancing exists</h2>
-      <p>A single server has a ceiling — on connections, CPU, memory — and a single point of failure. A load
-      balancer sits in front of a pool of backend instances, spreads incoming traffic across them, and stops
-      sending traffic to any instance that stops responding. That gets you two things at once: horizontal
-      scalability (add more instances, handle more traffic) and availability (one instance dying doesn't take
-      the service down). Almost everything else in this note is either "how do you pick which instance gets
-      this request" or "how do you know an instance is actually healthy."</p>
-
-      <h2 id="l4-vs-l7">L4 vs. L7 — what layer the balancer operates at</h2>
+      <!-- 02 CORE CONCEPTS -->
+      <h2 id="core-concepts" data-stage="Core Concepts">Core Concepts</h2>
       <table>
-      <tr><th></th><th>Layer 4 (transport)</th><th>Layer 7 (application)</th></tr>
-      <tr><td>Sees</td><td>IP + TCP/UDP port only — not the request itself</td><td>Full HTTP request: path, headers, cookies, body</td></tr>
-      <tr><td>Routing decisions</td><td>Which backend gets this <em>connection</em>, based on IP/port and the algorithm below</td><td>Can route by URL path (<code>/api</code> vs <code>/static</code>), header, cookie, hostname — content-aware</td></tr>
-      <tr><td>Overhead</td><td>Very low — just forwards packets (sometimes without even terminating the TCP connection)</td><td>Higher — terminates TCP/TLS, parses the request, often opens a second connection to the backend</td></tr>
-      <tr><td>Protocol awareness</td><td>None — works for any TCP/UDP traffic, not just HTTP</td><td>HTTP/HTTPS/gRPC-aware; can do retries, header rewriting, WAF rules</td></tr>
-      <tr><td>Examples</td><td>AWS NLB, IPVS, raw <code>iptables</code>/DSR setups</td><td>AWS ALB, Nginx, Envoy, HAProxy (L7 mode), API gateways</td></tr>
-      <tr><td>Pick it when</td><td>raw throughput/latency matters more than smart routing, or the traffic isn't HTTP</td><td>you need path-based routing, TLS termination, cookie-based session affinity, or per-request logic</td></tr>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><strong>Backend pool / target group</strong></td><td>The set of instances the balancer may send traffic to.</td></tr>
+        <tr><td><strong>Listener</strong></td><td>The address and port the balancer accepts traffic on (e.g. <code>:443</code>).</td></tr>
+        <tr><td><strong>Algorithm</strong></td><td>The rule that picks one backend for each connection or request — see <a href="#algorithms">algorithms</a>.</td></tr>
+        <tr><td><strong>Health check</strong></td><td>How the balancer decides a backend may receive traffic — see <a href="#health-checks">health checks</a>.</td></tr>
+        <tr><td><strong>Session affinity</strong></td><td>Pinning one client to one backend — see <a href="#session-affinity">sticky sessions</a>.</td></tr>
+        <tr><td><strong>Connection draining</strong> (deregistration delay)</td><td>When a backend is removed, it stops receiving <em>new</em> requests but in-flight ones are allowed to finish for a grace period.</td></tr>
+      </table>
+
+      <h3 id="l4-vs-l7">L4 vs. L7 — what layer the balancer operates at</h3>
+      <table>
+        <tr><th></th><th>Layer 4 (transport)</th><th>Layer 7 (application)</th></tr>
+        <tr><td>Sees</td><td>IP + TCP/UDP port only — not the request itself</td><td>Full HTTP request: path, headers, cookies, body</td></tr>
+        <tr><td>Routing decisions</td><td>Which backend gets this <em>connection</em>, based on IP/port and the algorithm below</td><td>Can route by URL path (<code>/api</code> vs <code>/static</code>), header, cookie, hostname — content-aware</td></tr>
+        <tr><td>Overhead</td><td>Very low — just forwards packets (sometimes without even terminating the TCP connection)</td><td>Higher — terminates TCP/TLS, parses the request, often opens a second connection to the backend</td></tr>
+        <tr><td>Protocol awareness</td><td>None — works for any TCP/UDP traffic, not just HTTP</td><td>HTTP/HTTPS/gRPC-aware; can do retries, header rewriting, WAF rules</td></tr>
+        <tr><td>Examples</td><td>AWS NLB, IPVS, raw <code>iptables</code>/DSR setups</td><td>AWS ALB, Nginx, Envoy, HAProxy (L7 mode), API gateways</td></tr>
+        <tr><td>Pick it when</td><td>raw throughput/latency matters more than smart routing, or the traffic isn't HTTP</td><td>you need path-based routing, TLS termination, cookie-based session affinity, or per-request logic</td></tr>
       </table>
       <p>Most real stacks use both, layered: an L4 balancer (or the cloud provider's edge network) absorbs the
-      raw connection volume and hands off to an L7 tier that does the smart, per-request routing.</p>
+ raw connection volume and hands off to an L7 tier that does the smart, per-request routing.</p>
 
-      <h2 id="algorithms">Load balancing algorithms</h2>
-      <table>
-      <tr><th>Algorithm</th><th>How it picks</th><th>Good for</th><th>Weak point</th></tr>
-      <tr><td>Round robin</td><td>Cycles through backends in order, one request each</td><td>Simple, works well when every backend and every request is roughly equal</td><td>Ignores current load — a backend still processing a slow request gets the next one anyway</td></tr>
-      <tr><td>Weighted round robin</td><td>Round robin, but bigger/faster instances get proportionally more requests</td><td>Mixed-size instance pools</td><td>Weights are static — doesn't react to real-time load</td></tr>
-      <tr><td>Least connections</td><td>Sends the request to whichever backend currently has the fewest open connections</td><td>Long-lived or uneven-duration requests (the round-robin weak point, fixed)</td><td>"Connections" isn't the same as "load" for every workload — a backend can have few connections but high CPU</td></tr>
-      <tr><td>Weighted least connections</td><td>Least connections, weighted by instance capacity</td><td>Mixed-size pools with uneven request durations</td><td>More state to track and keep accurate</td></tr>
-      <tr><td>IP hash / consistent hashing</td><td>Hashes a key (client IP, session id) to deterministically pick the same backend every time</td><td>Session affinity without cookies; also how CDN edge nodes and cache clients pick a shard</td><td>Uneven key distribution can still overload one backend (hot key, see <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a>); losing a backend reshuffles its keys</td></tr>
-      <tr><td>Least response time</td><td>Combines active connections and recent response latency</td><td>Latency-sensitive services with variable per-backend performance</td><td>More expensive to compute; needs continuous latency sampling</td></tr>
-      <tr><td>Random / power-of-two-choices</td><td>Pick 2 backends at random, send to whichever has fewer connections</td><td>Scales better than "check every backend" at very large pool sizes, nearly as good as full least-connections</td><td>Slightly worse than true least-connections in the average case</td></tr>
-      </table>
+      <aside class="sd-callout mistake">
+        <p class="sd-callout-title">⚠️ Common mistake</p>
+        <p>Assuming an L4 balancer spreads <em>requests</em>. It spreads <em>connections</em>. With HTTP/2 or gRPC, one client keeps one long-lived connection and sends every request over it — so an L4 balancer pins all of that client's traffic to one backend. Balancing gRPC evenly needs an L7 (request-aware) balancer or client-side balancing.</p>
+      </aside>
 
-      <h2 id="health-checks">Health checks</h2>
+      <!-- 03 ARCHITECTURE -->
+      <h2 id="architecture" data-stage="Architecture">Where the Load Balancer Sits</h2>
+      <div class="mermaid sd-diagram">flowchart TD
+    U["Users"] -->|"DNS / anycast picks a region"| G["Global LB (GSLB)"]
+    G --> R1["Region A: L4 / edge LB"]
+    G --> R2["Region B: L4 / edge LB"]
+    R1 --> L7["L7 LB (ALB · Nginx · Envoy)<br/>TLS, path routing"]
+    L7 -->|"/api"| A1["API instance 1"]
+    L7 -->|"/api"| A2["API instance 2"]
+    L7 -->|"/static"| S["Static pool"]
+    HC(["Health checks"]) -.-> A1
+    HC -.-> A2
+</div>
+      <p class="sd-diagram-caption">"Which region" is decided first (global), then "which instance" (local); health checks keep each pool's membership honest.</p>
+
+      <h3 id="global-vs-local">Global vs. local load balancing</h3>
       <ul>
-      <li><strong>Active checks</strong> — the load balancer itself polls each backend on an interval (a TCP connect, an HTTP <code>GET /healthz</code>, or a custom check) and pulls it out of rotation on repeated failure.</li>
-      <li><strong>Passive checks</strong> — the load balancer watches real traffic; if a backend starts erroring or timing out on actual requests, it's marked unhealthy without a separate probe.</li>
-      <li><strong>Tuning that matters in an interview</strong>: check <em>interval</em> (how often), <em>timeout</em> (how long to wait for a response), and <em>threshold</em> (how many consecutive failures/successes before flipping state) — too aggressive and one blip pulls a healthy backend out; too lax and a dead backend keeps eating requests.</li>
-      <li>A deep health check (e.g. "can this instance reach the database") catches more real failures than a shallow one ("process is running"), but couples the LB's routing decision to a dependency's health — a DB blip can then pull every backend out of rotation at once.</li>
+        <li><strong>Local (server-side) LB</strong> — the classic case above: a dedicated tier/appliance in front of one datacenter's backend pool.</li>
+        <li><strong>Global server load balancing (GSLB)</strong> — routes users to an entire <em>region</em>/datacenter, typically via DNS (return the IP of the nearest or healthiest region) or anycast (the same IP is announced from multiple locations; routers deliver the packet to the nearest one) — the same mechanism a CDN uses to route to the nearest PoP (see <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a>).</li>
+        <li><strong>Client-side LB</strong> — the client (or a sidecar proxy next to it, as in a service mesh) holds the list of healthy backends itself and picks one directly, skipping a centralized LB hop entirely. Common inside a microservice fleet where the "client" is another internal service, not an end user.</li>
       </ul>
 
-      <h2 id="session-affinity">Session affinity ("sticky sessions")</h2>
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>DNS-based GSLB relies on clients re-resolving the name. What happens when a region fails but clients cached the old IP for the full TTL? (They keep hitting the dead region until the TTL expires — which is why GSLB records use short TTLs, and why anycast fails over faster.)</p>
+      </aside>
+
+      <!-- 04 HOW IT WORKS -->
+      <h2 id="how-it-works" data-stage="How It Works">How a Request Is Balanced</h2>
+      <ol class="sd-steps">
+        <li><strong>Accept.</strong> The client connects to the balancer's listener. An L4 balancer forwards the connection as-is; an L7 balancer completes the TCP and TLS handshake itself.</li>
+        <li><strong>Inspect (L7 only).</strong> It parses the request and matches routing rules — host, path, header — to choose a backend <em>pool</em>.</li>
+        <li><strong>Filter.</strong> Only backends currently marked healthy in that pool are candidates.</li>
+        <li><strong>Pick.</strong> The algorithm chooses one candidate (or affinity overrides it with the client's pinned backend).</li>
+        <li><strong>Forward.</strong> The request goes to the backend — over a new or pooled connection for L7, as the same connection for L4.</li>
+        <li><strong>Observe.</strong> Response status and latency feed passive health checking; repeated failures pull the backend out.</li>
+      </ol>
+
+      <h3 id="algorithms">Load balancing algorithms</h3>
+      <table>
+        <tr><th>Algorithm</th><th>How it picks</th><th>Good for</th><th>Weak point</th></tr>
+        <tr><td>Round robin</td><td>Cycles through backends in order, one request each</td><td>Simple, works well when every backend and every request is roughly equal</td><td>Ignores current load — a backend still processing a slow request gets the next one anyway</td></tr>
+        <tr><td>Weighted round robin</td><td>Round robin, but bigger/faster instances get proportionally more requests</td><td>Mixed-size instance pools</td><td>Weights are static — doesn't react to real-time load</td></tr>
+        <tr><td>Least connections</td><td>Sends the request to whichever backend currently has the fewest open connections</td><td>Long-lived or uneven-duration requests (the round-robin weak point, fixed)</td><td>"Connections" isn't the same as "load" for every workload — a backend can have few connections but high CPU</td></tr>
+        <tr><td>Weighted least connections</td><td>Least connections, weighted by instance capacity</td><td>Mixed-size pools with uneven request durations</td><td>More state to track and keep accurate</td></tr>
+        <tr><td>IP hash / consistent hashing</td><td>Hashes a key (client IP, session id) to deterministically pick the same backend every time</td><td>Session affinity without cookies; also how CDN edge nodes and cache clients pick a shard</td><td>Uneven key distribution can still overload one backend (hot key, see <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a>); losing a backend reshuffles its keys</td></tr>
+        <tr><td>Least response time</td><td>Combines active connections and recent response latency</td><td>Latency-sensitive services with variable per-backend performance</td><td>More expensive to compute; needs continuous latency sampling</td></tr>
+        <tr><td>Random / power-of-two-choices</td><td>Pick 2 backends at random, send to whichever has fewer connections</td><td>Scales better than "check every backend" at very large pool sizes, nearly as good as full least-connections</td><td>Slightly worse than true least-connections in the average case</td></tr>
+      </table>
+      <p>How consistent hashing keeps most keys in place when a backend is added or removed is explained in <a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a>.</p>
+
+      <h3 id="health-checks">Health checks</h3>
+      <ul>
+        <li><strong>Active checks</strong> — the load balancer itself polls each backend on an interval (a TCP connect, an HTTP <code>GET /healthz</code>, or a custom check) and pulls it out of rotation on repeated failure.</li>
+        <li><strong>Passive checks</strong> — the load balancer watches real traffic; if a backend starts erroring or timing out on actual requests, it's marked unhealthy without a separate probe.</li>
+        <li><strong>Tuning that matters in an interview</strong>: check <em>interval</em> (how often), <em>timeout</em> (how long to wait for a response), and <em>threshold</em> (how many consecutive failures/successes before flipping state) — too aggressive and one blip pulls a healthy backend out; too lax and a dead backend keeps eating requests.</li>
+        <li>A deep health check (e.g. "can this instance reach the database") catches more real failures than a shallow one ("process is running"), but couples the LB's routing decision to a dependency's health — a DB blip can then pull every backend out of rotation at once.</li>
+      </ul>
+      <p><strong>Detection time, cause → effect:</strong> with a 10 s interval and an unhealthy threshold of 3, a backend that dies is still sent traffic for up to ~30 s before it is removed. Passive checks shorten that window because real requests fail immediately.</p>
+
+      <h3 id="session-affinity">Session affinity ("sticky sessions")</h3>
       <p>If a backend keeps per-user state in local memory (an in-process cache, a WebSocket connection, an
-      uploaded-file-in-progress), every request from that user has to land on the <em>same</em> backend —
-      that's session affinity, usually implemented as a cookie the LB sets on first response, or via IP hash
-      above.</p>
+ uploaded-file-in-progress), every request from that user has to land on the <em>same</em> backend —
+ that's session affinity, usually implemented as a cookie the LB sets on first response, or via IP hash
+ above.</p>
       <div class="sd-study-note tip"><span class="sd-note-title">The better fix is usually statelessness</span><p>Sticky sessions work, but they reintroduce the single-point-of-failure problem one layer down (that user's traffic all depends on one instance) and complicate scaling down. The alternative — keep backends stateless and put session state in a shared store (JWT in the client, or a session id backed by Redis) — is why <a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a> matters for load-balanced systems specifically, not just for auth.</p></div>
 
-      <h2 id="global-vs-local">Global vs. local load balancing</h2>
+      <!-- 05 IMPLEMENTATION -->
+      <h2 id="implementation" data-stage="Implementation">Implementation: An L7 Pool in Nginx</h2>
+      <pre><code>upstream api {
+    least_conn;
+    server 10.0.1.10:8000 max_fails=3 fail_timeout=30s;
+    server 10.0.1.11:8000 max_fails=3 fail_timeout=30s;
+    server 10.0.1.12:8000 weight=2;
+}
+
+server {
+    listen 443 ssl;
+    location /api/ {
+        proxy_pass http://api;
+        proxy_next_upstream error timeout http_502 http_503;
+    }
+    location /static/ {
+        root /srv/www;
+    }
+}</code></pre>
       <ul>
-      <li><strong>Local (server-side) LB</strong> — the classic case above: a dedicated tier/appliance in front of one datacenter's backend pool.</li>
-      <li><strong>Global server load balancing (GSLB)</strong> — routes users to an entire <em>region</em>/datacenter, typically via DNS (return the IP of the nearest or healthiest region) or anycast (the same IP is announced from multiple locations; routers deliver the packet to the nearest one) — the same mechanism a CDN uses to route to the nearest PoP (see <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a>).</li>
-      <li><strong>Client-side LB</strong> — the client (or a sidecar proxy next to it, as in a service mesh) holds the list of healthy backends itself and picks one directly, skipping a centralized LB hop entirely. Common inside a microservice fleet where the "client" is another internal service, not an end user.</li>
+        <li><code>least_conn</code> — least-connections algorithm; without it, Nginx defaults to weighted round robin.</li>
+        <li><code>max_fails=3 fail_timeout=30s</code> — <em>passive</em> health checking: 3 failed attempts within 30 s mark the server unavailable for 30 s. (Open-source Nginx has no active probes; NGINX Plus, HAProxy, Envoy and cloud LBs do.)</li>
+        <li><code>weight=2</code> — this instance gets twice the share (weighted balancing for a bigger box).</li>
+        <li><code>proxy_next_upstream</code> — retry the request on another backend after a connection error, timeout, 502 or 503. Safe for idempotent requests; for <code>POST</code>s a retry can duplicate the action.</li>
+        <li>Two <code>location</code> blocks — path-based routing, which only an L7 balancer can do.</li>
+      </ul>
+      <p>On AWS the same shape is an <strong>ALB</strong> with a listener rule per path, each forwarding to a <strong>target group</strong> whose health check is configured on the group (path, interval, timeout, healthy/unhealthy thresholds) and whose <em>deregistration delay</em> gives connection draining. Reverse-proxy basics (headers, timeouts) are in <a href="../web-servers/server.html#implementation">Web Servers → Implementation</a>.</p>
+
+      <!-- 06 PRODUCTION -->
+      <h2 id="production" data-stage="Production">Production Usage</h2>
+      <table>
+        <tr><th></th><th>Low scale</th><th>High scale</th></tr>
+        <tr><td>Topology</td><td>One managed L7 LB (or one Nginx) in front of 2–3 instances in one region.</td><td>GSLB/anycast → per-region L4 edge → L7 tier → autoscaled pools; client-side LB between internal services.</td></tr>
+        <tr><td>The LB itself</td><td>A single Nginx box is itself a single point of failure — a managed LB avoids this.</td><td>The LB tier is redundant (multiple nodes, multiple zones); cloud LBs scale themselves.</td></tr>
+        <tr><td>Deploys</td><td>Remove an instance, deploy, add back.</td><td>Rolling or blue/green deploys rely on health checks + connection draining (see <a href="../observability-security/02-cicd-and-deployment-strategies.html">CI/CD &amp; Deployment Strategies</a>).</td></tr>
+        <tr><td>Algorithm choice</td><td>Round robin is fine.</td><td>Least connections / power-of-two for uneven requests; consistent hashing where cache locality matters.</td></tr>
+      </table>
+
+      <h3 id="tradeoffs">Trade-offs</h3>
+      <ul>
+        <li><strong>Reliability:</strong> removes single-instance failure, but the LB tier and its health-check config become critical infrastructure.</li>
+        <li><strong>Performance:</strong> L4 adds almost nothing; L7 adds TLS termination and parsing per request but enables connection reuse and smarter routing.</li>
+        <li><strong>Operational complexity:</strong> health-check tuning, draining and affinity all interact with deploys.</li>
+        <li><strong>Cost:</strong> managed LBs bill per hour plus per traffic/connection unit; client-side LB avoids the hop but moves logic into every client.</li>
       </ul>
 
-      <h2 id="interview-checklist">Interview checklist</h2>
+      <h3 id="observability">Signals to watch</h3>
+      <table>
+        <tr><th>Signal</th><th>What it tells you</th></tr>
+        <tr><td>Healthy host count per pool</td><td>Capacity actually available; a drop to zero means every request fails (often a too-deep health check).</td></tr>
+        <tr><td>Request count per backend</td><td>Whether distribution is even — skew points at affinity, hashing hot keys, or long-lived connections.</td></tr>
+        <tr><td>5xx generated by the LB vs. by backends</td><td>LB-generated 502/503/504 = no healthy/answering backend; backend 5xx = application errors.</td></tr>
+        <tr><td>Target response time p95/p99</td><td>Backend latency as the LB sees it.</td></tr>
+        <tr><td>Active / new connection count</td><td>Connection pressure and churn (missing keep-alive).</td></tr>
+        <tr><td>Rejected connections / surge queue</td><td>The LB or the pool is out of capacity.</td></tr>
+      </table>
+
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>Alert on "healthy hosts &lt; N" per pool, not only on error rate. Health-check failures usually start before user-visible errors, and a pool quietly running on one of four hosts is one failure away from an outage.</p>
+      </aside>
+
+      <!-- 07 SECURITY -->
+      <h2 id="security" data-stage="Security">Security</h2>
       <ul>
-      <li>Say which layer (L4 vs L7) and why — "I need path-based routing" or "this isn't HTTP" both justify the choice.</li>
-      <li>Name an algorithm and justify it against the workload's shape (uniform vs. long-lived vs. latency-sensitive requests), not just "round robin" by default.</li>
-      <li>Mention health checks explicitly — an LB that never removes dead backends isn't actually providing availability.</li>
-      <li>If the design needs sticky sessions, say so and note the trade-off against statelessness — interviewers listen for whether you know that's a trade-off, not a free feature.</li>
-      <li>At global scale, separate "which instance" (local LB, algorithms above) from "which region" (GSLB/DNS/anycast) — they're different problems solved at different layers.</li>
+        <li><strong>TLS termination</strong> at the L7 balancer keeps certificates in one place; re-encrypt to backends if the internal network isn't trusted.</li>
+        <li><strong>Backends accept traffic only from the LB</strong> — e.g. a security group that allows the app port only from the LB's security group — so nobody bypasses routing, TLS and WAF rules.</li>
+        <li><strong>Client IP is in a header now</strong> (<code>X-Forwarded-For</code>) for L7, or preserved/proxy-protocol for L4; backends must trust it only from the LB (details in <a href="../web-servers/server.html#security">Web Servers → Security</a>).</li>
+        <li><strong>A balancer is not DDoS or abuse protection by itself</strong> — it spreads load but doesn't cap it; pair it with a WAF and <a href="01-rate-limiting-and-throttling.html">rate limiting</a>.</li>
+        <li><strong>Health endpoints</strong> should not leak internals (versions, dependency details) if they're reachable from outside.</li>
       </ul>
+
+      <!-- 08 PERFORMANCE -->
+      <h2 id="performance" data-stage="Performance &amp; Scalability">Performance &amp; Scalability</h2>
+      <ul>
+        <li><strong>Horizontal scaling is the point</strong>: capacity ≈ instances × per-instance capacity, as long as backends are stateless and the shared dependencies (database, cache) keep up.</li>
+        <li><strong>Connection reuse:</strong> L7 balancers keep pooled keep-alive connections to backends, saving a TCP (and TLS) handshake per request.</li>
+        <li><strong>Long-lived connections</strong> (WebSockets, HTTP/2, gRPC) make round robin uneven — a backend that got many long connections early stays loaded. Use least connections, and expect rebalancing to happen only as connections close.</li>
+        <li><strong>Autoscaling lag:</strong> new instances take time to boot and pass health checks; scale on a leading signal (CPU, request rate) with headroom, not after latency is already bad.</li>
+        <li><strong>Slow start:</strong> a freshly added instance with a cold cache can be overwhelmed by least-connections (it has zero connections); some LBs ramp new targets up gradually.</li>
+      </ul>
+
+      <!-- 09 TROUBLESHOOTING -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Failure Scenarios</h2>
+      <table>
+        <tr><th>Symptom</th><th>Possible cause</th><th>Detect</th><th>Fix</th><th>Prevent</th></tr>
+        <tr><td>503 from the LB for everyone</td><td>No healthy targets — often a deep health check failing on a shared dependency, or a wrong health-check path/port after a deploy.</td><td>Healthy host count = 0; health-check failure reason in the LB console/logs.</td><td>Fix the dependency or the check config; make the health check shallow enough not to fail all hosts together.</td><td>Alert on healthy-host count; test health checks in staging.</td></tr>
+        <tr><td>Instances flap in and out of service</td><td>Timeout too tight or threshold too low; instance overloaded so the check itself times out.</td><td>Alternating healthy/unhealthy events.</td><td>Raise timeout/threshold; add capacity.</td><td>Health checks on a cheap endpoint, separate from heavy work.</td></tr>
+        <tr><td>One backend at high CPU while others idle</td><td>Sticky sessions, hot hash key, or long-lived connections concentrated on it.</td><td>Request/connection count per backend.</td><td>Least connections; remove affinity; split the hot key.</td><td>Stateless backends.</td></tr>
+        <tr><td>Errors during every deploy</td><td>Instances removed without draining, or added before they're ready.</td><td>5xx spikes aligned with deploy times.</td><td>Connection draining + readiness checks.</td><td>Rolling deploys gated on health.</td></tr>
+        <tr><td>Users logged out randomly</td><td>Session stored in instance memory, no affinity (or affinity cookie lost).</td><td>Session-not-found errors spread across instances.</td><td>Move sessions to Redis / tokens.</td><td>Design backends stateless.</td></tr>
+      </table>
+      <h3 id="debug-workflow">Debugging workflow</h3>
+      <ol class="sd-steps">
+        <li><strong>Who returned the error?</strong> LB-generated vs. backend-generated 5xx (LB access logs record both statuses).</li>
+        <li><strong>Pool health:</strong> how many targets are healthy, and the health-check failure reason.</li>
+        <li><strong>Hit a backend directly:</strong> <code>curl -v http://10.0.1.10:8000/healthz</code> from inside the network — healthy here but not in the LB means the check config or network path is wrong.</li>
+        <li><strong>Distribution:</strong> compare request and connection counts per backend.</li>
+        <li><strong>Correlate:</strong> deploys, autoscaling events, dependency incidents.</li>
+      </ol>
+
+      <!-- 10 BEST PRACTICES -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul>
+        <li><strong>Keep backends stateless</strong> — so the balancer can choose freely and any instance can die.</li>
+        <li><strong>Make health checks cheap and specific to the instance</strong> — they should fail when <em>this</em> instance is broken, not when a shared dependency blips.</li>
+        <li><strong>Enable connection draining</strong> — so deploys and scale-in don't cut in-flight requests.</li>
+        <li><strong>Spread instances across availability zones</strong> — the balancer can only route around failures it has alternatives for.</li>
+        <li><strong>Choose the algorithm from the workload shape</strong> — uniform short requests vs. long-lived vs. latency-sensitive.</li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul>
+        <li><strong>Sticky sessions by default</strong> — they bring back per-instance failure and uneven load.</li>
+        <li><strong>Retrying non-idempotent requests</strong> on another backend — it can execute them twice.</li>
+        <li><strong>A single self-managed LB box</strong> — it becomes the single point of failure you were removing.</li>
+        <li><strong>Long DNS TTLs on GSLB records</strong> — failover waits for caches to expire.</li>
+      </ul>
+
+      <!-- 11 INTERVIEW PREPARATION -->
+      <h2 id="interview-answer" data-stage="Interview Preparation">Interview Answer — What Is a Load Balancer?</h2>
+      <p>A load balancer is a component that sits in front of a pool of backend instances, receives every incoming request or connection, and forwards each one to a healthy backend chosen by an algorithm such as round robin or least connections. To the client, the whole pool looks like one address.</p>
+      <p>It exists because a single server has a hard ceiling on connections, CPU, and memory, and is a single point of failure. With a load balancer in front, you scale by adding instances behind the same address (horizontal scaling), and you survive instance failures because <a href="#health-checks">health checks</a> take a failing instance out of rotation. The cause → effect chain is: an instance stops answering its health check → after the failure threshold the load balancer marks it unhealthy → new requests go only to the remaining instances → clients see no outage, only slightly more load per instance.</p>
+      <p>Load balancers differ by the layer they work at. A <strong>Layer 4</strong> load balancer (for example AWS NLB) sees only IP addresses and ports and forwards connections; a <strong>Layer 7</strong> load balancer (for example AWS ALB, Nginx, Envoy) parses the HTTP request and can route by path, header, or cookie and terminate TLS. At global scale, a separate tier — DNS-based or anycast <strong>global server load balancing</strong> — first picks the region, then a local load balancer picks the instance.</p>
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"A load balancer sits in front of a pool of servers and spreads incoming traffic across them, so I can scale horizontally and survive instance failures. It uses an algorithm like round robin or least connections to pick a backend, and health checks to stop sending traffic to instances that fail. An L4 balancer forwards connections by IP and port; an L7 balancer understands HTTP and can route by path or header and terminate TLS. For multiple regions, DNS or anycast picks the region first, and a local load balancer picks the instance."</p>
+      </div>
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Should I just turn on sticky sessions so each user always hits the same server?</strong></p>
+      <p><strong>A:</strong> Only if you must. <a href="#session-affinity">Sticky sessions</a> make a user's requests depend on one specific instance, so that instance becomes a single point of failure for those users — if it dies, their in-memory session is lost — and it makes load uneven and scale-in harder, because you cannot remove an instance without breaking its users' sessions. The usual better design is to keep backends stateless and move session state to a shared store such as Redis or a signed token, so any instance can serve any request and the load balancer can pick freely.</p>
+
+      <h3 id="interview-checklist">Interview checklist</h3>
+      <ul>
+        <li>Say which layer (L4 vs L7) and why — "I need path-based routing" or "this isn't HTTP" both justify the choice.</li>
+        <li>Name an algorithm and justify it against the workload's shape (uniform vs. long-lived vs. latency-sensitive requests), not just "round robin" by default.</li>
+        <li>Mention health checks explicitly — an LB that never removes dead backends isn't actually providing availability.</li>
+        <li>If the design needs sticky sessions, say so and note the trade-off against statelessness — interviewers listen for whether you know that's a trade-off, not a free feature.</li>
+        <li>At global scale, separate "which instance" (local LB, algorithms above) from "which region" (GSLB/DNS/anycast) — they're different problems solved at different layers.</li>
+      </ul>
+
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>Why does a load balancer improve availability, not just capacity?</summary>
+          <p>Because health checks remove failing instances from rotation: an instance dies → it fails its checks → after the threshold it's marked unhealthy → traffic goes only to the rest. Without health checks it only adds capacity.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>When would you choose L4 over L7?</summary>
+          <p>When the traffic isn't HTTP, or raw throughput/latency matters more than content-aware routing. Choose L7 when you need path/host/header routing, TLS termination, cookie affinity or per-request retries.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What's the difference between load balancing and rate limiting?</summary>
+          <p>A load balancer decides <em>where</em> a request goes; a rate limiter decides <em>whether</em> it's allowed. A balancer alone won't stop one abusive client from overloading every backend.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Why is round robin a poor choice for long-lived or uneven requests, and what would you use?</summary>
+          <p>Round robin ignores current load, so a backend still busy with slow requests keeps getting new ones. Least connections (or power-of-two-choices at large scale) sends work to the least-busy backend.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>How do health-check interval, timeout and threshold interact?</summary>
+          <p>Detection time ≈ interval × unhealthy threshold. Too aggressive: one blip removes healthy hosts (flapping). Too lax: dead hosts get traffic for a long time. Passive checks on real traffic shorten detection.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>What do sticky sessions cost you?</summary>
+          <p>The pinned instance is a single point of failure for its users, load becomes uneven, and scale-in breaks sessions. Prefer stateless backends with session state in Redis or a signed token.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Your gRPC service sits behind an L4 load balancer and one backend is overloaded. Why?</summary>
+          <p>gRPC multiplexes many requests over one long-lived HTTP/2 connection; an L4 balancer balances connections, so each client's whole stream lands on one backend. Use an L7 (HTTP/2-aware) balancer, client-side balancing, or periodic connection recycling.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Why can a "deep" health check cause a total outage?</summary>
+          <p>If every instance's check includes "can I reach the database", a database blip fails all checks at once, the balancer marks every backend unhealthy and returns 503 for everything — even requests that didn't need the database. Keep LB checks instance-local; surface dependency health elsewhere.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>How do GSLB and local load balancing divide the work?</summary>
+          <p>GSLB (DNS or anycast) picks the region or datacenter; the local LB picks the instance within it. Different problems at different layers — DNS failover is bounded by TTLs, anycast by routing convergence.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Every deploy causes a burst of 502s. What do you check?</summary>
+          <p>Whether instances are deregistered with connection draining before shutdown, whether new instances receive traffic only after passing readiness/health checks, and the deploy batch size vs. remaining capacity. Fix with draining + health-gated rolling deploys.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Users report being logged out at random after you scaled from 1 to 3 instances. Why?</summary>
+          <p>Sessions live in instance memory; requests now land on instances that don't hold the session. Short-term: sticky sessions. Proper fix: shared session store or stateless tokens.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>After adding a new instance, it immediately shows high latency and errors. Why?</summary>
+          <p>Least-connections sends a flood to the empty newcomer while its caches/JIT are cold, or it was added before it was ready. Use readiness checks and slow-start (gradual ramp-up) for new targets.</p></details>
+      </section>
+
+      <!-- 12 SUMMARY -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>A load balancer gives horizontal scale <em>and</em> availability — the availability part comes from health checks.</li>
+        <li>L4 forwards connections by IP/port; L7 reads each HTTP request and routes by path/header/cookie.</li>
+        <li>Pick the algorithm from the workload: round robin for uniform, least connections for uneven/long-lived, hashing for locality.</li>
+        <li>Health-check interval × threshold = detection time; deep checks can take down every backend at once.</li>
+        <li>Sticky sessions are a trade-off; stateless backends + shared session store is the default.</li>
+        <li>Region choice (GSLB/DNS/anycast) and instance choice (local LB) are separate layers.</li>
+        <li>Load balancing decides where; rate limiting decides whether.</li>
+      </ol>
+
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <div class="sd-next">
+        <a href="01-rate-limiting-and-throttling.html"><strong>Rate Limiting &amp; Throttling</strong><span>Protect the capacity the balancer spread.</span></a>
+        <a href="../distributed-system/02-consistent-hashing.html"><strong>Consistent Hashing</strong><span>How hash-based balancing survives adding and removing backends.</span></a>
+        <a href="../web-servers/server.html"><strong>Web Servers</strong><span>The reverse proxy that often is your L7 balancer.</span></a>
+      </div>
 
     </main>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

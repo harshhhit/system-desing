@@ -13,93 +13,296 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Application Security Fundamentals · Infra Owl</title>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=10">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
 
 <div id="site-header-root"></div>
-
 <script src="../assets/sitemap.js"></script>
 <script src="../assets/pages.js"></script>
-<script src="../assets/site-header.js?v=8" data-root="../"></script>
+<script src="../assets/site-header.js?v=9" data-root="../"></script>
 
 <div class="sd-study-layout">
-
   <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a class="active" href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
 
   <div class="sd-study-content">
-    <main class="sd-study-main">
-
+    <main class="sd-study-main sd-lesson" data-reminders="Explain authentication vs. authorization with the /orders/1234 example|Write a parameterized query and explain why it stops injection|Walk STRIDE over one feature you&#x27;ve built">
       <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Observability, Security &amp; Ops / Application Security Fundamentals</p>
       <h1 data-page-title>Application Security Fundamentals</h1>
       <p class="sd-study-prompt" data-page-subtitle>The OWASP Top 10, encryption in transit and at rest, secrets management, and threat modeling.</p>
 
-      <h2 id="interview-answer">Interview Answer — What Is Application Security?</h2>
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
+        <ul>
+          <li>Name the OWASP Top 10 categories and their core mitigations</li>
+          <li>Separate authentication from authorization and spot broken access control</li>
+          <li>Prevent injection and XSS with parameterized queries and output encoding</li>
+          <li>Explain encryption in transit vs. at rest and why key management matters</li>
+          <li>Keep secrets out of code and rotate them</li>
+          <li>Threat-model a design with STRIDE</li>
+        </ul>
+      </section>
+
+      <!-- 01 OVERVIEW -->
+      <h2 id="overview" data-stage="Overview">Scope of This Page</h2>
+      <p>This covers general, system-wide application security — the things that apply regardless of which
+ database or framework sits underneath. <a href="../05-database/04a-database-security-and-access-control/index.html">Database Security and Access Control</a> covers the same territory specifically for the data layer (row-level security, least-privilege DB roles, encryption of data at rest); <a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a> and <a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a> cover authentication in depth. This page is the layer above both: the classes of vulnerability and the controls that apply to the application as a whole.</p>
+      <p><strong>Why it exists:</strong> every input to a system and every trust boundary it crosses is a potential way in, and most real incidents come from one missing, ordinary control rather than an exotic attack.</p>
+
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>Security controls must run on the <strong>server</strong>. Anything the client does — hiding a button, validating a form, sending a "role" field — is a convenience for honest users, not a control, because an attacker can send any request directly.</p>
+      </aside>
+
+      <!-- 02 CORE CONCEPTS -->
+      <h2 id="core-concepts" data-stage="Core Concepts">Core Concepts</h2>
+      <table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><strong>Authentication (authN)</strong></td><td>Proving who the caller is (password, token, certificate).</td></tr>
+        <tr><td><strong>Authorization (authZ)</strong></td><td>Deciding what that caller may do to this specific resource.</td></tr>
+        <tr><td><strong>Trust boundary</strong></td><td>Any point where data moves from a less-trusted to a more-trusted component — user → API, API → database, internet → internal network.</td></tr>
+        <tr><td><strong>Attack surface</strong></td><td>All inputs and boundaries an attacker can reach.</td></tr>
+        <tr><td><strong>Least privilege</strong></td><td>Every user, service and key gets only the permissions it needs, nothing more.</td></tr>
+        <tr><td><strong>Defense in depth</strong></td><td>Several independent controls, so one failure isn't a breach (e.g. parameterized queries <em>and</em> a least-privilege DB user).</td></tr>
+      </table>
+      <p><strong>Authentication vs. authorization — the difference is</strong> identity vs. permission. A valid session answers "who"; only an explicit per-resource check answers "may they". Most real incidents are authorization failures.</p>
+
+      <!-- 03 ARCHITECTURE -->
+      <h2 id="architecture" data-stage="Architecture">Where Controls Sit</h2>
+      <div class="mermaid sd-diagram">flowchart LR
+    U["Client (untrusted)"] -->|"TLS"| E["Edge: WAF · rate limits"]
+    E --> A["API: authN → authZ per request<br/>input validation · output encoding"]
+    A -->|"parameterized queries<br/>least-privilege DB user"| D[("Database<br/>encrypted at rest")]
+    A -->|"allowlisted outbound only"| X["External URLs"]
+    A -.->|"fetch at runtime"| V["Secrets store<br/>Vault · Secrets Manager"]
+    A -->|"security events"| L["Logs + alerts"]
+</div>
+      <p class="sd-diagram-caption">Each arrow is a trust boundary with its own control; no single layer is trusted to stop everything.</p>
+
+      <!-- 04 HOW IT WORKS -->
+      <h2 id="owasp-top-10" data-stage="How It Works">OWASP Top 10 — the Categories That Recur in Almost Every Interview</h2>
+      <table>
+        <tr><th>Category</th><th>What it is</th><th>Core mitigation</th></tr>
+        <tr><td>Broken access control</td><td>A user can act on data/resources they shouldn't be able to — e.g. changing an ID in a URL to view another user's record</td><td>Enforce authorization server-side on every request, never trust a client-supplied ID alone; default-deny</td></tr>
+        <tr><td>Cryptographic failures</td><td>Sensitive data transmitted or stored without proper encryption, or with weak/outdated algorithms</td><td>TLS everywhere in transit, strong at-rest encryption for sensitive fields, never roll your own crypto</td></tr>
+        <tr><td>Injection</td><td>Untrusted input is concatenated into a command interpreter (SQL, shell, LDAP) and executed as code</td><td>Parameterized queries/prepared statements, never string-concatenate user input into a query</td></tr>
+        <tr><td>Insecure design</td><td>A missing security control at the design stage — no amount of careful coding fixes a flaw baked into the architecture</td><td>Threat modeling before implementation, not just code review after</td></tr>
+        <tr><td>Security misconfiguration</td><td>Default credentials left in place, verbose error messages leaking internals, unnecessary features/ports enabled</td><td>Hardened, minimal defaults; automated config scanning; no debug mode in production</td></tr>
+        <tr><td>Vulnerable/outdated components</td><td>A known CVE in a dependency the app pulls in, unpatched</td><td>Dependency scanning (e.g. Dependabot/Snyk) and a real patching cadence</td></tr>
+        <tr><td>Identification &amp; authentication failures</td><td>Weak password policy, no rate limiting on login, session tokens that don't expire or rotate</td><td>See <a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a> and <a href="../traffic/01-rate-limiting-and-throttling.html">Rate Limiting &amp; Throttling</a> (apply it to auth endpoints specifically)</td></tr>
+        <tr><td>Software/data integrity failures</td><td>Trusting a package registry, CI pipeline, or auto-update mechanism without verifying integrity — supply-chain risk</td><td>Signed packages/commits, pinned dependency versions, verified CI/CD pipeline permissions</td></tr>
+        <tr><td>Logging &amp; monitoring failures</td><td>An attack goes unnoticed because nothing logged the signal, or nobody was alerted on it</td><td>See <a href="00-observability-fundamentals.html">Observability Fundamentals</a> — security logging is a specific case of the general problem</td></tr>
+        <tr><td>Server-side request forgery (SSRF)</td><td>The server is tricked into making a request to an attacker-chosen internal URL (e.g. a cloud metadata endpoint) on the attacker's behalf</td><td>Allowlist outbound destinations for any server-side "fetch a URL" feature; never let user input fully control the target host</td></tr>
+      </table>
+      <div class="sd-study-note tip"><span class="sd-note-title">XSS didn't disappear — it's folded into "injection" conceptually</span><p>Cross-site scripting (unescaped user input rendered as executable script in another user's browser) is the classic example of injection targeting the browser instead of a database. The fix is the same shape as SQL injection's: never trust unescaped user input in an executable context — escape/encode output, and use a Content-Security-Policy header as defense in depth.</p></div>
+
+      <h3 id="injection-mechanics">How injection works, cause → effect</h3>
+      <ol class="sd-steps">
+        <li>The code builds <code>"SELECT * FROM users WHERE email = '" + input + "'"</code>.</li>
+        <li>An attacker submits <code>' OR '1'='1</code> as the email.</li>
+        <li>The database receives <code>… WHERE email = '' OR '1'='1'</code> — the input became part of the <em>query structure</em>.</li>
+        <li>The condition is always true; every row is returned.</li>
+        <li>With a parameterized query the database receives the SQL and the value separately, so the input can only ever be a value, never SQL.</li>
+      </ol>
+
+      <h2 id="encryption" data-stage="How It Works">Encryption: In Transit vs. At Rest</h2>
+      <ul>
+        <li><strong>In transit</strong> — TLS on every network hop, not just the public-facing edge; internal service-to-service traffic inside a "trusted" network is still worth encrypting (assume the network itself isn't a trust boundary) — this is part of what a service mesh's mTLS (see <a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a>) automates.</li>
+        <li><strong>At rest</strong> — disk/volume-level encryption as a baseline, plus field-level encryption for specifically sensitive data (payment details, health records) so even a database dump or backup isn't readable without the key.</li>
+        <li>Encryption without key management is theater — where the key lives, who can access it, and how it's rotated matters as much as the algorithm.</li>
+      </ul>
+      <p>The TLS handshake itself is explained in <a href="../networking/00-networking-fundamentals.html#tls-handshake">Networking Fundamentals</a>; passwords are a separate case — they are <em>hashed</em>, not encrypted (see <a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a>).</p>
+
+      <aside class="sd-callout mistake">
+        <p class="sd-callout-title">⚠️ Common mistake</p>
+        <p>"The disk is encrypted, so the data is protected." Volume encryption protects against stolen disks and backups. It does nothing against an attacker who reaches the running application or database with valid credentials — they read decrypted data like any user. That's what access control and field-level encryption are for.</p>
+      </aside>
+
+      <h2 id="secrets-management" data-stage="How It Works">Secrets Management</h2>
+      <ul>
+        <li>Never commit secrets (API keys, DB passwords, private keys) to source control — this is the single most common real-world security incident, and the easiest to prevent structurally.</li>
+        <li>Use a dedicated secrets store (HashiCorp Vault, AWS Secrets Manager, or — inside a cluster — a Kubernetes <code>Secret</code>, see <a href="../kubernetes/08-configmap-secret.html">ConfigMap &amp; Secret</a> for why Base64-encoded isn't the same as encrypted) rather than environment variables baked into an image or config file checked into a repo.</li>
+        <li>Rotate secrets on a schedule and immediately on suspected compromise — a secrets store that supports easy rotation is worth more than one that's merely "not in git."</li>
+      </ul>
+
+      <h2 id="threat-modeling" data-stage="How It Works">Threat Modeling, Briefly</h2>
+      <p>Before writing code, walk through: what are we protecting (assets), who might attack it and why
+ (threat actors), how could they get in (attack surface — every input, every trust boundary crossed), and
+ what's the impact if they succeed. A lightweight framework like <strong>STRIDE</strong> (Spoofing,
+ Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege) gives a
+ checklist to walk a design against rather than relying on remembering to think of everything. This is
+ "insecure design" from the table above addressed at the source — before implementation, not after.</p>
+
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>Your app lets users import a profile picture "from a URL". Which STRIDE letters apply, and which OWASP category? (Information disclosure / elevation via <strong>SSRF</strong> — the server can be pointed at <code>http://169.254.169.254/</code> or internal admin services.)</p>
+      </aside>
+
+      <!-- 05 IMPLEMENTATION -->
+      <h2 id="implementation" data-stage="Implementation">Implementation</h2>
+      <h3 id="parameterized-queries">Parameterized query vs. concatenation (Python)</h3>
+      <pre><code># vulnerable
+cur.execute("SELECT * FROM orders WHERE id = " + order_id)
+
+# safe: the driver sends the value separately
+cur.execute("SELECT * FROM orders WHERE id = %s AND user_id = %s", (order_id, current_user.id))</code></pre>
+      <ul>
+        <li><code>%s</code> placeholders — the driver passes values out-of-band, so input can't change the SQL.</li>
+        <li><code>AND user_id = %s</code> — the authorization check is part of the query: the row is only returned if it belongs to the caller, fixing broken access control at the same time.</li>
+      </ul>
+      <h3 id="security-headers">Baseline HTTP security headers</h3>
+      <pre><code>Strict-Transport-Security: max-age=31536000; includeSubDomains
+Content-Security-Policy: default-src 'self'; script-src 'self'
+X-Content-Type-Options: nosniff
+Set-Cookie: session=…; Secure; HttpOnly; SameSite=Lax</code></pre>
+      <ul>
+        <li><code>Strict-Transport-Security</code> — browsers refuse plain HTTP for this domain for a year.</li>
+        <li><code>Content-Security-Policy</code> — only scripts from your own origin run; injected inline script is blocked (XSS defense in depth).</li>
+        <li><code>X-Content-Type-Options: nosniff</code> — stops browsers guessing a file is script when it isn't.</li>
+        <li><code>Secure; HttpOnly; SameSite</code> cookie flags — HTTPS-only, unreadable by JavaScript (limits XSS token theft), not sent on most cross-site requests (CSRF mitigation). See <a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">Cookies, Sessions &amp; JWT</a>.</li>
+      </ul>
+      <h3 id="secret-scanning">Keeping secrets out of git</h3>
+      <pre><code>gitleaks detect --source . --redact
+aws secretsmanager get-secret-value --secret-id prod/db/password</code></pre>
+      <ul>
+        <li><code>gitleaks detect</code> — scans the repo (and history) for committed keys; run it in CI and as a pre-commit hook.</li>
+        <li><code>aws secretsmanager get-secret-value</code> — the app fetches the secret at runtime with its IAM role, so the value never sits in code or the image.</li>
+      </ul>
+
+      <!-- 06 PRODUCTION -->
+      <h2 id="production" data-stage="Production">Production Usage</h2>
+      <table>
+        <tr><th></th><th>Low scale / early</th><th>Larger organisation</th></tr>
+        <tr><td>Controls</td><td>Framework defaults (ORM parameterization, auto-escaping templates, CSRF tokens), HTTPS, a secrets manager.</td><td>Central authZ service/policy engine, WAF at the edge, mTLS between services, KMS-managed keys.</td></tr>
+        <tr><td>Process</td><td>Dependency alerts, code review.</td><td>Threat modeling for new designs, SAST/DAST in CI, pen tests, bug bounty, incident response runbooks.</td></tr>
+        <tr><td>Detection</td><td>Failed-login and error-rate alerts.</td><td>Security event pipeline (SIEM), anomaly detection, audit logs for admin actions.</td></tr>
+      </table>
+      <h3 id="security-signals">Signals worth logging and alerting on</h3>
+      <ul>
+        <li>Spikes in failed logins per account or IP (credential stuffing).</li>
+        <li>403 spikes for one user across many resource IDs (access-control probing / ID enumeration).</li>
+        <li>Unusual outbound requests from app servers to internal or metadata addresses (SSRF).</li>
+        <li>Secrets accessed by unexpected identities; admin actions; permission changes.</li>
+      </ul>
+
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>When a secret leaks into a public repo, deleting the commit is not the fix — it's been scraped within minutes. <strong>Rotate first</strong>, then clean history, then find out how it got there.</p>
+      </aside>
+
+      <!-- 07 SECURITY (this page is the security topic; the part holds the cross-cutting principles) -->
+      <h2 id="security" data-stage="Security">Security Principles to Apply Everywhere</h2>
+      <ul>
+        <li><strong>Default deny</strong> — new endpoints are closed until a rule opens them.</li>
+        <li><strong>Least privilege</strong> — DB users, IAM roles, API keys and humans get the minimum scope; separate read and write credentials.</li>
+        <li><strong>Validate input, encode output</strong> — validate shape at the boundary; encode for the context (HTML, SQL, shell) where it's used.</li>
+        <li><strong>Don't leak internals</strong> — generic error messages to clients, details only in logs.</li>
+        <li><strong>Assume breach</strong> — encrypt internal traffic, segment networks, and log enough to reconstruct what an attacker did.</li>
+      </ul>
+
+      <!-- 09 TROUBLESHOOTING -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Incident Scenarios</h2>
+      <table>
+        <tr><th>Symptom</th><th>Possible cause</th><th>Detect</th><th>Fix</th><th>Prevent</th></tr>
+        <tr><td>A user can see another user's orders by editing the URL</td><td>Broken access control: lookup by ID only.</td><td>Reports, or 200s for many sequential IDs from one user.</td><td>Scope every query by owner / check permission per request.</td><td>Authorization tests for every endpoint; default deny.</td></tr>
+        <tr><td>Strange data appears in the DB; odd SQL errors in logs</td><td>SQL injection via concatenated input.</td><td>DB errors with quote characters; WAF alerts.</td><td>Parameterize; review all query construction.</td><td>ORM / prepared statements only; SAST rule.</td></tr>
+        <tr><td>Cloud bill spikes; unknown instances running</td><td>Leaked access key (often from a public repo).</td><td>Billing alerts; key used from unusual IPs.</td><td>Revoke and rotate keys immediately; audit usage.</td><td>Secret scanning in CI; short-lived credentials (roles).</td></tr>
+        <tr><td>App server makes requests to <code>169.254.169.254</code></td><td>SSRF through a URL-fetch feature.</td><td>Outbound request logs / VPC flow logs.</td><td>Allowlist destinations; block metadata from the app (IMDSv2).</td><td>No user-controlled fetch targets.</td></tr>
+        <tr><td>Scanner reports a critical CVE in a library</td><td>Outdated dependency.</td><td>Dependency scanner.</td><td>Upgrade/patch; check exploitability.</td><td>Automated update PRs and patch cadence.</td></tr>
+      </table>
+
+      <!-- 10 BEST PRACTICES -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul>
+        <li><strong>Check authorization on every request, server-side</strong> — the top real-world failure.</li>
+        <li><strong>Use parameterized queries and auto-escaping templates</strong> — remove injection structurally.</li>
+        <li><strong>Encrypt in transit everywhere and at rest for sensitive data</strong>, with managed, rotated keys.</li>
+        <li><strong>Keep secrets in a secrets manager</strong> and scan for leaks in CI.</li>
+        <li><strong>Threat-model new designs</strong> before building them.</li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul>
+        <li><strong>Trusting client-supplied IDs, roles or prices.</strong></li>
+        <li><strong>Rolling your own crypto.</strong></li>
+        <li><strong>Secrets in env files committed to git or baked into images.</strong></li>
+        <li><strong>Verbose error pages and debug mode in production.</strong></li>
+      </ul>
+
+      <!-- 11 INTERVIEW PREPARATION -->
+      <h2 id="interview-answer" data-stage="Interview Preparation">Interview Answer — What Is Application Security?</h2>
       <p>Application security is the set of design decisions and controls that keep an application's data and functions available only to the people and systems that are supposed to use them — covering how input is handled, how access is checked, how data is encrypted, and how secrets are stored. The <a href="#owasp-top-10">OWASP Top 10</a> is the standard list of the most common ways those controls fail in real applications.</p>
       <p>It exists because every input to a system and every trust boundary it crosses is a potential way in. The cause → effect chain of a typical incident is short: one missing control — an unparameterized SQL query, an authorization check that trusts a user-supplied ID, an API key committed to Git — lets an attacker read or change data they should never reach, and a missing security log means nobody notices. Security therefore has to be designed in (threat modeling before implementation), not bolted on after code review.</p>
       <p>A baseline design names a few controls explicitly: authorization enforced server-side on every request, parameterized queries against injection, <a href="#encryption">TLS in transit and encryption at rest</a> with managed keys, secrets kept in a dedicated store (Vault, AWS Secrets Manager, a Kubernetes Secret) rather than source control, and security events logged and alerted on.</p>
-
       <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
         <p>"Application security is making sure only the right users and systems can reach the right data and actions. In practice I start from the OWASP Top 10: enforce authorization on the server for every request, use parameterized queries to prevent injection, encrypt data in transit with TLS and at rest with properly managed keys, keep secrets in a secrets manager instead of code, patch dependencies, and log and alert on security events. I threat-model the design up front so security flaws aren't baked into the architecture."</p>
       </div>
-
       <h3>One important interview follow-up</h3>
       <p><strong>Q: If the user is logged in with a valid session, is the request safe to serve?</strong></p>
       <p><strong>A:</strong> No. A valid session proves <strong>authentication</strong> — who the user is — not <strong>authorization</strong> — what that user is allowed to do. If the server serves <code>/orders/1234</code> just because the caller is logged in, any user can change the ID in the URL and read someone else's order; this is <strong>broken access control</strong>, the top OWASP category. The server must check, on every request, that this specific user may act on this specific resource, and it must never trust an ID, role, or price supplied by the client.</p>
 
-      <h2>Scope of this page</h2>
-      <p>This covers general, system-wide application security — the things that apply regardless of which
-      database or framework sits underneath. <a href="../05-database/04a-database-security-and-access-control/index.html">Database Security and Access Control</a> covers the same territory specifically for the data layer (row-level security, least-privilege DB roles, encryption of data at rest); <a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a> and <a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a> cover authentication in depth. This page is the layer above both: the classes of vulnerability and the controls that apply to the application as a whole.</p>
-
-      <h2 id="owasp-top-10">OWASP Top 10 — the categories that recur in almost every interview</h2>
-      <table>
-      <tr><th>Category</th><th>What it is</th><th>Core mitigation</th></tr>
-      <tr><td>Broken access control</td><td>A user can act on data/resources they shouldn't be able to — e.g. changing an ID in a URL to view another user's record</td><td>Enforce authorization server-side on every request, never trust a client-supplied ID alone; default-deny</td></tr>
-      <tr><td>Cryptographic failures</td><td>Sensitive data transmitted or stored without proper encryption, or with weak/outdated algorithms</td><td>TLS everywhere in transit, strong at-rest encryption for sensitive fields, never roll your own crypto</td></tr>
-      <tr><td>Injection</td><td>Untrusted input is concatenated into a command interpreter (SQL, shell, LDAP) and executed as code</td><td>Parameterized queries/prepared statements, never string-concatenate user input into a query</td></tr>
-      <tr><td>Insecure design</td><td>A missing security control at the design stage — no amount of careful coding fixes a flaw baked into the architecture</td><td>Threat modeling before implementation, not just code review after</td></tr>
-      <tr><td>Security misconfiguration</td><td>Default credentials left in place, verbose error messages leaking internals, unnecessary features/ports enabled</td><td>Hardened, minimal defaults; automated config scanning; no debug mode in production</td></tr>
-      <tr><td>Vulnerable/outdated components</td><td>A known CVE in a dependency the app pulls in, unpatched</td><td>Dependency scanning (e.g. Dependabot/Snyk) and a real patching cadence</td></tr>
-      <tr><td>Identification &amp; authentication failures</td><td>Weak password policy, no rate limiting on login, session tokens that don't expire or rotate</td><td>See <a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a> and <a href="../traffic/01-rate-limiting-and-throttling.html">Rate Limiting &amp; Throttling</a> (apply it to auth endpoints specifically)</td></tr>
-      <tr><td>Software/data integrity failures</td><td>Trusting a package registry, CI pipeline, or auto-update mechanism without verifying integrity — supply-chain risk</td><td>Signed packages/commits, pinned dependency versions, verified CI/CD pipeline permissions</td></tr>
-      <tr><td>Logging &amp; monitoring failures</td><td>An attack goes unnoticed because nothing logged the signal, or nobody was alerted on it</td><td>See <a href="00-observability-fundamentals.html">Observability Fundamentals</a> — security logging is a specific case of the general problem</td></tr>
-      <tr><td>Server-side request forgery (SSRF)</td><td>The server is tricked into making a request to an attacker-chosen internal URL (e.g. a cloud metadata endpoint) on the attacker's behalf</td><td>Allowlist outbound destinations for any server-side "fetch a URL" feature; never let user input fully control the target host</td></tr>
-      </table>
-      <div class="sd-study-note tip"><span class="sd-note-title">XSS didn't disappear — it's folded into "injection" conceptually</span><p>Cross-site scripting (unescaped user input rendered as executable script in another user's browser) is the classic example of injection targeting the browser instead of a database. The fix is the same shape as SQL injection's: never trust unescaped user input in an executable context — escape/encode output, and use a Content-Security-Policy header as defense in depth.</p></div>
-
-      <h2 id="encryption">Encryption: in transit vs. at rest</h2>
+      <h3 id="interview-checklist">Interview checklist</h3>
       <ul>
-      <li><strong>In transit</strong> — TLS on every network hop, not just the public-facing edge; internal service-to-service traffic inside a "trusted" network is still worth encrypting (assume the network itself isn't a trust boundary) — this is part of what a service mesh's mTLS (see <a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a>) automates.</li>
-      <li><strong>At rest</strong> — disk/volume-level encryption as a baseline, plus field-level encryption for specifically sensitive data (payment details, health records) so even a database dump or backup isn't readable without the key.</li>
-      <li>Encryption without key management is theater — where the key lives, who can access it, and how it's rotated matters as much as the algorithm.</li>
+        <li>When asked to design something with user data, proactively name at least: input validation/parameterized queries, TLS in transit, authZ enforced server-side per-request, and secrets kept out of source control — these four come up constantly and are cheap to state.</li>
+        <li>Distinguish authentication (who are you) from authorization (what can you do) explicitly when a "broken access control" scenario comes up — most real incidents are authorization failures, not authentication ones.</li>
+        <li>If the design fetches a user-supplied URL server-side, flag SSRF and name an allowlist mitigation — a strong, specific signal.</li>
+        <li>Tie security logging back to <a href="00-observability-fundamentals.html">Observability Fundamentals</a> — an attack nobody logged or alerted on is functionally the same as no security control at all.</li>
       </ul>
 
-      <h2>Secrets management</h2>
-      <ul>
-      <li>Never commit secrets (API keys, DB passwords, private keys) to source control — this is the single most common real-world security incident, and the easiest to prevent structurally.</li>
-      <li>Use a dedicated secrets store (HashiCorp Vault, AWS Secrets Manager, or — inside a cluster — a Kubernetes <code>Secret</code>, see <a href="../kubernetes/08-configmap-secret.html">ConfigMap &amp; Secret</a> for why Base64-encoded isn't the same as encrypted) rather than environment variables baked into an image or config file checked into a repo.</li>
-      <li>Rotate secrets on a schedule and immediately on suspected compromise — a secrets store that supports easy rotation is worth more than one that's merely "not in git."</li>
-      </ul>
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>Authentication vs. authorization — which one does a session cookie prove?</summary>
+          <p>Authentication only. Authorization must be checked per request against the specific resource.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>Why do parameterized queries prevent SQL injection?</summary>
+          <p>The SQL and the values travel separately, so input is always treated as a value and can never change the query's structure.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>Encryption in transit vs. at rest — does one imply the other?</summary>
+          <p>No. TLS protects data on the network; at-rest encryption protects stored data if disks/backups are stolen. You need both.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Why is "Base64 in a Kubernetes Secret" not encryption?</summary>
+          <p>Base64 is reversible encoding. Protection comes from RBAC on Secrets and encryption at rest in etcd (or an external secrets manager).</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>How does XSS relate to SQL injection?</summary>
+          <p>Same shape: untrusted input lands in an executable context — the browser instead of the database. Fix with context-aware output encoding, plus CSP as defense in depth.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>What is STRIDE used for?</summary>
+          <p>A checklist for threat modeling: Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege — walked against each component and trust boundary before building.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>What is SSRF and why is it severe in the cloud?</summary>
+          <p>The server is tricked into requesting an attacker-chosen URL. In the cloud that can reach the instance metadata endpoint and steal temporary credentials. Mitigate with destination allowlists, blocking internal ranges, and IMDSv2.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Why is key management as important as the encryption algorithm?</summary>
+          <p>If the key sits next to the data or is readable by everyone, encryption protects nothing. Who can use the key, where it lives (KMS/HSM), and how it's rotated determine real protection.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>How would you protect a login endpoint beyond hashing passwords?</summary>
+          <p>Per-account and per-IP rate limits, lockout/backoff, MFA, breached-password checks, generic error messages, and alerts on failed-login spikes.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>An AWS access key was pushed to a public GitHub repo 10 minutes ago. What do you do, in order?</summary>
+          <p>Deactivate/rotate the key immediately; check CloudTrail for its usage and contain anything it created; then purge it from history; then fix the process (secret scanning, roles instead of long-lived keys).</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>A bug report says changing <code>/invoices/1001</code> to <code>/invoices/1002</code> shows another company's invoice. Fix and prevent?</summary>
+          <p>Scope the lookup to the caller's tenant/user (or check permission explicitly) and return 404/403 otherwise; audit all ID-based endpoints; add authorization tests; consider non-guessable IDs as defense in depth (not a fix by itself).</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>A dependency scanner flags a critical CVE. How do you decide urgency?</summary>
+          <p>Check whether the vulnerable code path is reachable and exposed, whether exploits exist, and what data is at risk; patch fast for reachable, internet-facing paths, schedule otherwise — but don't let "not reachable" become permanent.</p></details>
+      </section>
 
-      <h2>Threat modeling, briefly</h2>
-      <p>Before writing code, walk through: what are we protecting (assets), who might attack it and why
-      (threat actors), how could they get in (attack surface — every input, every trust boundary crossed), and
-      what's the impact if they succeed. A lightweight framework like <strong>STRIDE</strong> (Spoofing,
-      Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege) gives a
-      checklist to walk a design against rather than relying on remembering to think of everything. This is
-      "insecure design" from the table above addressed at the source — before implementation, not after.</p>
+      <!-- 12 SUMMARY -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>Authentication says who; authorization says what — check authZ per request, server-side.</li>
+        <li>Injection and XSS: never put untrusted input into an executable context; parameterize and encode.</li>
+        <li>Encrypt in transit and at rest; manage and rotate keys.</li>
+        <li>Secrets live in a secrets manager, never in git; rotate on leak first.</li>
+        <li>Threat-model (STRIDE) before building — insecure design can't be patched later.</li>
+        <li>Log and alert on security events, or attacks go unnoticed.</li>
+      </ol>
 
-      <h2>Interview checklist</h2>
-      <ul>
-      <li>When asked to design something with user data, proactively name at least: input validation/parameterized queries, TLS in transit, authZ enforced server-side per-request, and secrets kept out of source control — these four come up constantly and are cheap to state.</li>
-      <li>Distinguish authentication (who are you) from authorization (what can you do) explicitly when a "broken access control" scenario comes up — most real incidents are authorization failures, not authentication ones.</li>
-      <li>If the design fetches a user-supplied URL server-side, flag SSRF and name an allowlist mitigation — a strong, specific signal.</li>
-      <li>Tie security logging back to <a href="00-observability-fundamentals.html">Observability Fundamentals</a> — an attack nobody logged or alerted on is functionally the same as no security control at all.</li>
-      </ul>
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <div class="sd-next">
+        <a href="02-cicd-and-deployment-strategies.html"><strong>CI/CD &amp; Deployment Strategies</strong><span>Integrity of the pipeline that ships your code.</span></a>
+        <a href="../authentication/01-authentication/01-introduction.html"><strong>Authentication Schemes</strong><span>Authentication in depth.</span></a>
+        <a href="../05-database/04a-database-security-and-access-control/index.html"><strong>Database Security</strong><span>The same controls at the data layer.</span></a>
+      </div>
 
     </main>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

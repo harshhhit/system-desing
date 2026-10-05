@@ -28,7 +28,9 @@
 <!-- Fallback only. site-header.js overwrites this from pages.js at runtime;
      regen-sidebars.js rewrites it on disk. -->
 <title>New Page · Infra Owl</title>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=10">
+<!-- Only needed when the page has a <div class="mermaid"> diagram. -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 
 <!-- OPTIONAL page-specific one-offs. Delete if unused. Never put the
      theme (colors / fonts) here — that lives in assets/site.css. -->
@@ -50,7 +52,7 @@
      src="" values, data-root="", and the site.css href="". -->
 <script src="../assets/sitemap.js"></script>
 <script src="../assets/pages.js"></script>
-<script src="../assets/site-header.js?v=8" data-root="../"></script>
+<script src="../assets/site-header.js?v=9" data-root="../"></script>
 
 <div class="sd-study-layout">
 
@@ -73,105 +75,159 @@
            This block is the only part unique to this page.
            Everything outside it is shared / central.
 
-           LESSON LAYOUT (class "sd-lesson" on <main>). Keep this reading order;
-           rename / merge / drop the numbered middle sections to fit the topic,
-           but keep the learning progression simple → internal → production → review.
-           Worked example: kubernetes/01-kube-apiserver.html.
+           TOPIC LAYOUT (class "sd-lesson" on <main>). Every <h2> carries
+           data-stage="<one of the 12 standard parts>", in this order:
 
-           - data-stage="…" on an <h2> labels its part. The right-hand
-             "On this page" rail groups headings by it and shows
-             "Section n of N · <part>" + "Up next" automatically.
-           - Explain each concept ONCE. Elsewhere, link to its #id.
-           - Questions are learning aids (callouts, Quick check), never headings
-             that drive the page structure.
+             01 Overview · 02 Core Concepts · 03 Architecture · 04 How It Works ·
+             05 Implementation · 06 Production · 07 Security ·
+             08 Performance &amp; Scalability · 09 Troubleshooting · 10 Best Practices ·
+             11 Interview Preparation · 12 Summary
+
+           site-header.js numbers them (a part keeps the same number on every
+           page), builds the left-hand outline + mobile part chips from them, and
+           labels each heading "04 · How It Works". A part the topic genuinely
+           doesn't need is LEFT OUT — never an empty heading. A part may have
+           several <h2>s (same data-stage). Worked example: web-servers/server.html.
+
+           Memory pattern inside the parts: WHY → WHAT → HOW → FLOW → EXAMPLE →
+           PRODUCTION → FAILURE → FIX → INTERVIEW.
+
+           - Explain each concept ONCE. Elsewhere, link to its #id (or to the page
+             that owns it). Different PURPOSES are not duplicates: theory in Core
+             Concepts, the config in Implementation, its failure in Troubleshooting.
+           - Questions are a revision layer, never the page structure. Put them in
+             <section class="sd-interview"> as <details class="sd-qa"
+             data-level="basic|intermediate|advanced|scenario">; the study panel
+             (right-hand column) shows them grouped by level.
            - Insight callouts, roughly one per ~10 lines of real content, placed
              where they help; they must add something, never recap:
                important · mistake · think · production · interview
            - Diagrams go right after the theory they illustrate, followed by an
              <ol class="sd-steps"> walk-through. If a diagram would help but
              doesn't exist yet, leave a "Diagram recommended" callout.
+           - Every code block is followed by a list/table saying what its
+             important lines do.
+           - Optional: data-reminders="a|b|c" on <main> seeds topic-specific
+             reminders in the study panel.
            regen-sidebars.js --check fails a .sd-lesson page that loses
            .sd-learn, the Interview Answer block, .sd-takeaways, .sd-next or
-           every .sd-callout. -->
+           every .sd-callout, or uses an unknown data-stage / data-level. -->
 
+      <!-- 01 OVERVIEW — what, why, when, what you'll understand -->
       <section class="sd-learn">
-        <h2 id="what-youll-learn" data-stage="Start here">What you'll learn</h2>
-        <p>By the end of this page you will understand:</p>
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
         <ul>
-          <li>What X is</li>
-          <li>The problem X solves</li>
-          <li>How X works internally</li>
-          <li>How a request / data flows through X</li>
-          <li>How X behaves in production, and how it fails</li>
+          <li>Say what X is and the problem it solves</li>
+          <li>Explain how X works internally</li>
+          <li>Follow a request / data flow through X</li>
+          <li>Configure X and read its config</li>
+          <li>Diagnose X's common failures</li>
         </ul>
       </section>
 
-      <h2 id="what-is-it" data-stage="Foundations">1. What Is X?</h2>
-      <p>Define it plainly: what it is, in one or two sentences, before any mechanics.</p>
-
-      <h2 id="why-it-exists" data-stage="Foundations">2. Why It Exists</h2>
-      <p>What breaks or gets harder without it.</p>
+      <h2 id="overview" data-stage="Overview">What X Is and Why It Exists</h2>
+      <p>Define it plainly in one or two sentences, then: what breaks or gets harder without it, and when you'd reach for it.</p>
 
       <aside class="sd-callout important">
         <p class="sd-callout-title">💡 Important</p>
         <p>The one idea the reader must carry forward.</p>
       </aside>
 
-      <h2 id="how-it-works" data-stage="How it works">3. How It Works</h2>
-      <p>The internal mechanism, cause → effect, step by step.</p>
+      <!-- 02 CORE CONCEPTS — mental model + terminology (define each term once) -->
+      <h2 id="core-concepts" data-stage="Core Concepts">Core Concepts</h2>
+      <table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td>…</td><td>…</td></tr>
+      </table>
+      <p><strong>X vs. Y</strong> — the difference is …</p>
 
       <aside class="sd-callout mistake">
         <p class="sd-callout-title">⚠️ Common mistake</p>
         <p>A misconception engineers commonly have, and why it's wrong.</p>
       </aside>
 
-      <h2 id="components" data-stage="How it works">4. Components</h2>
+      <!-- 03 ARCHITECTURE — components and where X sits -->
+      <h2 id="architecture" data-stage="Architecture">Architecture</h2>
+      <div class="mermaid sd-diagram">flowchart LR
+    A["Client"] --> B["Entry point"] --> C["X"] --> D[("Storage")]
+</div>
+      <p class="sd-diagram-caption">One line saying what the diagram shows.</p>
       <table>
         <tr><th>Component</th><th>Responsibility</th></tr>
         <tr><td>…</td><td>…</td></tr>
       </table>
 
-      <h2 id="flow" data-stage="How it works">5. Request / Data Flow</h2>
-      <div class="mermaid sd-diagram">flowchart TD
-    A["Client"] --> B["X"]
-    B --> C["Storage"]
-</div>
-      <p class="sd-diagram-caption">One line saying what the diagram shows.</p>
+      <!-- 04 HOW IT WORKS — the lifecycle, cause → effect, step by step -->
+      <h2 id="how-it-works" data-stage="How It Works">How It Works</h2>
       <ol class="sd-steps">
-        <li><strong>Step:</strong> what happens and why.</li>
-        <li><strong>Step:</strong> what happens and why.</li>
+        <li><strong>Receive:</strong> what happens and why.</li>
+        <li><strong>Process:</strong> what happens and why.</li>
+        <li><strong>Respond:</strong> what happens and why.</li>
       </ol>
-      <!-- No diagram yet but one would clearly help?
-      <aside class="sd-callout diagram">
-        <p class="sd-callout-title">🗺️ Diagram recommended</p>
-        <p>What the diagram should show.</p>
-      </aside> -->
 
       <aside class="sd-callout think">
         <p class="sd-callout-title">🧠 Think about it</p>
         <p>A question that makes the reader reason about the design.</p>
       </aside>
 
-      <h2 id="production" data-stage="In production">6. Production Understanding</h2>
-      <p>Real-world architecture, scaling, reliability, monitoring.</p>
+      <!-- 05 IMPLEMENTATION — config / commands / code, each explained -->
+      <h2 id="implementation" data-stage="Implementation">Implementation</h2>
+      <pre><code>config or command here</code></pre>
+      <ul>
+        <li><code>important line</code> — what it does, and what breaks without it.</li>
+      </ul>
+
+      <!-- 06 PRODUCTION — real architecture, low vs high scale, trade-offs, observability -->
+      <h2 id="production" data-stage="Production">Production Usage</h2>
+      <table>
+        <tr><th></th><th>Low scale</th><th>High scale</th></tr>
+        <tr><td>…</td><td>…</td><td>…</td></tr>
+      </table>
+      <table>
+        <tr><th>Signal</th><th>Where it comes from</th><th>What it tells you</th></tr>
+        <tr><td>…</td><td>…</td><td>…</td></tr>
+      </table>
 
       <aside class="sd-callout production">
         <p class="sd-callout-title">🔥 Production insight</p>
         <p>Something that only matters once real traffic arrives.</p>
       </aside>
 
-      <h2 id="failures" data-stage="In production">7. Common Failure Scenarios</h2>
-      <table>
-        <tr><th>Symptom</th><th>Root cause</th><th>Detection</th><th>Fix</th></tr>
-        <tr><td>…</td><td>…</td><td>…</td><td>…</td></tr>
-      </table>
-
-      <h2 id="security" data-stage="In production">8. Security Considerations</h2>
+      <!-- 07 SECURITY — only what genuinely applies -->
+      <h2 id="security" data-stage="Security">Security</h2>
       <ul>
         <li>…</li>
       </ul>
 
-      <h2 data-stage="Review">Interview Answer — What Is X?</h2>
+      <!-- 08 PERFORMANCE & SCALABILITY — bottlenecks and the metrics that reveal them -->
+      <h2 id="performance" data-stage="Performance &amp; Scalability">Performance &amp; Scalability</h2>
+      <table>
+        <tr><th>Bottleneck</th><th>Symptom</th><th>Lever</th></tr>
+        <tr><td>…</td><td>…</td><td>…</td></tr>
+      </table>
+
+      <!-- 09 TROUBLESHOOTING — failure scenarios + a debugging workflow with real commands -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Failure Scenarios</h2>
+      <table>
+        <tr><th>Symptom</th><th>Possible cause</th><th>Detect</th><th>Debug</th><th>Fix</th><th>Prevent</th></tr>
+        <tr><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+      </table>
+      <ol class="sd-steps">
+        <li><strong>Check the client:</strong> …</li>
+        <li><strong>Check the service:</strong> …</li>
+        <li><strong>Confirm the fix:</strong> …</li>
+      </ol>
+
+      <!-- 10 BEST PRACTICES — Do / Avoid, each with its reason -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul><li><strong>Practice</strong> — why it exists.</li></ul>
+      <h3>Avoid</h3>
+      <ul><li><strong>Anti-pattern</strong> — what goes wrong.</li></ul>
+
+      <!-- 11 INTERVIEW PREPARATION — Interview Answer block + question bank -->
+      <h2 id="interview-answer" data-stage="Interview Preparation">Interview Answer — What Is X?</h2>
       <p>2–4 paragraphs: the concept, why it exists, how it fits the surrounding system.</p>
       <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
         <p>"One paragraph a candidate could say out loud."</p>
@@ -180,17 +236,29 @@
       <p><strong>Q: The most common gotcha?</strong></p>
       <p><strong>A:</strong> The full answer, written out.</p>
 
-      <aside class="sd-callout interview">
-        <p class="sd-callout-title">🎯 Interview tip</p>
-        <p>An interview-level distinction (X vs. Y).</p>
-      </aside>
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>Why does X exist?</summary>
+          <p>Concise, accurate answer.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>What happens internally when …?</summary>
+          <p>…</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>What changes at scale / trade-off between X and Y?</summary>
+          <p>…</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Production symptom … — what do you check?</summary>
+          <p>…</p></details>
+      </section>
 
-      <h2 id="key-takeaways" data-stage="Review">Key Takeaways</h2>
+      <!-- 12 SUMMARY — what should I remember? -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
       <ol class="sd-takeaways">
-        <li>5–8 points worth remembering.</li>
+        <li>5–10 points: key concepts, config, failures, interview points.</li>
       </ol>
+      <h3 id="quick-commands">Quick commands</h3>
+      <ul class="sd-commands">
+        <li><code>command</code> — what it's for</li>
+      </ul>
 
-      <h2 id="read-next" data-stage="Review">What to Read Next</h2>
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
       <div class="sd-next">
         <a href="next-page.html"><strong>Next topic</strong><span>Why it's the logical next step.</span></a>
       </div>
@@ -201,5 +269,8 @@
   </div>
 </div>
 
+<script>
+  if (window.mermaid) mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

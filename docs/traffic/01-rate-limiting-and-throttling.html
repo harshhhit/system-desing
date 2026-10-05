@@ -13,94 +13,307 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rate Limiting &amp; Throttling · Infra Owl</title>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=10">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
 
 <div id="site-header-root"></div>
-
 <script src="../assets/sitemap.js"></script>
 <script src="../assets/pages.js"></script>
-<script src="../assets/site-header.js?v=8" data-root="../"></script>
+<script src="../assets/site-header.js?v=9" data-root="../"></script>
 
 <div class="sd-study-layout">
-
   <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a class="active" href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
 
   <div class="sd-study-content">
-    <main class="sd-study-main">
-
+    <main class="sd-study-main sd-lesson" data-reminders="Explain the fixed-window 2× boundary burst with numbers|Write the Redis INCR + EXPIRE fixed-window limiter from memory|Explain token bucket vs. leaky bucket in one sentence each">
       <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Traffic Management / Rate Limiting &amp; Throttling</p>
       <h1 data-page-title>Rate Limiting &amp; Throttling</h1>
       <p class="sd-study-prompt" data-page-subtitle>Token bucket, leaky bucket, fixed and sliding window algorithms, distributed rate limiting with Redis, and the client contract (429, Retry-After).</p>
 
-      <h2 id="interview-answer">Interview Answer — What Is Rate Limiting?</h2>
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
+        <ul>
+          <li>Explain why shared services need per-client limits</li>
+          <li>Compare fixed window, sliding window, token bucket and leaky bucket</li>
+          <li>Decide where to enforce a limit: client, gateway or service</li>
+          <li>Build a race-free distributed limiter on Redis</li>
+          <li>Design the client contract: 429, Retry-After, backoff with jitter</li>
+          <li>Distinguish rate limiting from throttling, backpressure and circuit breaking</li>
+        </ul>
+      </section>
+
+      <!-- 01 OVERVIEW -->
+      <h2 id="overview" data-stage="Overview">Why Rate Limit</h2>
+      <p>Rate limiting caps how many requests one client — an API key, a user, an IP — may make in a time period, and rejects (or delays) the excess. It exists because a shared service has finite capacity, and without a cap one caller can take it all:</p>
+      <ul>
+        <li><strong>Protect the backend</strong> — cap how much load any one client can put on a shared resource, so one noisy caller can't degrade the service for everyone else.</li>
+        <li><strong>Fairness</strong> — enforce a per-user/per-key quota so usage is distributed roughly according to plan/tier rather than first-come-first-served.</li>
+        <li><strong>Abuse and cost control</strong> — stop credential-stuffing, scraping, or a runaway retry loop from turning into an incident or a surprise bill.</li>
+        <li><strong>Upstream protection</strong> — a service calling a third-party API (payment provider, SMS gateway) rate-limits its own outbound calls to stay under that provider's limit and avoid being cut off entirely.</li>
+      </ul>
+
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>Adding servers behind a <a href="00-load-balancing.html">load balancer</a> raises capacity but never makes it unlimited. The load balancer decides <em>where</em> a request goes; the rate limiter decides <em>whether</em> it is allowed at all.</p>
+      </aside>
+
+      <!-- 02 CORE CONCEPTS -->
+      <h2 id="core-concepts" data-stage="Core Concepts">Core Concepts</h2>
+      <table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><strong>Key</strong></td><td>Who the limit applies to: API key, user ID, IP, or a combination (e.g. <code>user:42:password-reset</code>).</td></tr>
+        <tr><td><strong>Limit / window</strong></td><td>How many requests per period (100 per minute).</td></tr>
+        <tr><td><strong>Burst</strong></td><td>Requests arriving faster than the average rate for a short time. Some algorithms allow it on purpose.</td></tr>
+        <tr><td><strong>Quota</strong></td><td>A longer-term allowance (per day / per month), usually tied to a pricing tier.</td></tr>
+      </table>
+
+      <h3 id="related-terms">Related but distinct terms</h3>
+      <ul>
+        <li><strong>Throttling</strong> — often used interchangeably with rate limiting, but sometimes specifically means <em>slowing</em> a client down (delaying responses) rather than rejecting requests outright.</li>
+        <li><strong>Backpressure</strong> — a downstream component that's falling behind signals upstream to slow down (or upstream detects a growing queue and self-limits), as opposed to a rate limiter which enforces a policy regardless of actual downstream health.</li>
+        <li><strong>Circuit breaking</strong> — stops calling a dependency <em>at all</em> once it's clearly failing, rather than limiting the rate of calls to a healthy-but-finite one. A different tool for a different failure mode (dependency down vs. dependency at capacity). See <a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a>.</li>
+      </ul>
+
+      <!-- 03 ARCHITECTURE -->
+      <h2 id="where-to-enforce" data-stage="Architecture">Where to Enforce It</h2>
+      <div class="mermaid sd-diagram">flowchart LR
+    C["Client<br/>(self-throttle: UX only)"] --> G["API gateway / edge<br/>coarse per-key / per-IP limits"]
+    G --> S1["Service instance 1"]
+    G --> S2["Service instance 2"]
+    S1 --> R[("Redis<br/>shared counters")]
+    S2 --> R
+    G --> R
+    S1 -->|"leaky-bucket outbound"| P["Third-party API"]
+</div>
+      <p class="sd-diagram-caption">Coarse limits at the edge, operation-specific limits in the service, one shared counter store so every instance sees the same count.</p>
+      <ul>
+        <li><strong>Client-side</strong> — polite, but not a security boundary; a client can always skip its own throttle. Useful for UX (disable a submit button) not protection.</li>
+        <li><strong>Edge / API gateway</strong> — the common place for coarse, per-API-key or per-IP limits, before the request even reaches application servers; cheapest place to reject abusive traffic.</li>
+        <li><strong>Per-service</strong> — finer-grained limits close to an expensive specific operation (e.g. "3 password-reset emails per hour," distinct from the general API limit).</li>
+        <li><strong>Distributed rate limiting</strong> — once there's more than one instance enforcing the limit, they need a shared counter. The standard approach is Redis: an atomic <code>INCR</code> + <code>EXPIRE</code> (or a single Lua script so the check-and-increment is atomic and race-free) keyed by <code>user:&lt;id&gt;:&lt;window&gt;</code> — see <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a> for why Redis specifically (atomic ops, TTLs built in).</li>
+      </ul>
+
+      <!-- 04 HOW IT WORKS -->
+      <h2 id="algorithms" data-stage="How It Works">Algorithms</h2>
+      <table>
+        <tr><th>Algorithm</th><th>How it works</th><th>Allows bursts?</th><th>Memory / accuracy</th></tr>
+        <tr><td>Fixed window counter</td><td>Count requests in the current clock window (e.g. per-minute); reset the counter when the window rolls over</td><td>Yes — a burst right at the boundary of two windows can let through nearly <strong>2×</strong> the limit (all at the end of one window, all at the start of the next)</td><td>Cheapest — one counter per key</td></tr>
+        <tr><td>Sliding window log</td><td>Store the timestamp of every request in the last window; count how many fall inside a rolling window ending "now"</td><td>No — exact, no boundary problem</td><td>Most accurate, but memory grows with request volume (one entry per request)</td></tr>
+        <tr><td>Sliding window counter</td><td>Approximates the log by weighting the previous fixed window's count by how much of it still overlaps the current rolling window</td><td>Mostly no — close approximation of the log, without storing every timestamp</td><td>One or two counters per key — the practical default</td></tr>
+        <tr><td>Token bucket</td><td>A bucket holds up to <em>N</em> tokens, refilling at a fixed rate; every request consumes one token, and requests are rejected once the bucket is empty</td><td>Yes, intentionally — a client that's been idle can burst up to the bucket size, then is limited to the refill rate</td><td>One counter + one timestamp per key — cheap, and the standard choice (AWS, Stripe, and most API gateways use it)</td></tr>
+        <tr><td>Leaky bucket</td><td>Requests queue into a bucket and are processed ("leak out") at a fixed rate; the bucket overflowing rejects new requests</td><td>No — smooths bursts into a constant output rate rather than allowing them through</td><td>Similar cost to token bucket; used when the goal is a steady <em>outbound</em> rate (e.g. calls to a downstream API), not just gatekeeping inbound</td></tr>
+      </table>
+      <div class="sd-study-note tip"><span class="sd-note-title">Token bucket vs. leaky bucket, in one line</span><p>Token bucket controls how much traffic you <em>let in</em> and is happy to allow bursts; leaky bucket controls how much traffic you <em>send out</em> and actively smooths bursts away. Rate-limiting an API's inbound requests → token bucket. Throttling your own outbound calls to a fragile downstream → leaky bucket.</p></div>
+
+      <h3 id="token-bucket-steps">Token bucket, step by step</h3>
+      <ol class="sd-steps">
+        <li><strong>State per key:</strong> <code>tokens</code> and <code>last_refill</code> timestamp. Capacity 10, refill 1 token/second.</li>
+        <li><strong>Request arrives:</strong> compute elapsed time since <code>last_refill</code>, add <code>elapsed × rate</code> tokens, cap at capacity, set <code>last_refill = now</code>.</li>
+        <li><strong>Decide:</strong> if <code>tokens ≥ 1</code>, subtract one and allow; otherwise reject with 429 and <code>Retry-After ≈ (1 − tokens) / rate</code>.</li>
+        <li><strong>Effect:</strong> an idle client can send 10 requests instantly (burst), then exactly 1 per second (average rate).</li>
+      </ol>
+
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>Limit 100/minute, fixed window. A client sends 100 requests at 12:00:59 and 100 more at 12:01:00. How many got through in two seconds? (All 200 — the counter reset in between. That's the 2× boundary burst the sliding window removes.)</p>
+      </aside>
+
+      <!-- 05 IMPLEMENTATION -->
+      <h2 id="implementation" data-stage="Implementation">Implementation</h2>
+      <h3 id="redis-fixed-window">Fixed window in Redis (atomic)</h3>
+      <pre><code>-- KEYS[1] = "rl:user:42:" .. current_minute ; ARGV[1] = limit ; ARGV[2] = window seconds
+local n = redis.call("INCR", KEYS[1])
+if n == 1 then redis.call("EXPIRE", KEYS[1], ARGV[2]) end
+if n &gt; tonumber(ARGV[1]) then return 0 end
+return 1</code></pre>
+      <ul>
+        <li><code>INCR</code> — increments and returns the new value in one atomic step, so two instances can never both read "99" and both pass.</li>
+        <li><code>EXPIRE</code> on the first hit — the key deletes itself when the window ends; no cleanup job.</li>
+        <li>Running it as a Lua script (<code>EVAL</code>) makes increment + expire + compare one atomic unit; doing them as separate client calls reintroduces the race and can leave a key with no TTL if the client dies between calls.</li>
+      </ul>
+      <div class="sd-study-note warning"><span class="sd-note-title">Two instances checking-then-incrementing separately is a race</span><p>If "read the counter" and "increment the counter" are two separate calls, two concurrent requests on two different app instances can both read the count just under the limit, both pass, and both increment — quietly letting one extra request through the limit. Use a single atomic operation (Redis <code>INCR</code>, or a Lua script for token-bucket logic) instead of read-then-write.</p></div>
+
+      <h3 id="nginx-limit-req">At the edge: Nginx <code>limit_req</code></h3>
+      <pre><code>limit_req_zone $binary_remote_addr zone=api:10m rate=10r/s;
+
+location /api/ {
+    limit_req zone=api burst=20 nodelay;
+    limit_req_status 429;
+    proxy_pass http://app;
+}</code></pre>
+      <ul>
+        <li><code>limit_req_zone … rate=10r/s</code> — a shared-memory zone keyed by client IP, allowing 10 requests/second (a leaky-bucket implementation).</li>
+        <li><code>burst=20 nodelay</code> — up to 20 extra requests are accepted immediately instead of queued; beyond that, rejected.</li>
+        <li><code>limit_req_status 429</code> — Nginx's default rejection status is 503; set 429 so clients know it's a limit, not an outage.</li>
+        <li>The zone is per Nginx instance — several Nginx nodes each enforce their own copy, so the effective limit is multiplied by the node count.</li>
+      </ul>
+
+      <h3 id="client-contract">Talking to the client about it</h3>
+      <ul>
+        <li><strong><code>429 Too Many Requests</code></strong> — the correct HTTP status for a rejected request, distinct from a 4xx client error like malformed input.</li>
+        <li><strong><code>Retry-After</code></strong> header — tells the client how many seconds (or a date) to wait before retrying, instead of making it guess.</li>
+        <li><strong><code>X-RateLimit-Limit</code> / <code>-Remaining</code> / <code>-Reset</code></strong> — conventional (non-standard but widely adopted) headers so well-behaved clients can self-throttle before they ever hit 429.</li>
+        <li>A client should back off with jitter on retry, not retry immediately — otherwise every rejected client retries at the same instant, recreating a self-inflicted <a href="../caching/00-caching-and-cdn-fundamentals.html">thundering herd</a>.</li>
+      </ul>
+
+      <!-- 06 PRODUCTION -->
+      <h2 id="production" data-stage="Production">Production Usage</h2>
+      <table>
+        <tr><th></th><th>Low scale</th><th>High scale</th></tr>
+        <tr><td>Where</td><td>One Nginx <code>limit_req</code> or framework middleware.</td><td>Gateway limits per key/tier + service-level limits on expensive operations + outbound limits to vendors.</td></tr>
+        <tr><td>Counter store</td><td>In-memory is fine with one instance.</td><td>Shared Redis; at very high rates, local counters that sync periodically trade a little accuracy for no per-request network hop.</td></tr>
+        <tr><td>Keys</td><td>Per IP.</td><td>Per API key / user / tenant — IPs are shared behind NAT and mobile carriers, so IP limits hit innocent users.</td></tr>
+      </table>
+      <h3 id="observability">Signals to watch</h3>
+      <ul>
+        <li><strong>429 rate, per key and overall</strong> — a jump for one key is an abusive or buggy client; a jump for everyone means limits are too tight or traffic genuinely grew.</li>
+        <li><strong>Top keys by request volume</strong> — who is close to their limit.</li>
+        <li><strong>Limiter latency and Redis errors</strong> — the limiter is now on every request's path.</li>
+        <li><strong>Backend latency/error rate after a limit change</strong> — confirms the limit is actually protecting capacity.</li>
+      </ul>
+
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>Decide up front what happens when Redis is unreachable. <strong>Fail open</strong> (allow everything) keeps the API up but removes protection; <strong>fail closed</strong> (reject everything) turns a cache outage into a full outage. Most public APIs fail open with a local fallback limit.</p>
+      </aside>
+
+      <!-- 07 SECURITY -->
+      <h2 id="security" data-stage="Security">Security</h2>
+      <ul>
+        <li><strong>Login, password reset, OTP and signup</strong> endpoints need their own tight limits keyed by account <em>and</em> by IP — the general API limit is far too loose to stop credential stuffing.</li>
+        <li><strong>Key on something the attacker can't rotate cheaply.</strong> IP limits are bypassed with botnets/proxies; per-account and per-API-key limits are harder to dodge.</li>
+        <li><strong>Trust the client IP only from your proxy</strong> — if the limiter reads a spoofable <code>X-Forwarded-For</code>, every request can claim a new IP (see <a href="../web-servers/server.html#security">Web Servers → Security</a>).</li>
+        <li><strong>Client-side throttling is not a control</strong> — enforce on the server.</li>
+        <li>Rate limiting reduces volumetric abuse but isn't DDoS protection on its own; large floods must be absorbed upstream (CDN/WAF/provider).</li>
+      </ul>
+
+      <!-- 08 PERFORMANCE -->
+      <h2 id="performance" data-stage="Performance &amp; Scalability">Performance &amp; Scalability</h2>
+      <ul>
+        <li><strong>Cost per check:</strong> one Redis round trip (~sub-millisecond in-region). Reject at the edge so rejected requests cost almost nothing.</li>
+        <li><strong>Hot keys:</strong> one very busy API key hammers a single Redis key/shard; shard counters or use local pre-aggregation.</li>
+        <li><strong>Memory:</strong> sliding window <em>log</em> grows with traffic; counters and token buckets are O(1) per key.</li>
+        <li><strong>Accuracy vs. cost:</strong> exact global limits need a shared store on every request; approximate limits (local counters + periodic sync) scale further.</li>
+      </ul>
+
+      <!-- 09 TROUBLESHOOTING -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Failure Scenarios</h2>
+      <table>
+        <tr><th>Symptom</th><th>Possible cause</th><th>Detect</th><th>Fix</th><th>Prevent</th></tr>
+        <tr><td>Clients exceed the limit by N×</td><td>Per-instance in-memory counters behind N instances (or per-node Nginx zones).</td><td>Accepted rate per key ≈ limit × instance count.</td><td>Shared atomic counter (Redis).</td><td>Test limits with traffic spread across instances.</td></tr>
+        <tr><td>Occasional requests slip past the limit</td><td>Read-then-increment race.</td><td>Counts slightly above the limit under concurrency.</td><td>Single atomic <code>INCR</code> / Lua script.</td><td>Code review rule: no read-then-write counters.</td></tr>
+        <tr><td>Many users behind one office/carrier get 429</td><td>Per-IP limits on shared NAT addresses.</td><td>429s for one IP with many distinct user IDs.</td><td>Limit per user / API key.</td><td>Use IP limits only as a coarse outer layer.</td></tr>
+        <tr><td>Retry storm after a limit trips</td><td>Clients retry immediately, all at once.</td><td>Request rate spikes in waves aligned to <code>Retry-After</code>.</td><td>Jittered exponential backoff in clients.</td><td>Publish SDKs that back off correctly.</td></tr>
+        <tr><td>Keys never reset; client blocked forever</td><td>Counter written without TTL (INCR and EXPIRE as separate calls, the second never ran).</td><td><code>TTL key</code> returns <code>-1</code>.</td><td>Set TTL atomically in the script.</td><td>Always create counters inside one Lua script.</td></tr>
+      </table>
+      <h3 id="debug-workflow">Debugging workflow</h3>
+      <ol class="sd-steps">
+        <li><strong>Reproduce:</strong> <code>curl -i</code> the endpoint and read the <code>X-RateLimit-*</code> and <code>Retry-After</code> headers.</li>
+        <li><strong>Inspect the counter:</strong> <code>redis-cli GET rl:user:42:&lt;window&gt;</code> and <code>redis-cli TTL rl:user:42:&lt;window&gt;</code>.</li>
+        <li><strong>Find which layer rejected:</strong> gateway logs vs. service logs vs. Nginx (<code>limiting requests</code> in the error log).</li>
+        <li><strong>Check the key:</strong> is the limiter keyed on the real client (user/key) or on a proxy IP?</li>
+      </ol>
+
+      <!-- 10 BEST PRACTICES -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul>
+        <li><strong>Default to token bucket</strong> for inbound APIs — it tolerates normal bursty clients while enforcing an average.</li>
+        <li><strong>Layer limits</strong> — coarse at the edge, tight on expensive or sensitive operations.</li>
+        <li><strong>Make every check atomic</strong> — one Redis command or one Lua script.</li>
+        <li><strong>Return 429 + <code>Retry-After</code> + remaining-quota headers</strong> — so good clients self-throttle.</li>
+        <li><strong>Decide fail-open vs. fail-closed explicitly</strong> — per endpoint.</li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul>
+        <li><strong>Per-instance counters for a global limit.</strong></li>
+        <li><strong>Returning 503 or 400 for limits</strong> — clients can't tell a limit from an outage or a bug.</li>
+        <li><strong>IP-only limits for authenticated APIs</strong> — punishes shared networks, misses rotating attackers.</li>
+        <li><strong>Immediate retries</strong> on 429.</li>
+      </ul>
+
+      <!-- 11 INTERVIEW PREPARATION -->
+      <h2 id="interview-answer" data-stage="Interview Preparation">Interview Answer — What Is Rate Limiting?</h2>
       <p>Rate limiting is a control that caps how many requests a single client — identified by an API key, user ID, or IP address — may make to a service in a given period of time, and rejects (or delays) the requests over that limit. A rejected request gets an HTTP <code>429 Too Many Requests</code> response, ideally with a <code>Retry-After</code> header.</p>
       <p>It exists because a shared service has finite capacity. Without a limit, one noisy caller — a buggy retry loop, a scraper, a credential-stuffing attack — can consume that capacity and degrade the service for every other client, or run up the cost of a paid downstream API. With a limit, the cause → effect chain is: a client exceeds its quota → the limiter rejects its extra requests cheaply at the edge → the backend keeps serving everyone else at normal latency.</p>
       <p>A rate limiter is defined by its <a href="#algorithms">algorithm</a> — token bucket (allows short bursts up to the bucket size), leaky bucket (smooths traffic to a constant rate), or fixed / sliding window counters — and by <a href="#where-to-enforce">where it is enforced</a>: coarse limits at the API gateway, operation-specific limits (for example "3 password-reset emails per hour") inside the service. When several instances enforce the same limit, they must share one counter, typically in Redis, updated atomically.</p>
-
       <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
         <p>"Rate limiting caps how many requests a client can make in a time window, so one caller can't overload a shared service or run up costs. I'd usually use a token bucket, which allows short bursts but enforces an average rate, enforced at the API gateway per API key, with Redis holding the counter so every instance sees the same count. Rejected requests get a 429 with a Retry-After header, and clients retry with jittered backoff."</p>
       </div>
-
       <h3>One important interview follow-up</h3>
       <p><strong>Q: With 10 app servers, can each server just keep its own in-memory counter?</strong></p>
       <p><strong>A:</strong> No — not if the limit is meant to be global. With 10 independent counters, a client whose requests are spread across all servers gets up to 10× the intended limit, and the effective limit changes every time you scale. The instances need a shared counter, usually in Redis, and the check and the increment must be one atomic operation (a single <code>INCR</code> with expiry, or a Lua script). If "read the count" and "increment the count" are two separate calls, two concurrent requests on different instances can both read a value just under the limit and both pass.</p>
 
-      <h2>Why rate limit</h2>
+      <h3 id="interview-checklist">Interview checklist</h3>
       <ul>
-      <li><strong>Protect the backend</strong> — cap how much load any one client can put on a shared resource, so one noisy caller can't degrade the service for everyone else.</li>
-      <li><strong>Fairness</strong> — enforce a per-user/per-key quota so usage is distributed roughly according to plan/tier rather than first-come-first-served.</li>
-      <li><strong>Abuse and cost control</strong> — stop credential-stuffing, scraping, or a runaway retry loop from turning into an incident or a surprise bill.</li>
-      <li><strong>Upstream protection</strong> — a service calling a third-party API (payment provider, SMS gateway) rate-limits its own outbound calls to stay under that provider's limit and avoid being cut off entirely.</li>
+        <li>Name the algorithm and justify it: token bucket if bursts should be allowed, sliding window counter if precision at the window boundary matters more than a little memory.</li>
+        <li>Say where it's enforced (edge/gateway vs. per-service) and why — coarse abuse protection belongs at the edge, business-rule-specific limits belong near the operation they protect.</li>
+        <li>If there's more than one instance, say explicitly how the counter is shared and kept atomic (Redis + a single atomic op) — this is the detail that separates a real answer from a hand-wave.</li>
+        <li>Mention the client contract: <code>429</code> + <code>Retry-After</code>, and clients retrying with jittered backoff, not immediate retry.</li>
       </ul>
 
-      <h2 id="algorithms">Algorithms</h2>
-      <table>
-      <tr><th>Algorithm</th><th>How it works</th><th>Allows bursts?</th><th>Memory / accuracy</th></tr>
-      <tr><td>Fixed window counter</td><td>Count requests in the current clock window (e.g. per-minute); reset the counter when the window rolls over</td><td>Yes — a burst right at the boundary of two windows can let through nearly <strong>2×</strong> the limit (all at the end of one window, all at the start of the next)</td><td>Cheapest — one counter per key</td></tr>
-      <tr><td>Sliding window log</td><td>Store the timestamp of every request in the last window; count how many fall inside a rolling window ending "now"</td><td>No — exact, no boundary problem</td><td>Most accurate, but memory grows with request volume (one entry per request)</td></tr>
-      <tr><td>Sliding window counter</td><td>Approximates the log by weighting the previous fixed window's count by how much of it still overlaps the current rolling window</td><td>Mostly no — close approximation of the log, without storing every timestamp</td><td>One or two counters per key — the practical default</td></tr>
-      <tr><td>Token bucket</td><td>A bucket holds up to <em>N</em> tokens, refilling at a fixed rate; every request consumes one token, and requests are rejected once the bucket is empty</td><td>Yes, intentionally — a client that's been idle can burst up to the bucket size, then is limited to the refill rate</td><td>One counter + one timestamp per key — cheap, and the standard choice (AWS, Stripe, and most API gateways use it)</td></tr>
-      <tr><td>Leaky bucket</td><td>Requests queue into a bucket and are processed ("leak out") at a fixed rate; the bucket overflowing rejects new requests</td><td>No — smooths bursts into a constant output rate rather than allowing them through</td><td>Similar cost to token bucket; used when the goal is a steady <em>outbound</em> rate (e.g. calls to a downstream API), not just gatekeeping inbound</td></tr>
-      </table>
-      <div class="sd-study-note tip"><span class="sd-note-title">Token bucket vs. leaky bucket, in one line</span><p>Token bucket controls how much traffic you <em>let in</em> and is happy to allow bursts; leaky bucket controls how much traffic you <em>send out</em> and actively smooths bursts away. Rate-limiting an API's inbound requests → token bucket. Throttling your own outbound calls to a fragile downstream → leaky bucket.</p></div>
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>Why does a shared service need rate limiting if it already autoscales?</summary>
+          <p>Autoscaling lags and costs money, and shared dependencies (database, third-party APIs) don't scale with it. A limit stops one client from consuming capacity — or budget — meant for everyone.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What status code and headers should a rejected request get?</summary>
+          <p><code>429 Too Many Requests</code> with <code>Retry-After</code>, plus <code>X-RateLimit-Limit/Remaining/Reset</code> so clients can self-throttle.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What's the boundary problem with a fixed window?</summary>
+          <p>A client can send the full limit at the end of one window and again at the start of the next, getting nearly 2× the limit in a short span. Sliding windows fix it.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Token bucket vs. leaky bucket — when do you use each?</summary>
+          <p>Token bucket for inbound API limits: allows bursts up to capacity, enforces an average. Leaky bucket for outbound calls to a fragile downstream: smooths bursts into a constant rate.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Where would you enforce a "3 password-reset emails per hour" rule, and why not at the gateway?</summary>
+          <p>In the service that sends the email, keyed by account: it's a business rule tied to one operation and needs the account identity, while the gateway handles coarse per-key/IP limits.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>How is rate limiting different from backpressure and circuit breaking?</summary>
+          <p>Rate limiting enforces a policy regardless of downstream health; backpressure reacts to a downstream falling behind; a circuit breaker stops calling a dependency that is failing.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>How do you make a distributed limiter race-free?</summary>
+          <p>Shared counter in Redis, with check-and-increment as one atomic operation — <code>INCR</code> + TTL in a Lua script, or a Lua token bucket. Separate read and write calls let concurrent requests on different instances both pass.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Redis is down. Should the limiter fail open or closed?</summary>
+          <p>It depends on what the limit protects. Fail open keeps the API available but unprotected (common for general API limits, ideally with a local fallback limit); fail closed suits security-critical limits like login attempts.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>At millions of requests per second, a Redis call per request is too expensive. What then?</summary>
+          <p>Approximate: each instance counts locally and syncs to the shared store periodically, or gets a slice of the global quota. You trade exactness for no per-request network hop.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>A customer says they are limited to 100/min but are actually getting ~400/min through. What's wrong?</summary>
+          <p>Probably four instances (or four Nginx nodes) each enforcing 100/min with local counters. Move to a shared atomic counter.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>After a short outage, your API is hit by a wave of traffic that trips every limit, then another wave. Why?</summary>
+          <p>Clients retry immediately and in sync (thundering herd), aligned to the same <code>Retry-After</code>. Clients need jittered exponential backoff; server-side, consider spreading <code>Retry-After</code> values.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>A whole university complains they get 429s while barely using the API. Why?</summary>
+          <p>The limit is keyed by IP and thousands of users share one NAT address. Key on user or API key; keep IP limits only as a loose outer layer.</p></details>
+      </section>
 
-      <h2 id="where-to-enforce">Where to enforce it</h2>
-      <ul>
-      <li><strong>Client-side</strong> — polite, but not a security boundary; a client can always skip its own throttle. Useful for UX (disable a submit button) not protection.</li>
-      <li><strong>Edge / API gateway</strong> — the common place for coarse, per-API-key or per-IP limits, before the request even reaches application servers; cheapest place to reject abusive traffic.</li>
-      <li><strong>Per-service</strong> — finer-grained limits close to an expensive specific operation (e.g. "3 password-reset emails per hour," distinct from the general API limit).</li>
-      <li><strong>Distributed rate limiting</strong> — once there's more than one instance enforcing the limit, they need a shared counter. The standard approach is Redis: an atomic <code>INCR</code> + <code>EXPIRE</code> (or a single Lua script so the check-and-increment is atomic and race-free) keyed by <code>user:&lt;id&gt;:&lt;window&gt;</code> — see <a href="../caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN Fundamentals</a> for why Redis specifically (atomic ops, TTLs built in).</li>
-      </ul>
-      <div class="sd-study-note warning"><span class="sd-note-title">Two instances checking-then-incrementing separately is a race</span><p>If "read the counter" and "increment the counter" are two separate calls, two concurrent requests on two different app instances can both read the count just under the limit, both pass, and both increment — quietly letting one extra request through the limit. Use a single atomic operation (Redis <code>INCR</code>, or a Lua script for token-bucket logic) instead of read-then-write.</p></div>
-
-      <h2>Talking to the client about it</h2>
-      <ul>
-      <li><strong><code>429 Too Many Requests</code></strong> — the correct HTTP status for a rejected request, distinct from a 4xx client error like malformed input.</li>
-      <li><strong><code>Retry-After</code></strong> header — tells the client how many seconds (or a date) to wait before retrying, instead of making it guess.</li>
-      <li><strong><code>X-RateLimit-Limit</code> / <code>-Remaining</code> / <code>-Reset</code></strong> — conventional (non-standard but widely adopted) headers so well-behaved clients can self-throttle before they ever hit 429.</li>
-      <li>A client should back off with jitter on retry, not retry immediately — otherwise every rejected client retries at the same instant, recreating a self-inflicted <a href="../caching/00-caching-and-cdn-fundamentals.html">thundering herd</a>.</li>
-      </ul>
-
-      <h2>Related but distinct terms</h2>
-      <ul>
-      <li><strong>Throttling</strong> — often used interchangeably with rate limiting, but sometimes specifically means <em>slowing</em> a client down (delaying responses) rather than rejecting requests outright.</li>
-      <li><strong>Backpressure</strong> — a downstream component that's falling behind signals upstream to slow down (or upstream detects a growing queue and self-limits), as opposed to a rate limiter which enforces a policy regardless of actual downstream health.</li>
-      <li><strong>Circuit breaking</strong> — stops calling a dependency <em>at all</em> once it's clearly failing, rather than limiting the rate of calls to a healthy-but-finite one. A different tool for a different failure mode (dependency down vs. dependency at capacity).</li>
+      <!-- 12 SUMMARY -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>Rate limiting decides <em>whether</em> a request is allowed; load balancing decides <em>where</em> it goes.</li>
+        <li>Fixed window is cheap but lets ~2× through at the boundary; sliding window counter is the practical precise option.</li>
+        <li>Token bucket (bursts OK) for inbound; leaky bucket (smooth) for outbound.</li>
+        <li>More than one instance → shared counter in Redis, updated atomically.</li>
+        <li>Coarse limits at the edge, operation-specific limits in the service.</li>
+        <li>Contract: 429 + Retry-After; clients back off with jitter.</li>
+        <li>Choose fail-open vs. fail-closed per endpoint.</li>
+      </ol>
+      <h3 id="quick-commands">Quick commands</h3>
+      <ul class="sd-commands">
+        <li><code>redis-cli GET rl:user:42:&lt;window&gt;</code> — current count</li>
+        <li><code>redis-cli TTL rl:user:42:&lt;window&gt;</code> — seconds until reset (-1 = no TTL bug)</li>
+        <li><code>curl -i https://api.example.com/v1/items</code> — see 429 / rate-limit headers</li>
       </ul>
 
-      <h2>Interview checklist</h2>
-      <ul>
-      <li>Name the algorithm and justify it: token bucket if bursts should be allowed, sliding window counter if precision at the window boundary matters more than a little memory.</li>
-      <li>Say where it's enforced (edge/gateway vs. per-service) and why — coarse abuse protection belongs at the edge, business-rule-specific limits belong near the operation they protect.</li>
-      <li>If there's more than one instance, say explicitly how the counter is shared and kept atomic (Redis + a single atomic op) — this is the detail that separates a real answer from a hand-wave.</li>
-      <li>Mention the client contract: <code>429</code> + <code>Retry-After</code>, and clients retrying with jittered backoff, not immediate retry.</li>
-      </ul>
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <div class="sd-next">
+        <a href="00-load-balancing.html"><strong>Load Balancing</strong><span>Where requests go once they're allowed.</span></a>
+        <a href="../sqs/05-microservice-resilience-patterns.html"><strong>Microservice Resilience Patterns</strong><span>Retries, timeouts and circuit breakers.</span></a>
+        <a href="../caching/00-caching-and-cdn-fundamentals.html"><strong>Caching &amp; CDN Fundamentals</strong><span>Why Redis is the usual counter store.</span></a>
+      </div>
 
     </main>
   </div>
 </div>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

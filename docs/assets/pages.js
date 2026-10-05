@@ -524,7 +524,8 @@ window.SITE_PAGES = {
   "server": {
     href: "web-servers/server.html",
     section: "Web Servers",
-    title: "Web Servers"
+    title: "Web Servers",
+    subtitle: "Which program owns the HTTP connection, which one runs your code, and how a request crosses the boundary between them — Nginx, app servers, and how the pair fails in production."
   },
   "wsgi": {
     href: "web-servers/wsgi.html",

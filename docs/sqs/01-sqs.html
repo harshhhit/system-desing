@@ -12,104 +12,328 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SQS Overview · Infra Owl</title>
 
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=10">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
+
 <div id="site-header-root"></div>
 <script src="../assets/sitemap.js"></script>
-<script src="../assets/pages.js"></script><script src="../assets/site-header.js?v=8" data-root="../"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=9" data-root="../"></script>
 
-<div class="layout">
-  <aside class="sidebar" id="sidebar"><a class="brand" href="../index.html">Infra Owl</a><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group" open><summary>Queue Fundamentals</summary><ul><li><a class="active" href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
-  <div class="content-wrap">
-    <div class="topbar">
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
-      <span class="brand">🦉 Infra Owl</span>
-    </div>
-    <main>
-      <p class="breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Messaging &amp; Queues / SQS Overview</p>
-      <h1 data-page-title>SQS Overview</h1>
-      <p>Producer → SQS API → Storage Layer → Message replicated to AZ1 + AZ2 + AZ3 → Consumer retrieves message from healthy AZ.</p>
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><nav></nav></aside>
 
-      <h2 id="page-map">Messaging &amp; Queues Page Map</h2>
-      <p class="topic-map-legend">A block diagram of every Messaging &amp; Queues page on this site, in the order they build on each other. Click any block to open that page. Read top to bottom: each layer assumes the one above it. The 📎 blocks open downloadable resources; the grey blocks at the bottom are related pages in other sections.</p>
-      <nav class="topic-map" aria-label="Messaging and Queues page map" style="--map-accent: var(--sd-c4)">
-        <div class="topic-map-row"><p class="topic-map-label">Queue fundamentals</p><p class="topic-map-why">Start with one managed queue, then the protocols brokers speak, then the problems queues solve — every later pattern assumes this vocabulary.</p><div class="topic-map-blocks">
-          <a class="here" href="01-sqs.html" aria-current="page">SQS Overview<small>You are here: producer, queue, consumer</small></a>
-          <a href="02-queus-methord.html">Queue Methods<small>AMQP, MQTT, STOMP, gRPC, WebSockets</small></a>
-          <a href="use-case.html">SQS Use Cases<small>Why queues: decoupling, buffering spikes</small></a>
-        </div></div>
-        <div class="topic-map-arrow" aria-hidden="true">↓</div>
-        <div class="topic-map-row"><p class="topic-map-label">Streaming &amp; event-driven patterns</p><p class="topic-map-why">A queue deletes a message once it is processed; a log keeps it, and that retained history is what event-driven designs are built on.</p><div class="topic-map-blocks">
-          <a href="03-kafka-fundamentals.html">Kafka Fundamentals<small>Log, partitions, consumer groups, offsets</small></a>
-          <a href="04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS<small>Events as truth, split read models</small></a>
-        </div></div>
-        <div class="topic-map-arrow" aria-hidden="true">↓</div>
-        <div class="topic-map-row"><p class="topic-map-label">Resilience &amp; practice</p><p class="topic-map-why">Once services talk through messages, failures must be contained with retries, DLQs and circuit breakers — then practise it hands-on.</p><div class="topic-map-blocks">
-          <a href="05-microservice-resilience-patterns.html">Microservice Resilience Patterns<small>Circuit breaker, backoff, bulkhead, saga</small></a>
-          <a href="project/project.html">Multiprotocol Messaging Starter<small>Hands-on retries &amp; DLQs project</small></a>
-          <a href="message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering<small>PDF: retry and DLQ reference</small></a>
-          <a href="project/multiprotocol-messaging-starter.zip">📎 Starter Project (.zip)<small>Download the project source</small></a>
-        </div></div>
-        <div class="topic-map-arrow" aria-hidden="true">↓</div>
-        <div class="topic-map-row"><p class="topic-map-label">Related, in other sections</p><p class="topic-map-why">Topics messaging depends on or feeds into that live in other sections of the site.</p><div class="topic-map-blocks">
-          <a class="ext" href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub<small>Fan-out messaging to many subscribers</small></a>
-          <a class="ext" href="../distributed-system/distributed-systems.html">Distributed Systems<small>Failures, consistency, partial outages</small></a>
-          <a class="ext" href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review<small>Real-time messaging in a real design</small></a>
-          <a class="ext" href="../traffic/01-rate-limiting-and-throttling.html">Rate Limiting &amp; Throttling<small>Protecting consumers from overload</small></a>
-        </div></div>
-      </nav>
+  <div class="sd-study-content">
+    <main class="sd-study-main sd-lesson" data-reminders="Walk the SQS message lifecycle send → receive → invisible → delete/reappear → DLQ|Explain why consumers must be idempotent|Size a visibility timeout for a job that takes up to 2 minutes">
+      <p class="sd-study-breadcrumb" data-breadcrumb></p>
+      <h1 data-page-title></h1>
 
-      <h2 id="interview-answer">Interview Answer — What Is Amazon SQS?</h2>
-      <p>Amazon SQS (Simple Queue Service) is a fully managed message queue from AWS: a <strong>producer</strong> sends a message to a queue over an HTTPS API, SQS stores it durably, and a <strong>consumer</strong> polls the queue, processes the message, and deletes it. As the one-line flow above shows, every message is stored redundantly across multiple Availability Zones, so a consumer can still receive it if one AZ fails.</p>
-      <p>SQS exists to <strong>decouple</strong> services. Without a queue, a service that calls another directly must wait for it and fails when it is down or overloaded. With a queue in between, the cause → effect chain is: the producer writes a message and returns immediately → the message waits safely in SQS → consumers process it at their own pace, and more consumers can be added when the backlog grows → if a consumer crashes mid-processing, the message becomes visible again and is retried. See <a href="use-case.html">SQS Use Cases</a> for the patterns this enables.</p>
-      <p>Three mechanisms make this work. The <strong>visibility timeout</strong> hides a received message from other consumers while one consumer works on it; if the consumer does not delete it before the timeout, it reappears for another attempt. A <strong>dead-letter queue (DLQ)</strong> receives messages that have failed a configured number of times, so one bad message does not block processing forever. And SQS offers two queue types: <strong>Standard</strong> (nearly unlimited throughput, at-least-once delivery, best-effort ordering) and <strong>FIFO</strong> (strict ordering within a message group and deduplication, with lower throughput).</p>
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
+        <ul>
+          <li>Explain what SQS is and why queues decouple services</li>
+          <li>Walk one message through send, receive, visibility timeout, delete and DLQ</li>
+          <li>Choose between Standard and FIFO queues</li>
+          <li>Write an idempotent consumer with long polling and batching</li>
+          <li>Scale consumers on queue depth and debug stuck or duplicated messages</li>
+        </ul>
+      </section>
 
-      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
-        <p>"SQS is AWS's fully managed message queue. Producers send messages, SQS stores them redundantly across Availability Zones, and consumers poll, process, and delete them. It decouples services and absorbs traffic spikes, because the producer doesn't wait for the consumer. A visibility timeout hides a message while it's being processed and makes it reappear if the consumer fails, and a dead-letter queue catches messages that keep failing. Standard queues give high throughput with at-least-once delivery; FIFO queues give strict ordering and deduplication."</p>
+      <!-- 01 OVERVIEW -->
+      <h2 id="overview" data-stage="Overview">What SQS Is and Why It Exists</h2>
+
+ <p>Producer → SQS API → Storage Layer → Message replicated to AZ1 + AZ2 + AZ3 → Consumer retrieves message from healthy AZ.</p>
+ 
+      <p>A message queue lets one service hand work to another without waiting for it. Amazon SQS is AWS's fully managed version: no brokers to run, storage replicated across Availability Zones, and throughput that scales without provisioning. Use it whenever a request can be acknowledged now and processed later — emails, image processing, order fulfilment, webhooks.</p>
+
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>Receiving a message does not remove it. Only an explicit delete does. Everything about SQS reliability — and its duplicates — follows from that one rule.</p>
+      </aside>
+
+<h2 data-stage="Overview" id="page-map">Messaging &amp; Queues Page Map</h2>
+ <p class="topic-map-legend">A block diagram of every Messaging &amp; Queues page on this site, in the order they build on each other. Click any block to open that page. Read top to bottom: each layer assumes the one above it. The 📎 blocks open downloadable resources; the grey blocks at the bottom are related pages in other sections.</p>
+ <nav class="topic-map" aria-label="Messaging and Queues page map" style="--map-accent: var(--sd-c4)">
+ <div class="topic-map-row"><p class="topic-map-label">Queue fundamentals</p><p class="topic-map-why">Start with one managed queue, then the protocols brokers speak, then the problems queues solve — every later pattern assumes this vocabulary.</p><div class="topic-map-blocks">
+ <a class="here" href="01-sqs.html" aria-current="page">SQS Overview<small>You are here: producer, queue, consumer</small></a>
+ <a href="02-queus-methord.html">Queue Methods<small>AMQP, MQTT, STOMP, gRPC, WebSockets</small></a>
+ <a href="use-case.html">SQS Use Cases<small>Why queues: decoupling, buffering spikes</small></a>
+ </div></div>
+ <div class="topic-map-arrow" aria-hidden="true">↓</div>
+ <div class="topic-map-row"><p class="topic-map-label">Streaming &amp; event-driven patterns</p><p class="topic-map-why">A queue deletes a message once it is processed; a log keeps it, and that retained history is what event-driven designs are built on.</p><div class="topic-map-blocks">
+ <a href="03-kafka-fundamentals.html">Kafka Fundamentals<small>Log, partitions, consumer groups, offsets</small></a>
+ <a href="04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS<small>Events as truth, split read models</small></a>
+ </div></div>
+ <div class="topic-map-arrow" aria-hidden="true">↓</div>
+ <div class="topic-map-row"><p class="topic-map-label">Resilience &amp; practice</p><p class="topic-map-why">Once services talk through messages, failures must be contained with retries, DLQs and circuit breakers — then practise it hands-on.</p><div class="topic-map-blocks">
+ <a href="05-microservice-resilience-patterns.html">Microservice Resilience Patterns<small>Circuit breaker, backoff, bulkhead, saga</small></a>
+ <a href="project/project.html">Multiprotocol Messaging Starter<small>Hands-on retries &amp; DLQs project</small></a>
+ <a href="message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering<small>PDF: retry and DLQ reference</small></a>
+ <a href="project/multiprotocol-messaging-starter.zip">📎 Starter Project (.zip)<small>Download the project source</small></a>
+ </div></div>
+ <div class="topic-map-arrow" aria-hidden="true">↓</div>
+ <div class="topic-map-row"><p class="topic-map-label">Related, in other sections</p><p class="topic-map-why">Topics messaging depends on or feeds into that live in other sections of the site.</p><div class="topic-map-blocks">
+ <a class="ext" href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub<small>Fan-out messaging to many subscribers</small></a>
+ <a class="ext" href="../distributed-system/distributed-systems.html">Distributed Systems<small>Failures, consistency, partial outages</small></a>
+ <a class="ext" href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review<small>Real-time messaging in a real design</small></a>
+ <a class="ext" href="../traffic/01-rate-limiting-and-throttling.html">Rate Limiting &amp; Throttling<small>Protecting consumers from overload</small></a>
+ </div></div>
+ </nav>
+ 
+<h2 data-stage="Overview" id="learning-flow">How to Study This Section</h2>
+ <p>Messaging answers one question — <em>how do services hand work to each other without waiting on each other?</em> — and each page adds the next layer. Read them in this order:</p>
+ <ol>
+ <li><strong><a href="01-sqs.html">SQS Overview</a> (this page)</strong> — one concrete managed queue. <em>Unlocks:</em> the core vocabulary (producer, consumer, visibility timeout, DLQ, at-least-once) used by every later page.</li>
+ <li><strong><a href="02-queus-methord.html">Queue Methods</a></strong> — the protocols brokers speak (AMQP, MQTT, STOMP) and the request/stream alternatives (webhooks, gRPC, WebSockets). <em>Unlocks:</em> choosing a transport for a given client. <em>Watch for:</em> a protocol vs. a broker — the difference is that AMQP is a wire format and set of rules, while RabbitMQ is software that implements it; SQS uses its own HTTPS API, not AMQP.</li>
+ <li><strong><a href="use-case.html">SQS Use Cases</a></strong> — why a queue belongs in a design at all. <em>Unlocks:</em> recognising decoupling, spike buffering and background jobs in an interview prompt.</li>
+ <li><strong><a href="03-kafka-fundamentals.html">Kafka Fundamentals</a></strong> — the log model. <em>Watch for:</em> queue vs. log — the difference is that a queue removes a message once one consumer processes it, while a log retains every record so many consumer groups can each read it, and re-read it, at their own offset.</li>
+ <li><strong><a href="04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></strong> — building on the retained log. <em>Unlocks:</em> storing events as the source of truth and serving reads from separate models. <em>Watch for:</em> the two are independent — you can use CQRS without event sourcing.</li>
+ <li><strong><a href="05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></strong> — what to do when a downstream service fails: retries with backoff, circuit breakers, bulkheads, sagas. <em>Unlocks:</em> designs that degrade instead of cascading.</li>
+ <li><strong><a href="project/project.html">Multiprotocol Messaging Starter</a></strong> — practise retries and DLQs hands-on, with the <a href="message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">Retries &amp; Dead-Lettering PDF</a> as reference.</li>
+ </ol>
+ <div class="page-footer">
+ <span>Section: Messaging &amp; Queues</span>
+ <span>Source: <code>01-sqs.md</code></span>
+ </div>
+ 
+
+      <!-- 02 CORE CONCEPTS -->
+      <h2 id="core-concepts" data-stage="Core Concepts">Core Concepts</h2>
+      <table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><strong>Producer / consumer</strong></td><td>The service that sends messages / the one that receives, processes and deletes them.</td></tr>
+        <tr><td><strong>Visibility timeout</strong></td><td>How long a received message stays hidden from other consumers (default 30 s, up to 12 hours).</td></tr>
+        <tr><td><strong>Receipt handle</strong></td><td>The token from one receive that you must use to delete (or extend) that message.</td></tr>
+        <tr><td><strong>Retention period</strong></td><td>How long an unprocessed message is kept (default 4 days, 1 minute–14 days).</td></tr>
+        <tr><td><strong>Dead-letter queue (DLQ)</strong></td><td>Where messages go after <code>maxReceiveCount</code> failed receives.</td></tr>
+        <tr><td><strong>Long polling</strong></td><td>A receive that waits up to 20 s for messages instead of returning empty.</td></tr>
+        <tr><td><strong>Delay queue / message timer</strong></td><td>Hides new messages for up to 15 minutes before first delivery.</td></tr>
+      </table>
+      <h3 id="standard-vs-fifo">Standard vs. FIFO queues</h3>
+      <table>
+        <tr><th></th><th>Standard</th><th>FIFO</th></tr>
+        <tr><td>Delivery</td><td>At-least-once (occasional duplicates)</td><td>Exactly-once processing within a 5-minute deduplication window</td></tr>
+        <tr><td>Ordering</td><td>Best-effort</td><td>Strict, per message group ID</td></tr>
+        <tr><td>Throughput</td><td>Nearly unlimited</td><td>300 API calls/s per action (3,000 messages/s with batches of 10); high-throughput mode raises this substantially</td></tr>
+        <tr><td>Use when</td><td>Order doesn't matter and consumers are idempotent</td><td>Order per entity matters (per-account ledger updates) or duplicates are costly</td></tr>
+      </table>
+      <p><strong>Standard vs. FIFO — the difference is</strong> the trade between throughput and guarantees. FIFO's ordering is per <em>message group</em>, so parallelism comes from having many groups (e.g. one per customer), not from one global order.</p>
+
+      <aside class="sd-callout mistake">
+        <p class="sd-callout-title">⚠️ Common mistake</p>
+        <p>Choosing FIFO "to get exactly-once" and then writing a non-idempotent consumer. Deduplication only covers the 5-minute window and the queue; a consumer that crashes after charging a card but before deleting the message will still process it again.</p>
+      </aside>
+
+      <!-- 03 ARCHITECTURE -->
+      <h2 id="architecture" data-stage="Architecture">Architecture</h2>
+      <div class="mermaid sd-diagram">flowchart LR
+    P["Producers<br/>(API servers)"] -->|"SendMessage"| Q[("SQS queue<br/>replicated across AZs")]
+    Q -->|"ReceiveMessage (long poll)"| C1["Consumer 1"]
+    Q -->|"ReceiveMessage"| C2["Consumer 2"]
+    C1 -->|"DeleteMessage on success"| Q
+    Q -->|"after maxReceiveCount"| DLQ[("Dead-letter queue")]
+    CW["CloudWatch: queue depth,<br/>age of oldest message"] -.-> AS["Autoscale consumers"]
+</div>
+      <p class="sd-diagram-caption">Producers and consumers never talk to each other; queue depth drives how many consumers run.</p>
+
+      <!-- 04 HOW IT WORKS -->
+<h2 data-stage="How It Works" id="message-lifecycle">The Life of One SQS Message, Step by Step</h2>
+ <p>The one-line flow at the top of this page compresses the whole lifecycle. Spelled out, each step causes the next:</p>
+ <ol>
+ <li><strong>Send.</strong> The producer calls <code>SendMessage</code>. SQS stores the message redundantly across Availability Zones and returns a message ID. The producer is now done — it does not know or care which consumer will handle the message, or when.</li>
+ <li><strong>Wait in the queue.</strong> The message stays in the queue until a consumer receives it or the queue's retention period expires (4 days by default, configurable from 1 minute to 14 days). A message that is never processed within the retention period is deleted — a queue is a buffer, not permanent storage.</li>
+ <li><strong>Receive.</strong> A consumer calls <code>ReceiveMessage</code>. With <strong>long polling</strong> (a wait time of up to 20 seconds) the call waits for a message to arrive instead of returning empty immediately, which cuts empty responses and cost.</li>
+ <li><strong>Invisible while processing.</strong> Receiving a message does not remove it. It starts the <strong>visibility timeout</strong> (30 seconds by default), during which other consumers cannot receive that message.</li>
+ <li><strong>Delete on success.</strong> When processing succeeds, the consumer calls <code>DeleteMessage</code> with the receipt handle. Only this call removes the message from the queue.</li>
+ <li><strong>Reappear on failure.</strong> If the consumer crashes or is too slow, the visibility timeout expires → the message becomes visible again → another consumer receives it. This is exactly why delivery is at-least-once and consumers must be idempotent.</li>
+ <li><strong>Dead-letter after repeated failure.</strong> Each receive increments the message's receive count. Once it exceeds the <code>maxReceiveCount</code> in the queue's redrive policy, SQS moves the message to the dead-letter queue, where it can be inspected and replayed instead of blocking the queue.</li>
+ </ol>
+ <p><strong>Visibility timeout vs. retention period</strong> — the difference is scope: the visibility timeout is a short per-receive lock that decides <em>who may process</em> a message right now, while the retention period is the overall lifetime that decides <em>how long the message may exist at all</em>. Setting the visibility timeout shorter than your real processing time does NOT lose messages, but it does cause duplicate processing, because the message reappears while the first consumer is still working on it.</p>
+ 
+
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>A job usually takes 20 s but sometimes 90 s, and the visibility timeout is 30 s. What happens on the slow runs? (The message reappears at 30 s and a second consumer starts the same job — set the timeout above the worst case, or extend it with <code>ChangeMessageVisibility</code> while working.)</p>
+      </aside>
+
+      <!-- 05 IMPLEMENTATION -->
+      <h2 id="implementation" data-stage="Implementation">Implementation</h2>
+      <h3 id="cli">Create a queue with a DLQ</h3>
+      <pre><code>aws sqs create-queue --queue-name orders-dlq
+aws sqs create-queue --queue-name orders --attributes '{"VisibilityTimeout":"120","ReceiveMessageWaitTimeSeconds":"20","RedrivePolicy":"{\"deadLetterTargetArn\":\"arn:aws:sqs:us-east-1:123456789012:orders-dlq\",\"maxReceiveCount\":\"5\"}"}'
+aws sqs send-message --queue-url https://sqs.us-east-1.amazonaws.com/123456789012/orders --message-body '{"order_id":42}'</code></pre>
+      <ul>
+        <li><code>VisibilityTimeout 120</code> — above the slowest normal processing time.</li>
+        <li><code>ReceiveMessageWaitTimeSeconds 20</code> — long polling by default for every consumer.</li>
+        <li><code>RedrivePolicy … maxReceiveCount 5</code> — after 5 failed receives the message moves to <code>orders-dlq</code>.</li>
+      </ul>
+      <h3 id="consumer">An idempotent consumer (Python, boto3)</h3>
+      <pre><code>while True:
+    resp = sqs.receive_message(QueueUrl=URL, MaxNumberOfMessages=10, WaitTimeSeconds=20)
+    for m in resp.get("Messages", []):
+        order = json.loads(m["Body"])
+        if not already_processed(order["order_id"]):
+            fulfil(order)
+            mark_processed(order["order_id"])
+        sqs.delete_message(QueueUrl=URL, ReceiptHandle=m["ReceiptHandle"])</code></pre>
+      <ul>
+        <li><code>MaxNumberOfMessages=10, WaitTimeSeconds=20</code> — batch up to 10 per call and long-poll: fewer, cheaper API calls.</li>
+        <li><code>already_processed</code> / <code>mark_processed</code> — an idempotency record (e.g. a unique constraint on <code>order_id</code>) so a redelivered message does nothing twice.</li>
+        <li><code>delete_message</code> only after success — if <code>fulfil</code> throws, the message reappears after the visibility timeout and is retried, then dead-lettered.</li>
+      </ul>
+
+      <!-- 06 PRODUCTION -->
+      <h2 id="production" data-stage="Production">Production Usage</h2>
+      <table>
+        <tr><th></th><th>Low scale</th><th>High scale</th></tr>
+        <tr><td>Consumers</td><td>One worker process or a Lambda trigger.</td><td>Autoscaled workers (ECS/EKS/EC2) or Lambda with concurrency limits, scaled on queue depth and message age.</td></tr>
+        <tr><td>Throughput</td><td>Anything works.</td><td>Batch send/receive/delete; Standard queues for raw volume; many FIFO message groups for ordered parallelism.</td></tr>
+        <tr><td>Failure handling</td><td>Look at the DLQ occasionally.</td><td>Alarms on DLQ depth, automated redrive after fixes, poison-message triage.</td></tr>
+      </table>
+      <h3 id="observability">Signals to watch (CloudWatch)</h3>
+      <table>
+        <tr><th>Metric</th><th>What it tells you</th></tr>
+        <tr><td><code>ApproximateNumberOfMessagesVisible</code></td><td>Backlog waiting to be processed — the main scaling signal.</td></tr>
+        <tr><td><code>ApproximateAgeOfOldestMessage</code></td><td>How far behind consumers are; the best user-impact signal for async work.</td></tr>
+        <tr><td><code>ApproximateNumberOfMessagesNotVisible</code></td><td>In-flight messages being processed.</td></tr>
+        <tr><td><code>NumberOfMessagesSent</code> vs. <code>NumberOfMessagesDeleted</code></td><td>Arrival rate vs. completion rate.</td></tr>
+        <tr><td>DLQ <code>ApproximateNumberOfMessagesVisible</code></td><td>Messages that failed repeatedly — alert on any growth.</td></tr>
+      </table>
+
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>Alert on the age of the oldest message, not just on depth. A depth of 10,000 is fine if consumers clear it in seconds; an age of 30 minutes means users are waiting for their emails or orders, whatever the depth.</p>
+      </aside>
+
+      <!-- 07 SECURITY -->
+      <h2 id="security" data-stage="Security">Security</h2>
+      <ul>
+        <li><strong>IAM least privilege</strong> — producers get <code>sqs:SendMessage</code> only; consumers get <code>ReceiveMessage</code>, <code>DeleteMessage</code>, <code>ChangeMessageVisibility</code> on that queue only.</li>
+        <li><strong>Queue policies</strong> control cross-account and service access (e.g. allow only a specific SNS topic or S3 bucket to send).</li>
+        <li><strong>Encryption at rest</strong> with SSE-SQS or SSE-KMS; HTTPS in transit; VPC endpoints to keep traffic off the internet.</li>
+        <li><strong>Treat message bodies as untrusted input</strong> — validate before acting; never put secrets in messages.</li>
+      </ul>
+
+      <!-- 08 PERFORMANCE -->
+      <h2 id="performance" data-stage="Performance &amp; Scalability">Performance &amp; Scalability</h2>
+      <ul>
+        <li><strong>Throughput scales with consumers</strong>: Standard queues accept nearly unlimited rates; your consumers are the bottleneck.</li>
+        <li><strong>Batching</strong> (10 messages per send/receive/delete) cuts API calls and cost ~10×.</li>
+        <li><strong>Long polling</strong> removes empty receives.</li>
+        <li><strong>Large payloads</strong> belong in S3 with a pointer in the message (the SQS Extended Client does this).</li>
+        <li><strong>Downstream limits</strong>: scaling consumers can overload the database they write to — cap concurrency (Lambda reserved concurrency, worker counts).</li>
+      </ul>
+
+      <!-- 09 TROUBLESHOOTING -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Failure Scenarios</h2>
+      <table>
+        <tr><th>Symptom</th><th>Possible cause</th><th>Detect</th><th>Fix</th><th>Prevent</th></tr>
+        <tr><td>Same message processed twice</td><td>Visibility timeout shorter than processing; consumer crashed after work but before delete; Standard at-least-once.</td><td>Duplicate side effects; receive count &gt; 1.</td><td>Idempotent consumer; longer timeout or heartbeat extension.</td><td>Idempotency keys by design.</td></tr>
+        <tr><td>Backlog keeps growing</td><td>Too few consumers, slow downstream, or a poison message blocking a FIFO group.</td><td>Visible messages and oldest age rising.</td><td>Scale consumers; fix downstream; DLQ the poison message.</td><td>Autoscaling on depth/age; maxReceiveCount.</td></tr>
+        <tr><td>DLQ filling up</td><td>Bug, bad input, or downstream outage.</td><td>DLQ depth alarm; inspect messages.</td><td>Fix cause, then redrive from the DLQ.</td><td>Validation; alarms.</td></tr>
+        <tr><td>Messages vanish unprocessed</td><td>Retention period expired.</td><td>Messages older than retention never processed.</td><td>Process faster; raise retention (max 14 days).</td><td>Alarm on message age long before retention.</td></tr>
+        <tr><td>High cost, many empty receives</td><td>Short polling.</td><td><code>NumberOfEmptyReceives</code>.</td><td>Long polling (wait time 20 s).</td><td>Set it on the queue.</td></tr>
+      </table>
+      <h3 id="debug-workflow">Debugging workflow</h3>
+      <ol class="sd-steps">
+        <li><code>aws sqs get-queue-attributes --queue-url $URL --attribute-names All</code> — depth, in-flight, timeouts, redrive policy.</li>
+        <li>Check consumer logs and error rates; is the downstream (DB, API) healthy?</li>
+        <li>Peek at the DLQ: <code>aws sqs receive-message --queue-url $DLQ_URL --max-number-of-messages 10</code>.</li>
+        <li>After fixing, redrive: <code>aws sqs start-message-move-task --source-arn $DLQ_ARN</code>.</li>
+      </ol>
+
+      <!-- 10 BEST PRACTICES -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul>
+        <li><strong>Make every consumer idempotent</strong> — duplicates will happen.</li>
+        <li><strong>Delete only after success</strong>; extend visibility for long jobs.</li>
+        <li><strong>Always attach a DLQ</strong> with a sensible <code>maxReceiveCount</code>.</li>
+        <li><strong>Long-poll and batch.</strong></li>
+        <li><strong>Scale on age of oldest message and depth.</strong></li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul>
+        <li><strong>Visibility timeouts shorter than processing time.</strong></li>
+        <li><strong>Large payloads in messages</strong> — store in S3.</li>
+        <li><strong>Assuming order on Standard queues.</strong></li>
+        <li><strong>Unbounded consumer scaling</strong> that overwhelms downstream systems.</li>
+      </ul>
+
+      <!-- 11 INTERVIEW PREPARATION -->
+<h2 data-stage="Interview Preparation" id="interview-answer">Interview Answer — What Is Amazon SQS?</h2>
+ <p>Amazon SQS (Simple Queue Service) is a fully managed message queue from AWS: a <strong>producer</strong> sends a message to a queue over an HTTPS API, SQS stores it durably, and a <strong>consumer</strong> polls the queue, processes the message, and deletes it. As the one-line flow above shows, every message is stored redundantly across multiple Availability Zones, so a consumer can still receive it if one AZ fails.</p>
+ <p>SQS exists to <strong>decouple</strong> services. Without a queue, a service that calls another directly must wait for it and fails when it is down or overloaded. With a queue in between, the cause → effect chain is: the producer writes a message and returns immediately → the message waits safely in SQS → consumers process it at their own pace, and more consumers can be added when the backlog grows → if a consumer crashes mid-processing, the message becomes visible again and is retried. See <a href="use-case.html">SQS Use Cases</a> for the patterns this enables.</p>
+ <p>Three mechanisms make this work. The <strong>visibility timeout</strong> hides a received message from other consumers while one consumer works on it; if the consumer does not delete it before the timeout, it reappears for another attempt. A <strong>dead-letter queue (DLQ)</strong> receives messages that have failed a configured number of times, so one bad message does not block processing forever. And SQS offers two queue types: <strong>Standard</strong> (nearly unlimited throughput, at-least-once delivery, best-effort ordering) and <strong>FIFO</strong> (strict ordering within a message group and deduplication, with lower throughput).</p>
+ <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+ <p>"SQS is AWS's fully managed message queue. Producers send messages, SQS stores them redundantly across Availability Zones, and consumers poll, process, and delete them. It decouples services and absorbs traffic spikes, because the producer doesn't wait for the consumer. A visibility timeout hides a message while it's being processed and makes it reappear if the consumer fails, and a dead-letter queue catches messages that keep failing. Standard queues give high throughput with at-least-once delivery; FIFO queues give strict ordering and deduplication."</p>
+ </div>
+ <h3>One important interview follow-up</h3>
+ <p><strong>Q: Does SQS guarantee that each message is processed exactly once?</strong></p>
+ <p><strong>A:</strong> No. A Standard queue guarantees <strong>at-least-once</strong> delivery: a message can occasionally be delivered more than once, and it is redelivered whenever a consumer does not delete it before the visibility timeout expires — for example if the consumer crashed after doing the work but before deleting the message. FIFO queues deduplicate messages sent with the same deduplication ID within a 5-minute window, but that prevents duplicate <em>sends</em>, not duplicate <em>processing</em> after a consumer failure. So consumers must be <strong>idempotent</strong> — processing the same message twice must have the same effect as processing it once, for example by recording the message or order ID and skipping IDs already handled.</p>
+ 
+
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>Why put a queue between two services?</summary>
+          <p>The producer returns immediately and doesn't fail when the consumer is slow or down; the queue buffers spikes and consumers scale independently.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What does the visibility timeout do?</summary>
+          <p>Hides a received message from other consumers while one works on it; if it isn't deleted in time, it reappears for another attempt.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What's a dead-letter queue for?</summary>
+          <p>Isolating messages that failed <code>maxReceiveCount</code> times, so they stop retrying forever and can be inspected and replayed.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Standard vs. FIFO — when do you choose FIFO?</summary>
+          <p>When order per entity matters or duplicates are costly, and throughput fits FIFO limits; parallelise with many message group IDs.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Visibility timeout vs. retention period?</summary>
+          <p>Visibility is a short per-receive lock (who processes now); retention is the message's whole lifetime in the queue.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>How do you make a consumer idempotent?</summary>
+          <p>Record a processed key (order ID or message deduplication ID) atomically with the side effect — e.g. a unique constraint — and skip if it already exists.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Does SQS guarantee exactly-once?</summary>
+          <p>No. Standard is at-least-once; FIFO deduplicates within 5 minutes, but end-to-end exactly-once still requires idempotent consumers.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>How would you autoscale consumers?</summary>
+          <p>Target a backlog per consumer (visible messages ÷ consumers) and an age-of-oldest-message ceiling; cap max consumers by downstream capacity.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>How does a poison message affect a FIFO queue?</summary>
+          <p>It blocks its message group (later messages in that group wait) until it's dead-lettered — so set maxReceiveCount and a DLQ.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Customers get two confirmation emails for one order. Why?</summary>
+          <p>The consumer sent the email but crashed or timed out before deleting; the message reappeared. Make sending idempotent (record sent per order) and size the visibility timeout correctly.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Black Friday: the queue holds 2 million messages and the oldest is 40 minutes old. What do you do?</summary>
+          <p>Scale consumers within downstream limits, batch operations, check for a slow dependency, prioritise critical work (separate queues), and keep an eye on retention.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>The DLQ suddenly has 5,000 messages. Next steps?</summary>
+          <p>Inspect samples for a common error, correlate with deploys/outages, fix the cause, then redrive from the DLQ in a controlled way.</p></details>
+      </section>
+
+      <!-- 12 SUMMARY -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>SQS decouples producers and consumers; receive ≠ delete.</li>
+        <li>Visibility timeout hides in-flight messages; expiry means redelivery.</li>
+        <li>Standard = at-least-once, best-effort order; FIFO = ordered per group, deduplicated, lower throughput.</li>
+        <li>Consumers must be idempotent; delete only after success.</li>
+        <li>DLQ + maxReceiveCount isolate poison messages.</li>
+        <li>Long-poll, batch, and scale on age of oldest message.</li>
+      </ol>
+      <h3 id="quick-commands">Quick commands</h3>
+      <ul class="sd-commands">
+        <li><code>aws sqs get-queue-attributes --queue-url $URL --attribute-names All</code> — depth, timeouts, redrive</li>
+        <li><code>aws sqs receive-message --queue-url $DLQ_URL --max-number-of-messages 10</code> — peek at the DLQ</li>
+        <li><code>aws sqs start-message-move-task --source-arn $DLQ_ARN</code> — redrive</li>
+      </ul>
+
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <div class="sd-next">
+        <a href="02-queus-methord.html"><strong>Queue Methods</strong><span>The protocols brokers speak.</span></a>
+        <a href="use-case.html"><strong>SQS Use Cases</strong><span>Where a queue belongs in a design.</span></a>
+        <a href="03-kafka-fundamentals.html"><strong>Kafka Fundamentals</strong><span>Queues vs. logs.</span></a>
       </div>
 
-      <h3>One important interview follow-up</h3>
-      <p><strong>Q: Does SQS guarantee that each message is processed exactly once?</strong></p>
-      <p><strong>A:</strong> No. A Standard queue guarantees <strong>at-least-once</strong> delivery: a message can occasionally be delivered more than once, and it is redelivered whenever a consumer does not delete it before the visibility timeout expires — for example if the consumer crashed after doing the work but before deleting the message. FIFO queues deduplicate messages sent with the same deduplication ID within a 5-minute window, but that prevents duplicate <em>sends</em>, not duplicate <em>processing</em> after a consumer failure. So consumers must be <strong>idempotent</strong> — processing the same message twice must have the same effect as processing it once, for example by recording the message or order ID and skipping IDs already handled.</p>
-
-      <h2 id="message-lifecycle">The Life of One SQS Message, Step by Step</h2>
-      <p>The one-line flow at the top of this page compresses the whole lifecycle. Spelled out, each step causes the next:</p>
-      <ol>
-        <li><strong>Send.</strong> The producer calls <code>SendMessage</code>. SQS stores the message redundantly across Availability Zones and returns a message ID. The producer is now done — it does not know or care which consumer will handle the message, or when.</li>
-        <li><strong>Wait in the queue.</strong> The message stays in the queue until a consumer receives it or the queue's retention period expires (4 days by default, configurable from 1 minute to 14 days). A message that is never processed within the retention period is deleted — a queue is a buffer, not permanent storage.</li>
-        <li><strong>Receive.</strong> A consumer calls <code>ReceiveMessage</code>. With <strong>long polling</strong> (a wait time of up to 20 seconds) the call waits for a message to arrive instead of returning empty immediately, which cuts empty responses and cost.</li>
-        <li><strong>Invisible while processing.</strong> Receiving a message does not remove it. It starts the <strong>visibility timeout</strong> (30 seconds by default), during which other consumers cannot receive that message.</li>
-        <li><strong>Delete on success.</strong> When processing succeeds, the consumer calls <code>DeleteMessage</code> with the receipt handle. Only this call removes the message from the queue.</li>
-        <li><strong>Reappear on failure.</strong> If the consumer crashes or is too slow, the visibility timeout expires → the message becomes visible again → another consumer receives it. This is exactly why delivery is at-least-once and consumers must be idempotent.</li>
-        <li><strong>Dead-letter after repeated failure.</strong> Each receive increments the message's receive count. Once it exceeds the <code>maxReceiveCount</code> in the queue's redrive policy, SQS moves the message to the dead-letter queue, where it can be inspected and replayed instead of blocking the queue.</li>
-      </ol>
-      <p><strong>Visibility timeout vs. retention period</strong> — the difference is scope: the visibility timeout is a short per-receive lock that decides <em>who may process</em> a message right now, while the retention period is the overall lifetime that decides <em>how long the message may exist at all</em>. Setting the visibility timeout shorter than your real processing time does NOT lose messages, but it does cause duplicate processing, because the message reappears while the first consumer is still working on it.</p>
-
-      <h2 id="learning-flow">How to Study This Section</h2>
-      <p>Messaging answers one question — <em>how do services hand work to each other without waiting on each other?</em> — and each page adds the next layer. Read them in this order:</p>
-      <ol>
-        <li><strong><a href="01-sqs.html">SQS Overview</a> (this page)</strong> — one concrete managed queue. <em>Unlocks:</em> the core vocabulary (producer, consumer, visibility timeout, DLQ, at-least-once) used by every later page.</li>
-        <li><strong><a href="02-queus-methord.html">Queue Methods</a></strong> — the protocols brokers speak (AMQP, MQTT, STOMP) and the request/stream alternatives (webhooks, gRPC, WebSockets). <em>Unlocks:</em> choosing a transport for a given client. <em>Watch for:</em> a protocol vs. a broker — the difference is that AMQP is a wire format and set of rules, while RabbitMQ is software that implements it; SQS uses its own HTTPS API, not AMQP.</li>
-        <li><strong><a href="use-case.html">SQS Use Cases</a></strong> — why a queue belongs in a design at all. <em>Unlocks:</em> recognising decoupling, spike buffering and background jobs in an interview prompt.</li>
-        <li><strong><a href="03-kafka-fundamentals.html">Kafka Fundamentals</a></strong> — the log model. <em>Watch for:</em> queue vs. log — the difference is that a queue removes a message once one consumer processes it, while a log retains every record so many consumer groups can each read it, and re-read it, at their own offset.</li>
-        <li><strong><a href="04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></strong> — building on the retained log. <em>Unlocks:</em> storing events as the source of truth and serving reads from separate models. <em>Watch for:</em> the two are independent — you can use CQRS without event sourcing.</li>
-        <li><strong><a href="05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></strong> — what to do when a downstream service fails: retries with backoff, circuit breakers, bulkheads, sagas. <em>Unlocks:</em> designs that degrade instead of cascading.</li>
-        <li><strong><a href="project/project.html">Multiprotocol Messaging Starter</a></strong> — practise retries and DLQs hands-on, with the <a href="message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">Retries &amp; Dead-Lettering PDF</a> as reference.</li>
-      </ol>
-
-      <div class="page-footer">
-        <span>Section: Messaging &amp; Queues</span>
-        <span>Source: <code>01-sqs.md</code></span>
-      </div>
     </main>
   </div>
 </div>
-<script>
-  const t = document.getElementById('menuToggle');
-  const s = document.getElementById('sidebar');
-  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
-</script>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>

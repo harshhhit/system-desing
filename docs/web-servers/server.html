@@ -11,27 +11,49 @@
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Web Servers · Infra Owl</title>
-
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=10">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 </head>
 <body>
+
 <div id="site-header-root"></div>
 <script src="../assets/sitemap.js"></script>
-<script src="../assets/pages.js"></script><script src="../assets/site-header.js?v=8" data-root="../"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=9" data-root="../"></script>
 
-<div class="layout">
-  <aside class="sidebar" id="sidebar"><a class="brand" href="../index.html">Infra Owl</a><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a class="active" href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
-  <div class="content-wrap">
-    <div class="topbar">
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
-      <span class="brand">🦉 Infra Owl</span>
-    </div>
-    <main>
-      <p class="breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Web Servers / Web Servers</p>
+<div class="sd-study-layout">
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a class="active" href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main sd-lesson" data-reminders="Explain why Nginx sits in front of Gunicorn using the words 'slow clients' and 'workers'|Write the Nginx proxy_pass block from memory, with all four proxy_set_header lines|Explain 502 vs 504 and name the error-log line for each">
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Web Servers / Web Servers</p>
       <h1 data-page-title>Web Servers</h1>
-      <p>Perfect 👍 I’ll build you a <strong>comparison table</strong> that covers the major languages &amp; frameworks, whether they come with a built-in server, and what’s commonly used in production.</p>
+      <p class="sd-study-prompt" data-page-subtitle>Which program owns the HTTP connection, which one runs your code, and how a request crosses the boundary between them — Nginx, app servers, and how the pair fails in production.</p>
 
-      <h2 id="page-map">Web Servers Page Map</h2>
+      <!-- ═══════════ 01 OVERVIEW ═══════════ -->
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
+        <ul>
+          <li>Tell a web server from an application server, and say which program does what</li>
+          <li>Explain why production puts a reverse proxy in front of the app</li>
+          <li>Follow one request from browser → Nginx → app server → database and back</li>
+          <li>Read and write a minimal Nginx reverse-proxy config</li>
+          <li>Diagnose 502, 504, 413 and redirect loops from logs and metrics</li>
+          <li>Answer the common web-server interview questions, including scenarios</li>
+        </ul>
+      </section>
+
+      <h2 id="overview" data-stage="Overview">What This Page Covers</h2>
+      <p>Every web request is received by one program and answered by another. The <strong>web server</strong> (Nginx, Apache, Caddy) owns the HTTP connection; the <strong>application server</strong> (Gunicorn, Puma, PHP-FPM, or the runtime itself in Node.js and Go) runs your code. This page explains why the two roles are separated, how a request moves between them, how to configure the boundary, and how it breaks in production.</p>
+      <p><strong>When you need this:</strong> any time you deploy a web application, read a deployment diagram, or debug a <code>502</code>/<code>504</code>. The same split reappears in Kubernetes, where an Ingress controller or cloud load balancer plays the web-server role.</p>
+
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>"Web server" and "application server" are <em>roles</em>, not products. Nginx is almost always the web server; a Go binary can be both at once. Ask "who owns the connection?" and "who runs the code?" — those two answers name the boxes.</p>
+      </aside>
+
+      <h2 id="page-map" data-stage="Overview">Web Servers Page Map</h2>
       <p class="topic-map-legend">A block diagram of the Web Servers section, in the order the ideas build on each other. Click any block to open that page or jump to that part of this page. Read top to bottom: each layer assumes the one above it. Dashed blocks are planned topics with no page yet; the grey blocks at the bottom are related pages in other sections.</p>
       <nav class="topic-map" aria-label="Web Servers page map" style="--map-accent: var(--sd-c6)">
         <div class="topic-map-row"><p class="topic-map-label">Start here</p><p class="topic-map-why">First separate the two roles — web server and application server — because every deployment stack is a combination of them.</p><div class="topic-map-blocks">
@@ -41,7 +63,7 @@
         <div class="topic-map-arrow" aria-hidden="true">↓</div>
         <div class="topic-map-row"><p class="topic-map-label">How a request flows through the stack</p><p class="topic-map-why">Once the roles are clear, follow one request through them to see which layer does what.</p><div class="topic-map-blocks">
           <a href="#request-flow">Request Flow, Step by Step<small>Browser → proxy → app → DB</small></a>
-          <a href="#🌍-web-servers-across-languages--frameworks">Servers Across Languages<small>Which runtimes ship a server</small></a>
+          <a href="#servers-by-language">Servers Across Languages<small>Which runtimes ship a server</small></a>
         </div></div>
         <div class="topic-map-arrow" aria-hidden="true">↓</div>
         <div class="topic-map-row"><p class="topic-map-label">The gateway interface</p><p class="topic-map-why">Languages without a built-in server need a standard contract between server and app — for Python that contract is WSGI (and ASGI).</p><div class="topic-map-blocks">
@@ -57,152 +79,441 @@
           <a class="ext" href="../01-front-end/graphql/http/04-client-server-model.html">Client-Server Model<small>DNS, TCP, TLS, HTTP end to end</small></a>
         </div></div>
       </nav>
-<h2 id="interview-answer">Interview Answer — What Is a Web Server vs. an Application Server?</h2>
-<p>A <strong>web server</strong> (HTTP server) is a program that accepts HTTP connections from clients, serves static files, terminates TLS, and forwards dynamic requests — examples are Nginx, Apache, and Caddy. An <strong>application server</strong> is the process that runs your application code and produces dynamic responses — for example Gunicorn running a Django app, PHP-FPM running a Laravel app, or Tomcat running a Java app.</p>
-<p>Web server vs. application server — the difference is responsibility. Some languages ship a production-ready HTTP server inside the runtime (Node.js's <code>http</code> module, Go's <code>net/http</code>, ASP.NET Core's Kestrel, Rust's async servers), so the application is its own server. Others do not: Python, Ruby, PHP, and Perl frameworks come with development servers only, and in production they run under a separate application server (Gunicorn/Uvicorn, Puma, PHP-FPM, PSGI) that speaks a language-specific interface such as WSGI or ASGI. See <a href="wsgi.html">WSGI Explained</a> for the Python case in detail.</p>
-<p>Either way, production deployments almost always put a web server or reverse proxy in front. The cause → effect chain is: the browser connects to Nginx → Nginx terminates TLS, serves static assets directly, and applies limits and buffering → it forwards only dynamic requests to the application server → the application server runs the code and returns the response through Nginx. This keeps slow clients, TLS, and static files off the application processes and lets one proxy load-balance across several of them.</p>
 
-<div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
-  <p>"A web server like Nginx handles HTTP itself — connections, TLS, static files, reverse proxying, and load balancing — while an application server runs the application code. Node, Go, .NET, and Rust include a production HTTP server in the runtime; Python, Ruby, and PHP need a separate app server like Gunicorn, Puma, or PHP-FPM. In production I put Nginx or a load balancer in front of either kind, so the app processes only handle dynamic requests."</p>
+      <h2 id="learning-flow" data-stage="Overview">How to Study This Section</h2>
+      <p>This section answers one question — <em>which program actually receives an HTTP request, and which one runs my code?</em> Read it in this order:</p>
+      <ol>
+        <li><strong><a href="server.html">Web Servers</a> (this page)</strong> — the two roles and which languages ship a production server. <em>Unlocks:</em> reading any deployment diagram and naming each box. <em>Watch for:</em> "built-in server" vs. "production-ready setup" — the difference is that a runtime being able to serve HTTP (Node, Go) does NOT mean it should face the internet alone; a reverse proxy usually still sits in front.</li>
+        <li><strong><a href="#request-flow">Request flow, step by step</a></strong> (below) — one request through proxy, app server and database. <em>Unlocks:</em> knowing where TLS, static files, timeouts and load balancing belong.</li>
+        <li><strong><a href="wsgi.html">WSGI Explained</a></strong> — the contract that lets Nginx + Gunicorn run a Flask or Django app, and ASGI for async apps. <em>Watch for:</em> WSGI vs. ASGI — the difference is that WSGI is synchronous (each request holds a worker process or thread for its whole duration), while ASGI is asynchronous and also supports long-lived connections such as WebSockets.</li>
+      </ol>
+
+      <!-- ═══════════ 02 CORE CONCEPTS ═══════════ -->
+      <h2 id="core-concepts" data-stage="Core Concepts">Web Server vs. Application Server</h2>
+      <p>A <strong>web server</strong> (HTTP server) is a program that accepts HTTP connections from clients, serves static files, terminates TLS, and forwards dynamic requests — examples are Nginx, Apache, and Caddy. An <strong>application server</strong> is the process that runs your application code and produces dynamic responses — for example Gunicorn running a Django app, PHP-FPM running a Laravel app, or Tomcat running a Java app.</p>
+      <p>Web server vs. application server — the difference is responsibility. The web server is good at <em>connections</em>: holding thousands of them open cheaply, speaking TLS, reading files from disk. The application server is good at <em>computation</em>: importing your framework, running business logic, talking to the database. Each is weak at the other's job, which is why production keeps them separate.</p>
+
+      <h3 id="terminology">Terms used on this page</h3>
+      <table>
+        <tr><th>Term</th><th>Meaning (used with exactly this meaning below)</th></tr>
+        <tr><td><strong>Reverse proxy</strong></td><td>A server that receives client requests and forwards them to one or more backend servers, returning the backend's response as if it were its own. The client never talks to the backend directly.</td></tr>
+        <tr><td><strong>Upstream</strong></td><td>Nginx's name for the backend it forwards to (here: the application server). "Upstream error" = the app server failed, not Nginx.</td></tr>
+        <tr><td><strong>Static request</strong></td><td>A request answered from a file that already exists (<code>/static/app.css</code>). No code runs.</td></tr>
+        <tr><td><strong>Dynamic request</strong></td><td>A request whose response is produced by running application code (<code>/api/orders</code>).</td></tr>
+        <tr><td><strong>Worker</strong></td><td>A process (or thread) that handles requests. Nginx workers and Gunicorn workers are very different — see <a href="#nginx-internals">How Nginx handles a connection</a>.</td></tr>
+        <tr><td><strong>Gateway interface</strong></td><td>The contract between an app server and a framework: WSGI/ASGI (Python), Rack (Ruby), FastCGI (PHP-FPM). See <a href="wsgi.html">WSGI Explained</a>.</td></tr>
+        <tr><td><strong>TLS termination</strong></td><td>Decrypting HTTPS at the proxy, so traffic behind it is plain HTTP (or re-encrypted).</td></tr>
+      </table>
+
+      <h3 id="reverse-proxy-vs-lb">Reverse proxy vs. load balancer</h3>
+      <p><strong>Reverse proxy vs. load balancer</strong> — the difference is purpose: a reverse proxy sits in front of an application to terminate TLS, serve static files and forward requests; a load balancer spreads requests across <em>several</em> application instances. Nginx can do both, but a single reverse proxy in front of one app server is NOT load balancing — see <a href="../traffic/00-load-balancing.html">Load Balancing</a>.</p>
+
+      <aside class="sd-callout mistake">
+        <p class="sd-callout-title">⚠️ Common mistake</p>
+        <p>"Node/Go has a built-in server, so I don't need Nginx." The built-in server is production-capable, but it still has to handle TLS certificates, slow clients, static assets and multiple instances. Something usually does that job in front of it — Nginx, Caddy, a cloud load balancer or an Ingress controller.</p>
+      </aside>
+
+      <!-- ═══════════ 03 ARCHITECTURE ═══════════ -->
+      <h2 id="architecture" data-stage="Architecture">The Production Stack</h2>
+      <p>A typical deployment layers the roles from the outside in. Each layer exists because the layer behind it should not have to do that job:</p>
+      <div class="mermaid sd-diagram">flowchart LR
+    C["Browser / mobile client"] -->|"HTTPS :443"| P["Web server / reverse proxy<br/>Nginx · Caddy · Ingress"]
+    P -->|"/static/* (from disk or CDN)"| S[("Static files")]
+    P -->|"HTTP or Unix socket<br/>dynamic requests only"| A["App server<br/>Gunicorn · Puma · PHP-FPM · Node · Go"]
+    A -->|"WSGI / Rack / FastCGI call"| F["Application code<br/>Django · Rails · Laravel · Express"]
+    F -->|"connection pool"| D[("Database")]
 </div>
+      <p class="sd-diagram-caption">Static requests stop at the proxy; only dynamic requests reach the application server.</p>
+      <table>
+        <tr><th>Layer</th><th>Responsibility</th><th>Why it lives here</th></tr>
+        <tr><td>Web server / reverse proxy</td><td>TLS, static files, buffering, limits, routing, (optional) load balancing</td><td>Event-driven: holds thousands of idle or slow connections for a few KB each.</td></tr>
+        <tr><td>Application server</td><td>Runs a pool of workers that execute your code</td><td>Each worker is expensive (a full framework in memory), so it should only ever see complete, ready-to-process requests.</td></tr>
+        <tr><td>Application code</td><td>Business logic, templates, queries</td><td>Knows nothing about sockets or TLS — it receives a request object and returns a response.</td></tr>
+        <tr><td>Database</td><td>State</td><td>Shared by all app workers through a connection pool.</td></tr>
+      </table>
 
-<h3>One important interview follow-up</h3>
-<p><strong>Q: Node.js and Go have built-in HTTP servers — so do they still need Nginx?</strong></p>
-<p><strong>A:</strong> They do not strictly need it — a Go or Node process can serve HTTP directly — but most production setups still put a reverse proxy or load balancer in front. It terminates TLS and renews certificates, serves static files efficiently, buffers slow clients so they don't tie up application connections, enforces limits, and distributes traffic across multiple application instances. In cloud or Kubernetes deployments that role is often played by a managed load balancer or an Ingress controller instead of a hand-configured Nginx, but the layering is the same.</p>
+      <h3 id="servers-by-language">🌍 Web Servers Across Languages &amp; Frameworks</h3>
+      <p>Some languages ship a production-ready HTTP server inside the runtime (Node.js's <code>http</code> module, Go's <code>net/http</code>, ASP.NET Core's Kestrel, Rust's async servers), so the application is its own server. Others do not: Python, Ruby, PHP, and Perl frameworks come with development servers only, and in production they run under a separate application server (Gunicorn/Uvicorn, Puma, PHP-FPM, PSGI) that speaks a language-specific interface such as WSGI or ASGI.</p>
+      <table>
+        <thead>
+          <tr><th>Language</th><th>Common Frameworks</th><th>Built-in HTTP Server?</th><th>Typical App Server</th><th>Production Setup (usually with)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Python</strong></td><td>Django, Flask, FastAPI</td><td>❌ (dev servers only, not for production)</td><td>Gunicorn, uWSGI, Waitress, Uvicorn/Daphne (ASGI)</td><td>Nginx or Apache + app server</td></tr>
+          <tr><td><strong>JavaScript (Node.js)</strong></td><td>Express, NestJS, Koa, Hapi</td><td>✅ (via <code>http</code> module)</td><td>Node itself (optionally with Express/NestJS middleware)</td><td>Often fronted by Nginx/Caddy for SSL, load balancing</td></tr>
+          <tr><td><strong>Java</strong></td><td>Spring Boot, Jakarta EE</td><td>✅ (Spring Boot includes Tomcat/Jetty/Undertow)</td><td>Tomcat, Jetty, WildFly (for traditional EE)</td><td>Often Nginx/Apache reverse proxy</td></tr>
+          <tr><td><strong>Ruby</strong></td><td>Ruby on Rails, Sinatra</td><td>❌ (dev server = WEBrick/Puma, not for production)</td><td>Puma, Unicorn, Passenger</td><td>Usually Nginx or Apache + app server</td></tr>
+          <tr><td><strong>PHP</strong></td><td>Laravel, Symfony, WordPress</td><td>❌ (comes with built-in dev server)</td><td>PHP-FPM (FastCGI Process Manager)</td><td>Nginx + PHP-FPM, or Apache + mod_php</td></tr>
+          <tr><td><strong>Go (Golang)</strong></td><td>Standard <code>net/http</code>, Gin, Echo</td><td>✅ (built into stdlib)</td><td>Go runtime itself</td><td>Often behind Nginx/Caddy for SSL/proxy</td></tr>
+          <tr><td><strong>C# / .NET</strong></td><td>ASP.NET Core</td><td>✅ (Kestrel server built-in)</td><td>Kestrel (default)</td><td>Nginx, Apache, or IIS as reverse proxy</td></tr>
+          <tr><td><strong>C/C++</strong></td><td>Drogon, Wt, Crow</td><td>✅ (many frameworks ship servers)</td><td>Framework runtime</td><td>Often behind Nginx/Apache for SSL/proxy</td></tr>
+          <tr><td><strong>Rust</strong></td><td>Actix-web, Rocket, Axum</td><td>✅ (async servers included)</td><td>Actix/Hyper runtime</td><td>Usually fronted by Nginx/Caddy</td></tr>
+          <tr><td><strong>Elixir</strong></td><td>Phoenix</td><td>✅ (uses Cowboy HTTP server)</td><td>Cowboy</td><td>Usually with Nginx or Caddy</td></tr>
+          <tr><td><strong>Perl</strong></td><td>Catalyst, Dancer</td><td>❌</td><td>PSGI/Plack servers</td><td>Nginx/Apache with mod_perl or FastCGI</td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li><strong>Languages with built-in servers</strong>: Node.js, Go, ASP.NET Core, Rust, Elixir.</li>
+        <li><strong>Languages needing app servers</strong>: Python, Ruby, PHP, Perl, traditional Java.</li>
+      </ul>
 
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>In Kubernetes there is usually no hand-written Nginx next to the app. Which component took over its job? (The Ingress controller — often Nginx itself — or a cloud load balancer, while Gunicorn/Node runs inside the Pod. The layering is unchanged; only who operates it moved.)</p>
+      </aside>
 
-<h2 id="learning-flow">How to Study This Section</h2>
-<p>This section answers one question — <em>which program actually receives an HTTP request, and which one runs my code?</em> Read it in this order:</p>
-<ol>
-  <li><strong><a href="server.html">Web Servers</a> (this page)</strong> — the two roles and which languages ship a production server. <em>Unlocks:</em> reading any deployment diagram and naming each box. <em>Watch for:</em> "built-in server" vs. "production-ready setup" — the difference is that a runtime being able to serve HTTP (Node, Go) does NOT mean it should face the internet alone; a reverse proxy usually still sits in front.</li>
-  <li><strong><a href="#request-flow">Request flow, step by step</a></strong> (below) — one request through proxy, app server and database. <em>Unlocks:</em> knowing where TLS, static files, timeouts and load balancing belong.</li>
-  <li><strong><a href="wsgi.html">WSGI Explained</a></strong> — the contract that lets Nginx + Gunicorn run a Flask or Django app, and ASGI for async apps. <em>Watch for:</em> WSGI vs. ASGI — the difference is that WSGI is synchronous (each request holds a worker process or thread for its whole duration), while ASGI is asynchronous and also supports long-lived connections such as WebSockets.</li>
-</ol>
+      <!-- ═══════════ 04 HOW IT WORKS ═══════════ -->
+      <h2 id="request-flow" data-stage="How It Works">Request Flow, Step by Step: Browser → Web Server → App Server → Database</h2>
+      <p>Production stacks put Nginx, Apache or Caddy in front of the application. This is what that looks like for a single request, with each step causing the next (Python example: Nginx + Gunicorn + Django):</p>
+      <div class="mermaid sd-diagram">sequenceDiagram
+    participant B as Browser
+    participant N as Nginx
+    participant G as Gunicorn worker
+    participant D as Django + DB
+    B->>N: TCP + TLS handshake, GET /api/orders
+    Note over N: static? → serve from disk and stop<br/>dynamic → reverse proxy
+    N->>G: HTTP over Unix socket<br/>+ X-Forwarded-For / -Proto
+    G->>D: WSGI call → view runs, queries DB
+    D-->>G: status, headers, body
+    G-->>N: HTTP response
+    N-->>B: gzip, then send over TLS
+</div>
+      <p class="sd-diagram-caption">One dynamic request. The numbered steps below walk the same path.</p>
+      <ol class="sd-steps">
+        <li><strong>Browser → web server.</strong> DNS resolves the domain to the server (or load balancer) IP, and the browser opens a TCP connection to port 443. Nginx performs the TLS handshake, so the certificate and private key live in Nginx, not in the application.</li>
+        <li><strong>Static or dynamic?</strong> Nginx checks the path. A request for <code>/static/app.css</code> is answered straight from disk (or a CDN) and never reaches Python. A request for <code>/api/orders</code> is dynamic, so Nginx forwards it — this is <strong>reverse proxying</strong>.</li>
+        <li><strong>Web server → app server.</strong> Nginx forwards the request over plain HTTP or a Unix socket to Gunicorn, adding headers such as <code>X-Forwarded-For</code> and <code>X-Forwarded-Proto</code> so the app still knows the real client IP and that the original request was HTTPS. Nginx also buffers a slow client's upload, so a Gunicorn worker is not held open waiting on a slow network.</li>
+        <li><strong>App server → application code.</strong> Gunicorn hands the request to one of its worker processes, which calls the Django application through the WSGI interface (see <a href="wsgi.html">WSGI Explained</a>).</li>
+        <li><strong>Application → database.</strong> The view runs business logic and queries the database, usually through a connection pool.</li>
+        <li><strong>Response back.</strong> The app returns a status, headers and body → Gunicorn sends them to Nginx → Nginx may compress the response and sends it back to the browser over the TLS connection.</li>
+      </ol>
 
-<h2 id="request-flow">Request Flow, Step by Step: Browser → Web Server → App Server → Database</h2>
-<p>The key-takeaways list at the end of this page says production stacks put Nginx, Apache or Caddy in front of the application. This is what that looks like for a single request, with each step causing the next (Python example: Nginx + Gunicorn + Django):</p>
-<ol>
-  <li><strong>Browser → web server.</strong> DNS resolves the domain to the server (or load balancer) IP, and the browser opens a TCP connection to port 443. Nginx performs the TLS handshake, so the certificate and private key live in Nginx, not in the application.</li>
-  <li><strong>Static or dynamic?</strong> Nginx checks the path. A request for <code>/static/app.css</code> is answered straight from disk (or a CDN) and never reaches Python. A request for <code>/api/orders</code> is dynamic, so Nginx forwards it — this is <strong>reverse proxying</strong>.</li>
-  <li><strong>Web server → app server.</strong> Nginx forwards the request over plain HTTP or a Unix socket to Gunicorn, adding headers such as <code>X-Forwarded-For</code> and <code>X-Forwarded-Proto</code> so the app still knows the real client IP and that the original request was HTTPS. Nginx also buffers a slow client's upload, so a Gunicorn worker is not held open waiting on a slow network.</li>
-  <li><strong>App server → application code.</strong> Gunicorn hands the request to one of its worker processes, which calls the Django application through the WSGI interface (see <a href="wsgi.html">WSGI Explained</a>).</li>
-  <li><strong>Application → database.</strong> The view runs business logic and queries the database, usually through a connection pool.</li>
-  <li><strong>Response back.</strong> The app returns a status, headers and body → Gunicorn sends them to Nginx → Nginx may compress the response and sends it back to the browser over the TLS connection.</li>
-</ol>
-<p><strong>Reverse proxy vs. load balancer</strong> — the difference is purpose: a reverse proxy sits in front of an application to terminate TLS, serve static files and forward requests; a load balancer spreads requests across <em>several</em> application instances. Nginx can do both, but a single reverse proxy in front of one app server is NOT load balancing — see <a href="../traffic/00-load-balancing.html">Load Balancing</a>.</p>
+      <h2 id="nginx-internals" data-stage="How It Works">How Nginx Handles a Connection</h2>
+      <p>"Nginx handles the request" hides the part that explains most of its behaviour. Nginx runs one <strong>master process</strong> and a small number of <strong>worker processes</strong>:</p>
+      <ol class="sd-steps">
+        <li><strong>Master starts.</strong> It reads and validates the config, opens the listening sockets (<code>:80</code>, <code>:443</code>) and forks the workers — usually one per CPU core (<code>worker_processes auto;</code>). The master never handles traffic itself.</li>
+        <li><strong>Workers wait on an event loop.</strong> Each worker asks the kernel (<code>epoll</code> on Linux, <code>kqueue</code> on BSD/macOS) to notify it when <em>any</em> of its sockets is ready. All I/O is non-blocking, so a worker never sits idle waiting for one client.</li>
+        <li><strong>A connection becomes readable.</strong> The worker reads whatever bytes have arrived, advances that connection's state (TLS handshake → headers → body) and goes straight back to the loop. A slow client costs a little memory, not a blocked process.</li>
+        <li><strong>Request complete → route it.</strong> The worker matches the <code>server</code> block (by <code>Host</code> header) and the <code>location</code> block (by path). A static location reads the file (using <code>sendfile</code> where possible); a <code>proxy_pass</code> location opens or reuses a connection to the upstream.</li>
+        <li><strong>Upstream response → client.</strong> The worker reads the upstream's response into buffers as fast as the app produces it, freeing the app worker, then trickles it out to the client at whatever speed the client can take.</li>
+      </ol>
+      <p>Each worker can hold up to <code>worker_connections</code> connections at once (for example <code>1024</code>), and a proxied request uses two — one to the client, one to the upstream. That is why one Nginx box can hold tens of thousands of mostly-idle keep-alive connections.</p>
 
-<hr>
-<h1 id="🌍-web-servers-across-languages--frameworks">🌍 Web Servers Across Languages &amp; Frameworks</h1>
-<table>
-<thead>
-<tr>
-<th>Language</th>
-<th>Common Frameworks</th>
-<th>Built-in HTTP Server?</th>
-<th>Typical App Server</th>
-<th>Production Setup (usually with)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>Python</strong></td>
-<td>Django, Flask, FastAPI</td>
-<td>❌ (dev servers only, not for production)</td>
-<td>Gunicorn, uWSGI, Waitress, Uvicorn/Daphne (ASGI)</td>
-<td>Nginx or Apache + app server</td>
-</tr>
-<tr>
-<td><strong>JavaScript (Node.js)</strong></td>
-<td>Express, NestJS, Koa, Hapi</td>
-<td>✅ (via <code>http</code> module)</td>
-<td>Node itself (optionally with Express/NestJS middleware)</td>
-<td>Often fronted by Nginx/Caddy for SSL, load balancing</td>
-</tr>
-<tr>
-<td><strong>Java</strong></td>
-<td>Spring Boot, Jakarta EE</td>
-<td>✅ (Spring Boot includes Tomcat/Jetty/Undertow)</td>
-<td>Tomcat, Jetty, WildFly (for traditional EE)</td>
-<td>Often Nginx/Apache reverse proxy</td>
-</tr>
-<tr>
-<td><strong>Ruby</strong></td>
-<td>Ruby on Rails, Sinatra</td>
-<td>❌ (dev server = WEBrick/Puma, not for production)</td>
-<td>Puma, Unicorn, Passenger</td>
-<td>Usually Nginx or Apache + app server</td>
-</tr>
-<tr>
-<td><strong>PHP</strong></td>
-<td>Laravel, Symfony, WordPress</td>
-<td>❌ (comes with built-in dev server)</td>
-<td>PHP-FPM (FastCGI Process Manager)</td>
-<td>Nginx + PHP-FPM, or Apache + mod_php</td>
-</tr>
-<tr>
-<td><strong>Go (Golang)</strong></td>
-<td>Standard <code>net/http</code>, Gin, Echo</td>
-<td>✅ (built into stdlib)</td>
-<td>Go runtime itself</td>
-<td>Often behind Nginx/Caddy for SSL/proxy</td>
-</tr>
-<tr>
-<td><strong>C# / .NET</strong></td>
-<td>ASP.NET Core</td>
-<td>✅ (Kestrel server built-in)</td>
-<td>Kestrel (default)</td>
-<td>Nginx, Apache, or IIS as reverse proxy</td>
-</tr>
-<tr>
-<td><strong>C/C++</strong></td>
-<td>Drogon, Wt, Crow</td>
-<td>✅ (many frameworks ship servers)</td>
-<td>Framework runtime</td>
-<td>Often behind Nginx/Apache for SSL/proxy</td>
-</tr>
-<tr>
-<td><strong>Rust</strong></td>
-<td>Actix-web, Rocket, Axum</td>
-<td>✅ (async servers included)</td>
-<td>Actix/Hyper runtime</td>
-<td>Usually fronted by Nginx/Caddy</td>
-</tr>
-<tr>
-<td><strong>Elixir</strong></td>
-<td>Phoenix</td>
-<td>✅ (uses Cowboy HTTP server)</td>
-<td>Cowboy</td>
-<td>Usually with Nginx or Caddy</td>
-</tr>
-<tr>
-<td><strong>Perl</strong></td>
-<td>Catalyst, Dancer</td>
-<td>❌</td>
-<td>PSGI/Plack servers</td>
-<td>Nginx/Apache with mod_perl or FastCGI</td>
-</tr>
-</tbody></table>
-<hr>
-<p>✅ <strong>Key takeaways:</strong></p>
-<ul>
-<li><strong>Languages with built-in servers</strong>: Node.js, Go, ASP.NET Core, Rust, Elixir.</li>
-<li><strong>Languages needing app servers</strong>: Python, Ruby, PHP, Perl, traditional Java.</li>
-<li><strong>Production best practice</strong>: Even if a language has a built-in server, most real-world deployments put <strong>Nginx or Apache (or Caddy)</strong> in front for SSL, caching, and load balancing.</li>
-</ul>
-<hr>
-<p>Would you like me to also make a <strong>diagram of the request flow</strong> (browser → web server → app server → app → DB) to visualize how these fit together?</p>
+      <aside class="sd-callout interview">
+        <p class="sd-callout-title">🎯 Interview tip</p>
+        <p>Nginx worker vs. Gunicorn sync worker — the difference is concurrency model. An Nginx worker multiplexes thousands of connections on one event loop. A Gunicorn <em>sync</em> worker handles exactly one request at a time, start to finish. That asymmetry is the whole reason Nginx sits in front: it absorbs slow, numerous connections and hands the app only complete requests.</p>
+      </aside>
+
+      <h3 id="config-reload">What happens on <code>nginx -s reload</code></h3>
+      <p>The master re-reads and validates the new config → if it is invalid, it logs the error and keeps the old workers running → if it is valid, it starts new workers with the new config → it tells the old workers to stop accepting new connections and exit once their in-flight requests finish. Result: a config change with no dropped connections. This does NOT mean an <em>app server</em> restart is equally safe — that depends on the app server's own graceful-restart support.</p>
+
+      <!-- ═══════════ 05 IMPLEMENTATION ═══════════ -->
+      <h2 id="implementation" data-stage="Implementation">Implementation: Nginx in Front of Gunicorn</h2>
+      <p>The minimal production setup for a Django app: Gunicorn listens on a local Unix socket, Nginx owns ports 80/443. Start the app server:</p>
+      <pre><code>gunicorn myproject.wsgi:application --workers 3 --bind unix:/run/gunicorn.sock --timeout 30</code></pre>
+      <ul>
+        <li><code>myproject.wsgi:application</code> — the WSGI callable Gunicorn will call for every request.</li>
+        <li><code>--workers 3</code> — three sync worker processes, so at most three requests run at the same time. Sizing is covered in <a href="wsgi.html">WSGI Explained</a>.</li>
+        <li><code>--bind unix:/run/gunicorn.sock</code> — a Unix socket instead of a TCP port, so the app is unreachable from the network; only Nginx on the same host can connect.</li>
+        <li><code>--timeout 30</code> — a worker silent for 30 s is killed and restarted. Remember this number: it interacts with Nginx's timeout (see <a href="#troubleshooting">Troubleshooting</a>).</li>
+      </ul>
+      <p>The Nginx side:</p>
+      <pre><code>upstream app {
+    server unix:/run/gunicorn.sock;
+    keepalive 16;
+}
+
+server {
+    listen 80;
+    server_name example.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name example.com;
+    ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+
+    client_max_body_size 10m;
+    server_tokens off;
+
+    location /static/ {
+        alias /srv/app/static/;
+        expires 30d;
+    }
+
+    location / {
+        proxy_pass http://app;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 60s;
+    }
+}</code></pre>
+      <table>
+        <tr><th>Directive</th><th>What it does</th><th>What breaks without it</th></tr>
+        <tr><td><code>upstream app { … }</code></td><td>Names the backend pool. Add more <code>server</code> lines and Nginx load-balances across them (round-robin by default).</td><td>Nothing for one backend — but scaling out later means editing every <code>proxy_pass</code>.</td></tr>
+        <tr><td><code>keepalive 16</code> + <code>proxy_http_version 1.1</code> + <code>Connection ""</code></td><td>Reuses idle connections to the upstream instead of opening one per request. All three lines are required together.</td><td>A new upstream connection per request: extra latency and, over TCP, ephemeral-port exhaustion at high request rates.</td></tr>
+        <tr><td><code>return 301 https://…</code></td><td>Redirects plain HTTP to HTTPS.</td><td>Users can stay on unencrypted HTTP.</td></tr>
+        <tr><td><code>ssl_certificate</code> / <code>_key</code></td><td>TLS termination — the key lives in Nginx, not the app.</td><td>No HTTPS.</td></tr>
+        <tr><td><code>client_max_body_size 10m</code></td><td>Largest request body accepted. The default is <code>1m</code>.</td><td>Uploads over 1 MB fail with <code>413</code>.</td></tr>
+        <tr><td><code>location /static/</code> + <code>alias</code></td><td>Serves static files from disk, with a 30-day browser cache (<code>expires</code>).</td><td>Every CSS/JS file occupies a Gunicorn worker.</td></tr>
+        <tr><td><code>proxy_set_header Host</code></td><td>Passes the original <code>Host</code> header.</td><td>The app sees the upstream name (<code>app</code>) and Django's <code>ALLOWED_HOSTS</code> rejects it, or generated URLs are wrong.</td></tr>
+        <tr><td><code>X-Forwarded-For</code> / <code>X-Real-IP</code></td><td>Carries the real client IP.</td><td>Every request appears to come from <code>127.0.0.1</code>; per-IP rate limits and audit logs become useless.</td></tr>
+        <tr><td><code>X-Forwarded-Proto $scheme</code></td><td>Tells the app the original request was HTTPS.</td><td>The app thinks it's on HTTP → redirect loops and <code>http://</code> links (see <a href="#troubleshooting">Troubleshooting</a>).</td></tr>
+        <tr><td><code>proxy_connect_timeout</code> / <code>proxy_read_timeout</code></td><td>How long to wait to connect to, and then hear back from, the upstream (both default to 60 s).</td><td>Too short: legitimate slow requests get <code>504</code>. Too long: dead upstreams tie up client connections.</td></tr>
+      </table>
+      <p>The app must also be told to trust those headers. In Django: <code>SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")</code>; in Flask: Werkzeug's <code>ProxyFix</code> middleware. Response caching at the proxy (<code>proxy_cache</code>, micro-caching) is covered in <a href="../caching/01c-proxy-and-gateway-caching.html#nginx">Reverse Proxy &amp; API Gateway Caching</a>.</p>
+
+      <h3 id="everyday-commands">Everyday commands</h3>
+      <pre><code>sudo nginx -t
+sudo systemctl reload nginx
+sudo tail -f /var/log/nginx/error.log
+curl -I https://example.com/api/health
+ss -ltnp
+sudo journalctl -u gunicorn --since "10 min ago"</code></pre>
+      <ul>
+        <li><code>nginx -t</code> — validate the config <em>before</em> reloading; a reload with a syntax error is rejected, but it's better to see the error first.</li>
+        <li><code>systemctl reload nginx</code> — graceful reload (same as <code>nginx -s reload</code>, described <a href="#config-reload">above</a>).</li>
+        <li><code>tail -f …/error.log</code> — where every upstream failure is explained in words.</li>
+        <li><code>curl -I</code> — send a request and print only the status and headers.</li>
+        <li><code>ss -ltnp</code> — which process is listening on which port.</li>
+        <li><code>journalctl -u gunicorn</code> — the app server's own log (worker crashes, timeouts).</li>
+      </ul>
+
+      <!-- ═══════════ 06 PRODUCTION ═══════════ -->
+      <h2 id="production" data-stage="Production">Production Usage</h2>
+      <p>Production deployments almost always put a web server or reverse proxy in front, for either kind of application server. The cause → effect chain is: the browser connects to Nginx → Nginx terminates TLS, serves static assets directly, and applies limits and buffering → it forwards only dynamic requests to the application server → the application server runs the code and returns the response through Nginx. This keeps slow clients, TLS, and static files off the application processes and lets one proxy load-balance across several of them.</p>
+      <h3 id="scale">Low scale vs. high scale</h3>
+      <table>
+        <tr><th></th><th>Low scale (one VM, tens of users)</th><th>High scale (millions of requests/day)</th></tr>
+        <tr><td>Topology</td><td>Nginx + Gunicorn on the same host, Unix socket, one database.</td><td>Cloud load balancer → many app instances (VMs or Pods) → database with read replicas; static assets on a CDN.</td></tr>
+        <tr><td>Who is "the web server"</td><td>Nginx you configure by hand.</td><td>Often a managed load balancer / Ingress controller; Nginx may still run per-host or as the Ingress.</td></tr>
+        <tr><td>First bottleneck</td><td>Gunicorn worker count — three sync workers means a fourth slow request waits.</td><td>Database connections and downstream calls; app instances scale horizontally, the database doesn't scale as easily.</td></tr>
+        <tr><td>TLS</td><td>Let's Encrypt cert on the VM.</td><td>Terminated at the load balancer (managed certificates); internal hops may be re-encrypted.</td></tr>
+        <tr><td>Deploys</td><td>Restart Gunicorn; brief errors are tolerable.</td><td>Rolling deploys behind health checks; any restart window becomes visible errors.</td></tr>
+      </table>
+
+      <h3 id="tradeoffs">Trade-offs of a reverse proxy in front</h3>
+      <table>
+        <tr><th>Concern</th><th>Advantage</th><th>Cost</th></tr>
+        <tr><td>Performance</td><td>Static files, gzip and TLS handled by efficient C code; app workers never wait on slow clients.</td><td>One extra network hop (negligible over a Unix socket).</td></tr>
+        <tr><td>Reliability</td><td>Can retry another upstream and hide a single instance failure.</td><td>Another component that can be misconfigured or fall over; timeouts must agree across layers.</td></tr>
+        <tr><td>Security</td><td>One hardened entry point; app ports never exposed.</td><td>The app must correctly trust forwarded headers — or it can be fooled by spoofed ones.</td></tr>
+        <tr><td>Operations</td><td>Config reloads with no downtime; central access logs.</td><td>One more config language and log format to learn.</td></tr>
+        <tr><td>Cost</td><td>Nginx itself is tiny; offloading static/TLS lets you run fewer app instances.</td><td>Managed load balancers are billed per hour and per traffic.</td></tr>
+      </table>
+
+      <h3 id="observability">Observability: what to watch</h3>
+      <p>Most of these signals come from the Nginx access log, once its format records upstream timings (<code>$request_time</code>, <code>$upstream_response_time</code>, <code>$upstream_status</code>), plus the <code>stub_status</code> page for connection counts. Background on metrics, logs and alerting is in <a href="../observability-security/00-observability-fundamentals.html">Observability Fundamentals</a>.</p>
+      <table>
+        <tr><th>Signal</th><th>Where it comes from</th><th>What it tells you</th></tr>
+        <tr><td>Request rate</td><td>Access log line count</td><td>Traffic level; sudden drops often mean DNS/LB problems in front of Nginx.</td></tr>
+        <tr><td>5xx rate, split 502 / 503 / 504</td><td>Access log <code>$status</code></td><td>502 = upstream broken or unreachable, 504 = upstream too slow, 503 = deliberately unavailable or rate limited.</td></tr>
+        <tr><td>p95 / p99 of <code>$request_time</code></td><td>Access log</td><td>What users feel, including slow-client time.</td></tr>
+        <tr><td>p95 / p99 of <code>$upstream_response_time</code></td><td>Access log</td><td>What the app costs. If request time is high but upstream time is low, the problem is the client/network, not the app.</td></tr>
+        <tr><td>Active / waiting connections</td><td><code>stub_status</code></td><td>Connection pressure; approaching <code>worker_processes × worker_connections</code> means new connections will be refused.</td></tr>
+        <tr><td>App worker saturation</td><td>Gunicorn / APM metrics</td><td>All workers busy → requests queue → latency climbs while CPU may stay low.</td></tr>
+        <tr><td>CPU / memory per host</td><td>Node metrics</td><td>Nginx rarely uses much; high app memory often means too many workers or a leak.</td></tr>
+      </table>
+
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>Alert on 502 and 504 separately. They have different causes and different first responders: a 502 spike after a deploy points at the app process, a 504 spike with healthy processes points at something slow behind the app — usually the database.</p>
+      </aside>
+
+      <!-- ═══════════ 07 SECURITY ═══════════ -->
+      <h2 id="security" data-stage="Security">Security at the Web-Server Layer</h2>
+      <ul>
+        <li><strong>Never expose the app server directly.</strong> Bind Gunicorn to a Unix socket or <code>127.0.0.1</code>. If it listens on <code>0.0.0.0:8000</code>, anyone who reaches the port bypasses TLS, limits and logging.</li>
+        <li><strong>TLS termination keeps keys in one place.</strong> The private key lives on the proxy (or the managed load balancer), readable only by root/Nginx — not inside every app container.</li>
+        <li><strong>Forwarded headers can be forged.</strong> A client can send its own <code>X-Forwarded-For: 1.2.3.4</code>; <code>$proxy_add_x_forwarded_for</code> <em>appends</em> the real address. The app must trust only the entries added by its own proxies (the right-most ones), never the left-most value blindly — otherwise per-IP rate limits and audit logs can be bypassed.</li>
+        <li><strong>Limit request size and rate.</strong> <code>client_max_body_size</code> stops oversized uploads before they reach the app; <code>limit_req</code> gives basic per-IP rate limiting (see <a href="../traffic/01-rate-limiting-and-throttling.html">Rate Limiting &amp; Throttling</a>).</li>
+        <li><strong>Reduce what you reveal.</strong> <code>server_tokens off</code> hides the Nginx version from error pages and the <code>Server</code> header.</li>
+        <li><strong>Least privilege.</strong> Nginx workers run as an unprivileged user (only the master needs root to bind ports 80/443); the Gunicorn socket should be writable only by the Nginx user's group.</li>
+      </ul>
+      <p>Application-level attacks (XSS, SQL injection, CSRF) are not stopped by the web server — see <a href="../observability-security/01-application-security-fundamentals.html">Application Security Fundamentals</a>.</p>
+
+      <!-- ═══════════ 08 PERFORMANCE & SCALABILITY ═══════════ -->
+      <h2 id="performance" data-stage="Performance &amp; Scalability">Performance &amp; Scalability</h2>
+      <p>The proxy and the app scale differently, so their bottlenecks are different:</p>
+      <table>
+        <tr><th>Bottleneck</th><th>Where</th><th>Symptom</th><th>Lever</th></tr>
+        <tr><td>Concurrency</td><td>App server (sync workers)</td><td>Latency climbs with traffic while CPU stays low — requests are waiting for a free worker.</td><td>More workers/threads, async workers (ASGI), or more instances.</td></tr>
+        <tr><td>CPU</td><td>App server</td><td>CPU pinned at 100%, latency rising.</td><td>Profile the code, cache results, scale horizontally.</td></tr>
+        <tr><td>Memory</td><td>App server</td><td>OOM kills, worker restarts → 502s.</td><td>Fewer workers per host, fix leaks, recycle workers (<code>--max-requests</code>).</td></tr>
+        <tr><td>Connections</td><td>Nginx</td><td>"worker_connections are not enough" in the error log.</td><td>Raise <code>worker_connections</code> and the OS file-descriptor limit together.</td></tr>
+        <tr><td>Upstream connection churn</td><td>Nginx → app</td><td>High <code>$upstream_connect_time</code>, many <code>TIME_WAIT</code> sockets.</td><td>Upstream <code>keepalive</code> (see <a href="#implementation">config</a>).</td></tr>
+        <tr><td>Bandwidth / static</td><td>Nginx</td><td>Large responses dominate egress.</td><td><code>gzip</code>, long <code>expires</code> on hashed assets, a CDN (see <a href="../caching/01b-cdn-caching.html">CDN Caching</a>).</td></tr>
+      </table>
+      <p><strong>Horizontal vs. vertical:</strong> app servers are stateless, so the normal move is horizontal — more instances behind the proxy or load balancer. A single Nginx scales vertically a long way because it is event-driven; when it doesn't, you add more proxies behind DNS or a cloud load balancer.</p>
+      <p><strong>Buffering is a performance feature.</strong> With <code>proxy_buffering on</code> (the default) Nginx reads the whole upstream response quickly and frees the app worker, then feeds a slow mobile client at its own pace. Turning it off makes sense only for streaming responses (server-sent events, long polling), where you want bytes delivered as they're produced.</p>
+
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>With three sync Gunicorn workers and requests that take 200 ms, roughly how many requests per second can one instance serve? (About 3 ÷ 0.2 = 15. Doubling Nginx capacity changes nothing; adding workers or instances does.)</p>
+      </aside>
+
+      <!-- ═══════════ 09 TROUBLESHOOTING ═══════════ -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Failure Scenarios</h2>
+      <p>Each scenario follows the same path: symptom → possible cause → how to detect → how to debug → fix → how to prevent.</p>
+      <div class="mermaid sd-diagram">flowchart TD
+    E["Client gets 5xx"] --> Q{"Which code?"}
+    Q -->|"502"| A["Nginx could not get a valid response:<br/>refused, reset, crashed, bad socket path"]
+    Q -->|"504"| B["Upstream accepted but answered<br/>slower than proxy_read_timeout"]
+    Q -->|"503"| C["Deliberately unavailable:<br/>limit_req, maintenance, no healthy upstream"]
+    A --> L["error.log names the reason"]
+    B --> L
+    C --> L
+</div>
+      <p class="sd-diagram-caption">The status code tells you which side of the proxy failed; the Nginx error log tells you why.</p>
+      <table>
+        <tr><th>Symptom</th><th>Possible cause</th><th>Detect</th><th>Debug</th><th>Fix</th><th>Prevent</th></tr>
+        <tr><td><strong>502 Bad Gateway</strong></td><td>App server down or restarting; wrong socket path/port; socket permissions; app worker killed mid-request (crash, OOM, Gunicorn timeout).</td><td>5xx alert; error log: <code>connect() failed (111: Connection refused)</code>, <code>(13: Permission denied)</code>, or <code>upstream prematurely closed connection</code>.</td><td><code>systemctl status gunicorn</code>, <code>journalctl -u gunicorn</code>, <code>ls -l /run/gunicorn.sock</code>, <code>curl --unix-socket /run/gunicorn.sock http://x/</code> to bypass Nginx.</td><td>Start/fix the app; correct <code>proxy_pass</code>; fix socket ownership; raise memory or fix the leak.</td><td>Health checks, graceful restarts, alerts on worker restarts.</td></tr>
+        <tr><td><strong>504 Gateway Timeout</strong></td><td>App is up but slow: slow query, slow external API, all workers busy.</td><td>error log: <code>upstream timed out (110: Connection timed out) while reading response header</code>; high <code>$upstream_response_time</code>.</td><td>Find the slow endpoint in the access log; check DB slow-query log and APM traces.</td><td>Fix the slow path; move long work to a queue; only then consider raising <code>proxy_read_timeout</code>.</td><td>Timeouts on every outbound call; p99 latency alerts.</td></tr>
+        <tr><td><strong>502 on requests that take &gt; 30 s</strong></td><td>Gunicorn <code>--timeout 30</code> is shorter than Nginx's 60 s, so Gunicorn kills the worker first.</td><td>Gunicorn log: <code>WORKER TIMEOUT</code>; Nginx: <code>upstream prematurely closed connection</code>.</td><td>Compare the timeouts of every layer.</td><td>Make the layers agree — inner timeout ≤ outer timeout — and fix the slow request.</td><td>Document the timeout chain: client → LB → Nginx → app → DB.</td></tr>
+        <tr><td><strong>413 Request Entity Too Large</strong></td><td>Upload bigger than <code>client_max_body_size</code> (1 MB default).</td><td>Status 413 in the access log; the app never sees the request.</td><td><code>curl -F file=@big.bin …</code> reproduces it.</td><td>Raise <code>client_max_body_size</code> for the upload location only.</td><td>Set limits deliberately per location.</td></tr>
+        <tr><td><strong>Infinite redirect loop after enabling HTTPS</strong></td><td>App forces HTTPS but can't see that the original request was HTTPS (missing <code>X-Forwarded-Proto</code> or the app doesn't trust it).</td><td>Browser "too many redirects"; access log shows repeated 301s.</td><td><code>curl -I https://…</code> shows <code>Location: https://…</code> pointing at itself.</td><td>Send <code>X-Forwarded-Proto</code>; set <code>SECURE_PROXY_SSL_HEADER</code> / <code>ProxyFix</code>.</td><td>Include the proxy headers in the base config template.</td></tr>
+        <tr><td><strong>499 in the access log</strong></td><td>The client gave up and closed the connection before Nginx answered (Nginx-specific code).</td><td>Rising 499 count, often with high latency.</td><td>Compare client timeout with server processing time.</td><td>Speed up the endpoint, or make the client wait longer for known-slow calls.</td><td>Latency SLOs on the endpoints clients time out on.</td></tr>
+      </table>
+
+      <aside class="sd-callout mistake">
+        <p class="sd-callout-title">⚠️ Common mistake</p>
+        <p>Answering every 504 by raising <code>proxy_read_timeout</code>. It hides the slow request while each one still holds an app worker, so under load all workers fill up and the 504s return — now joined by 502s. Fix the slow path first.</p>
+      </aside>
+
+      <h3 id="debug-workflow">Debugging workflow</h3>
+      <ol class="sd-steps">
+        <li><strong>Confirm from outside.</strong> <code>curl -I https://example.com/path</code> — which status, and does the <code>Server</code> header show the request reached your Nginx (or a CDN/LB in front)?</li>
+        <li><strong>Check DNS and network.</strong> <code>dig example.com</code> resolves to the right address; the port answers.</li>
+        <li><strong>Check Nginx.</strong> <code>nginx -t</code>, <code>systemctl status nginx</code>, then <code>tail -f /var/log/nginx/error.log</code> while reproducing — the error line names the cause.</li>
+        <li><strong>Bypass Nginx.</strong> Call the app server directly (<code>curl --unix-socket …</code> or <code>curl localhost:8000</code>). Works → the problem is the proxy config. Fails → the problem is the app.</li>
+        <li><strong>Check the app server.</strong> <code>journalctl -u gunicorn</code> for crashes, <code>WORKER TIMEOUT</code>, OOM kills; worker count vs. traffic.</li>
+        <li><strong>Check dependencies.</strong> Database connections and slow queries, external APIs, DNS from inside the app host.</li>
+        <li><strong>Check metrics.</strong> 5xx rate split by code, <code>$upstream_response_time</code> p99, worker saturation, CPU/memory — did it start with a deploy or a traffic change?</li>
+        <li><strong>Confirm the fix.</strong> Re-run the request, watch the error rate return to baseline, and add the alert or check that would have caught it.</li>
+      </ol>
+
+      <!-- ═══════════ 10 BEST PRACTICES ═══════════ -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul>
+        <li><strong>Put a reverse proxy or load balancer in front of every app</strong>, even Node/Go — it is where TLS, limits, buffering and static files belong.</li>
+        <li><strong>Bind the app server to a Unix socket or localhost</strong> — so the only way in is through the proxy's controls.</li>
+        <li><strong>Always forward <code>Host</code>, <code>X-Forwarded-For</code> and <code>X-Forwarded-Proto</code>, and configure the app to trust them</strong> — otherwise URLs, redirects and client IPs are wrong.</li>
+        <li><strong>Make timeouts shrink as you go inward</strong> (LB ≥ Nginx ≥ app ≥ DB query) — so the layer that knows <em>why</em> it's slow is the one that gives up and logs it.</li>
+        <li><strong>Run <code>nginx -t</code> before every reload</strong> — a typo should fail in your terminal, not in production.</li>
+        <li><strong>Log upstream timings</strong> — without <code>$upstream_response_time</code> you can't tell a slow app from a slow client.</li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul>
+        <li><strong>Running a framework's dev server in production</strong> (<code>manage.py runserver</code>, <code>flask run</code>) — single-threaded or unhardened, and not designed to face the internet.</li>
+        <li><strong>Exposing the app server port publicly</strong> — it bypasses TLS, limits and logging.</li>
+        <li><strong>Serving static files through the app</strong> — each file occupies an expensive worker.</li>
+        <li><strong>Trusting the left-most <code>X-Forwarded-For</code> value</strong> — the client controls it.</li>
+        <li><strong>Raising timeouts as the first response to 504s</strong> — it hides the slow path and exhausts workers.</li>
+        <li><strong>Disabling <code>proxy_buffering</code> globally</strong> — do it only on streaming locations.</li>
+      </ul>
+
+      <!-- ═══════════ 11 INTERVIEW PREPARATION ═══════════ -->
+      <h2 id="interview-answer" data-stage="Interview Preparation">Interview Answer — What Is a Web Server vs. an Application Server?</h2>
+      <p>A <strong>web server</strong> (HTTP server) is a program that accepts HTTP connections from clients, serves static files, terminates TLS, and forwards dynamic requests — examples are Nginx, Apache, and Caddy. An <strong>application server</strong> is the process that runs your application code and produces dynamic responses — for example Gunicorn running a Django app, PHP-FPM running a Laravel app, or Tomcat running a Java app.</p>
+      <p>Web server vs. application server — the difference is responsibility. Some languages ship a production-ready HTTP server inside the runtime (Node.js's <code>http</code> module, Go's <code>net/http</code>, ASP.NET Core's Kestrel, Rust's async servers), so the application is its own server. Others do not: Python, Ruby, PHP, and Perl frameworks come with development servers only, and in production they run under a separate application server (Gunicorn/Uvicorn, Puma, PHP-FPM, PSGI) that speaks a language-specific interface such as WSGI or ASGI. See <a href="wsgi.html">WSGI Explained</a> for the Python case in detail.</p>
+      <p>Either way, production deployments almost always put a web server or reverse proxy in front — the full chain is walked in <a href="#request-flow">Request Flow</a> and <a href="#production">Production Usage</a>.</p>
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"A web server like Nginx handles HTTP itself — connections, TLS, static files, reverse proxying, and load balancing — while an application server runs the application code. Node, Go, .NET, and Rust include a production HTTP server in the runtime; Python, Ruby, and PHP need a separate app server like Gunicorn, Puma, or PHP-FPM. In production I put Nginx or a load balancer in front of either kind, so the app processes only handle dynamic requests."</p>
+      </div>
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Node.js and Go have built-in HTTP servers — so do they still need Nginx?</strong></p>
+      <p><strong>A:</strong> They do not strictly need it — a Go or Node process can serve HTTP directly — but most production setups still put a reverse proxy or load balancer in front. It terminates TLS and renews certificates, serves static files efficiently, buffers slow clients so they don't tie up application connections, enforces limits, and distributes traffic across multiple application instances. In cloud or Kubernetes deployments that role is often played by a managed load balancer or an Ingress controller instead of a hand-configured Nginx, but the layering is the same.</p>
+
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+
+        <details class="sd-qa" data-level="basic"><summary>What problem does a reverse proxy solve that the application can't easily solve itself?</summary>
+          <p>It takes the connection-heavy work off expensive app workers: TLS termination, static files, buffering slow clients, request-size and rate limits, and spreading traffic over several instances. App workers then only ever see complete, ready-to-run requests.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>Why does a Django app need Gunicorn, while a Go app doesn't need an app server?</summary>
+          <p>Go's standard library includes a production-grade HTTP server, so the binary is its own server. Django only ships a development server; in production a WSGI/ASGI server (Gunicorn, Uvicorn) owns the sockets and worker processes and calls Django through the WSGI/ASGI interface.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What's the difference between a 502 and a 504?</summary>
+          <p>502 Bad Gateway: the proxy couldn't get a valid response — connection refused or reset, wrong address, crashed worker. 504 Gateway Timeout: the upstream accepted the request but didn't answer within <code>proxy_read_timeout</code>. 502 = broken or unreachable, 504 = too slow.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>Is a reverse proxy the same thing as a load balancer?</summary>
+          <p>No. A reverse proxy fronts an application (TLS, static files, forwarding). A load balancer spreads requests across several instances. Nginx can do both, but one proxy in front of one app server is not load balancing.</p></details>
+
+        <details class="sd-qa" data-level="intermediate"><summary>Why can one Nginx worker hold thousands of connections when a Gunicorn sync worker handles one request at a time?</summary>
+          <p>Nginx workers use an event loop over non-blocking sockets (epoll/kqueue): they only touch a connection when it has data, so an idle or slow client costs memory, not a blocked process. A sync Gunicorn worker runs one request start to finish, including any waiting on the database.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Which headers must a reverse proxy set, and what breaks without each?</summary>
+          <ul><li><code>Host</code> — otherwise the app sees the upstream name; host validation fails or URLs are wrong.</li>
+          <li><code>X-Forwarded-For</code> / <code>X-Real-IP</code> — otherwise every client looks like 127.0.0.1.</li>
+          <li><code>X-Forwarded-Proto</code> — otherwise the app thinks it's on HTTP: redirect loops and insecure links.</li></ul></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Why does Nginx buffer requests and responses by default?</summary>
+          <p>So the app worker is held only for the time it takes to compute the response, not for as long as a slow client takes to upload or download. Nginx absorbs the slow network side. Disable response buffering only for streaming (SSE, long polling).</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>How does <code>nginx -s reload</code> apply a new config without dropping connections?</summary>
+          <p>The master validates the new config, starts new workers with it, then tells the old workers to stop accepting connections and exit after finishing in-flight requests. An invalid config is rejected and the old workers keep running.</p></details>
+
+        <details class="sd-qa" data-level="advanced"><summary>Requests that take about 40 seconds return 502, not 504. Why?</summary>
+          <p>Gunicorn's worker <code>--timeout</code> (30 s by default) is shorter than Nginx's <code>proxy_read_timeout</code> (60 s). Gunicorn kills the silent worker first, the connection closes, and Nginx reports "upstream prematurely closed connection" → 502. Fix the slow request and make inner timeouts ≤ outer ones.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>How can X-Forwarded-For be spoofed, and how do you get the real client IP?</summary>
+          <p>The client can send its own <code>X-Forwarded-For</code>; proxies append to it. Trust only the right-most entries added by proxies you control (configure the number of trusted hops, e.g. <code>ProxyFix(x_for=1)</code> or Nginx's <code>real_ip</code> module with <code>set_real_ip_from</code>), and never the left-most value.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Why enable upstream keepalive, and what does it require?</summary>
+          <p>Without it, Nginx opens a new connection to the upstream for every request — extra latency and, over TCP, piles of <code>TIME_WAIT</code> sockets and ephemeral-port exhaustion at high rates. It needs <code>keepalive N</code> in the <code>upstream</code> block plus <code>proxy_http_version 1.1</code> and <code>proxy_set_header Connection ""</code>.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>In Kubernetes, where does the web-server role go?</summary>
+          <p>To the Ingress controller (often Nginx-based) or a cloud load balancer, which terminates TLS and routes by host/path to Services. The app server (Gunicorn, Node) runs inside the Pod. The layering is the same; the proxy is now shared cluster infrastructure configured through Ingress resources.</p></details>
+
+        <details class="sd-qa" data-level="scenario"><summary>After every deploy, users see 502s for about 10 seconds. What's happening and how do you fix it?</summary>
+          <p>The app server is restarting, and Nginx forwards requests to a socket nobody is listening on yet (connection refused → 502). Fix: graceful restarts (Gunicorn reloads workers on <code>HUP</code>), or run several instances and do a rolling deploy behind health checks so traffic only reaches ready instances; <code>proxy_next_upstream</code> lets Nginx retry another upstream for idempotent requests.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Uploads larger than 1 MB fail, and the app logs show nothing. What do you check?</summary>
+          <p>Nginx's <code>client_max_body_size</code> (1 MB default) — Nginx returns 413 before the request ever reaches the app, which is why the app logs are empty. Raise it for the upload location only.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>You enabled "force HTTPS" in the app and now the site redirect-loops. Why?</summary>
+          <p>TLS terminates at Nginx, so the app receives plain HTTP and keeps redirecting to HTTPS. Send <code>X-Forwarded-Proto $scheme</code> from Nginx and tell the app to trust it (<code>SECURE_PROXY_SSL_HEADER</code> in Django, <code>ProxyFix</code> in Flask).</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>p99 latency jumps during peak traffic, but app CPU is only 30%. What do you suspect and check?</summary>
+          <p>Worker saturation: all sync workers are busy waiting on I/O (database, external APIs), so new requests queue. Compare <code>$request_time</code> with <code>$upstream_response_time</code>, check worker utilisation and DB pool waits, and look for slow downstream calls in traces. Fix with timeouts on outbound calls, more workers/instances, or async workers.</p></details>
+      </section>
+
+      <!-- ═══════════ 12 SUMMARY ═══════════ -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>The web server owns the connection (TLS, static files, buffering, limits); the application server runs the code.</li>
+        <li><strong>Languages with built-in servers</strong>: Node.js, Go, ASP.NET Core, Rust, Elixir. <strong>Languages needing app servers</strong>: Python, Ruby, PHP, Perl, traditional Java.</li>
+        <li><strong>Production best practice</strong>: Even if a language has a built-in server, most real-world deployments put <strong>Nginx or Apache (or Caddy)</strong> in front for SSL, caching, and load balancing.</li>
+        <li>Nginx is event-driven (master + per-core workers on epoll); sync app workers handle one request each — that asymmetry is why the proxy sits in front.</li>
+        <li>Forward <code>Host</code>, <code>X-Forwarded-For</code>, <code>X-Forwarded-Proto</code> — and configure the app to trust them, only from your own proxy.</li>
+        <li>502 = upstream broken or unreachable; 504 = upstream too slow; the Nginx error log says which and why.</li>
+        <li>Timeouts must shrink inward (LB ≥ Nginx ≥ app ≥ DB), or a slow request shows up as the wrong error.</li>
+        <li>Reverse proxy ≠ load balancer: one forwards, the other spreads across instances.</li>
+      </ol>
+      <h3 id="quick-commands">Quick commands</h3>
+      <ul class="sd-commands">
+        <li><code>nginx -t</code> — validate config</li>
+        <li><code>systemctl reload nginx</code> — graceful reload</li>
+        <li><code>tail -f /var/log/nginx/error.log</code> — why the upstream failed</li>
+        <li><code>curl -I https://example.com/</code> — status + headers only</li>
+        <li><code>journalctl -u gunicorn</code> — app server crashes and timeouts</li>
+        <li><code>ss -ltnp</code> — who is listening on which port</li>
+      </ul>
+
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <div class="sd-next">
+        <a href="wsgi.html"><strong>WSGI Explained</strong><span>The contract between Gunicorn and your Python app, and how to size workers.</span></a>
+        <a href="../traffic/00-load-balancing.html"><strong>Load Balancing</strong><span>What changes when the proxy spreads traffic across many instances.</span></a>
+        <a href="../caching/01c-proxy-and-gateway-caching.html"><strong>Reverse Proxy &amp; API Gateway Caching</strong><span>Turning the proxy into a cache.</span></a>
+      </div>
 
       <div class="page-footer">
         <span>Section: Web Servers</span>
         <span>Source: <code>server.md</code></span>
       </div>
+
     </main>
   </div>
 </div>
-<script>
-  const t = document.getElementById('menuToggle');
-  const s = document.getElementById('sidebar');
-  if (t) t.addEventListener('click', () => s.classList.toggle('open'));
-</script>
 
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
 </body>
 </html>
