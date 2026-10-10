@@ -833,5 +833,37 @@ window.REVISION_CARDS = [
   "icon": "🧩",
   "source": "interview",
   "text": "A query string is the part of the URL after the question mark, with key-value pairs separated by ampersands, like ?page=2&sort=price. It lets one endpoint handle search, filtering, sorting, pagination, and tracking without a separate URL for each variation."
+ },
+ {
+  "href": "books/index.html",
+  "title": "Bookshelf",
+  "section": "Books",
+  "icon": "📚",
+  "source": "lead",
+  "text": "Books I'm studying. Open a book to see its chapters and what each one covers."
+ },
+ {
+  "href": "books/domain-driven-design/index.html",
+  "title": "Domain-Driven Design — Eric Evans",
+  "section": "Books",
+  "icon": "📚",
+  "source": "lead",
+  "text": "Tackling Complexity in the Heart of Software (2003). The book's four parts and seventeen chapters, with the key topics each chapter covers."
+ },
+ {
+  "href": "books/domain-driven-design/01-crunching-knowledge.html",
+  "title": "Domain-Driven Design, Ch 1 — Crunching Knowledge",
+  "section": "Books",
+  "icon": "📚",
+  "source": "interview",
+  "text": "Knowledge crunching is how developers and domain experts build a domain model together. Instead of taking requirements one way, they sketch models, test them against real scenarios and early prototypes, and keep refining — adding the concepts that matter, dropping the ones that don't, and using the same language in…"
+ },
+ {
+  "href": "books/domain-driven-design/02-communication-and-language.html",
+  "title": "Domain-Driven Design, Ch 2 — Communication and the Use of Language",
+  "section": "Books",
+  "icon": "📚",
+  "source": "interview",
+  "text": "A Ubiquitous Language is one shared vocabulary, based on the domain model, that developers and business experts both use — in meetings, tickets, diagrams and directly in code names. It removes the translation between business and technical terms, which is where requirements get lost."
  }
 ];
