@@ -163,8 +163,8 @@ tiny redirect stubs remain at the old sub-site homepage paths (`docs/index.html`
   `regen-sidebars.js` rebuilds it on every run and
   `--check` fails if it's stale, so never hand-edit it — improving a page's Interview
   Answer block is the best way to improve its card. The homepage's topic cards are
-  grouped into four categories (Infrastructure & Ops / Data & Distributed Systems /
-  Application & Code / Planning & Projects); when you add a new `SITE_MAP` section,
+  grouped into five categories (Infrastructure & Ops / Data & Distributed Systems /
+  Application & Code / Planning & Projects / Books); when you add a new `SITE_MAP` section,
   add it to the `CATEGORY` and `ACCENT` maps in `index.html`'s inline script and put
   its card in the matching `.cat-group`.
 

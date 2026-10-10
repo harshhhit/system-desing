@@ -13,11 +13,12 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lexend:wght@600;700;800&display=swap');
 :root {
-  --bg: #ffffff; --bg-alt: #f6f7f9; --fg: #14181f; --muted: #5b6472; --border: #e4e7ec;
-  --code-bg: #f3f4f7; --link: #2563eb; --accent: #6d4aff; --accent-bg: #f3f0ff;
-  --sidebar-bg: #fafbfc; --card-bg: #ffffff; --shadow: 0 1px 2px rgba(15,23,42,0.05), 0 1px 1px rgba(15,23,42,0.03);
-  --shadow-hover: 0 18px 40px -14px rgba(15,23,42,0.2);
-  --radius-sm: 8px; --radius: 12px; --radius-lg: 20px; --ease: cubic-bezier(.22,.8,.32,1);
+  /* calm "paper" theme: warm neutral page, white cards, one teal accent */
+  --bg: #f6f5f1; --bg-alt: #eeede8; --fg: #1d2127; --muted: #69707a; --border: #e3e1da;
+  --code-bg: #efeee9; --link: #0f766e; --accent: #0f766e; --accent-bg: #e3f1ee;
+  --sidebar-bg: #fbfaf7; --card-bg: #ffffff; --shadow: 0 1px 2px rgba(28,25,23,0.04);
+  --shadow-hover: 0 8px 22px -12px rgba(28,25,23,0.22);
+  --radius-sm: 7px; --radius: 10px; --radius-lg: 14px; --ease: cubic-bezier(.22,.8,.32,1);
 
   /* per-topic accent colors */
   --c-frontend: #2563eb;   --c-frontend-bg: #eaf1ff;
@@ -38,6 +39,7 @@
   --c-proj:     #b45309;   --c-proj-bg:     #fff3e0;
   --c-misc:     #7c3aed;   --c-misc-bg:     #f2ebff;
   --c-overview: #475569;   --c-overview-bg: #eef1f5;
+  --c-books:    #9a3412;   --c-books-bg:    #fdf0e7;
 }
 @media (prefers-color-scheme: dark) and (min-width: 99999px) {
   :root {
@@ -129,28 +131,6 @@ a:hover { text-decoration: underline; }
   cursor: pointer; color: var(--muted); border: none; background: none; font-size: 1.1rem; padding: 0 0.2em;
 }
 
-/* ---- homepage ---- */
-.hero { position: relative; padding: 3rem 2.5rem 2rem; max-width: 1200px; margin: 0 auto; overflow: hidden; isolation: isolate; }
-.hero::before, .hero::after {
-  content: ""; position: absolute; z-index: -1; border-radius: 50%; pointer-events: none;
-  filter: blur(60px); opacity: 0.32;
-}
-.hero::before { width: 340px; height: 340px; top: -160px; right: -60px;
-  background: radial-gradient(circle at 30% 30%, #3b82f6, #8b5cf6 60%, transparent 75%); }
-.hero::after { width: 260px; height: 260px; top: 40px; left: -120px;
-  background: radial-gradient(circle at 60% 40%, #ec4899, #06b6d4 65%, transparent 75%); opacity: 0.2; }
-.hero h1 {
-  border: none; font-size: clamp(2.1rem, 4.4vw, 2.85rem); font-weight: 800; letter-spacing: -0.02em;
-  margin: 0 0 0.35em; line-height: 1.1; font-family: "Lexend", "Inter", sans-serif;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.hero p.lede { color: var(--muted); font-size: 1.12rem; max-width: 640px; line-height: 1.6; }
-.stats { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-top: 1.4rem; }
-.stat { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.65rem 1.1rem; box-shadow: var(--shadow); }
-.stat b { display: block; font-size: 1.4rem; font-weight: 800; font-family: "Lexend", "Inter", sans-serif;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.stat span { font-size: 0.74rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
 
 /* ---- weekly reading target (standalone port of docs/assets/site-header.js's
    renderWeeklyTarget(), scoped to this page — see CLAUDE.md "Weekly reading
@@ -181,7 +161,6 @@ a:hover { text-decoration: underline; }
   .sd-weekly-section { flex-basis: 100%; margin-left: 1.6rem; white-space: normal; }
 }
 
-.section-title { max-width: 1100px; margin: 0 auto; padding: 1.5rem 2.5rem 0.9rem; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(270px, 100%), 1fr)); gap: 1.2rem; max-width: 1100px; margin: 0 auto; padding: 0 2.5rem 1rem; }
 .card {
   position: relative; background: var(--card-bg); border: 1px solid var(--border);
@@ -257,35 +236,13 @@ a:hover { text-decoration: underline; }
 .search-results mark { background: #fef08a; color: inherit; border-radius: 2px; }
 .search-results .sr-empty { padding: 0.8rem; color: var(--muted); font-size: 0.88rem; }
 
-.jump { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
-.jump a {
-  padding: 0.4em 0.9em; border-radius: 999px; font-size: 0.85rem; font-weight: 600; color: var(--fg);
-  background: var(--card-bg); border: 1px solid var(--border); box-shadow: var(--shadow);
-  transition: border-color 0.15s var(--ease), color 0.15s var(--ease), transform 0.15s var(--ease);
-}
-.jump a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; transform: translateY(-1px); }
 
 .block { max-width: 1200px; margin: 0 auto; padding: 2.8rem 2.5rem 0.5rem; scroll-margin-top: 84px; }
 .block + .block { border-top: 1px solid var(--border); margin-top: 2rem; }
 .block-head h2 { margin: 0; font-size: 1.45rem; font-weight: 800; font-family: "Lexend", "Inter", sans-serif; letter-spacing: -0.01em; }
 .block-head p { margin: 0.4rem 0 0; color: var(--muted); max-width: 720px; font-size: 0.95rem; }
-.hero, [data-weekly-target] { max-width: 1200px; }
+[data-weekly-target] { max-width: 1200px; }
 
-/* ---- Site map: clickable block diagram of every topic, at the top of the homepage ---- */
-.site-map { padding-top: 1.2rem; }
-.smap { display: flex; flex-direction: column; align-items: stretch; margin-top: 1.1rem; }
-.smap-row { border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem 0.9rem 0.9rem; background: var(--bg-alt); }
-.smap-label { margin: 0; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-.smap-why { margin: 0.15rem 0 0.6rem; font-size: 0.86rem; line-height: 1.45; color: var(--muted); }
-.smap-blocks { display: flex; flex-wrap: wrap; gap: 0.55rem; }
-.smap-blocks a { --a: var(--accent); flex: 1 1 12rem; display: block; padding: 0.65rem 0.8rem; border: 1px solid var(--border); border-left: 4px solid var(--a);
-  border-radius: var(--radius-sm); background: var(--card-bg); color: var(--fg); font-weight: 650; font-size: 0.94rem; line-height: 1.3;
-  transition: transform .15s var(--ease), box-shadow .15s var(--ease), border-color .15s var(--ease); }
-.smap-blocks a:hover, .smap-blocks a:focus-visible { transform: translateY(-2px); box-shadow: 0 6px 16px -6px rgba(15,23,42,0.18); border-color: var(--a); text-decoration: none; }
-.smap-blocks small { display: block; font-weight: 400; color: var(--muted); font-size: 0.8rem; margin-top: 0.2rem; }
-.smap-blocks .smap-count { float: right; font-size: 0.72rem; font-weight: 700; color: var(--a); background: color-mix(in srgb, var(--a) 12%, transparent); border-radius: 999px; padding: 0.05rem 0.5rem; margin-left: 0.4rem; }
-.smap-arrow { text-align: center; color: var(--muted); font-size: 1.1rem; line-height: 1.7; }
-.smap-arrow span { font-size: 0.78rem; margin-left: 0.4rem; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 1.2rem 0 0; }
 .chip {
@@ -295,7 +252,7 @@ a:hover { text-decoration: underline; }
 }
 .chip:hover { border-color: var(--accent); color: var(--accent); }
 .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-.chip:focus-visible, .btn:focus-visible, .jump a:focus-visible, .menu-toggle:focus-visible, .card .more:focus-visible,
+.chip:focus-visible, .btn:focus-visible, .menu-toggle:focus-visible, .card .more:focus-visible,
 .rev-reveal:focus-visible, .rev-open:focus-visible, .search-results a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .btn {
   border: 1px solid var(--border); background: var(--card-bg); color: var(--fg); border-radius: var(--radius-sm);
@@ -359,8 +316,77 @@ a:hover { text-decoration: underline; }
   .sidebar { position: fixed; left: -300px; top: 0; z-index: 20; box-shadow: 4px 0 16px rgba(0,0,0,0.25);
     visibility: hidden; transition: left 0.2s ease, visibility 0s linear 0.2s; }
   .sidebar.open { left: 0; visibility: visible; transition: left 0.2s ease, visibility 0s; }
-  .hero, .grid, .resource-list, .soon-list, .section-title { padding-left: 1rem; padding-right: 1rem; }
+  .grid, .resource-list, .soon-list { padding-left: 1rem; padding-right: 1rem; }
   .revision-banner { margin-left: 1rem; margin-right: 1rem; flex-wrap: wrap; }
+}
+
+/* ---- decluttered homepage layer: section index on top, flat cards, quiet headings ---- */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.topbar { border-bottom-color: var(--border); }
+.top-stats { margin: 0 0 0 0.4rem; font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
+.top-stats b { color: var(--fg); font-weight: 700; }
+
+/* section index — every topic at a glance, the first thing on the page */
+.toc {
+  max-width: 1200px; margin: 1.4rem auto 0; padding: 0 2.5rem;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr)); gap: 0.9rem;
+}
+.toc-col { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 0.85rem 0.7rem 0.7rem; }
+.toc-cat { display: block; margin: 0 0.35rem 0.45rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+a.toc-cat:hover { color: var(--accent); text-decoration: none; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li a {
+  --a: var(--accent); display: flex; align-items: center; gap: 0.5rem; padding: 0.34rem 0.4rem; border-radius: var(--radius-sm);
+  color: var(--fg); font-size: 0.89rem; font-weight: 500; line-height: 1.3;
+}
+.toc li a:hover { background: color-mix(in srgb, var(--a) 9%, transparent); text-decoration: none; }
+.toc-ico { width: 1.3rem; text-align: center; flex-shrink: 0; }
+.toc-name { flex: 1; min-width: 0; }
+.toc-count { font-size: 0.72rem; font-weight: 700; color: var(--a); background: color-mix(in srgb, var(--a) 11%, transparent); border-radius: 999px; padding: 0.02rem 0.45rem; }
+.toc a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* topic cards */
+.block.browse { padding-top: 1.2rem; }
+.block.browse > .chips { margin-top: 0.4rem; }
+.cat-group { margin-top: 1.8rem; }
+.cat-head { gap: 0.6rem; align-items: center; margin-bottom: 0.8rem; }
+.cat-icon { width: 34px; height: 34px; font-size: 1.1rem; border-radius: var(--radius-sm); background: var(--card-bg); }
+.cat-head h3 { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg); }
+.cat-head p { margin: 0.05rem 0 0; font-size: 0.84rem; }
+.block .grid { gap: 1rem; }
+.card { padding: 1.1rem 1.15rem 1rem; gap: 0.45rem; border-radius: var(--radius-lg); scroll-margin-top: 84px; }
+.card::before { height: 2px; background: var(--card-accent, var(--accent)); }
+.card:hover { transform: none; box-shadow: var(--shadow-hover); }
+.card-top { display: flex; align-items: center; gap: 0.7rem; }
+.card .icon-wrap { width: 36px; height: 36px; font-size: 1.15rem; box-shadow: none; flex-shrink: 0; }
+.card h2 { font-size: 1.02rem; }
+.card-title { color: var(--fg); }
+.card-title:hover { color: var(--card-accent, var(--accent)); text-decoration: none; }
+.card p.count { font-size: 0.72rem; color: var(--muted); }
+.card-desc { margin: 0; font-size: 0.84rem; color: var(--muted); line-height: 1.45; }
+.card ul { font-size: 0.86rem; }
+.card:target { border-color: var(--card-accent, var(--accent)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--card-accent, var(--accent)) 18%, transparent); }
+
+/* quieter section headings further down */
+.block { padding-top: 2.2rem; }
+.block + .block { margin-top: 1.5rem; }
+.block-head h2 { font-size: 1.1rem; font-weight: 700; font-family: "Inter", sans-serif; }
+.block-head p { font-size: 0.88rem; }
+[data-weekly-target] { padding-top: 2rem; padding-bottom: 0; scroll-margin-top: 84px; }
+.sd-weekly { border-radius: var(--radius-lg); padding: 1.1rem 1.3rem; }
+.sd-weekly-head h2 { font-size: 1rem; }
+.revision-banner { margin-top: 1rem; background: var(--card-bg); border-color: var(--border); }
+.revision-banner .rb-text strong { color: var(--fg); }
+.rev-card { border-radius: var(--radius-lg); }
+.rev-card:hover { transform: none; }
+.chip.active { background: var(--fg); border-color: var(--fg); }
+.btn, .resource-list a, .chip { box-shadow: none; }
+.resource-list a:hover { transform: none; }
+#soon { scroll-margin-top: 84px; }
+
+@media (max-width: 1100px) { .top-stats { display: none; } }
+@media (max-width: 860px) {
+  .toc { padding: 0 1rem; margin-top: 1rem; }
 }
 </style>
 </head>
@@ -567,6 +593,13 @@ a:hover { text-decoration: underline; }
         <li><a href="docs/mislanious/Memory-Profiling.html">Memory Profiling</a></li>
         <li><a href="docs/mislanious/query-string.html">Query Strings</a></li>
       </ul>
+      <h3>📚 Books</h3>
+      <ul>
+        <li><a href="docs/books/index.html">Bookshelf</a></li>
+        <li><a href="docs/books/domain-driven-design/index.html">Domain-Driven Design — Chapters</a></li>
+        <li><a href="docs/books/domain-driven-design/01-crunching-knowledge.html">Ch 1. Crunching Knowledge</a></li>
+        <li><a href="docs/books/domain-driven-design/02-communication-and-language.html">Ch 2. Communication and the Use of Language</a></li>
+      </ul>
       <h3>📄 Overview</h3>
       <ul>
         <li><a class="active" href="index.html">Notes Overview</a></li>
@@ -584,132 +617,67 @@ a:hover { text-decoration: underline; }
         <kbd class="search-kbd" aria-hidden="true">/</kbd>
         <div class="search-results" id="searchResults" hidden></div>
       </div>
+      <p class="top-stats" aria-label="Site stats"><b id="statPages">83</b> pages · <b id="statTopics">17</b> topics · <b id="statCards">—</b> cards · <b id="statDownloads">8</b> downloads</p>
     </div>
 
-    <!-- Daily revision banner -->
-    <div class="revision-banner" id="revisionBanner">
-      <span class="rb-icon">🔁</span>
-      <span class="rb-text">Today's revision: <strong id="revisionTitle"></strong></span>
-      <a class="rb-link" id="revisionLink" href="#">Revise now</a>
-      <button class="rb-close" id="revisionClose" aria-label="Dismiss">✕</button>
-    </div>
 
-    <div class="hero">
-      <h1>🦉 Infra Owl</h1>
-      <p class="lede">A personal knowledge base covering authentication, databases, distributed systems, messaging, storage, and more — converted from raw notes into a browsable reference site.</p>
-      <div class="stats">
-        <div class="stat"><b id="statPages">83</b><span>Pages</span></div>
-        <div class="stat"><b id="statTopics">17</b><span>Topics</span></div>
-        <div class="stat"><b id="statCards">—</b><span>Revision cards</span></div>
-        <div class="stat"><b id="statDownloads">8</b><span>Downloads</span></div>
-      </div>
-      <nav class="jump" aria-label="Jump to">
-        <a href="#map">🧭 Site map</a>
-        <a href="#revise">🃏 Revise</a>
-        <a href="#cat-infra">🏗️ Infra &amp; Ops</a>
-        <a href="#cat-data">🗃️ Data</a>
-        <a href="#cat-app">💻 App &amp; Code</a>
-        <a href="#cat-plan">🗺️ Planning</a>
-        <a href="#resources">📎 Downloads</a>
-      </nav>
-    </div>
 
-    <!-- Site map: block diagram of every topic, ordered the way a request flows
-         (browser → infrastructure → data → putting it together). Hand-maintained like the
-         topic cards below; page counts are filled in from SITE_MAP by the inline script. -->
-    <section class="block site-map" id="map">
-      <div class="block-head">
-        <h2>🧭 Site map</h2>
-        <p>Every topic on the site as one diagram, read top to bottom in the order a request travels: from the browser, through the network and platform, down to the data, and finally into whole-system designs. Click a block to open that topic&rsquo;s head page.</p>
-      </div>
-      <nav class="smap" aria-label="Site map">
-        <div class="smap-row"><p class="smap-label">Start here</p><p class="smap-why">Revise first, then pick a topic below. Every block opens that topic&rsquo;s head page, which has its own page map at the top.</p><div class="smap-blocks">
-          <a href="#revise" style="--a: var(--c-overview)">🃏 Revision cards<small>One recall paragraph per page, with quiz mode</small></a>
-          <a href="#browse" style="--a: var(--c-overview)">📚 Browse by category<small>Every page, grouped into four categories</small></a>
-          <a href="#resources" style="--a: var(--c-overview)">📎 Downloads<small>Replication slides, retry PDF, starter project</small></a>
-          <a href="#resources" style="--a: var(--c-overview)">🚧 Coming soon<small>Topics planned but not written yet</small></a>
-        </div></div>
-        <div class="smap-arrow" aria-hidden="true">↓</div>
-        <div class="smap-row"><p class="smap-label">💻 Application &amp; Code</p><p class="smap-why">Where a request starts: the browser, the user&rsquo;s identity, and the code you write.</p><div class="smap-blocks">
-          <a href="docs/01-front-end/frontend-roadmap.html" style="--a: var(--c-frontend)" data-section="Front-End">🖥️ Front-End<small>Browser, HTTP, CORS, rendering, APIs</small></a>
-          <a href="docs/authentication/00-login-steps.html" style="--a: var(--c-auth)" data-section="Authentication">🔐 Authentication<small>Login, sessions, hashing, OAuth</small></a>
-          <a href="docs/software-development-principles/01-sdp.html" style="--a: var(--c-dev)" data-section="Dev Principles">🧭 Dev Principles<small>Design patterns: creational, structural, behavioral</small></a>
-          <a href="docs/mislanious/01-pubsub-and-pubnub.html" style="--a: var(--c-misc)" data-section="Miscellaneous">🧩 Miscellaneous<small>Pub/Sub, memory profiling, query strings</small></a>
-        </div></div>
-        <div class="smap-arrow" aria-hidden="true">↓<span>the request leaves the browser</span></div>
-        <div class="smap-row"><p class="smap-label">🏗️ Infrastructure &amp; Ops</p><p class="smap-why">How the request reaches your code, and the platform that runs, scales, and watches it.</p><div class="smap-blocks">
-          <a href="docs/networking/00-networking-fundamentals.html" style="--a: var(--c-net)" data-section="Networking">🔌 Networking<small>TCP/UDP, DNS, TLS, HTTP/1.1–3</small></a>
-          <a href="docs/caching/00-caching-and-cdn-fundamentals.html" style="--a: var(--c-caching)" data-section="Caching & CDN">🧊 Caching &amp; CDN<small>Answer before reaching the origin</small></a>
-          <a href="docs/traffic/00-load-balancing.html" style="--a: var(--c-traffic)" data-section="Traffic Management">🚦 Traffic Management<small>Load balancing, rate limiting</small></a>
-          <a href="docs/web-servers/server.html" style="--a: var(--c-web)" data-section="Web Servers">🖧 Web Servers<small>Web vs. app servers, WSGI</small></a>
-          <a href="docs/kubernetes/00-index.html" style="--a: var(--c-k8s)" data-section="Kubernetes">☸️ Kubernetes<small>Control plane, data plane, HA, networking</small></a>
-          <a href="docs/storage/storage-type.html" style="--a: var(--c-storage)" data-section="Storage">💾 Storage<small>File, object, and block storage &amp; protocols</small></a>
-          <a href="docs/observability-security/00-observability-fundamentals.html" style="--a: var(--c-obs)" data-section="Observability, Security & Ops">🛡️ Observability, Security &amp; Ops<small>Logs, metrics, traces, security, CI/CD</small></a>
-          <a href="docs/aws/00-aws-learning-path.html" style="--a: var(--c-aws)" data-section="AWS Learning">☁️ AWS Learning<small>Regions, IAM, VPC, EC2, S3, RDS, cost</small></a>
-        </div></div>
-        <div class="smap-arrow" aria-hidden="true">↓<span>the code reads and writes state</span></div>
-        <div class="smap-row"><p class="smap-label">🗃️ Data &amp; Distributed Systems</p><p class="smap-why">Where state lives and how it stays correct when it is copied, split, and passed between services.</p><div class="smap-blocks">
-          <a href="docs/05-database/00-learning-path/00-index.html" style="--a: var(--c-database)" data-section="Database">🗄️ Database<small>SQL, modeling, indexing, scaling, ops</small></a>
-          <a href="docs/distributed-database/index.html" style="--a: var(--c-dist)" data-section="Distributed Database">🧬 Distributed Database<small>Replication, PACELC, WAL, lag</small></a>
-          <a href="docs/distributed-system/distributed-systems.html" style="--a: var(--c-dist)" data-section="Distributed Systems">🌐 Distributed Systems<small>Consensus, consistent hashing</small></a>
-          <a href="docs/sqs/01-sqs.html" style="--a: var(--c-msg)" data-section="Messaging & Queues">📨 Messaging &amp; Queues<small>SQS, Kafka, event sourcing, resilience</small></a>
-        </div></div>
-        <div class="smap-arrow" aria-hidden="true">↓<span>put the pieces together into a design</span></div>
-        <div class="smap-row"><p class="smap-label">🗺️ Planning &amp; Projects</p><p class="smap-why">Apply everything above: plan requirements and APIs, then walk through real designs.</p><div class="smap-blocks">
-          <a href="docs/path/00-system-desing.html" style="--a: var(--c-plan)" data-section="Planning & Roadmap">🗺️ Planning &amp; Roadmap<small>Requirements, MVP, APIs, gap analysis</small></a>
-          <a href="docs/project-explaintion/image-share-system/200-images.html" style="--a: var(--c-proj)" data-section="Project Walkthroughs">🏗️ Project Walkthroughs<small>Image share, Instagram, chat system</small></a>
-        </div></div>
-      </nav>
-    </section>
 
-    <!-- Filled at runtime by the inline script below (per-viewer random weekly
-         pick + progress, ported from docs/assets/site-header.js). -->
-    <div data-weekly-target></div>
+    <nav class="toc" aria-label="All sections">
+      <div class="toc-col" data-cat="infra"><a class="toc-cat" href="#cat-infra">🏗️ Infrastructure &amp; Ops</a><ul>
+        <li><a href="#t-kubernetes" style="--a: var(--c-k8s)" data-section="Kubernetes"><span class="toc-ico">☸️</span><span class="toc-name">Kubernetes</span><span class="toc-count">18</span></a></li>
+        <li><a href="#t-networking" style="--a: var(--c-net)" data-section="Networking"><span class="toc-ico">🔌</span><span class="toc-name">Networking</span><span class="toc-count">1</span></a></li>
+        <li><a href="#t-traffic-management" style="--a: var(--c-traffic)" data-section="Traffic Management"><span class="toc-ico">🚦</span><span class="toc-name">Traffic Management</span><span class="toc-count">2</span></a></li>
+        <li><a href="#t-caching-cdn" style="--a: var(--c-caching)" data-section="Caching &amp; CDN"><span class="toc-ico">🧊</span><span class="toc-name">Caching &amp; CDN</span><span class="toc-count">11</span></a></li>
+        <li><a href="#t-storage" style="--a: var(--c-storage)" data-section="Storage"><span class="toc-ico">💾</span><span class="toc-name">Storage</span><span class="toc-count">1</span></a></li>
+        <li><a href="#t-web-servers" style="--a: var(--c-web)" data-section="Web Servers"><span class="toc-ico">🖧</span><span class="toc-name">Web Servers</span><span class="toc-count">2</span></a></li>
+        <li><a href="#t-observability-security-ops" style="--a: var(--c-obs)" data-section="Observability, Security &amp; Ops"><span class="toc-ico">🛡️</span><span class="toc-name">Observability, Security &amp; Ops</span><span class="toc-count">3</span></a></li>
+        <li><a href="#t-aws-learning" style="--a: var(--c-aws)" data-section="AWS Learning"><span class="toc-ico">☁️</span><span class="toc-name">AWS Learning</span><span class="toc-count">2</span></a></li>
+      </ul></div>
+      <div class="toc-col" data-cat="data"><a class="toc-cat" href="#cat-data">🗃️ Data &amp; Distributed Systems</a><ul>
+        <li><a href="#t-database" style="--a: var(--c-database)" data-section="Database"><span class="toc-ico">🗄️</span><span class="toc-name">Database</span><span class="toc-count">21</span></a></li>
+        <li><a href="#t-distributed-database" style="--a: var(--c-dist)" data-section="Distributed Database"><span class="toc-ico">🧬</span><span class="toc-name">Distributed Database</span><span class="toc-count">5</span></a></li>
+        <li><a href="#t-distributed-systems" style="--a: var(--c-dist)" data-section="Distributed Systems"><span class="toc-ico">🌐</span><span class="toc-name">Distributed Systems</span><span class="toc-count">3</span></a></li>
+        <li><a href="#t-messaging-queues" style="--a: var(--c-msg)" data-section="Messaging &amp; Queues"><span class="toc-ico">📨</span><span class="toc-name">Messaging &amp; Queues</span><span class="toc-count">7</span></a></li>
+      </ul></div>
+      <div class="toc-col" data-cat="app"><a class="toc-cat" href="#cat-app">💻 Application &amp; Code</a><ul>
+        <li><a href="#t-front-end" style="--a: var(--c-frontend)" data-section="Front-End"><span class="toc-ico">🖥️</span><span class="toc-name">Front-End</span><span class="toc-count">11</span></a></li>
+        <li><a href="#t-authentication" style="--a: var(--c-auth)" data-section="Authentication"><span class="toc-ico">🔐</span><span class="toc-name">Authentication</span><span class="toc-count">5</span></a></li>
+        <li><a href="#t-dev-principles" style="--a: var(--c-dev)" data-section="Dev Principles"><span class="toc-ico">🧭</span><span class="toc-name">Dev Principles</span><span class="toc-count">1</span></a></li>
+        <li><a href="#t-miscellaneous" style="--a: var(--c-misc)" data-section="Miscellaneous"><span class="toc-ico">🧩</span><span class="toc-name">Miscellaneous</span><span class="toc-count">3</span></a></li>
+      </ul></div>
+      <div class="toc-col" data-cat="plan"><a class="toc-cat" href="#cat-plan">🗺️ Planning &amp; Projects</a><ul>
+        <li><a href="#t-planning-roadmap" style="--a: var(--c-plan)" data-section="Planning &amp; Roadmap"><span class="toc-ico">🗺️</span><span class="toc-name">Planning &amp; Roadmap</span><span class="toc-count">5</span></a></li>
+        <li><a href="#t-project-walkthroughs" style="--a: var(--c-proj)" data-section="Project Walkthroughs"><span class="toc-ico">🏗️</span><span class="toc-name">Project Walkthroughs</span><span class="toc-count">3</span></a></li>
+        <li><a href="#t-overview" style="--a: var(--c-overview)" data-section="Overview"><span class="toc-ico">📄</span><span class="toc-name">Overview</span><span class="toc-count">1</span></a></li>
+      </ul></div>
+      <div class="toc-col" data-cat="books"><a class="toc-cat" href="#cat-books">📚 Books</a><ul>
+        <li><a href="#t-books" style="--a: var(--c-books)" data-section="Books"><span class="toc-ico">📚</span><span class="toc-name">Bookshelf</span><span class="toc-count">3</span></a></li>
+        <li><a href="docs/books/domain-driven-design/index.html" style="--a: var(--c-books)"><span class="toc-ico">📘</span><span class="toc-name">Domain-Driven Design</span></a></li>
+      </ul></div>
+      <div class="toc-col"><span class="toc-cat">⚡ Quick links</span><ul>
+        <li><a href="#revise" style="--a: var(--c-overview)"><span class="toc-ico">🃏</span><span class="toc-name">Revision cards</span></a></li>
+        <li><a href="#weekly" style="--a: var(--c-overview)"><span class="toc-ico">🎯</span><span class="toc-name">This week's reading</span></a></li>
+        <li><a href="#resources" style="--a: var(--c-overview)"><span class="toc-ico">📎</span><span class="toc-name">Downloads</span></a></li>
+        <li><a href="#soon" style="--a: var(--c-overview)"><span class="toc-ico">🚧</span><span class="toc-name">Coming soon</span></a></li>
+      </ul></div>
+    </nav>
 
-    <!-- Revision cards: one short paragraph pulled from each docs/ page by
-         scripts/build-revision-cards.js (docs/assets/revision-cards.js). -->
-    <section class="block" id="revise">
-      <div class="block-head">
-        <h2>🃏 Revision cards</h2>
-        <p>One short paragraph pulled from each page — the page's interview answer when it has one, otherwise its lead line or the paragraph that best defines the topic. Turn on <b>Quiz mode</b> to hide the answer until you've recalled it.</p>
-      </div>
-      <div class="rev-toolbar">
-      <div class="chips" id="revChips" role="group" aria-label="Filter by category">
-        <button class="chip active" type="button" data-cat="all" aria-pressed="true">All</button>
-        <button class="chip" type="button" data-cat="infra" aria-pressed="false">🏗️ Infrastructure &amp; Ops</button>
-        <button class="chip" type="button" data-cat="data" aria-pressed="false">🗃️ Data &amp; Distributed Systems</button>
-        <button class="chip" type="button" data-cat="app" aria-pressed="false">💻 Application &amp; Code</button>
-        <button class="chip" type="button" data-cat="plan" aria-pressed="false">🗺️ Planning &amp; Projects</button>
-      </div>
-        <div class="rev-actions">
-          <label class="toggle"><input type="checkbox" id="quizMode"> Quiz mode</label>
-          <button class="btn" id="revShuffle" type="button">🔀 Shuffle</button>
-        </div>
-      </div>
-      <div class="rev-grid" id="revGrid"></div>
-      <div class="rev-more">
-        <button class="btn" id="revMore" type="button">Show more cards</button>
-        <span id="revCount"></span>
-      </div>
-    </section>
-
-    <section class="block" id="browse">
-      <div class="block-head">
-        <h2>📚 Browse by category</h2>
-        <p>Topics grouped by what they're about: infrastructure notes live under <b>Infrastructure &amp; Ops</b>, databases and queues under <b>Data</b>, and code-level topics under <b>Application &amp; Code</b>.</p>
-      </div>
+    <section class="block browse" id="browse">
+      <p class="sr-only">Topics grouped by what they're about: infrastructure notes live under <b>Infrastructure &amp; Ops</b>, databases and queues under <b>Data</b>, and code-level topics under <b>Application &amp; Code</b>.</p>
       <div class="chips" id="catChips" role="group" aria-label="Filter by category">
         <button class="chip active" type="button" data-cat="all" aria-pressed="true">All</button>
         <button class="chip" type="button" data-cat="infra" aria-pressed="false">🏗️ Infrastructure &amp; Ops</button>
         <button class="chip" type="button" data-cat="data" aria-pressed="false">🗃️ Data &amp; Distributed Systems</button>
         <button class="chip" type="button" data-cat="app" aria-pressed="false">💻 Application &amp; Code</button>
         <button class="chip" type="button" data-cat="plan" aria-pressed="false">🗺️ Planning &amp; Projects</button>
+        <button class="chip" type="button" data-cat="books" aria-pressed="false">📚 Books</button>
       </div>
       <div class="cat-group" id="cat-infra" data-cat="infra">
         <div class="cat-head"><span class="cat-icon">🏗️</span><div><h3>Infrastructure &amp; Ops</h3><p>Where code runs and how traffic reaches it — clusters, networks, load balancers, caches, storage, servers, and the tooling that keeps them observable and deployable.</p></div></div>
         <div class="grid">
-          <div class="card" style="--card-accent: var(--c-k8s); --card-accent-bg: var(--c-k8s-bg);">
-            <div class="icon-wrap">☸️</div><h2>Kubernetes</h2><p class="count">18 pages</p>
+          <div class="card" id="t-kubernetes" data-section="Kubernetes" style="--card-accent: var(--c-k8s); --card-accent-bg: var(--c-k8s-bg);">
+            <div class="card-top"><div class="icon-wrap">☸️</div><div><h2><a class="card-title" href="docs/kubernetes/00-index.html">Kubernetes</a></h2><p class="count">18 pages</p></div></div><p class="card-desc">Control plane, data plane, HA, networking</p>
             <ul>
               <li><a href="docs/kubernetes/00-index.html">00. Control Plane Overview</a></li>
               <li><a href="docs/kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li>
@@ -731,19 +699,19 @@ a:hover { text-decoration: underline; }
               <li><a href="docs/kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li>
             </ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-net); --card-accent-bg: var(--c-net-bg);">
-            <div class="icon-wrap">🔌</div><h2>Networking</h2><p class="count">1 page</p>
+          <div class="card" id="t-networking" data-section="Networking" style="--card-accent: var(--c-net); --card-accent-bg: var(--c-net-bg);">
+            <div class="card-top"><div class="icon-wrap">🔌</div><div><h2><a class="card-title" href="docs/networking/00-networking-fundamentals.html">Networking</a></h2><p class="count">1 page</p></div></div><p class="card-desc">TCP/UDP, DNS, TLS, HTTP/1.1–3</p>
             <ul><li><a href="docs/networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-traffic); --card-accent-bg: var(--c-traffic-bg);">
-            <div class="icon-wrap">🚦</div><h2>Traffic Management</h2><p class="count">2 pages</p>
+          <div class="card" id="t-traffic-management" data-section="Traffic Management" style="--card-accent: var(--c-traffic); --card-accent-bg: var(--c-traffic-bg);">
+            <div class="card-top"><div class="icon-wrap">🚦</div><div><h2><a class="card-title" href="docs/traffic/00-load-balancing.html">Traffic Management</a></h2><p class="count">2 pages</p></div></div><p class="card-desc">Load balancing, rate limiting</p>
             <ul>
               <li><a href="docs/traffic/00-load-balancing.html">00. Load Balancing</a></li>
               <li><a href="docs/traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li>
             </ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-caching); --card-accent-bg: var(--c-caching-bg);">
-            <div class="icon-wrap">🧊</div><h2>Caching &amp; CDN</h2><p class="count">11 pages</p>
+          <div class="card" id="t-caching-cdn" data-section="Caching &amp; CDN" style="--card-accent: var(--c-caching); --card-accent-bg: var(--c-caching-bg);">
+            <div class="card-top"><div class="icon-wrap">🧊</div><div><h2><a class="card-title" href="docs/caching/00-caching-and-cdn-fundamentals.html">Caching &amp; CDN</a></h2><p class="count">11 pages</p></div></div><p class="card-desc">Answer before reaching the origin</p>
             <ul>
               <li><a href="docs/caching/caching-roadmap.html">Caching Roadmap</a></li>
               <li><a href="docs/caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li>
@@ -758,27 +726,27 @@ a:hover { text-decoration: underline; }
               <li><a href="docs/caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li>
             </ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-storage); --card-accent-bg: var(--c-storage-bg);">
-            <div class="icon-wrap">💾</div><h2>Storage</h2><p class="count">1 page</p>
+          <div class="card" id="t-storage" data-section="Storage" style="--card-accent: var(--c-storage); --card-accent-bg: var(--c-storage-bg);">
+            <div class="card-top"><div class="icon-wrap">💾</div><div><h2><a class="card-title" href="docs/storage/storage-type.html">Storage</a></h2><p class="count">1 page</p></div></div><p class="card-desc">File, object, and block storage &amp; protocols</p>
             <ul><li><a href="docs/storage/storage-type.html">Storage Types</a></li></ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-web); --card-accent-bg: var(--c-web-bg);">
-            <div class="icon-wrap">🖧</div><h2>Web Servers</h2><p class="count">2 pages</p>
+          <div class="card" id="t-web-servers" data-section="Web Servers" style="--card-accent: var(--c-web); --card-accent-bg: var(--c-web-bg);">
+            <div class="card-top"><div class="icon-wrap">🖧</div><div><h2><a class="card-title" href="docs/web-servers/server.html">Web Servers</a></h2><p class="count">2 pages</p></div></div><p class="card-desc">Web vs. app servers, WSGI</p>
             <ul>
               <li><a href="docs/web-servers/server.html">Web Servers</a></li>
               <li><a href="docs/web-servers/wsgi.html">WSGI Explained</a></li>
             </ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-obs); --card-accent-bg: var(--c-obs-bg);">
-            <div class="icon-wrap">🛡️</div><h2>Observability, Security &amp; Ops</h2><p class="count">3 pages</p>
+          <div class="card" id="t-observability-security-ops" data-section="Observability, Security &amp; Ops" style="--card-accent: var(--c-obs); --card-accent-bg: var(--c-obs-bg);">
+            <div class="card-top"><div class="icon-wrap">🛡️</div><div><h2><a class="card-title" href="docs/observability-security/00-observability-fundamentals.html">Observability, Security &amp; Ops</a></h2><p class="count">3 pages</p></div></div><p class="card-desc">Logs, metrics, traces, security, CI/CD</p>
             <ul>
               <li><a href="docs/observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li>
               <li><a href="docs/observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li>
               <li><a href="docs/observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li>
             </ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-aws); --card-accent-bg: var(--c-aws-bg);">
-            <div class="icon-wrap">☁️</div><h2>AWS Learning</h2><p class="count">2 pages</p>
+          <div class="card" id="t-aws-learning" data-section="AWS Learning" style="--card-accent: var(--c-aws); --card-accent-bg: var(--c-aws-bg);">
+            <div class="card-top"><div class="icon-wrap">☁️</div><div><h2><a class="card-title" href="docs/aws/00-aws-learning-path.html">AWS Learning</a></h2><p class="count">2 pages</p></div></div><p class="card-desc">Regions, IAM, VPC, EC2, S3, RDS, cost</p>
             <ul><li><a href="docs/aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="docs/aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul>
           </div>
         </div>
@@ -786,8 +754,8 @@ a:hover { text-decoration: underline; }
       <div class="cat-group" id="cat-data" data-cat="data">
         <div class="cat-head"><span class="cat-icon">🗃️</span><div><h3>Data &amp; Distributed Systems</h3><p>How state is stored, replicated, partitioned, and moved between services — databases, consistency models, consensus, and message queues.</p></div></div>
         <div class="grid">
-          <div class="card" style="--card-accent: var(--c-database); --card-accent-bg: var(--c-database-bg);">
-            <div class="icon-wrap">🗄️</div><h2>Database</h2><p class="count">21 pages</p>
+          <div class="card" id="t-database" data-section="Database" style="--card-accent: var(--c-database); --card-accent-bg: var(--c-database-bg);">
+            <div class="card-top"><div class="icon-wrap">🗄️</div><div><h2><a class="card-title" href="docs/05-database/00-learning-path/00-index.html">Database</a></h2><p class="count">21 pages</p></div></div><p class="card-desc">SQL, modeling, indexing, scaling, ops</p>
             <ul>
               <li><a href="docs/05-database/00-learning-path/00-index.html">Database Learning Path</a></li>
               <li><a href="docs/05-database/01-foundations/mislanious-terms.html">Database Foundations</a></li>
@@ -812,8 +780,8 @@ a:hover { text-decoration: underline; }
               <li><a href="docs/05-database/07-observability-capacity-and-operations/index.html">Observability, Capacity, and Operations</a></li>
             </ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
-            <div class="icon-wrap">🧬</div><h2>Distributed Database</h2><p class="count">5 pages</p>
+          <div class="card" id="t-distributed-database" data-section="Distributed Database" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
+            <div class="card-top"><div class="icon-wrap">🧬</div><div><h2><a class="card-title" href="docs/distributed-database/index.html">Distributed Database</a></h2><p class="count">5 pages</p></div></div><p class="card-desc">Replication, PACELC, WAL, lag</p>
             <ul>
               <li><a href="docs/distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li>
               <li><a href="docs/distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li>
@@ -822,16 +790,16 @@ a:hover { text-decoration: underline; }
               <li><a href="docs/distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li>
             </ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
-            <div class="icon-wrap">🌐</div><h2>Distributed Systems</h2><p class="count">3 pages</p>
+          <div class="card" id="t-distributed-systems" data-section="Distributed Systems" style="--card-accent: var(--c-dist); --card-accent-bg: var(--c-dist-bg);">
+            <div class="card-top"><div class="icon-wrap">🌐</div><div><h2><a class="card-title" href="docs/distributed-system/distributed-systems.html">Distributed Systems</a></h2><p class="count">3 pages</p></div></div><p class="card-desc">Consensus, consistent hashing</p>
             <ul>
               <li><a href="docs/distributed-system/distributed-systems.html">Distributed Systems</a></li>
               <li><a href="docs/distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li>
               <li><a href="docs/distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li>
             </ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-msg); --card-accent-bg: var(--c-msg-bg);">
-            <div class="icon-wrap">📨</div><h2>Messaging &amp; Queues</h2><p class="count">7 pages</p>
+          <div class="card" id="t-messaging-queues" data-section="Messaging &amp; Queues" style="--card-accent: var(--c-msg); --card-accent-bg: var(--c-msg-bg);">
+            <div class="card-top"><div class="icon-wrap">📨</div><div><h2><a class="card-title" href="docs/sqs/01-sqs.html">Messaging &amp; Queues</a></h2><p class="count">7 pages</p></div></div><p class="card-desc">SQS, Kafka, event sourcing, resilience</p>
             <ul>
               <li><a href="docs/sqs/01-sqs.html">SQS Overview</a></li>
               <li><a href="docs/sqs/02-queus-methord.html">Queue Methods</a></li>
@@ -847,8 +815,8 @@ a:hover { text-decoration: underline; }
       <div class="cat-group" id="cat-app" data-cat="app">
         <div class="cat-head"><span class="cat-icon">💻</span><div><h3>Application &amp; Code</h3><p>What you write on top of the platform — front-end rendering and HTTP, login and auth flows, design principles, and small coding concepts.</p></div></div>
         <div class="grid">
-          <div class="card" style="--card-accent: var(--c-frontend); --card-accent-bg: var(--c-frontend-bg);">
-            <div class="icon-wrap">🖥️</div><h2>Front-End</h2><p class="count">11 pages</p>
+          <div class="card" id="t-front-end" data-section="Front-End" style="--card-accent: var(--c-frontend); --card-accent-bg: var(--c-frontend-bg);">
+            <div class="card-top"><div class="icon-wrap">🖥️</div><div><h2><a class="card-title" href="docs/01-front-end/frontend-roadmap.html">Front-End</a></h2><p class="count">11 pages</p></div></div><p class="card-desc">Browser, HTTP, CORS, rendering, APIs</p>
             <ul>
               <li><a href="docs/01-front-end/frontend-roadmap.html">Front-End Roadmap</a></li>
               <li><a href="docs/01-front-end/graphql/http/04-client-server-model.html">Client-Server Model, End to End</a></li>
@@ -863,8 +831,8 @@ a:hover { text-decoration: underline; }
               <li><a href="docs/01-front-end/system-design-roadmap.html">System Design Roadmap</a></li>
             </ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-auth); --card-accent-bg: var(--c-auth-bg);">
-            <div class="icon-wrap">🔐</div><h2>Authentication</h2><p class="count">5 pages</p>
+          <div class="card" id="t-authentication" data-section="Authentication" style="--card-accent: var(--c-auth); --card-accent-bg: var(--c-auth-bg);">
+            <div class="card-top"><div class="icon-wrap">🔐</div><div><h2><a class="card-title" href="docs/authentication/00-login-steps.html">Authentication</a></h2><p class="count">5 pages</p></div></div><p class="card-desc">Login, sessions, hashing, OAuth</p>
             <ul>
               <li><a href="docs/authentication/00-login-steps.html">Secure Login Implementation Steps</a></li>
               <li><a href="docs/authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li>
@@ -873,12 +841,12 @@ a:hover { text-decoration: underline; }
               <li><a href="docs/authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li>
             </ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-dev); --card-accent-bg: var(--c-dev-bg);">
-            <div class="icon-wrap">🧭</div><h2>Dev Principles</h2><p class="count">1 page</p>
+          <div class="card" id="t-dev-principles" data-section="Dev Principles" style="--card-accent: var(--c-dev); --card-accent-bg: var(--c-dev-bg);">
+            <div class="card-top"><div class="icon-wrap">🧭</div><div><h2><a class="card-title" href="docs/software-development-principles/01-sdp.html">Dev Principles</a></h2><p class="count">1 page</p></div></div><p class="card-desc">Design patterns: creational, structural, behavioral</p>
             <ul><li><a href="docs/software-development-principles/01-sdp.html">Software Development Principles</a></li></ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-misc); --card-accent-bg: var(--c-misc-bg);">
-            <div class="icon-wrap">🧩</div><h2>Miscellaneous</h2><p class="count">3 pages</p>
+          <div class="card" id="t-miscellaneous" data-section="Miscellaneous" style="--card-accent: var(--c-misc); --card-accent-bg: var(--c-misc-bg);">
+            <div class="card-top"><div class="icon-wrap">🧩</div><div><h2><a class="card-title" href="docs/mislanious/01-pubsub-and-pubnub.html">Miscellaneous</a></h2><p class="count">3 pages</p></div></div><p class="card-desc">Pub/Sub, memory profiling, query strings</p>
             <ul>
               <li><a href="docs/mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li>
               <li><a href="docs/mislanious/Memory-Profiling.html">Memory Profiling</a></li>
@@ -890,8 +858,8 @@ a:hover { text-decoration: underline; }
       <div class="cat-group" id="cat-plan" data-cat="plan">
         <div class="cat-head"><span class="cat-icon">🗺️</span><div><h3>Planning &amp; Projects</h3><p>Putting it together — requirements, MVP and API planning, gap analysis, and end-to-end project walkthroughs.</p></div></div>
         <div class="grid">
-          <div class="card" style="--card-accent: var(--c-plan); --card-accent-bg: var(--c-plan-bg);">
-            <div class="icon-wrap">🗺️</div><h2>Planning &amp; Roadmap</h2><p class="count">5 pages</p>
+          <div class="card" id="t-planning-roadmap" data-section="Planning &amp; Roadmap" style="--card-accent: var(--c-plan); --card-accent-bg: var(--c-plan-bg);">
+            <div class="card-top"><div class="icon-wrap">🗺️</div><div><h2><a class="card-title" href="docs/path/00-system-desing.html">Planning &amp; Roadmap</a></h2><p class="count">5 pages</p></div></div><p class="card-desc">Requirements, MVP, APIs, gap analysis</p>
             <ul>
               <li><a href="docs/path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li>
               <li><a href="docs/path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li>
@@ -900,21 +868,73 @@ a:hover { text-decoration: underline; }
               <li><a href="docs/path/03-coverage-gap-analysis.html">Coverage Gap Analysis &amp; Prompts</a></li>
             </ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-proj); --card-accent-bg: var(--c-proj-bg);">
-            <div class="icon-wrap">🏗️</div><h2>Project Walkthroughs</h2><p class="count">3 pages</p>
+          <div class="card" id="t-project-walkthroughs" data-section="Project Walkthroughs" style="--card-accent: var(--c-proj); --card-accent-bg: var(--c-proj-bg);">
+            <div class="card-top"><div class="icon-wrap">🏗️</div><div><h2><a class="card-title" href="docs/project-explaintion/image-share-system/200-images.html">Project Walkthroughs</a></h2><p class="count">3 pages</p></div></div><p class="card-desc">Image share, Instagram, chat system</p>
             <ul>
               <li><a href="docs/project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li>
               <li><a href="docs/project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li>
               <li><a href="docs/project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li>
             </ul>
           </div>
-          <div class="card" style="--card-accent: var(--c-overview); --card-accent-bg: var(--c-overview-bg);">
-            <div class="icon-wrap">📄</div><h2>Overview</h2><p class="count">1 page</p>
+          <div class="card" id="t-overview" data-section="Overview" style="--card-accent: var(--c-overview); --card-accent-bg: var(--c-overview-bg);">
+            <div class="card-top"><div class="icon-wrap">📄</div><div><h2>Overview</h2><p class="count">1 page</p></div></div>
             <ul><li><a href="index.html">Notes Overview</a></li></ul>
           </div>
         </div>
       </div>
+      <div class="cat-group" id="cat-books" data-cat="books">
+        <div class="cat-head"><span class="cat-icon">📚</span><div><h3>Books</h3><p>Book-by-book study notes — open a book to see its chapters and the key topics each chapter covers.</p></div></div>
+        <div class="grid">
+          <div class="card" id="t-books" data-section="Books" style="--card-accent: var(--c-books); --card-accent-bg: var(--c-books-bg);">
+            <div class="card-top"><div class="icon-wrap">📚</div><div><h2><a class="card-title" href="docs/books/index.html">Bookshelf</a></h2><p class="count">1 book</p></div></div><p class="card-desc">Book names only — open one for its chapters</p>
+            <ul>
+              <li><a href="docs/books/domain-driven-design/index.html">📘 Domain-Driven Design — Eric Evans</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </section>
+
+    <!-- Filled at runtime by the inline script below (per-viewer random weekly
+         pick + progress, ported from docs/assets/site-header.js). -->
+    <div data-weekly-target id="weekly"></div>
+
+    <!-- Daily revision banner -->
+    <div class="revision-banner" id="revisionBanner">
+      <span class="rb-icon">🔁</span>
+      <span class="rb-text">Today's revision: <strong id="revisionTitle"></strong></span>
+      <a class="rb-link" id="revisionLink" href="#">Revise now</a>
+      <button class="rb-close" id="revisionClose" aria-label="Dismiss">✕</button>
+    </div>
+
+    <!-- Revision cards: one short paragraph pulled from each docs/ page by
+         scripts/build-revision-cards.js (docs/assets/revision-cards.js). -->
+    <section class="block" id="revise">
+      <div class="block-head">
+        <h2>🃏 Revision cards</h2>
+        <p>One short paragraph pulled from each page — the page's interview answer when it has one, otherwise its lead line or the paragraph that best defines the topic. Turn on <b>Quiz mode</b> to hide the answer until you've recalled it.</p>
+      </div>
+      <div class="rev-toolbar">
+      <div class="chips" id="revChips" role="group" aria-label="Filter by category">
+        <button class="chip active" type="button" data-cat="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-cat="infra" aria-pressed="false">🏗️ Infrastructure &amp; Ops</button>
+        <button class="chip" type="button" data-cat="data" aria-pressed="false">🗃️ Data &amp; Distributed Systems</button>
+        <button class="chip" type="button" data-cat="app" aria-pressed="false">💻 Application &amp; Code</button>
+        <button class="chip" type="button" data-cat="plan" aria-pressed="false">🗺️ Planning &amp; Projects</button>
+        <button class="chip" type="button" data-cat="books" aria-pressed="false">📚 Books</button>
+      </div>
+        <div class="rev-actions">
+          <label class="toggle"><input type="checkbox" id="quizMode"> Quiz mode</label>
+          <button class="btn" id="revShuffle" type="button">🔀 Shuffle</button>
+        </div>
+      </div>
+      <div class="rev-grid" id="revGrid"></div>
+      <div class="rev-more">
+        <button class="btn" id="revMore" type="button">Show more cards</button>
+        <span id="revCount"></span>
+      </div>
+    </section>
+
 
     <section class="block" id="resources">
       <div class="two-col">
@@ -931,7 +951,7 @@ a:hover { text-decoration: underline; }
     </div>
 
         </div>
-        <div>
+        <div id="soon">
           <div class="block-head"><h2>🚧 Coming soon</h2></div>
     <div class="soon-list">
       <span>🚧 Networking</span><span>🚧 Backend</span><span>🚧 Storage Fundamentals</span><span>🚧 API Design</span>
@@ -1133,25 +1153,24 @@ a:hover { text-decoration: underline; }
     'Storage': 'infra', 'Web Servers': 'infra', 'Observability, Security & Ops': 'infra', 'AWS Learning': 'infra',
     'Database': 'data', 'Distributed Database': 'data', 'Distributed Systems': 'data', 'Messaging & Queues': 'data',
     'Front-End': 'app', 'Authentication': 'app', 'Dev Principles': 'app', 'Miscellaneous': 'app',
-    'Planning & Roadmap': 'plan', 'Project Walkthroughs': 'plan', 'Overview': 'plan'
+    'Planning & Roadmap': 'plan', 'Project Walkthroughs': 'plan', 'Overview': 'plan',
+    'Books': 'books'
   };
   const ACCENT = {
     'Kubernetes': 'k8s', 'Front-End': 'frontend', 'Database': 'database', 'Authentication': 'auth',
     'Distributed Systems': 'dist', 'Distributed Database': 'dist', 'Messaging & Queues': 'msg', 'Storage': 'storage',
     'Caching & CDN': 'caching', 'Traffic Management': 'traffic', 'Networking': 'net',
     'Observability, Security & Ops': 'obs', 'Web Servers': 'web', 'AWS Learning': 'aws', 'Dev Principles': 'dev',
-    'Planning & Roadmap': 'plan', 'Project Walkthroughs': 'proj', 'Miscellaneous': 'misc'
+    'Planning & Roadmap': 'plan', 'Project Walkthroughs': 'proj', 'Miscellaneous': 'misc',
+    'Books': 'books'
   };
-  // Site map: badge each topic block with its live page count from SITE_MAP.
+  // Section index: badge each topic with its live page count from SITE_MAP.
   (function () {
     const counts = {};
     ((window.SITE_MAP && window.SITE_MAP.sections) || []).forEach(sec => { counts[sec.name] = sec.pages.length; });
-    document.querySelectorAll('.smap a[data-section]').forEach(a => {
+    document.querySelectorAll('.toc a[data-section]').forEach(a => {
       const n = counts[a.dataset.section];
-      if (n == null) return;
-      const b = document.createElement('span');
-      b.className = 'smap-count'; b.textContent = n + (n === 1 ? ' page' : ' pages');
-      a.insertBefore(b, a.firstChild);
+      if (n != null) a.querySelector('.toc-count').textContent = n;
     });
   })();
   const SOURCE_LABEL = { interview: 'Interview answer', lead: 'Summary', intro: 'Key note' };
@@ -1247,8 +1266,8 @@ a:hover { text-decoration: underline; }
     wireChips(document.getElementById('catChips'), c => {
       groups.forEach(g => { g.hidden = c !== 'all' && g.dataset.cat !== c; });
     });
-    // "Jump to" links should always land on a visible group
-    document.querySelectorAll('.jump a[href^="#cat-"]').forEach(a => a.addEventListener('click', () => {
+    // section-index links should always land on a visible group
+    document.querySelectorAll('.toc a[href^="#"]').forEach(a => a.addEventListener('click', () => {
       const all = document.querySelector('#catChips .chip[data-cat="all"]');
       if (all && !all.classList.contains('active')) all.click();
     }));

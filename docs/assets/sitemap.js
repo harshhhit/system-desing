@@ -790,6 +790,44 @@ window.SITE_MAP = {
           "title": "Query Strings"
         }
       ]
+    },
+    {
+      "icon": "📚",
+      "name": "Books",
+      "pages": [
+        {
+          "href": "books/index.html",
+          "title": "Bookshelf"
+        },
+        {
+          "href": "books/domain-driven-design/index.html",
+          "title": "Domain-Driven Design — Chapters"
+        },
+        {
+          "href": "books/domain-driven-design/01-crunching-knowledge.html",
+          "title": "Ch 1. Crunching Knowledge"
+        },
+        {
+          "href": "books/domain-driven-design/02-communication-and-language.html",
+          "title": "Ch 2. Communication and the Use of Language"
+        }
+      ],
+      "groups": [
+        {
+          "name": "Bookshelf",
+          "hrefs": [
+            "books/index.html"
+          ]
+        },
+        {
+          "name": "Domain-Driven Design (Eric Evans)",
+          "hrefs": [
+            "books/domain-driven-design/index.html",
+            "books/domain-driven-design/01-crunching-knowledge.html",
+            "books/domain-driven-design/02-communication-and-language.html"
+          ]
+        }
+      ]
     }
   ]
 };

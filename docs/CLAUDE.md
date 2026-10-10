@@ -97,7 +97,13 @@ the user exactly what's inconsistent) before considering the task done.
 `Distributed Database` · `Messaging & Queues` · `Storage` · `Caching & CDN` ·
 `Traffic Management` · `Networking` · `Observability, Security & Ops` · `Web Servers` ·
 `AWS Learning` ·
-`Dev Principles` · `Planning & Roadmap` · `Project Walkthroughs` · `Miscellaneous`
+`Dev Principles` · `Planning & Roadmap` · `Project Walkthroughs` · `Miscellaneous` · `Books`
+
+`Books` (`docs/books/`) is a bookshelf: `books/index.html` lists book names only;
+each book gets its own folder (`books/<book-slug>/index.html` = chapter list with what
+each chapter covers, chapters not yet written shown as `.soon` blocks) and one
+12-part lesson page per chapter (`books/<book-slug>/NN-<chapter-slug>.html`, depth 2).
+In `sitemap.js` each book is its own group in the `Books` section.
 
 `Authentication` (`docs/authentication/`) holds login/session, OAuth/social-login,
 and password-hashing notes — folded in from a former separate sub-site. Its pages

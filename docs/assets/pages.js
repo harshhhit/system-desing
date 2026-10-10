@@ -594,6 +594,30 @@ window.SITE_PAGES = {
     section: "Miscellaneous",
     title: "Query Strings"
   },
+  "books-index": {
+    href: "books/index.html",
+    section: "Books",
+    title: "Bookshelf",
+    subtitle: "Books I'm studying. Open a book to see its chapters and what each one covers."
+  },
+  "ddd-book": {
+    href: "books/domain-driven-design/index.html",
+    section: "Books",
+    title: "Domain-Driven Design — Eric Evans",
+    subtitle: "<em>Tackling Complexity in the Heart of Software</em> (2003). The book's four parts and seventeen chapters, with the key topics each chapter covers."
+  },
+  "ddd-01-crunching-knowledge": {
+    href: "books/domain-driven-design/01-crunching-knowledge.html",
+    section: "Books",
+    title: "Domain-Driven Design, Ch 1 — Crunching Knowledge",
+    subtitle: "How developers and domain experts distil messy domain knowledge into a model: the five ingredients of effective modeling, continuous learning, knowledge-rich design, and deep models."
+  },
+  "ddd-02-communication-and-language": {
+    href: "books/domain-driven-design/02-communication-and-language.html",
+    section: "Books",
+    title: "Domain-Driven Design, Ch 2 — Communication and the Use of Language",
+    subtitle: "The Ubiquitous Language: one vocabulary built on the model and used everywhere — modeling out loud, one team one language, and the role of diagrams, documents and explanatory models."
+  },
 };
 (window.SITE_PAGES_BY_SITE = window.SITE_PAGES_BY_SITE || {})["e1"] = window.SITE_PAGES;
 

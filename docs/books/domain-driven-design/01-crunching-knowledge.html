@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "ddd-01-crunching-knowledge" };</script>
+
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Domain-Driven Design, Ch 1 — Crunching Knowledge · Infra Owl</title>
+<link rel="stylesheet" href="../../assets/site.css?v=10">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+</style>
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/pages.js"></script>
+<script src="../../assets/site-header.js?v=9" data-root="../../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>🖧 Web Servers</h3><ul><li><a href="../../web-servers/server.html">Web Servers</a></li><li><a href="../../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../../mislanious/query-string.html">Query Strings</a></li></ul><h3>📚 Books</h3><details class="sd-nav-group"><summary>Bookshelf</summary><ul><li><a href="../../books/index.html">Bookshelf</a></li></ul></details><details class="sd-nav-group" open><summary>Domain-Driven Design (Eric Evans)</summary><ul><li><a href="../../books/domain-driven-design/index.html">Domain-Driven Design — Chapters</a></li><li><a class="active" href="../../books/domain-driven-design/01-crunching-knowledge.html">Ch 1. Crunching Knowledge</a></li><li><a href="../../books/domain-driven-design/02-communication-and-language.html">Ch 2. Communication and the Use of Language</a></li></ul></details></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main sd-lesson" data-reminders="Model with domain experts, not for them|Get a crude prototype running early|Name business rules as explicit objects|Drop model concepts that don't earn their place|Keep learning — the first model is never the deep one">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../../index.html">Home</a> / Books / Domain-Driven Design, Ch 1 — Crunching Knowledge</p>
+      <h1 data-page-title>Domain-Driven Design, Ch 1 — Crunching Knowledge</h1>
+      <p class="sd-study-prompt" data-page-subtitle>How developers and domain experts distil messy domain knowledge into a model: the five ingredients of effective modeling, continuous learning, knowledge-rich design, and deep models.</p>
+
+      <!-- ═══════════  PAGE CONTENT  ═══════════ -->
+
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this chapter's notes you will be able to:</p>
+        <ul>
+          <li>Say what knowledge crunching is and why software teams need it</li>
+          <li>List the five ingredients of effective domain modeling</li>
+          <li>Explain why one-way handoffs (analyst → developer) produce shallow software</li>
+          <li>Turn a business rule hidden in a conditional into an explicit, named model object</li>
+          <li>Tell a superficial model from a deep one, using the book's shipping example</li>
+        </ul>
+      </section>
+
+      <!-- 01 OVERVIEW -->
+      <h2 id="overview" data-stage="Overview">What Knowledge Crunching Is and Why It Exists</h2>
+      <p><strong>Knowledge crunching</strong> is the process in which developers and domain experts work together to take a large, messy body of information about a business domain and distil it into a <strong>model</strong> — a small, organised set of concepts, relationships and rules that captures what matters for the software. It is the opening chapter of Part I, "Putting the Domain Model to Work", and the rest of the book builds on it.</p>
+      <p>It exists because developers usually start a project knowing nothing about the domain, while domain experts know a great deal but cannot hand that knowledge over as a document. Expert knowledge is scattered, partly unspoken, and full of exceptions. If developers simply code what they are told, the software works for the cases someone thought to mention and breaks on the rest — and nobody can explain <em>why</em> the code does what it does. Knowledge crunching turns that scattered knowledge into something both sides understand and the code can express.</p>
+      <p>Evans compares it to financial analysts "crunching numbers": they sift through a flood of data, try one way of organising it after another, and stop when a simple view emerges that explains the whole. Modelers do the same with domain information — many candidate models are tried, rejected or reshaped before a useful one settles.</p>
+
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>The model is not a diagram and not a document. It is the <em>shared, simplified understanding</em> of the domain. Diagrams, conversations and code are all just ways of expressing that one model — which is why they must agree with each other.</p>
+      </aside>
+
+      <h3 id="pcb-story">The opening story: software for circuit-board designers</h3>
+      <p>The chapter opens with a project from Evans's own experience: building a tool for people who design printed-circuit boards (PCBs). He knew nothing about electronics, and the designers could not tell him what software they needed in terms a programmer could act on. Their first requests were vague, and their vocabulary — <em>nets</em>, <em>components</em>, <em>pins</em>, <em>probe simulation</em> — meant nothing to him yet.</p>
+      <p>Instead of collecting requirements, he sat with the designers and sketched. He drew boxes for the things they mentioned, asked them to correct him, and redrew. Each round both sides learned something: the designers had to make precise what they normally did by instinct, and Evans learned the domain's real concepts. Within a short time they had a small model — components with pins, nets connecting pins, and signals that travel across nets — and they used it to describe a <em>probe simulation</em> (following a signal through the board to find paths that are too long) in a way both sides could check.</p>
+      <p>Crucially, he then built a crude, working prototype of that model in code, with no real user interface — and the designers could watch it run and say "yes, that's how it works" or "no, you missed this". Concepts the designers had stressed at first but that the simulation did not need were dropped; concepts nobody had mentioned at first turned out to be essential and were added. The <a href="#how-it-works">How It Works</a> part walks through this loop step by step.</p>
+
+      <!-- 02 CORE CONCEPTS -->
+      <h2 id="core-concepts" data-stage="Core Concepts">Core Concepts</h2>
+      <table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><strong>Domain</strong></td><td>The subject area the software serves — circuit-board design, cargo shipping, lending.</td></tr>
+        <tr><td><strong>Domain expert</strong></td><td>A person who knows the domain deeply from doing the work (a PCB designer, a shipping booking agent), not from building software.</td></tr>
+        <tr><td><strong>Model</strong></td><td>A deliberately simplified, organised abstraction of domain knowledge, chosen for what the software has to do. Not a copy of reality.</td></tr>
+        <tr><td><strong>Knowledge crunching</strong></td><td>The collaborative, iterative process that turns raw domain knowledge into a model.</td></tr>
+        <tr><td><strong>Knowledge-rich design</strong></td><td>A design whose model captures business <em>rules and behaviour</em>, not just the nouns and their data.</td></tr>
+        <tr><td><strong>Deep model</strong></td><td>A model that expresses the domain's essential concerns, reached after superficial first impressions are discarded.</td></tr>
+      </table>
+
+      <h3 id="five-ingredients">The five ingredients of effective modeling</h3>
+      <p>Looking back at the PCB project, Evans names what made the modeling work. These five ingredients are the chapter's core checklist:</p>
+      <ol>
+        <li><strong>Binding the model and the implementation.</strong> A crude prototype tied the model to running code from the start, so the model was tested against reality early and the code and model kept evolving together.</li>
+        <li><strong>Cultivating a language based on the model.</strong> Over time the team stopped translating: developers and designers both spoke in terms of components, nets and signals, so a sentence about the software was also a sentence about the domain. (Chapter 2 develops this into the <em>Ubiquitous Language</em>.)</li>
+        <li><strong>Developing a knowledge-rich model.</strong> The objects had behaviour and enforced rules — the model was not a data schema but a way of solving the problem.</li>
+        <li><strong>Distilling the model.</strong> Concepts were dropped as well as added. When something turned out not to matter, it was removed, so the model stayed small enough to hold in your head.</li>
+        <li><strong>Brainstorming and experimenting.</strong> Sketches, conversations and the prototype were treated as experiments; many variations were tried, and the ones that made the explanation simpler were kept.</li>
+      </ol>
+
+      <aside class="sd-callout mistake">
+        <p class="sd-callout-title">⚠️ Common mistake</p>
+        <p>Treating "the model" as the database schema or the class diagram you draw on day one. A schema of nouns with fields is only the data; a model also captures what the domain <em>does</em> and the rules it follows. If all your domain objects are getters and setters and the rules live in service methods full of <code>if</code> statements, you have the data, not the model.</p>
+      </aside>
+
+      <h3 id="crunching-vs-gathering">Knowledge crunching vs. requirements gathering — the difference</h3>
+      <p>The difference is the direction of the flow. <strong>Requirements gathering</strong> moves information one way: experts describe, analysts write it down, developers implement what is written. <strong>Knowledge crunching</strong> is a two-way loop: developers bring abstraction and modeling skill, experts bring domain knowledge, and each round of sketches and prototypes changes what <em>both</em> sides understand. Evans points out two failure modes of one-way flow:</p>
+      <ul>
+        <li><strong>Waterfall handoff:</strong> analysts build a model from the experts and pass it to programmers. The programmers never feel the domain, and the analysts never see what the implementation teaches, so the model is never corrected by experience.</li>
+        <li><strong>Iteration without modeling:</strong> developers iterate quickly with experts but only ask "what should this screen do?". The software accumulates features, yet no one ever abstracts the underlying principles, so each new feature is bolted on and the code never gets more powerful.</li>
+      </ul>
+
+      <!-- 04 HOW IT WORKS -->
+      <h2 id="how-it-works" data-stage="How It Works">How It Works — The Knowledge Crunching Loop</h2>
+      <p>Knowledge crunching is a cycle, not a phase. Each pass through the loop leaves the team with a slightly better model and code that expresses it.</p>
+      <div class="mermaid sd-diagram">flowchart LR
+    A["Talk with domain experts<br/>(their words, their cases)"] --> B["Sketch a candidate model<br/>(boxes, arrows, scenarios)"]
+    B --> C["Experts correct it<br/>(missing / wrong / irrelevant)"]
+    C --> D["Bind it to code<br/>(crude working prototype)"]
+    D --> E["Run real scenarios<br/>(does it explain them?)"]
+    E --> F["Distil<br/>(drop, rename, add concepts)"]
+    F --> A
+</div>
+      <p class="sd-diagram-caption">The loop the PCB project followed: talk, sketch, correct, implement, test against scenarios, distil — then go round again.</p>
+      <ol class="sd-steps">
+        <li><strong>Listen in the experts' terms.</strong> Developers ask experts to walk through real cases in their own vocabulary. Cause → effect: because the experts' words are used, the experts can spot errors immediately, which they cannot do with technical jargon.</li>
+        <li><strong>Sketch a candidate model.</strong> Developers draw the concepts and relationships they heard. The sketch is a hypothesis, cheap to throw away.</li>
+        <li><strong>Let the experts correct it.</strong> Experts say what is wrong, missing, or unimportant. This forces them to make tacit knowledge explicit — often they discover rules they apply without noticing.</li>
+        <li><strong>Bind the model to running code early.</strong> A minimal prototype implements the model with no polish. Running code exposes gaps no diagram reveals — a missing concept makes a scenario impossible to express.</li>
+        <li><strong>Test against real scenarios.</strong> Walk concrete cases through the prototype with the experts watching. Each case either confirms the model or produces a specific correction.</li>
+        <li><strong>Distil.</strong> Remove concepts that did not help explain any scenario, merge duplicates, rename things to match how experts actually speak. The model gets <em>smaller and sharper</em>, not just bigger.</li>
+      </ol>
+
+      <div class="mermaid sd-diagram">classDiagram
+    class Component {
+      refDes
+    }
+    class Pin
+    class Net {
+      push(signal)
+    }
+    class Signal
+    Component "1" --> "*" Pin : has
+    Net "1" --> "*" Pin : connects
+    Signal --> Net : travels across
+</div>
+      <p class="sd-diagram-caption">A simplified view of the kind of model the PCB team converged on: components own pins, nets connect pins, and a probe simulation pushes signals across nets to find over-long paths.</p>
+
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>The PCB designers did not ask for "components, pins and nets with a push operation". They asked for help with their work. Who discovered that this model was the right one — the experts or the developer? The honest answer is <em>neither alone</em>: it existed only after their conversation. That is the point of knowledge crunching.</p>
+      </aside>
+
+      <h3 id="continuous-learning">Continuous learning</h3>
+      <p>When a team starts on a domain, it does not know enough to build the right model — and it does not know what it doesn't know. Evans therefore treats learning as continuous, not as an up-front analysis phase. Developers keep learning the domain (and keep improving their modeling skill) for the whole life of the project.</p>
+      <p>The chapter also names what destroys that learning: knowledge leaks out of projects. People move teams, work is handed to a different group, a reorganisation splits the people who understood a part of the system. If the understanding lived only in someone's head, it leaves with them. A well-built model, expressed in code and in the team's language, is one of the few ways that knowledge survives — the next developer can read it out of the design.</p>
+
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>"Only one engineer knows how refunds work" is a knowledge-crunching failure, not a staffing issue. If the refund rules were explicit, named objects in the code and the team used the same words as the finance team, that engineer leaving would cost a person, not the knowledge.</p>
+      </aside>
+
+      <!-- 05 IMPLEMENTATION -->
+      <h2 id="knowledge-rich-design" data-stage="Implementation">Implementation — Knowledge-Rich Design: The Overbooking Example</h2>
+      <p>The chapter's code example shows what "knowledge-rich" means. A shipping application books cargo onto a voyage (one trip of a ship). The first version is simple: if a booking is requested, assign a confirmation number and add the cargo to the voyage. The Java below is a reconstruction of the book's example.</p>
+      <pre><code>public int makeBooking(Cargo cargo, Voyage voyage) {
+    int confirmation = orderConfirmationSequence.next();
+    voyage.addCargo(cargo, confirmation);
+    return confirmation;
+}</code></pre>
+      <p>Then the domain experts mention something the developers had never heard of: shipping lines, like airlines, routinely accept <strong>more bookings than the ship can hold</strong>, because some customers always cancel at the last minute. The industry practice is to allow overbooking up to a policy limit — in the example, 10% above capacity. The obvious change is a guard clause:</p>
+      <pre><code>public int makeBooking(Cargo cargo, Voyage voyage) {
+    double maxBooking = voyage.capacity() * 1.1;
+    if ((voyage.bookedCargoSize() + cargo.size()) &gt; maxBooking)
+        return -1;
+
+    int confirmation = orderConfirmationSequence.next();
+    voyage.addCargo(cargo, confirmation);
+    return confirmation;
+}</code></pre>
+      <ul>
+        <li><code>voyage.capacity() * 1.1</code> — this is an entire business policy, compressed into a magic number. Nothing in the code says "overbooking"; a reader sees arithmetic, not a rule.</li>
+        <li><code>return -1</code> — the rejection is a silent sentinel value, so the reason a booking failed is lost.</li>
+      </ul>
+      <p>The code works, but the knowledge is hidden. A business person could never read it, and a developer who did not attend the meeting would see <code>1.1</code> and have no idea it is a deliberate, changeable policy. Evans's refactoring makes the concept explicit in the model:</p>
+      <pre><code>public int makeBooking(Cargo cargo, Voyage voyage) {
+    if (!overbookingPolicy.isAllowed(cargo, voyage)) return -1;
+
+    int confirmation = orderConfirmationSequence.next();
+    voyage.addCargo(cargo, confirmation);
+    return confirmation;
+}
+
+public class OverbookingPolicy {
+    public boolean isAllowed(Cargo cargo, Voyage voyage) {
+        return (cargo.size() + voyage.bookedCargoSize())
+                &lt;= (voyage.capacity() * 1.1);
+    }
+}</code></pre>
+      <ul>
+        <li><code>overbookingPolicy.isAllowed(cargo, voyage)</code> — the booking method now <em>says</em> what it checks, in the domain's own words. A domain expert reading this line over a developer's shoulder can confirm it.</li>
+        <li><code>class OverbookingPolicy</code> — the rule is a first-class concept with its own name and home. When the limit changes, or becomes per-route, or per-customer, there is exactly one place to change and test.</li>
+        <li>The rest of <code>makeBooking</code> is unchanged — the refactoring adds a concept, it does not rewrite the flow.</li>
+      </ul>
+
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>The policy object is a modeling decision, not a coding trick. It exists because "overbooking" is a real, named concept in the shipping business. Evans explicitly warns <strong>not</strong> to wrap every detail in its own object — reserve this for rules that matter to the business and that domain experts talk about. (The same idea later becomes the <em>Strategy / Policy</em> pattern in Chapter 12.)</p>
+      </aside>
+
+      <!-- 06 PRODUCTION -->
+      <h2 id="deep-models" data-stage="Production">In Real Projects — Deep Models</h2>
+      <p>The last idea of the chapter is that useful models start superficial and get deeper over time. A <strong>deep model</strong> is one that captures what the business is actually about, rather than its most visible surface.</p>
+      <p>Evans's shipping example: at first, everyone describes the business physically — cargo is loaded onto ships, moved between ports, unloaded into warehouses. A model built from that tracks containers and handling steps. After months of work with the experts, a deeper view emerges: a shipping company's core job is <strong>taking on and transferring legal responsibility for cargo</strong> — from the shipper, to the shipping line, to a local carrier, recorded through documents such as the bill of lading. Once the model is organised around responsibility, many hard requirements (who is liable at each moment, what each party must be told) become simple to express, and the physical handling details move into a supporting role.</p>
+      <table>
+        <tr><th></th><th>Superficial model</th><th>Deep model</th></tr>
+        <tr><td>Built from</td><td>What experts mention first; what is visible</td><td>What experts actually reason about when things go wrong</td></tr>
+        <tr><td>Shipping example</td><td>Ships, containers, loading, unloading</td><td>Transfer of responsibility between parties</td></tr>
+        <tr><td>New requirements</td><td>Each one needs special-case code</td><td>Many fall out of the model naturally</td></tr>
+        <tr><td>How you get there</td><td>One round of interviews</td><td>Repeated knowledge crunching and refactoring (Part III of the book)</td></tr>
+      </table>
+
+      <h3 id="team-practice">What this looks like on a team</h3>
+      <table>
+        <tr><th></th><th>Small team / one product</th><th>Large organisation / many teams</th></tr>
+        <tr><td>Who crunches</td><td>The developers themselves, directly with one or two experts</td><td>Each team with its own experts; models differ by area (see Part IV, Bounded Contexts)</td></tr>
+        <tr><td>Where the model lives</td><td>Mostly in the code and whiteboard sketches</td><td>Code plus a few short explanatory documents per area</td></tr>
+        <tr><td>Main risk</td><td>Knowledge concentrated in one person</td><td>Handoffs between analysts, teams and vendors cut the feedback loop</td></tr>
+      </table>
+      <table>
+        <tr><th>Signal</th><th>Where it comes from</th><th>What it tells you</th></tr>
+        <tr><td>Experts can follow a conversation about the code</td><td>Design reviews, refinement sessions</td><td>The model and language are shared — crunching is working</td></tr>
+        <tr><td>Developers translate ("so in our system that's a…")</td><td>Meetings with the business</td><td>Two vocabularies exist; the model is not shared</td></tr>
+        <tr><td>Business-rule changes touch many files</td><td>Pull requests, change history</td><td>Rules are implicit and scattered, not modeled</td></tr>
+        <tr><td>New requirements get simpler to add over time</td><td>Estimates and lead time trend</td><td>The model is getting deeper</td></tr>
+      </table>
+
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>You rarely get the deep model before launch. Expect it to arrive after you have lived with real cases — and budget for the refactoring when it does. Teams that freeze the first model "because it's in production" lock in the superficial version.</p>
+      </aside>
+
+      <!-- 09 TROUBLESHOOTING -->
+      <h2 id="troubleshooting" data-stage="Troubleshooting">Failure Scenarios — When Knowledge Crunching Breaks Down</h2>
+      <table>
+        <tr><th>Symptom</th><th>Possible cause</th><th>Detect</th><th>Debug</th><th>Fix</th><th>Prevent</th></tr>
+        <tr><td>A rule change ("allow 15% overbooking") takes days and breaks things</td><td>The rule is a magic number or conditional copied into several places</td><td>Search the code for the literal value</td><td>List every place the rule is applied and compare them — they often already disagree</td><td>Extract one named policy object; route all call sites through it</td><td>Model every rule experts name as an explicit concept</td></tr>
+        <tr><td>Domain experts don't recognise the terms in code or tickets</td><td>Model built by developers alone, or by analysts and handed over</td><td>Read a class list aloud to an expert</td><td>Note each term they question or rename</td><td>Rename to the experts' words; run a modeling session on the confusing area</td><td>Keep experts in the loop on every model change</td></tr>
+        <tr><td>Domain classes are only fields with getters/setters</td><td>Only the data was modeled, not the behaviour</td><td>Rules live in "service"/"manager" classes full of <code>if</code>s</td><td>Ask "whose responsibility is this rule?" for each conditional</td><td>Move behaviour onto the concepts it belongs to</td><td>Ask experts what the thing <em>does</em>, not just what it has</td></tr>
+        <tr><td>Only one person can explain a part of the system</td><td>Knowledge never made it into the model or language</td><td>Bus-factor review; who reviews every PR in that area</td><td>Check whether that area's code reads like the domain</td><td>Pair the expert developer with others while refactoring toward explicit concepts</td><td>Treat learning as continuous, team-wide work</td></tr>
+        <tr><td>Each new feature needs a special case</td><td>Model is superficial — it describes the surface, not the essence</td><td>Feature lead time rising for similar-sized work</td><td>Look for the concept the special cases have in common</td><td>Refactor toward the deeper concept (e.g. "responsibility")</td><td>Keep crunching after launch; schedule model refactoring</td></tr>
+      </table>
+      <ol class="sd-steps">
+        <li><strong>Find hidden rules:</strong> search for magic numbers and repeated conditionals, e.g. <code>grep -rnE "\* ?1\.1\b|capacity\(\)" src/</code>.</li>
+        <li><strong>See who holds the knowledge:</strong> <code>git shortlog -sn -- src/booking/</code> shows whether one person wrote nearly all of an area.</li>
+        <li><strong>See how often a rule moves:</strong> <code>git log --oneline -S "1.1" -- src/</code> lists every commit that added or removed that literal.</li>
+        <li><strong>Confirm with the experts:</strong> read the extracted rule back to them in their language; the fix is done when they agree it says what the business does.</li>
+      </ol>
+
+      <!-- 10 BEST PRACTICES -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul>
+        <li><strong>Model together with domain experts, in the same room or call</strong> — the model only becomes correct through their corrections.</li>
+        <li><strong>Get a crude, running prototype of the model early</strong> — code exposes gaps that diagrams hide.</li>
+        <li><strong>Use the experts' vocabulary in code, diagrams and conversation</strong> — one language means no translation errors.</li>
+        <li><strong>Make important business rules explicit objects</strong> (like <code>OverbookingPolicy</code>) — they become findable, testable and readable by non-developers.</li>
+        <li><strong>Remove concepts that don't earn their place</strong> — a smaller model is easier to keep correct.</li>
+        <li><strong>Keep learning after release</strong> — the deep model usually appears only after experience with real cases.</li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul>
+        <li><strong>One-way handoffs from analysts to developers</strong> — the implementation never feeds back into the model.</li>
+        <li><strong>Iterating on features without abstracting</strong> — you get more code but never a more powerful design.</li>
+        <li><strong>Modeling only data</strong> — rules end up scattered in conditionals.</li>
+        <li><strong>Over-modeling every detail into its own class</strong> — Evans reserves explicit concepts for things that matter to the business.</li>
+        <li><strong>Freezing the first model</strong> — first models are superficial by nature.</li>
+      </ul>
+
+      <aside class="sd-callout interview">
+        <p class="sd-callout-title">🎯 Interview tip</p>
+        <p>When asked about DDD, don't jump straight to Aggregates and Bounded Contexts. Start with the reason the book exists — complexity lives in the domain, so you build a shared model with experts — then show the patterns as tools for expressing that model. Interviewers listen for whether you understand the "why".</p>
+      </aside>
+
+      <!-- 11 INTERVIEW PREPARATION -->
+      <h2 id="interview-answer" data-stage="Interview Preparation">Interview Answer — What Is Knowledge Crunching in Domain-Driven Design?</h2>
+      <p>Knowledge crunching is the collaborative process at the start — and throughout the life — of a domain-driven project in which developers and domain experts turn a large, disorganised body of domain knowledge into a focused model. Developers bring the ability to abstract and organise; experts bring the knowledge; together they sketch candidate models, test them against real scenarios and running prototypes, and keep refining until the model explains the domain simply.</p>
+      <p>It exists because the hardest part of complex software is the domain itself, and that knowledge cannot be handed over in a requirements document. One-way handoffs lose the feedback that corrects a model, and feature-by-feature iteration without abstraction never builds a model at all. Evans lists five ingredients that make it work: bind the model to the implementation early, build a shared language from the model, make the model knowledge-rich (rules and behaviour, not just data), distil it by dropping what doesn't matter, and experiment freely.</p>
+      <p>Its output shows up directly in code: a business rule like overbooking becomes a named <code>OverbookingPolicy</code> instead of a hidden <code>* 1.1</code>. And it never really ends — continuous learning is what lets a team move from a superficial model to a <a href="#deep-models">deep model</a> that captures what the business is actually about.</p>
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"Knowledge crunching is how developers and domain experts build a domain model together. Instead of taking requirements one way, they sketch models, test them against real scenarios and early prototypes, and keep refining — adding the concepts that matter, dropping the ones that don't, and using the same language in code and conversation. The result is a model that captures business rules explicitly, like an overbooking policy as its own object rather than a magic number, and the team keeps learning so the model gets deeper over time."</p>
+      </div>
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Does knowledge crunching mean doing a big modeling or analysis phase up front?</strong></p>
+      <p><strong>A:</strong> No. Evans argues against separating analysis from implementation. The model is tied to running code from the first crude prototype, and learning continues for the whole project, because the team doesn't yet know what it doesn't know. The deep model usually emerges only after experience with real cases, so knowledge crunching is an ongoing loop of conversation, prototyping and refactoring — not a phase that ends with a signed-off diagram.</p>
+
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>Why can't developers just get the domain knowledge from a requirements document?</summary>
+          <p>Because experts' knowledge is scattered, partly tacit and full of exceptions they apply without noticing. A document captures what someone thought to write down; the model has to be discovered through back-and-forth, where developers' questions and prototypes force experts to make their reasoning explicit.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What are the five ingredients of effective modeling in Chapter 1?</summary>
+          <p>Binding the model and the implementation; cultivating a language based on the model; developing a knowledge-rich model; distilling the model; and brainstorming and experimenting.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Why does a waterfall analyst → developer handoff produce a weak model?</summary>
+          <p>Knowledge flows one way. Analysts never learn what the implementation reveals, and developers never absorb the domain, so nobody corrects the model with experience. The software ends up implementing the analysts' first understanding, gaps included.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>Why does Evans extract an <code>OverbookingPolicy</code> class instead of leaving the <code>* 1.1</code> check in place?</summary>
+          <p>The check is an important business rule that experts talk about by name. As a magic number inside a guard clause, it is invisible to readers and impossible for experts to verify. As a named policy object it is explicit, findable, testable, changeable in one place — and a domain expert can read the calling code and confirm it.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>What distinguishes a deep model from a superficial one, and how do you get one?</summary>
+          <p>A superficial model mirrors the visible surface (in shipping: ships, containers, loading). A deep model captures what the business fundamentally reasons about (transfer of responsibility for cargo between parties). You reach it through continued knowledge crunching and refactoring after experience with real cases; a sign you're there is that new requirements fall out of the model instead of needing special cases.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Isn't making every rule an object over-engineering?</summary>
+          <p>Yes, if done for every detail — and Evans says so. The technique is reserved for rules that matter to the business and that experts discuss. Trivial validation can stay inline; core policies deserve explicit names.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Business says "the overbooking limit is now 15% on Asia routes". The change took a week and broke billing. What went wrong, and what would you change?</summary>
+          <p>The rule was implicit — a magic number duplicated across booking, billing and reporting, probably already inconsistent. Find every occurrence (search for the literal), extract one explicit policy concept (an <code>OverbookingPolicy</code> that can vary by route), route all call sites through it, and confirm the new model with the business. Going forward, model every rule experts name as an explicit concept.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>The only engineer who understands the pricing module is leaving. What does Chapter 1 suggest?</summary>
+          <p>This is a continuous-learning failure: knowledge lives in a person, not in the model. Before they leave, pair them with others on refactoring pricing toward explicit, named concepts in the experts' language, and bring a pricing expert into those sessions. The knowledge then survives in code and shared vocabulary.</p></details>
+      </section>
+
+      <!-- 12 SUMMARY -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>Knowledge crunching = developers + domain experts distilling messy domain knowledge into a focused model, iteratively.</li>
+        <li>The model is the shared understanding; diagrams, talk and code are expressions of it and must agree.</li>
+        <li>Five ingredients: bind model to implementation, build a shared language, make it knowledge-rich, distil it, experiment.</li>
+        <li>One-way handoffs and feature-only iteration both fail to produce a real model.</li>
+        <li>Knowledge-rich design puts business rules in the model — <code>OverbookingPolicy</code> instead of <code>* 1.1</code>.</li>
+        <li>Don't make every detail an object; reserve it for rules the business names.</li>
+        <li>Learning is continuous; knowledge leaks when it lives only in people.</li>
+        <li>First models are superficial; deep models (shipping = transfer of responsibility) emerge from continued crunching.</li>
+      </ol>
+
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <div class="sd-next">
+        <a href="02-communication-and-language.html"><strong>Ch 2 · Communication and the Use of Language</strong><span>Turn the model into a Ubiquitous Language the whole team uses — in speech and in code.</span></a>
+        <a href="index.html"><strong>Domain-Driven Design — all chapters</strong><span>See what the rest of the book covers.</span></a>
+        <a href="../../software-development-principles/01-sdp.html"><strong>Dev Principles</strong><span>The design patterns (like Strategy) that DDD's policy objects build on.</span></a>
+      </div>
+
+      <!-- ═══════════  END OF CONTENT  ═══════════ -->
+
+    </main>
+  </div>
+</div>
+
+<script>
+  if (window.mermaid) mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+</body>
+</html>
