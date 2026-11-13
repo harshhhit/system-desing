@@ -618,6 +618,54 @@ window.SITE_PAGES = {
     title: "Domain-Driven Design, Ch 2 — Communication and the Use of Language",
     subtitle: "The Ubiquitous Language: one vocabulary built on the model and used everywhere — modeling out loud, one team one language, and the role of diagrams, documents and explanatory models."
   },
+  "ejpt-index": {
+    href: "ejpt/index.html",
+    section: "Penetration Testing (eJPT)",
+    title: "eJPT Course: Basic to Advanced",
+    subtitle: "A free, hands-on study path for INE's eJPT certification (rebuilt March 2026: 45 questions, 48 hours) — lab setup, recon, exploitation, privilege escalation, pivoting and web app attacks, module by module."
+  },
+  "ejpt-lab-setup": {
+    href: "ejpt/00-lab-setup.html",
+    section: "Penetration Testing (eJPT)",
+    title: "Module 0 — Lab Setup",
+    subtitle: "Build one attacker VM (Kali) and three vulnerable targets (Metasploitable 2, a Windows eval VM, DVWA in Docker) on an isolated host-only network, reused for every module."
+  },
+  "ejpt-foundations": {
+    href: "ejpt/01-foundations.html",
+    section: "Penetration Testing (eJPT)",
+    title: "Module 1 — Foundations",
+    subtitle: "Read a packet, a subnet and a Linux/Windows box like an attacker: ports and services, CIDR math, HTTP, and the SUID / listening-port drills you reuse later."
+  },
+  "ejpt-assessment-methodologies": {
+    href: "ejpt/02-assessment-methodologies.html",
+    section: "Penetration Testing (eJPT)",
+    title: "Module 2 — Assessment Methodologies",
+    subtitle: "25% of the exam: passive and active recon, Nmap host and port scanning, service enumeration (SMB, FTP, SSH, HTTP, MySQL) and vulnerability assessment until they're automatic."
+  },
+  "ejpt-host-network-pentest": {
+    href: "ejpt/03-host-network-pentest.html",
+    section: "Penetration Testing (eJPT)",
+    title: "Module 3 — Host & Network Penetration Testing",
+    subtitle: "The biggest domain (35%): turn enumeration into shells with Metasploit and Meterpreter — bind vs reverse shells, msfvenom payloads, EternalBlue — plus the manual path."
+  },
+  "ejpt-post-exploitation": {
+    href: "ejpt/04-post-exploitation.html",
+    section: "Penetration Testing (eJPT)",
+    title: "Module 4 — Post-Exploitation, Privilege Escalation & Pivoting",
+    subtitle: "Loot and hashes, Linux and Windows privilege escalation, and the exam-decisive skill: pivoting into hidden subnets with autoroute and a SOCKS proxy over proxychains."
+  },
+  "ejpt-web-app-pentest": {
+    href: "ejpt/05-web-app-pentest.html",
+    section: "Penetration Testing (eJPT)",
+    title: "Module 5 — Web Application Penetration Testing",
+    subtitle: "15% of the exam (expanded March 2026): Burp Suite plus the core OWASP bugs — directory brute-forcing, SQL injection (manual and sqlmap), XSS, command injection and file upload against DVWA."
+  },
+  "ejpt-exam-readiness": {
+    href: "ejpt/06-exam-readiness.html",
+    section: "Penetration Testing (eJPT)",
+    title: "Module 6 — Exam Readiness",
+    subtitle: "Timed practice on TryHackMe and VulnHub, a 6-hour self-made mock with a pivot, the one-screen exam-day cheat sheet, and the exam tips — then book the voucher."
+  },
 };
 (window.SITE_PAGES_BY_SITE = window.SITE_PAGES_BY_SITE || {})["e1"] = window.SITE_PAGES;
 

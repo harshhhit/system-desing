@@ -33,6 +33,7 @@
   --c-obs:      #a16207;   --c-obs-bg:      #fef3c7;
   --c-web:      #4f46e5;   --c-web-bg:      #edecff;
   --c-aws:      #c2570c;   --c-aws-bg:      #fff0e3;
+  --c-pentest:  #be123c;   --c-pentest-bg:  #ffe4e9;
   --c-dev:      #0d9488;   --c-dev-bg:      #e2fbf7;
   --c-plan:     #dc2626;   --c-plan-bg:     #ffecec;
   --c-proj:     #b45309;   --c-proj-bg:     #fff3e0;
@@ -48,7 +49,7 @@
     --shadow-hover: 0 10px 24px rgba(0,0,0,0.55);
     --frontend-bg:#0d1117;
     --c-frontend-bg:#0e1f3d; --c-k8s-bg:#101b33;--c-database-bg:#0d2417; --c-auth-bg:#26123d; --c-dist-bg:#062a31;
-    --c-msg-bg:#33190a; --c-storage-bg:#33081d; --c-caching-bg:#062338; --c-traffic-bg:#330d0a; --c-net-bg:#052a1e; --c-obs-bg:#2e2205; --c-web-bg:#181240; --c-aws-bg:#33190a; --c-dev-bg:#052e28;
+    --c-msg-bg:#33190a; --c-storage-bg:#33081d; --c-caching-bg:#062338; --c-traffic-bg:#330d0a; --c-net-bg:#052a1e; --c-obs-bg:#2e2205; --c-web-bg:#181240; --c-aws-bg:#33190a; --c-pentest-bg:#330818; --c-dev-bg:#052e28;
     --c-plan-bg:#320a0a; --c-proj-bg:#301c05; --c-misc-bg:#1e1140; --c-overview-bg:#1b2027; --c-books-bg:#2e1406;
   }
 }
@@ -648,6 +649,7 @@ a.toc-cat:hover { color: var(--accent); text-decoration: none; }
         <li><a href="docs/web-servers/server.html" style="--a: var(--c-web)" data-section="Web Servers"><span class="toc-ico">🖧</span><span class="toc-name">Web Servers</span><span class="toc-count"></span></a></li>
         <li><a href="docs/observability-security/00-observability-fundamentals.html" style="--a: var(--c-obs)" data-section="Observability, Security &amp; Ops"><span class="toc-ico">🛡️</span><span class="toc-name">Observability, Security &amp; Ops</span><span class="toc-count"></span></a></li>
         <li><a href="docs/aws/00-aws-learning-path.html" style="--a: var(--c-aws)" data-section="AWS Learning"><span class="toc-ico">☁️</span><span class="toc-name">AWS Learning</span><span class="toc-count"></span></a></li>
+        <li><a href="docs/ejpt/index.html" style="--a: var(--c-pentest)" data-section="Penetration Testing (eJPT)"><span class="toc-ico">⚔️</span><span class="toc-name">Penetration Testing (eJPT)</span><span class="toc-count"></span></a></li>
       </ul></div>
       <div class="toc-col" data-cat="data"><a class="toc-cat" href="#cat-data">🗃️ Data &amp; Distributed Systems</a><ul>
         <li><a href="docs/05-database/00-learning-path/00-index.html" style="--a: var(--c-database)" data-section="Database"><span class="toc-ico">🗄️</span><span class="toc-name">Database</span><span class="toc-count"></span></a></li>
@@ -798,6 +800,19 @@ a.toc-cat:hover { color: var(--accent); text-decoration: none; }
           <div class="card" style="--card-accent: var(--c-aws); --card-accent-bg: var(--c-aws-bg);">
             <div class="icon-wrap">☁️</div><h2>AWS Learning</h2><p class="count">2 pages</p>
             <ul><li><a href="docs/aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="docs/aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul>
+          </div>
+          <div class="card" style="--card-accent: var(--c-pentest); --card-accent-bg: var(--c-pentest-bg);">
+            <div class="icon-wrap">⚔️</div><h2>Penetration Testing (eJPT)</h2><p class="count">8 pages</p>
+            <ul>
+              <li><a href="docs/ejpt/index.html">eJPT Course Overview</a></li>
+              <li><a href="docs/ejpt/00-lab-setup.html">Module 0 — Lab Setup</a></li>
+              <li><a href="docs/ejpt/01-foundations.html">Module 1 — Foundations</a></li>
+              <li><a href="docs/ejpt/02-assessment-methodologies.html">Module 2 — Assessment Methodologies</a></li>
+              <li><a href="docs/ejpt/03-host-network-pentest.html">Module 3 — Host &amp; Network Pentest</a></li>
+              <li><a href="docs/ejpt/04-post-exploitation.html">Module 4 — Post-Exploitation &amp; Pivoting</a></li>
+              <li><a href="docs/ejpt/05-web-app-pentest.html">Module 5 — Web App Pentest</a></li>
+              <li><a href="docs/ejpt/06-exam-readiness.html">Module 6 — Exam Readiness</a></li>
+            </ul>
           </div>
         </div>
       </div>
@@ -1166,6 +1181,7 @@ a.toc-cat:hover { color: var(--accent); text-decoration: none; }
   const CATEGORY = {
     'Kubernetes': 'infra', 'Networking': 'infra', 'Traffic Management': 'infra', 'Caching & CDN': 'infra',
     'Storage': 'infra', 'Web Servers': 'infra', 'Observability, Security & Ops': 'infra', 'AWS Learning': 'infra',
+    'Penetration Testing (eJPT)': 'infra',
     'Database': 'data', 'Distributed Database': 'data', 'Distributed Systems': 'data', 'Messaging & Queues': 'data',
     'Front-End': 'app', 'Authentication': 'app', 'Dev Principles': 'app', 'Miscellaneous': 'app',
     'Planning & Roadmap': 'plan', 'Project Walkthroughs': 'plan', 'Overview': 'plan',
@@ -1176,6 +1192,7 @@ a.toc-cat:hover { color: var(--accent); text-decoration: none; }
     'Distributed Systems': 'dist', 'Distributed Database': 'dist', 'Messaging & Queues': 'msg', 'Storage': 'storage',
     'Caching & CDN': 'caching', 'Traffic Management': 'traffic', 'Networking': 'net',
     'Observability, Security & Ops': 'obs', 'Web Servers': 'web', 'AWS Learning': 'aws', 'Dev Principles': 'dev',
+    'Penetration Testing (eJPT)': 'pentest',
     'Planning & Roadmap': 'plan', 'Project Walkthroughs': 'proj', 'Miscellaneous': 'misc',
     'Books': 'books'
   };

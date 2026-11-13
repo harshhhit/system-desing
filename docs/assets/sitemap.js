@@ -670,6 +670,20 @@ window.SITE_MAP = {
       ]
     },
     {
+      "icon": "⚔️",
+      "name": "Penetration Testing (eJPT)",
+      "pages": [
+        { "href": "ejpt/index.html", "title": "eJPT Course Overview" },
+        { "href": "ejpt/00-lab-setup.html", "title": "Module 0 — Lab Setup" },
+        { "href": "ejpt/01-foundations.html", "title": "Module 1 — Foundations" },
+        { "href": "ejpt/02-assessment-methodologies.html", "title": "Module 2 — Assessment Methodologies" },
+        { "href": "ejpt/03-host-network-pentest.html", "title": "Module 3 — Host & Network Pentest" },
+        { "href": "ejpt/04-post-exploitation.html", "title": "Module 4 — Post-Exploitation & Pivoting" },
+        { "href": "ejpt/05-web-app-pentest.html", "title": "Module 5 — Web App Pentest" },
+        { "href": "ejpt/06-exam-readiness.html", "title": "Module 6 — Exam Readiness" }
+      ]
+    },
+    {
       "icon": "🖧",
       "name": "Web Servers",
       "pages": [
