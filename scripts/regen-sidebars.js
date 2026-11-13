@@ -392,6 +392,18 @@ for (const site of SITES) {
   }
 }
 
+// ---- full-text search index + practice bank (docs/assets/search-index.js, practice-bank.js) ----
+{
+  const sd = require("./build-study-data.js");
+  for (const f of sd.build()) {
+    const cur = fs.existsSync(f.file) ? fs.readFileSync(f.file, "utf8") : "";
+    if (f.out === cur) continue;
+    if (CHECK) err(`docs/assets/${f.name} is STALE — run: node scripts/regen-sidebars.js`);
+    else if (DRY) console.log(`[dry-run] would rewrite docs/assets/${f.name}`);
+    else { fs.writeFileSync(f.file, f.out); console.log(`${f.name} rewritten`); }
+  }
+}
+
 // ---- root-level checks + report ----
 if (CHECK) {
   for (const f of ["index.html", "login.html", "hash-tool.html"]) {

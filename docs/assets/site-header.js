@@ -2014,4 +2014,16 @@
   renderResourceList();
   renderSectionPages();
   renderWeeklyTarget();
+
+  /* ---- interactive extras (assets/site-extras.js): full-text search palette, practice
+     mode, backup / restore, keyboard shortcuts, reading tools. Loaded from here so no
+     page needs its own <script> tag; it is additive only — if it fails to load, every
+     page works exactly as it does without it. Bump EXTRAS_VERSION when site-extras.js
+     or site-extras.css changes. ---- */
+  var EXTRAS_VERSION = "1";
+  if (thisScript && thisScript.src) {
+    var extras = document.createElement("script");
+    extras.src = thisScript.src.replace(/[^\/]*$/, "") + "site-extras.js?v=" + EXTRAS_VERSION;
+    document.head.appendChild(extras);
+  }
 })();

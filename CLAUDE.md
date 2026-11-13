@@ -197,6 +197,32 @@ tiny redirect stubs remain at the old sub-site homepage paths (`docs/index.html`
   (`#site-header-root` + the three central scripts + a `.sd-study-main`/`main` content
   area). Styling lives in `assets/site.css` under `.sd-readaloud` / `.sd-tts-*`.
 
+- **Interactive study extras are one additive layer: `docs/assets/site-extras.js` +
+  `docs/assets/site-extras.css`.** `site-header.js` injects the script on every `docs/` page
+  (no per-page tag — **never hand-add it**); the repo-root `index.html` loads it with its own
+  `<script>` tag and gives it the `#studyHub` mount ("Your study desk": continue reading, study
+  streak + 12-week activity map, practice, backup / restore). Its CSS lives in its own sheet —
+  the one exception to "all CSS in `site.css`" — because the homepage does not load `site.css`.
+  What it adds: **Ctrl/Cmd+K full-text search** (jumps to the matching heading and marks the
+  term), **practice mode** (self-graded *Missed / Shaky / Got it* cards with spaced repetition,
+  drawn from every page's Interview Answer block and `.sd-qa` bank), **backup / restore** of all
+  per-viewer `localStorage` state to one JSON file (import merges and can be undone; the
+  `unlocked` login flag never travels), top-band buttons (Search · Practice · `Aa` text size and
+  focus mode · `?`), keyboard shortcuts (`j`/`k` parts, `]`/`[` pages, `m` covered, `q` practice,
+  `f` focus, `?` help), a reading-progress bar, "~n min read", a resume-where-you-left-off toast,
+  a Copy button on every `<pre>`, a filter box above every table with 6+ rows, in-place
+  scrolling for tables wider than the text column, a step-by-step walk-through on every
+  `<ol class="sd-steps">`, expand / zoom / pan for Mermaid diagrams and images, hover
+  definitions for terms from a page's `Term | Meaning` table, and a small celebration when a
+  page is marked covered. **It must stay additive:** it may wrap or decorate existing nodes but
+  never changes, removes or permanently hides page text (rule 2) — everything it injects
+  carries `data-sd-ui`, and with the file missing every page reads exactly as before. Its two
+  data files, `docs/assets/search-index.js` and `docs/assets/practice-bank.js`, are
+  **generated** by `scripts/build-study-data.js` (run by `regen-sidebars.js`; `--check` fails
+  if they are stale) — never hand-edit them; edit the page and re-run the script. When you
+  change `site-extras.js` / `.css`, bump `EXTRAS_VERSION` in `site-header.js` and the `?v=` on
+  the homepage's script tag.
+
 - **Verify before finishing any change to the notes site:**
   `node scripts/regen-sidebars.js --check` — one run covers `docs/` and the
   repo root. It flags missing/renamed files referenced by `sitemap.js` / `pages.js`,

@@ -229,6 +229,41 @@ Below 860px the `.sd-study-sidebar` becomes an off-canvas drawer opened by a flo
 When you change `site.css` or `site-header.js`, bump the `?v=` query on both across
 `docs/` so browsers don't mix a new stylesheet with a cached script.
 
+## Interactive extras — search, practice, backup, shortcuts (automatic, never hand-add)
+
+`assets/site-extras.js` (+ `assets/site-extras.css`) is injected by `site-header.js` on every
+page and loaded by the root homepage with its own tag. It is **additive only**: it never
+changes, removes or permanently hides page text, and everything it injects carries
+`data-sd-ui`. A new page gets all of it for free.
+
+- **Search everywhere** — `Ctrl/Cmd+K` (or the 🔍 button in the top band) opens a palette that
+  searches the full text of every page and lands on the matching heading with the term marked.
+  Empty query = quick actions (continue reading, practice, a random uncovered page, backup).
+- **Practice** — `q` or the 🎯 button: questions from the page / section / whole site, reveal,
+  grade yourself *Missed / Shaky / Got it*; missed ones return sooner (boxes → 1, 3, 7, 14, 30,
+  60 days). State: `sdnotes_practice_<siteId>`.
+- **Backup / restore** — exports every `localStorage` key of the site (except the `unlocked`
+  login flag) to one JSON file; import **merges** (nothing already saved is dropped) and keeps
+  a snapshot for "Undo last import".
+- **Reading tools** — `Aa` (text size, focus mode `f`), reading-progress bar, "~n min read",
+  a "you stopped n% through" toast, `j`/`k` next / previous part, `]`/`[` next / previous page,
+  `m` mark covered, `?` shortcut list.
+- **In the content** — Copy on every `<pre>`; a filter box above every table with 6+ rows;
+  tables wider than the column scroll in their own box; "Walk through step by step" on every
+  `<ol class="sd-steps">`; "⤢ Expand" (zoom / pan) on Mermaid diagrams and click-to-enlarge on
+  images; dotted-underline hover definitions for the terms of a `Term | Meaning` table.
+
+**Authoring hooks (all optional, all existing markup):** an `.sd-qa` bank and an Interview
+Answer block feed practice mode; a table whose header row is `Term | Meaning` (or
+`Definition` / `What it means`) feeds the hover definitions; `<ol class="sd-steps">` gets the
+walk-through; give an `<h2>`/`<h3>` a stable `id` so search can link straight to it.
+
+**Generated data:** `assets/search-index.js` and `assets/practice-bank.js` are written by
+`scripts/build-study-data.js`, which `regen-sidebars.js` runs on every bake — so after
+editing page content, run `node scripts/regen-sidebars.js` (the `--check` step reports them
+as STALE otherwise). Never hand-edit them. When `site-extras.js` / `.css` change, bump
+`EXTRAS_VERSION` in `site-header.js` and the `?v=` on the homepage's `<script>` tag.
+
 ## Sidebar search, "On this page", previous / next — automatic, never hand-add
 
 - **Search** (`renderNavSearch()`): a box above the sidebar `<nav>` filters links by
