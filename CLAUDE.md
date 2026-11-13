@@ -171,7 +171,11 @@ tiny redirect stubs remain at the old sub-site homepage paths (`docs/index.html`
 - **New page / moving a page:** follow `docs/CLAUDE.md` (procedure) and `docs/README.md`
   (detail). In short: copy `_TEMPLATE-page.html`, set `window.PAGE_CONFIG = { id }`, add
   matching entries to `pages.js` and (for the sidebar) `sitemap.js`, run
-  `scripts/regen-sidebars.js`. When moving, also leave a meta-refresh +
+  `scripts/regen-sidebars.js` — which also rebuilds the generated
+  `revision-cards.js`, `search-index.js` and `practice-bank.js`; commit them with the
+  page. Write the page with the interactive hooks (a `Term | Meaning` table,
+  `<ol class="sd-steps">`, `.sd-qa` bank, stable heading `id`s — table in
+  `.claude/commands/add-page.md`) and never hand-add the extras' UI. When moving, also leave a meta-refresh +
   `location.replace` redirect stub at the old path (examples under
   `docs/05-database/data-base/`).
 
@@ -222,6 +226,40 @@ tiny redirect stubs remain at the old sub-site homepage paths (`docs/index.html`
   if they are stale) — never hand-edit them; edit the page and re-run the script. When you
   change `site-extras.js` / `.css`, bump `EXTRAS_VERSION` in `site-header.js` and the `?v=` on
   the homepage's script tag.
+
+- **Adding or changing an interactive feature — follow this every time:**
+  1. **Where it goes.** Behaviour → `docs/assets/site-extras.js`; its styles →
+     `docs/assets/site-extras.css` (`.sx-` prefix, every colour with a fallback, light theme
+     only, `prefers-reduced-motion` respected, hidden in `@media print`). Do **not** add
+     feature code to individual pages, and do not add a per-page `<script>` / `<link>` for it.
+     The shell features that already live in `site-header.js` (tracker, Listen bar, notes,
+     outline, study panel, pager) stay there.
+  2. **Additive only (rule 2).** A feature may wrap or decorate existing nodes; it must never
+     change, remove or permanently hide page text. Anything it injects carries `data-sd-ui`,
+     so read-aloud, notes, the outline and the study panel ignore it. A filter or a
+     walk-through may dim or hide rows temporarily, but clearing it must show everything again.
+  3. **Content stays in the pages.** If a feature needs data from the pages (like search and
+     practice do), generate it in `scripts/build-study-data.js` and hook it into
+     `regen-sidebars.js` with a `--check` staleness test — never hand-maintain a second copy
+     of page text.
+  4. **State.** Per-viewer state goes in `localStorage` under a key starting with `sdnotes_`.
+     The backup exports every key automatically; import must keep merging (never replace)
+     and must never write the `unlocked` login flag.
+  5. **Keyboard.** Register a new shortcut in the `keydown` handler **and** in the `openHelp()`
+     list; never fire shortcuts while the user is typing; leave `/` (sidebar filter) and the
+     existing keys as they are.
+  6. **Both entry points.** `site-extras.js` runs on `docs/` pages and on the repo-root
+     homepage (`#studyHub`); check a change on both, at desktop and phone width.
+  7. **Versions.** Bump `EXTRAS_VERSION` in `site-header.js` and the `?v=` on the homepage's
+     `site-extras.js` tag; if `site-header.js` or `site.css` changed, bump their `?v=` on
+     every page under `docs/` (and in `docs/_TEMPLATE-page.html`).
+  8. **Prove nothing was lost.** `git diff` on the content pages must show only `?v=` lines;
+     `node scripts/regen-sidebars.js --check` must exit `0`; and in a browser the content
+     text of a page (ignoring `[data-sd-ui]`) must be identical with the extras on and off,
+     with no console errors.
+  9. **Document it.** Add the feature to the extras bullet above, to the "Interactive
+     extras" sections of `docs/CLAUDE.md` and `docs/README.md`, and — if authors need to
+     write markup for it — to the hook table in `.claude/commands/add-page.md`.
 
 - **Verify before finishing any change to the notes site:**
   `node scripts/regen-sidebars.js --check` — one run covers `docs/` and the

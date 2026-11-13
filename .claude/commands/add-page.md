@@ -38,6 +38,13 @@ the source into HTML:
   allows for one-off rules.
 - Content starts at `<h2>` — the page's own `<h1>` is injected from
   `pages.js`, don't duplicate it in the pasted block.
+- Arrange the content in the 12-part topic layout described in the root
+  `CLAUDE.md` / `docs/CLAUDE.md` (each `<h2>` tagged `data-stage`). The site's
+  own `sd-*` classes (`sd-learn`, `sd-callout`, `sd-steps`, `sd-diagram`,
+  `sd-takeaways`, `sd-next`, `sd-interview` + `sd-qa`, `sd-commands`) are the
+  only classes allowed. Rearranging into parts never excuses dropping
+  anything: every source section must still be traceable to a part — keep the
+  old → new mapping and report it in step 8.
 
 ## 2. Copy the template
 
@@ -65,9 +72,13 @@ per the table below):
 <script>window.PAGE_CONFIG = { id: "<slug>" };</script>
 <meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><Page Title> · System Design Notes</title>
-<link rel="stylesheet" href="<depth-prefix>assets/site.css?v=4">
+<title><Page Title> · Infra Owl</title>
+<link rel="stylesheet" href="<depth-prefix>assets/site.css?v=NN">
 ```
+
+Keep the `?v=NN` numbers on `site.css` and `site-header.js` **exactly as the
+template carries them** — they are the site-wide cache versions and every page
+must use the same ones. Never invent or hard-code a different number.
 
 ## 3. Fix paths for depth
 
@@ -92,6 +103,30 @@ the sidebar `<aside>` empty (`<nav></nav>`) and the `data-breadcrumb` /
 `data-page-title` / `data-page-subtitle` placeholders as-is — those are filled
 by the shared scripts, not hand-written. Delete the `data-page-subtitle` line
 if you don't add a `subtitle` in `pages.js` (step 5).
+
+## 4a. Write for the interactive features — use the hooks, never hand-add the UI
+
+Every page automatically gets the interactive layer from
+`docs/assets/site-extras.js` (injected by `site-header.js`): full-text search
+(Ctrl+K), practice mode, copy buttons, table filters, step walk-throughs,
+diagram zoom, hover definitions, reading progress, shortcuts. **Do not add any
+of that to the page yourself** — no `<script>` tag for `site-extras.js`, no
+copy buttons, no search box, no filter inputs, no progress bars. Instead, use
+the plain markup below so the features have something to work with:
+
+| Write this in the page | The reader gets |
+|---|---|
+| A terminology table whose header row is exactly `Term` \| `Meaning` (or `Definition` / `What it means`) in the Core Concepts part | hover definitions on those terms through the rest of the page |
+| `<ol class="sd-steps">` (3+ steps) for any request flow / lifecycle | "Walk through step by step" |
+| `<div class="mermaid sd-diagram">` + a `<p class="sd-diagram-caption">` | "⤢ Expand" with zoom and pan |
+| The Interview Answer block (`Interview Answer — What is …?` heading + "Simple interview version" note) | one "core" practice card |
+| `<section class="sd-interview">` with `<details class="sd-qa" data-level="basic\|intermediate\|advanced\|scenario">` | practice cards by level |
+| Code in `<pre><code>` (never screenshots of code) | Copy button + the Commands tab |
+| A real `<table>` for comparisons and failure lists (never an image or `<pre>` art) | row filter (6+ rows) and in-place scrolling when wide |
+| A stable `id` on each `<h2>` / important `<h3>` | search results link straight to that heading |
+
+The search index and the practice bank are **copies** of the page text, built
+by the bake step — so the page stays the only place content is written.
 
 ## 5. Register in `assets/pages.js`
 
@@ -124,6 +159,10 @@ node scripts/regen-sidebars.js --check
 node scripts/regen-sidebars.js
 ```
 
+- The bake also rewrites the generated data files — `docs/assets/revision-cards.js`,
+  `docs/assets/search-index.js` and `docs/assets/practice-bank.js` — from the
+  pages. Never hand-edit them; they belong in the same commit as the page.
+  If `--check` says one is `STALE`, run the plain bake again.
 - `--check` must exit with `0 error(s), 0 warning(s)`.
 - The final plain run must report `updated 0` — confirms baking is idempotent
   and nothing is still drifting.
@@ -131,9 +170,18 @@ node scripts/regen-sidebars.js
   color-scheme>`, `<meta viewport>`, `<title>`, and `<link rel="stylesheet">`
   are all present and intact (this is the exact failure mode from step 2 —
   confirm it didn't happen).
+- Confirm the new page reached the generated data:
+  `grep -c '"<section-folder>/<slug>.html"' docs/assets/search-index.js` must
+  print `1` or more, and — if the page has an Interview Answer block or a
+  question bank — the same grep on `docs/assets/practice-bank.js` must too.
+- If a new `SITE_MAP` section was created, also add its card to the repo-root
+  `index.html` (and its `CATEGORY` / `ACCENT` entries) — the homepage is
+  hand-maintained, the bake does not touch it.
 
 ## 8. Report
 
 Tell the user the new page path, its section, and confirm the content was
-carried over in full (list the section headings you preserved) — don't just
-say "done."
+carried over in full (list the section headings you preserved, and which of
+the 12 parts each one landed in) — don't just say "done." Also say how many
+practice cards the page contributed and which interactive hooks it uses
+(terminology table, `sd-steps`, diagrams).
