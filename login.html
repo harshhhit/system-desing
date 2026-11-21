@@ -362,6 +362,10 @@ body {
    ============================================================ */
 const USERNAME       = "harshhhit";
 const PASSWORD_HASH   = "f98383313bb7f5926be8757ca838641732715ba9b952d3f291b6be1a3a6842ad";
+/* Extra accounts: username -> lowercase SHA-256 hex of the password. */
+const EXTRA_USERS    = {
+  "gust": "7693637151c0ad50cce79f7f16a8977857444beda4567f55948392f5f1947d6f"
+};
 const DEFAULT_TARGET = "index.html";
 const UNLOCK_KEY     = "unlocked";
 
@@ -458,8 +462,10 @@ form.addEventListener("submit", async (e) => {
   const entered = await sha256Hex(pwEl.value);
   btnEl.disabled = false;
 
-  const userOk = userEl.value.trim() === USERNAME;
-  if (userOk && entered === PASSWORD_HASH.toLowerCase()) {
+  const user = userEl.value.trim();
+  const expected = user === USERNAME ? PASSWORD_HASH
+    : (Object.prototype.hasOwnProperty.call(EXTRA_USERS, user) ? EXTRA_USERS[user] : null);
+  if (expected && entered === expected.toLowerCase()) {
     /* Persist the unlock flag in BOTH stores so every page (and a browser
        restart) sees it. "Remember me" only affects whether we also drop a
        longer-lived hint; the gate on each page checks both stores. */
@@ -487,7 +493,7 @@ form.addEventListener("submit", async (e) => {
   } else {
     msgEl.textContent = "Wrong username or password.";
     pwEl.value = "";
-    (userOk ? pwEl : userEl).focus();
+    (expected ? pwEl : userEl).focus();
   }
 });
 
