@@ -1,0 +1,38 @@
+{
+  "id": "request-access-roadmap",
+  "section": "kubernetes",
+  "title": "Request and Access Flow",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Every Kubernetes API request follows one fixed pipeline in kube-apiserver: authentication, authorization (usually RBAC), mutating admission, schema validation, validating admission, then save to etcd. It is the single front door for humans, CI pipelines, controllers and kubelets."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Admission runs only on writes. Kubernetes has no User object; a normal user is just a name taken from a credential issued by an external system like a certificate authority or identity provider. The most common RBAC mistake is using the cluster-wide pair when a namespaced Role and RoleBinding would do."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does Kubernetes store users and passwords?",
+          "a": "No. There is no User resource. The user name comes from the credential, such as a certificate CN or OIDC claim.",
+          "hint": "External identity"
+        },
+        {
+          "q": "What order do mutating and validating admission run in?",
+          "a": "Mutating admission, then schema validation, then validating admission.",
+          "hint": "Change, check, approve"
+        },
+        {
+          "q": "What is the most common RBAC mistake?",
+          "a": "Using ClusterRole and ClusterRoleBinding when a namespaced Role and RoleBinding would be enough.",
+          "hint": "Least privilege"
+        }
+      ]
+    }
+  ]
+}

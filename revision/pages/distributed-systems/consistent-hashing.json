@@ -1,0 +1,38 @@
+{
+  "id": "consistent-hashing",
+  "section": "distributed-systems",
+  "title": "Consistent Hashing",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Consistent hashing assigns keys to servers so that adding or removing a server moves only about 1/M of the keys instead of nearly all. Plain hash(key) mod M remaps almost every key when M changes."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Servers and keys are hashed onto the same ring; each key goes to the first server clockwise. Virtual nodes place each server on the ring many times so load stays even. Used in Cassandra and DynamoDB partitioning, cache client sharding, load balancers and CDNs."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does consistent hashing alone guarantee even load?",
+          "a": "No. With one point per server, slices can be very uneven. Virtual nodes fix that.",
+          "hint": "Luck of the hash"
+        },
+        {
+          "q": "How many keys move with mod-N hashing on resize?",
+          "a": "Nearly all, about (M-1)/M of them.",
+          "hint": "Almost everything"
+        },
+        {
+          "q": "Where is the key placed on the ring?",
+          "a": "On the first server found walking clockwise from the key's position.",
+          "hint": "Clockwise"
+        }
+      ]
+    }
+  ]
+}

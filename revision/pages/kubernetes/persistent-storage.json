@@ -1,0 +1,38 @@
+{
+  "id": "persistent-storage",
+  "section": "kubernetes",
+  "title": "Persistent Storage",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A PersistentVolume (PV) is a real piece of storage; a PersistentVolumeClaim (PVC) is an app's request for a size and access mode. Kubernetes binds them, matching a pre-created PV or dynamically provisioning one through a StorageClass, so data survives a Pod being deleted or rescheduled."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "For distributed databases each replica usually gets its own PVC and PV, often via a StatefulSet. Storage gives durability, not distribution: replication, sharding, failover and consistency are the database's job. hostPath ties data to one node, so production uses network or cloud-backed storage."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does deleting a PVC always delete the data?",
+          "a": "No. It depends on the PV reclaim policy. Delete removes the underlying storage; Retain keeps it.",
+          "hint": "Reclaim policy"
+        },
+        {
+          "q": "Does a persistent volume make a database highly available?",
+          "a": "No. It only provides durability. Replication, leader election and failover belong to the database itself.",
+          "hint": "Durability vs distribution"
+        },
+        {
+          "q": "Why is hostPath risky for databases?",
+          "a": "Data sits on one node's filesystem, so if the Pod moves to another node the data does not follow.",
+          "hint": "Node coupling"
+        }
+      ]
+    }
+  ]
+}

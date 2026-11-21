@@ -1,0 +1,38 @@
+{
+  "id": "replication-roadmap",
+  "section": "distributed-database",
+  "title": "Replication Overview",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Replication stores the same data on multiple nodes, often across data centers or regions, and streams every change between them. It underpins high availability, read scaling, disaster recovery and data locality."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Core choices are topology (single-leader, multi-leader, leaderless) and timing (synchronous for no data loss, asynchronous for low latency). Async brings lag and stale reads, so pick a consistency model per use case: strong, eventual, read-your-writes, monotonic reads, causal, with quorums (N, R, W) where needed."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Should every system use the strongest consistency model?",
+          "a": "No. It costs latency on every write and availability during partitions. Choose per use case.",
+          "hint": "Cost of strong"
+        },
+        {
+          "q": "What problems does async replication introduce?",
+          "a": "Replication lag and stale reads.",
+          "hint": "Behind"
+        },
+        {
+          "q": "Name the three replication topologies.",
+          "a": "Single-leader, multi-leader and leaderless.",
+          "hint": "Who writes"
+        }
+      ]
+    }
+  ]
+}

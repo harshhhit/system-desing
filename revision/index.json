@@ -1,0 +1,638 @@
+{
+  "version": 1,
+  "sections": [
+    {
+      "id": "kubernetes",
+      "title": "Kubernetes",
+      "description": "Control plane, data plane, request flow, RBAC, storage, networking and HA.",
+      "pageCount": 18,
+      "pages": [
+        {
+          "id": "control-plane-overview",
+          "title": "Control Plane Overview",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/control-plane-overview.json"
+        },
+        {
+          "id": "kube-apiserver",
+          "title": "kube-apiserver",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/kube-apiserver.json"
+        },
+        {
+          "id": "etcd",
+          "title": "etcd",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/etcd.json"
+        },
+        {
+          "id": "kube-scheduler",
+          "title": "kube-scheduler",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/kube-scheduler.json"
+        },
+        {
+          "id": "kube-controller-manager",
+          "title": "kube-controller-manager",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/kube-controller-manager.json"
+        },
+        {
+          "id": "api-request-flow",
+          "title": "API Request Flow",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/api-request-flow.json"
+        },
+        {
+          "id": "rbac-namespace-scope",
+          "title": "RBAC Namespace Scoping",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/rbac-namespace-scope.json"
+        },
+        {
+          "id": "persistent-storage",
+          "title": "Persistent Storage",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/persistent-storage.json"
+        },
+        {
+          "id": "configmap-secret",
+          "title": "ConfigMap and Secret",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/configmap-secret.json"
+        },
+        {
+          "id": "data-plane",
+          "title": "Data Plane",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/data-plane.json"
+        },
+        {
+          "id": "api-four-gates",
+          "title": "API Request Four Gates",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/api-four-gates.json"
+        },
+        {
+          "id": "leader-election",
+          "title": "Leader Election",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/leader-election.json"
+        },
+        {
+          "id": "networking-roadmap",
+          "title": "Kubernetes Networking",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/networking-roadmap.json"
+        },
+        {
+          "id": "control-plane-roadmap",
+          "title": "Control Plane Roadmap",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/control-plane-roadmap.json"
+        },
+        {
+          "id": "request-access-roadmap",
+          "title": "Request and Access Flow",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/request-access-roadmap.json"
+        },
+        {
+          "id": "workload-storage-roadmap",
+          "title": "Workload Config and Storage",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/workload-storage-roadmap.json"
+        },
+        {
+          "id": "high-availability-roadmap",
+          "title": "Control Plane HA",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/high-availability-roadmap.json"
+        },
+        {
+          "id": "data-plane-roadmap",
+          "title": "Data Plane Roadmap",
+          "url": "https://www.infraowl.site/revision/pages/kubernetes/data-plane-roadmap.json"
+        }
+      ]
+    },
+    {
+      "id": "authentication",
+      "title": "Authentication",
+      "description": "Secure login, auth schemes, password hashing and Google social login.",
+      "pageCount": 5,
+      "pages": [
+        {
+          "id": "secure-login",
+          "title": "Secure Login Steps",
+          "url": "https://www.infraowl.site/revision/pages/authentication/secure-login.json"
+        },
+        {
+          "id": "auth-schemes",
+          "title": "Authentication Schemes",
+          "url": "https://www.infraowl.site/revision/pages/authentication/auth-schemes.json"
+        },
+        {
+          "id": "password-hashing",
+          "title": "Password Hashing",
+          "url": "https://www.infraowl.site/revision/pages/authentication/password-hashing.json"
+        },
+        {
+          "id": "google-login-checklist",
+          "title": "Google Social Login Checklist",
+          "url": "https://www.infraowl.site/revision/pages/authentication/google-login-checklist.json"
+        },
+        {
+          "id": "google-sign-in-credential-manager",
+          "title": "Google Sign-In Flow",
+          "url": "https://www.infraowl.site/revision/pages/authentication/google-sign-in-credential-manager.json"
+        }
+      ]
+    },
+    {
+      "id": "front-end",
+      "title": "Front-End",
+      "description": "Browser, client-server model, cookies and JWT, CORS, rendering and APIs.",
+      "pageCount": 11,
+      "pages": [
+        {
+          "id": "frontend-roadmap",
+          "title": "Front-End Development",
+          "url": "https://www.infraowl.site/revision/pages/front-end/frontend-roadmap.json"
+        },
+        {
+          "id": "client-server-model",
+          "title": "Client-Server Model",
+          "url": "https://www.infraowl.site/revision/pages/front-end/client-server-model.json"
+        },
+        {
+          "id": "request-flow",
+          "title": "Request Flow (URL to Page)",
+          "url": "https://www.infraowl.site/revision/pages/front-end/request-flow.json"
+        },
+        {
+          "id": "cookies-sessions-jwt",
+          "title": "Cookies, Sessions and JWT",
+          "url": "https://www.infraowl.site/revision/pages/front-end/cookies-sessions-jwt.json"
+        },
+        {
+          "id": "browser-js-sandbox",
+          "title": "Browser JavaScript Sandbox",
+          "url": "https://www.infraowl.site/revision/pages/front-end/browser-js-sandbox.json"
+        },
+        {
+          "id": "cors",
+          "title": "CORS",
+          "url": "https://www.infraowl.site/revision/pages/front-end/cors.json"
+        },
+        {
+          "id": "rendering-strategies",
+          "title": "Web Rendering Strategies",
+          "url": "https://www.infraowl.site/revision/pages/front-end/rendering-strategies.json"
+        },
+        {
+          "id": "ssr-vs-csr",
+          "title": "SSR vs CSR",
+          "url": "https://www.infraowl.site/revision/pages/front-end/ssr-vs-csr.json"
+        },
+        {
+          "id": "csr-ssr-ssg-theory",
+          "title": "CSR, SSR and SSG Theory",
+          "url": "https://www.infraowl.site/revision/pages/front-end/csr-ssr-ssg-theory.json"
+        },
+        {
+          "id": "graphql-vs-rest",
+          "title": "GraphQL vs REST",
+          "url": "https://www.infraowl.site/revision/pages/front-end/graphql-vs-rest.json"
+        },
+        {
+          "id": "system-design-interview",
+          "title": "System Design Interview",
+          "url": "https://www.infraowl.site/revision/pages/front-end/system-design-interview.json"
+        }
+      ]
+    },
+    {
+      "id": "database",
+      "title": "Database",
+      "description": "SQL, schema design, indexing, transactions, scaling, security, backups and operations.",
+      "pageCount": 21,
+      "pages": [
+        {
+          "id": "database-at-scale",
+          "title": "Databases at Scale",
+          "url": "https://www.infraowl.site/revision/pages/database/database-at-scale.json"
+        },
+        {
+          "id": "integrity-constraints",
+          "title": "Integrity Constraints",
+          "url": "https://www.infraowl.site/revision/pages/database/integrity-constraints.json"
+        },
+        {
+          "id": "relational-fundamentals",
+          "title": "SQL and Relational Basics",
+          "url": "https://www.infraowl.site/revision/pages/database/relational-fundamentals.json"
+        },
+        {
+          "id": "choose-a-database",
+          "title": "Choosing a Database",
+          "url": "https://www.infraowl.site/revision/pages/database/choose-a-database.json"
+        },
+        {
+          "id": "performance-factors",
+          "title": "Database Performance Factors",
+          "url": "https://www.infraowl.site/revision/pages/database/performance-factors.json"
+        },
+        {
+          "id": "polyglot-persistence",
+          "title": "Polyglot Persistence",
+          "url": "https://www.infraowl.site/revision/pages/database/polyglot-persistence.json"
+        },
+        {
+          "id": "schema-design-migrations",
+          "title": "Schema Design and Migrations",
+          "url": "https://www.infraowl.site/revision/pages/database/schema-design-migrations.json"
+        },
+        {
+          "id": "postgresql-views",
+          "title": "PostgreSQL Views",
+          "url": "https://www.infraowl.site/revision/pages/database/postgresql-views.json"
+        },
+        {
+          "id": "indexing",
+          "title": "Indexing",
+          "url": "https://www.infraowl.site/revision/pages/database/indexing.json"
+        },
+        {
+          "id": "transactions-concurrency",
+          "title": "Transactions and Concurrency",
+          "url": "https://www.infraowl.site/revision/pages/database/transactions-concurrency.json"
+        },
+        {
+          "id": "query-plans",
+          "title": "Query Plans and Optimization",
+          "url": "https://www.infraowl.site/revision/pages/database/query-plans.json"
+        },
+        {
+          "id": "acid-vs-base",
+          "title": "ACID vs BASE",
+          "url": "https://www.infraowl.site/revision/pages/database/acid-vs-base.json"
+        },
+        {
+          "id": "cap-theorem",
+          "title": "CAP Theorem",
+          "url": "https://www.infraowl.site/revision/pages/database/cap-theorem.json"
+        },
+        {
+          "id": "database-security",
+          "title": "Database Security",
+          "url": "https://www.infraowl.site/revision/pages/database/database-security.json"
+        },
+        {
+          "id": "data-distribution",
+          "title": "Data Distribution",
+          "url": "https://www.infraowl.site/revision/pages/database/data-distribution.json"
+        },
+        {
+          "id": "partitioning",
+          "title": "Partitioning vs Sharding",
+          "url": "https://www.infraowl.site/revision/pages/database/partitioning.json"
+        },
+        {
+          "id": "vertical-vs-horizontal-scaling",
+          "title": "Vertical vs Horizontal Scaling",
+          "url": "https://www.infraowl.site/revision/pages/database/vertical-vs-horizontal-scaling.json"
+        },
+        {
+          "id": "connection-pooling",
+          "title": "Connection Pooling",
+          "url": "https://www.infraowl.site/revision/pages/database/connection-pooling.json"
+        },
+        {
+          "id": "postgres-too-many-connections",
+          "title": "Postgres Too Many Connections",
+          "url": "https://www.infraowl.site/revision/pages/database/postgres-too-many-connections.json"
+        },
+        {
+          "id": "backup-and-dr",
+          "title": "Backup and Disaster Recovery",
+          "url": "https://www.infraowl.site/revision/pages/database/backup-and-dr.json"
+        },
+        {
+          "id": "database-observability",
+          "title": "Database Observability",
+          "url": "https://www.infraowl.site/revision/pages/database/database-observability.json"
+        }
+      ]
+    },
+    {
+      "id": "distributed-systems",
+      "title": "Distributed Systems",
+      "description": "Distributed systems basics, consensus and consistent hashing.",
+      "pageCount": 3,
+      "pages": [
+        {
+          "id": "distributed-systems-basics",
+          "title": "What Is a Distributed System",
+          "url": "https://www.infraowl.site/revision/pages/distributed-systems/distributed-systems-basics.json"
+        },
+        {
+          "id": "consensus-raft-paxos",
+          "title": "Consensus: Raft and Paxos",
+          "url": "https://www.infraowl.site/revision/pages/distributed-systems/consensus-raft-paxos.json"
+        },
+        {
+          "id": "consistent-hashing",
+          "title": "Consistent Hashing",
+          "url": "https://www.infraowl.site/revision/pages/distributed-systems/consistent-hashing.json"
+        }
+      ]
+    },
+    {
+      "id": "distributed-database",
+      "title": "Distributed Database",
+      "description": "Replication, PACELC, WAL vs binlog and replication lag.",
+      "pageCount": 5,
+      "pages": [
+        {
+          "id": "replication-roadmap",
+          "title": "Replication Overview",
+          "url": "https://www.infraowl.site/revision/pages/distributed-database/replication-roadmap.json"
+        },
+        {
+          "id": "replication-four-dimensions",
+          "title": "Replication: 4 Dimensions",
+          "url": "https://www.infraowl.site/revision/pages/distributed-database/replication-four-dimensions.json"
+        },
+        {
+          "id": "pacelc",
+          "title": "PACELC",
+          "url": "https://www.infraowl.site/revision/pages/distributed-database/pacelc.json"
+        },
+        {
+          "id": "wal-vs-binlog",
+          "title": "WAL vs Binlog",
+          "url": "https://www.infraowl.site/revision/pages/distributed-database/wal-vs-binlog.json"
+        },
+        {
+          "id": "replication-lag",
+          "title": "Replication Lag",
+          "url": "https://www.infraowl.site/revision/pages/distributed-database/replication-lag.json"
+        }
+      ]
+    },
+    {
+      "id": "messaging-queues",
+      "title": "Messaging and Queues",
+      "description": "SQS, AMQP, Kafka, event sourcing, resilience patterns, retries and DLQs.",
+      "pageCount": 7,
+      "pages": [
+        {
+          "id": "amazon-sqs",
+          "title": "Amazon SQS",
+          "url": "https://www.infraowl.site/revision/pages/messaging-queues/amazon-sqs.json"
+        },
+        {
+          "id": "amqp-protocols",
+          "title": "AMQP and Messaging Protocols",
+          "url": "https://www.infraowl.site/revision/pages/messaging-queues/amqp-protocols.json"
+        },
+        {
+          "id": "message-queue-use-cases",
+          "title": "Why Use a Message Queue",
+          "url": "https://www.infraowl.site/revision/pages/messaging-queues/message-queue-use-cases.json"
+        },
+        {
+          "id": "kafka-fundamentals",
+          "title": "Kafka Fundamentals",
+          "url": "https://www.infraowl.site/revision/pages/messaging-queues/kafka-fundamentals.json"
+        },
+        {
+          "id": "event-sourcing-cqrs",
+          "title": "Event Sourcing and CQRS",
+          "url": "https://www.infraowl.site/revision/pages/messaging-queues/event-sourcing-cqrs.json"
+        },
+        {
+          "id": "resilience-patterns",
+          "title": "Resilience Patterns",
+          "url": "https://www.infraowl.site/revision/pages/messaging-queues/resilience-patterns.json"
+        },
+        {
+          "id": "retries-and-dlq",
+          "title": "Retries and Dead-Letter Queues",
+          "url": "https://www.infraowl.site/revision/pages/messaging-queues/retries-and-dlq.json"
+        }
+      ]
+    },
+    {
+      "id": "storage",
+      "title": "Storage",
+      "description": "File, object and block storage.",
+      "pageCount": 1,
+      "pages": [
+        {
+          "id": "file-object-block-storage",
+          "title": "File, Object and Block Storage",
+          "url": "https://www.infraowl.site/revision/pages/storage/file-object-block-storage.json"
+        }
+      ]
+    },
+    {
+      "id": "caching-cdn",
+      "title": "Caching and CDN",
+      "description": "Cache layers, HTTP and CDN caching, strategies, eviction and failure modes.",
+      "pageCount": 11,
+      "pages": [
+        {
+          "id": "caching-strategy",
+          "title": "Caching Strategy",
+          "url": "https://www.infraowl.site/revision/pages/caching-cdn/caching-strategy.json"
+        },
+        {
+          "id": "caching-fundamentals",
+          "title": "Caching Fundamentals",
+          "url": "https://www.infraowl.site/revision/pages/caching-cdn/caching-fundamentals.json"
+        },
+        {
+          "id": "types-of-cache",
+          "title": "Types of Cache",
+          "url": "https://www.infraowl.site/revision/pages/caching-cdn/types-of-cache.json"
+        },
+        {
+          "id": "browser-caching",
+          "title": "Browser Caching",
+          "url": "https://www.infraowl.site/revision/pages/caching-cdn/browser-caching.json"
+        },
+        {
+          "id": "cdn-caching",
+          "title": "CDN Caching",
+          "url": "https://www.infraowl.site/revision/pages/caching-cdn/cdn-caching.json"
+        },
+        {
+          "id": "proxy-gateway-caching",
+          "title": "Reverse Proxy Caching",
+          "url": "https://www.infraowl.site/revision/pages/caching-cdn/proxy-gateway-caching.json"
+        },
+        {
+          "id": "database-caching",
+          "title": "Database Caching",
+          "url": "https://www.infraowl.site/revision/pages/caching-cdn/database-caching.json"
+        },
+        {
+          "id": "dns-os-hardware-caching",
+          "title": "DNS, OS and Hardware Caching",
+          "url": "https://www.infraowl.site/revision/pages/caching-cdn/dns-os-hardware-caching.json"
+        },
+        {
+          "id": "in-memory-strategies",
+          "title": "In-Memory Caching Strategies",
+          "url": "https://www.infraowl.site/revision/pages/caching-cdn/in-memory-strategies.json"
+        },
+        {
+          "id": "eviction-policies",
+          "title": "Cache Eviction Policies",
+          "url": "https://www.infraowl.site/revision/pages/caching-cdn/eviction-policies.json"
+        },
+        {
+          "id": "cache-problems",
+          "title": "Cache Problems",
+          "url": "https://www.infraowl.site/revision/pages/caching-cdn/cache-problems.json"
+        }
+      ]
+    },
+    {
+      "id": "traffic-management",
+      "title": "Traffic Management",
+      "description": "Load balancing, rate limiting and throttling.",
+      "pageCount": 2,
+      "pages": [
+        {
+          "id": "load-balancing",
+          "title": "Load Balancing",
+          "url": "https://www.infraowl.site/revision/pages/traffic-management/load-balancing.json"
+        },
+        {
+          "id": "rate-limiting",
+          "title": "Rate Limiting",
+          "url": "https://www.infraowl.site/revision/pages/traffic-management/rate-limiting.json"
+        }
+      ]
+    },
+    {
+      "id": "networking",
+      "title": "Networking",
+      "description": "DNS, TCP, TLS, HTTP versions and connection costs.",
+      "pageCount": 1,
+      "pages": [
+        {
+          "id": "networking-fundamentals",
+          "title": "Networking Fundamentals",
+          "url": "https://www.infraowl.site/revision/pages/networking/networking-fundamentals.json"
+        }
+      ]
+    },
+    {
+      "id": "observability-security-ops",
+      "title": "Observability, Security and Ops",
+      "description": "Metrics, logs and traces, application security, CI/CD.",
+      "pageCount": 3,
+      "pages": [
+        {
+          "id": "observability",
+          "title": "Observability",
+          "url": "https://www.infraowl.site/revision/pages/observability-security-ops/observability.json"
+        },
+        {
+          "id": "application-security",
+          "title": "Application Security",
+          "url": "https://www.infraowl.site/revision/pages/observability-security-ops/application-security.json"
+        },
+        {
+          "id": "cicd-deployment",
+          "title": "CI/CD and Deployments",
+          "url": "https://www.infraowl.site/revision/pages/observability-security-ops/cicd-deployment.json"
+        }
+      ]
+    },
+    {
+      "id": "ejpt",
+      "title": "Penetration Testing (eJPT)",
+      "description": "eJPT exam prep: lab, recon, exploitation, post-exploitation and web attacks.",
+      "pageCount": 8,
+      "pages": [
+        {
+          "id": "ejpt-overview",
+          "title": "eJPT Exam Overview",
+          "url": "https://www.infraowl.site/revision/pages/ejpt/ejpt-overview.json"
+        },
+        {
+          "id": "ejpt-lab-setup",
+          "title": "Lab Setup",
+          "url": "https://www.infraowl.site/revision/pages/ejpt/ejpt-lab-setup.json"
+        },
+        {
+          "id": "ejpt-foundations",
+          "title": "Foundations",
+          "url": "https://www.infraowl.site/revision/pages/ejpt/ejpt-foundations.json"
+        },
+        {
+          "id": "ejpt-assessment-methodologies",
+          "title": "Assessment Methodologies",
+          "url": "https://www.infraowl.site/revision/pages/ejpt/ejpt-assessment-methodologies.json"
+        },
+        {
+          "id": "ejpt-host-network-pentest",
+          "title": "Host and Network Pentesting",
+          "url": "https://www.infraowl.site/revision/pages/ejpt/ejpt-host-network-pentest.json"
+        },
+        {
+          "id": "ejpt-post-exploitation",
+          "title": "Post-Exploitation and Pivoting",
+          "url": "https://www.infraowl.site/revision/pages/ejpt/ejpt-post-exploitation.json"
+        },
+        {
+          "id": "ejpt-web-app-pentest",
+          "title": "Web App Pentesting",
+          "url": "https://www.infraowl.site/revision/pages/ejpt/ejpt-web-app-pentest.json"
+        },
+        {
+          "id": "ejpt-exam-readiness",
+          "title": "Exam Readiness",
+          "url": "https://www.infraowl.site/revision/pages/ejpt/ejpt-exam-readiness.json"
+        }
+      ]
+    },
+    {
+      "id": "web-servers",
+      "title": "Web Servers",
+      "description": "Web vs application servers, Nginx, Gunicorn and WSGI.",
+      "pageCount": 2,
+      "pages": [
+        {
+          "id": "web-vs-app-server",
+          "title": "Web Server vs App Server",
+          "url": "https://www.infraowl.site/revision/pages/web-servers/web-vs-app-server.json"
+        },
+        {
+          "id": "wsgi",
+          "title": "WSGI",
+          "url": "https://www.infraowl.site/revision/pages/web-servers/wsgi.json"
+        }
+      ]
+    },
+    {
+      "id": "aws",
+      "title": "AWS",
+      "description": "AWS fundamentals and Amazon ElastiCache.",
+      "pageCount": 2,
+      "pages": [
+        {
+          "id": "aws-basics",
+          "title": "AWS Basics",
+          "url": "https://www.infraowl.site/revision/pages/aws/aws-basics.json"
+        },
+        {
+          "id": "elasticache",
+          "title": "Amazon ElastiCache",
+          "url": "https://www.infraowl.site/revision/pages/aws/elasticache.json"
+        }
+      ]
+    },
+    {
+      "id": "dev-principles",
+      "title": "Dev Principles",
+      "description": "Design patterns from the Gang of Four.",
+      "pageCount": 1,
+      "pages": [
+        {
+          "id": "design-patterns",
+          "title": "Design Patterns",
+          "url": "https://www.infraowl.site/revision/pages/dev-principles/design-patterns.json"
+        }
+      ]
+    }
+  ]
+}

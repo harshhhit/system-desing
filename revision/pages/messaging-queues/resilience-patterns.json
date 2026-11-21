@@ -1,0 +1,38 @@
+{
+  "id": "resilience-patterns",
+  "section": "messaging-queues",
+  "title": "Resilience Patterns",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Resilience patterns keep a failure in one service from spreading to its callers. In microservices a failing call is a network call that may be slow, down or overloaded, and without containment it cascades."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Set timeouts on every call. Retry transient failures with exponential backoff and jitter, only for idempotent operations. A circuit breaker (closed, open, half-open) fails fast and lets a dependency recover. Bulkheads give each dependency its own pool. Sagas use compensating actions instead of two-phase commit."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is it always safe to retry a failed call?",
+          "a": "No. It may have succeeded and only the response was lost, so retrying a charge could bill twice. Retry only idempotent operations.",
+          "hint": "Idempotency"
+        },
+        {
+          "q": "Why add jitter to backoff?",
+          "a": "So many clients do not retry at the same moments and hit the dependency in synchronized waves.",
+          "hint": "Randomness"
+        },
+        {
+          "q": "What does a bulkhead do?",
+          "a": "Gives each dependency its own thread or connection pool so one slow dependency cannot exhaust everything.",
+          "hint": "Ship compartments"
+        }
+      ]
+    }
+  ]
+}

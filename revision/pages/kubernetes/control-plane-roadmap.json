@@ -1,0 +1,38 @@
+{
+  "id": "control-plane-roadmap",
+  "section": "kubernetes",
+  "title": "Control Plane Roadmap",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "The control plane stores desired state and continuously works to make actual state match it. It exists because Kubernetes is declarative: you say you want three replicas, not how to start them. A cluster is two tiers: control plane and worker nodes."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "kube-apiserver is the single entry point, etcd stores state, kube-scheduler assigns new Pods to nodes, and kube-controller-manager runs controllers that fix differences. They coordinate through the API server, and kubelets on worker nodes actually run containers. The scheduler filters then scores nodes."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does the scheduler start the Pod?",
+          "a": "No. It writes a binding setting spec.nodeName. The kubelet on that node starts the containers.",
+          "hint": "Decision only"
+        },
+        {
+          "q": "Why is Kubernetes called declarative?",
+          "a": "You declare the desired state, and the control plane works out and performs the steps to reach it.",
+          "hint": "What, not how"
+        },
+        {
+          "q": "How do the control-plane components coordinate?",
+          "a": "All through the API server, which is the only component that talks to etcd.",
+          "hint": "Hub"
+        }
+      ]
+    }
+  ]
+}

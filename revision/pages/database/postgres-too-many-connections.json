@@ -1,0 +1,38 @@
+{
+  "id": "postgres-too-many-connections",
+  "section": "database",
+  "title": "Postgres Too Many Connections",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "'Too many connections' (FATAL: sorry, too many clients already) means PostgreSQL hit max_connections and refuses new ones. Troubleshooting means finding who holds connections and what state they are in, using pg_stat_activity."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Count by state, then group by client IP, user and application name. Many active means slow queries or real load; many idle means oversized pools across too many instances; idle in transaction means the app is not closing transactions, which also holds locks. Fix pools, leaks and slow queries; add a pooler."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Why not just raise max_connections a lot?",
+          "a": "Each connection is a separate process with its own memory, and work_mem is per operation, so memory can run out.",
+          "hint": "Process per connection"
+        },
+        {
+          "q": "What does 'idle in transaction' indicate?",
+          "a": "The application opened a transaction and is not closing it, which also holds locks.",
+          "hint": "Unclosed"
+        },
+        {
+          "q": "Which view do you query first?",
+          "a": "pg_stat_activity.",
+          "hint": "Activity"
+        }
+      ]
+    }
+  ]
+}

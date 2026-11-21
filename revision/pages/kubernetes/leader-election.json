@@ -1,0 +1,38 @@
+{
+  "id": "leader-election",
+  "section": "kubernetes",
+  "title": "Leader Election",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Leader election lets several replicas of kube-scheduler and kube-controller-manager run for high availability without fighting over the same resources. Only one replica, the leader, does reconciliation work; the others are followers that watch and wait."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "It uses a Lease object (coordination.k8s.io/v1) stored in etcd. The leader keeps renewing the Lease; if it stops, a follower sees it expire and atomically takes it over. Key fields are holderIdentity and leaseDurationSeconds. Unlike kube-apiserver, these components are active-passive, not active-active."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Do the scheduler and controller manager run active-active like kube-apiserver?",
+          "a": "No. They are active-passive: one leader works while the others stand by.",
+          "hint": "Who makes decisions?"
+        },
+        {
+          "q": "What object implements leader election?",
+          "a": "A Lease object in the coordination.k8s.io/v1 API group, stored in etcd.",
+          "hint": "A distributed lock"
+        },
+        {
+          "q": "What does holderIdentity show?",
+          "a": "Which replica currently holds the Lease, meaning the current leader.",
+          "hint": "Lease field"
+        }
+      ]
+    }
+  ]
+}

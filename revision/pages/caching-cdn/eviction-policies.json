@@ -1,0 +1,38 @@
+{
+  "id": "eviction-policies",
+  "section": "caching-cdn",
+  "title": "Cache Eviction Policies",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "An eviction policy decides what to drop when the cache is full. LRU drops the least recently used entry and is the usual default because recent use predicts future use. LFU drops the least used entry. FIFO and random are cheap but ignore usage."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Eviction handles memory; TTL handles freshness, so set both. In Redis set maxmemory and a policy like allkeys-lru or allkeys-lfu. LRU is fooled by scans; LFU resists scans but adapts slowly. Redis LRU is approximate, sampling keys. LRU in O(1) uses a hash map plus doubly linked list."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "After setting volatile-lru, writes fail with OOM. Why?",
+          "a": "Most keys have no TTL, so there are no eviction candidates and it acts like noeviction.",
+          "hint": "TTLs needed"
+        },
+        {
+          "q": "Eviction vs expiration?",
+          "a": "Eviction is triggered by memory pressure; expiration by a TTL.",
+          "hint": "Memory vs time"
+        },
+        {
+          "q": "Hit ratio drops nightly at 2 a.m. Why?",
+          "a": "A batch job scans cold keys and pollutes LRU. Use LFU or isolate the batch workload.",
+          "hint": "Scan pollution"
+        }
+      ]
+    }
+  ]
+}

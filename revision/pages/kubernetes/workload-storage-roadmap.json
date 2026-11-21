@@ -1,0 +1,38 @@
+{
+  "id": "workload-storage-roadmap",
+  "section": "kubernetes",
+  "title": "Workload Config and Storage",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Kubernetes keeps config and data out of the container image so the same image runs unchanged in dev, staging and production. ConfigMaps hold normal settings, Secrets hold sensitive ones, and volumes provide storage."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "A Volume survives container restarts inside a Pod. For data that must outlive the Pod, a PVC binds to a PV; with a StorageClass the PV and disk are provisioned automatically through a CSI driver, and the kubelet mounts it. Static pre-provisioning of PVs does not scale."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Why should config not be baked into the image?",
+          "a": "Each environment would need its own image, breaking the idea of one immutable, portable artifact.",
+          "hint": "Same image everywhere"
+        },
+        {
+          "q": "What does a StorageClass enable?",
+          "a": "Dynamic provisioning: the PV and underlying disk are created automatically when a PVC asks.",
+          "hint": "No manual PVs"
+        },
+        {
+          "q": "Is a Secret encrypted by default?",
+          "a": "No. Values are only base64-encoded and stored unencrypted in etcd unless encryption at rest is enabled.",
+          "hint": "Encoding"
+        }
+      ]
+    }
+  ]
+}

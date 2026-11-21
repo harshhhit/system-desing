@@ -1,0 +1,38 @@
+{
+  "id": "integrity-constraints",
+  "section": "database",
+  "title": "Integrity Constraints",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Integrity constraints are rules the database enforces on every insert, update and delete: NOT NULL, UNIQUE, PRIMARY KEY, FOREIGN KEY and CHECK. A violating write is rejected and rolled back, so invalid data cannot get in from any app, script or migration."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "A primary key uniquely identifies a row; a foreign key links to another table's primary key. Validate in the application for good error messages, but rely on the database for correctness, together with transactions and isolation. Serializability is the highest isolation level: concurrent results equal some one-at-a-time order."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "If the app checks email uniqueness, do you still need a UNIQUE constraint?",
+          "a": "Yes. Two concurrent sign-ups can both SELECT, both see nothing and both insert. Only the database constraint closes that race.",
+          "hint": "Race condition"
+        },
+        {
+          "q": "What does a foreign key do?",
+          "a": "Links a column to another table's primary key so related data stays consistent.",
+          "hint": "Connector"
+        },
+        {
+          "q": "What is serializability?",
+          "a": "The highest isolation level: concurrent transactions end in the same state as if run one after another.",
+          "hint": "One at a time"
+        }
+      ]
+    }
+  ]
+}

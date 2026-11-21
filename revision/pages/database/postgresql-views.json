@@ -1,0 +1,38 @@
+{
+  "id": "postgresql-views",
+  "section": "database",
+  "title": "PostgreSQL Views",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A view is a named, saved SQL query you can select from like a table. It stores no data; every query runs the underlying SQL on the live tables, so it is always up to date. Use it to reuse complex joins and restrict which columns or rows a role sees."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "A materialized view stores the query result physically, so reads are fast, but data is only as fresh as the last REFRESH. Good for expensive dashboards and reports. Analogy: a view is fresh coffee each time; a materialized view is a thermos brewed earlier."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does creating a view make the query faster?",
+          "a": "No. PostgreSQL expands the view into the outer query, so it runs as fast as the SQL itself.",
+          "hint": "Just a stored query"
+        },
+        {
+          "q": "What is the trade-off of a materialized view?",
+          "a": "Fast reads, but data can be stale until REFRESH.",
+          "hint": "Snapshot"
+        },
+        {
+          "q": "Name two reasons to use a regular view.",
+          "a": "Reuse complex joins and restrict which columns or rows a role can see.",
+          "hint": "Reuse and security"
+        }
+      ]
+    }
+  ]
+}

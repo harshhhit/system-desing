@@ -1,0 +1,38 @@
+{
+  "id": "file-object-block-storage",
+  "section": "storage",
+  "title": "File, Object and Block Storage",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "File, object and block storage are the three ways a storage system exposes data. Block is a raw virtual disk attached to one server. File is a shared file system with folders and paths. Object stores data as objects with metadata and a key in a flat bucket over HTTP."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Block (EBS): low latency, high IOPS, for databases and boot volumes; protocols iSCSI, Fibre Channel, NVMe-oF. File (EFS): shared drives over NFS or SMB. Object (S3): almost unlimited scale and very durable, accessed by REST APIs, for media, backups and static assets."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "The S3 console shows folders. Is S3 a file system?",
+          "a": "No. Its namespace is flat; a key like users/42/photo.jpg is one string and folders are just prefixes. No real directories or file locking.",
+          "hint": "Prefixes"
+        },
+        {
+          "q": "Which storage fits a database?",
+          "a": "Block storage, for low latency and high IOPS.",
+          "hint": "Raw disk"
+        },
+        {
+          "q": "Which protocols give file-level access?",
+          "a": "NFS and SMB.",
+          "hint": "Shared folders"
+        }
+      ]
+    }
+  ]
+}

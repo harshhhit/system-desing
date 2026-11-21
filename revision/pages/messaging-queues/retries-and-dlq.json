@@ -1,0 +1,38 @@
+{
+  "id": "retries-and-dlq",
+  "section": "messaging-queues",
+  "title": "Retries and Dead-Letter Queues",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A retry re-attempts a failed message, assuming the failure is temporary. A dead-letter queue (DLQ) is a separate queue or topic where a message goes after failing the maximum attempts, so a poison message stops blocking or wasting workers."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Retry a limited number of times, ideally with exponential backoff. RabbitMQ supports dead-letter exchanges natively; in Kafka you build retry and DLQ topics (orders, orders.retry, orders.dlq). The starter project runs Django with Kafka and RabbitMQ workers in Docker, with MAX_RETRIES per worker."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Once failures go to the DLQ, is the problem handled?",
+          "a": "No. A DLQ only parks it. You need alerts on depth or age, a way to inspect, and a replay after the fix.",
+          "hint": "Monitor it"
+        },
+        {
+          "q": "What is a poison message?",
+          "a": "A message that always fails, which would otherwise block or waste workers forever.",
+          "hint": "Never succeeds"
+        },
+        {
+          "q": "How is a DLQ built in Kafka?",
+          "a": "With separate retry and DLQ topics, such as orders.retry and orders.dlq.",
+          "hint": "Topics"
+        }
+      ]
+    }
+  ]
+}

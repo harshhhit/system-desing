@@ -1,0 +1,38 @@
+{
+  "id": "etcd",
+  "section": "kubernetes",
+  "title": "etcd",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "etcd is a distributed, strongly consistent key-value store and the source of truth for Kubernetes cluster state. The API server stores Pods, Deployments, Services, Secrets, ConfigMaps, Nodes, namespaces and RBAC rules there. Kubernetes is declarative, so the cluster must remember what should exist, and etcd stores that desired state."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "etcd uses the Raft consensus algorithm for consistency and high availability. Objects are stored as keys under a /registry/ prefix. It keeps only the current value of each object, not a full history; MVCC gives short-lived revisions so watches and reads can see recent versions for a while."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does etcd store the entire history of the cluster?",
+          "a": "No. It stores the current value of each object. If replicas went 2 to 4 to 6, etcd holds 6. MVCC keeps only short-lived revisions until compaction.",
+          "hint": "Think MVCC and compaction"
+        },
+        {
+          "q": "Which consensus algorithm does etcd use?",
+          "a": "Raft, which provides consistency and high availability across etcd members.",
+          "hint": "Leader-based log replication"
+        },
+        {
+          "q": "Under what key prefix are Kubernetes objects stored?",
+          "a": "Under /registry/, one key per object, namespaced where the object is namespaced.",
+          "hint": "A folder-like prefix"
+        }
+      ]
+    }
+  ]
+}

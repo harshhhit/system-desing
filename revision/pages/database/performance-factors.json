@@ -1,0 +1,38 @@
+{
+  "id": "performance-factors",
+  "section": "database",
+  "title": "Database Performance Factors",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Database performance is latency (how long one query takes, tracked as p50, p95, p99) and throughput (queries or transactions per second), limited by whichever resource is the bottleneck."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Bottlenecks: query efficiency and indexes, CPU, memory and cache hit ratio, disk IOPS, connections and locks. Measure first with the slow query log, EXPLAIN ANALYZE, percentiles and resource metrics, then fix the real bottleneck with indexes, query changes, caching, pooling, replicas or scaling, and re-measure."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Will a bigger instance fix a slow database?",
+          "a": "Only if hardware is the bottleneck. A missing index still scans the whole table, just slightly faster.",
+          "hint": "Measure first"
+        },
+        {
+          "q": "What are latency and throughput?",
+          "a": "Latency is time per query; throughput is queries or transactions per second.",
+          "hint": "Speed vs volume"
+        },
+        {
+          "q": "What does replication lag measure?",
+          "a": "The delay in syncing replicas with the primary.",
+          "hint": "Availability metric"
+        }
+      ]
+    }
+  ]
+}

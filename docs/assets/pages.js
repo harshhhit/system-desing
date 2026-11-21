@@ -222,7 +222,8 @@ window.SITE_PAGES = {
   "how-to-choose-the-database": {
     href: "05-database/02-data-modeling-and-selection/how-to-choose-the-database.html",
     section: "Database",
-    title: "How to Choose the Database"
+    title: "How to Choose the Database",
+    subtitle: "How to chose the database: a decision procedure, a decision tree and a comparison of the nine database families, so the store is derived from access patterns, consistency, volume and operations instead of popularity, plus the production symptoms that say the choice was wrong."
   },
   "factors": {
     href: "05-database/02-data-modeling-and-selection/factors.html",

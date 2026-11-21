@@ -1,0 +1,38 @@
+{
+  "id": "choose-a-database",
+  "section": "database",
+  "title": "Choosing a Database",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Choose a database from access patterns and requirements, not popularity. Default to a relational database like PostgreSQL for transactions, relationships and flexible queries. The shape of the data does not decide; how it is read and written does."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Key-value (DynamoDB, Redis) for simple lookups at scale, document stores for nested records, Cassandra for huge writes by known key, Elasticsearch for search, time-series for metrics. Blobs go to object storage. Multi-row ACID transactions force relational. Keep the truth in one store and sync others via CDC or an outbox."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Why should Elasticsearch never be the source of truth?",
+          "a": "No transactions, near-real-time visibility, weaker durability, and it assumes the index can be rebuilt from the data it indexes.",
+          "hint": "Derived copy"
+        },
+        {
+          "q": "Why not write to every store in the request?",
+          "a": "Dual writes fail half-way with nothing to reconcile. Write to the source of truth and propagate via CDC or a transactional outbox.",
+          "hint": "Dual writes"
+        },
+        {
+          "q": "DynamoDB throttles while total capacity looks idle. Why?",
+          "a": "A hot partition: capacity is split across partitions and one key gets most traffic. Redesign the key or add write-sharding.",
+          "hint": "Partition key"
+        }
+      ]
+    }
+  ]
+}

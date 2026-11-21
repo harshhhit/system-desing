@@ -1,0 +1,38 @@
+{
+  "id": "database-caching",
+  "section": "caching-cdn",
+  "title": "Database Caching",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Databases cache internally: the buffer pool keeps hot data and index pages in RAM, ideally the whole working set, and it is always consistent because the engine manages it transactionally. Check its hit ratio first; OLTP is typically above 99 percent."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "On top: materialized views precompute expensive queries, read replicas spread reads, and Redis with cache-aside handles hot reads still too slow. Redis is a separate copy the database knows nothing about, so it can be stale. Cache objects by ID rather than query results so invalidation maps to one key."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Your team wants Redis because the DB is slow. What do you check first?",
+          "a": "Slow queries and plans, buffer hit ratio, connection pooling, and whether a materialized view or replica fits.",
+          "hint": "Fix the DB first"
+        },
+        {
+          "q": "p99 doubled after failover and recovered over 30 minutes. Why?",
+          "a": "The new primary's buffer pool was cold, so queries read from disk until the working set reloaded.",
+          "hint": "Cold pool"
+        },
+        {
+          "q": "Why is shared_buffers about 25 percent of RAM in PostgreSQL?",
+          "a": "PostgreSQL also uses the OS page cache, so the rest of RAM still caches data.",
+          "hint": "Double buffering"
+        }
+      ]
+    }
+  ]
+}

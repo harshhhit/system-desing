@@ -1,0 +1,38 @@
+{
+  "id": "cdn-caching",
+  "section": "caching-cdn",
+  "title": "CDN Caching",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A CDN caches responses in edge locations (PoPs) close to users, so most requests never reach the origin. Users are routed to the nearest PoP by anycast or GeoDNS."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "On a miss the PoP fetches from the origin, often through an origin shield so the origin sees about one request per object, and caches for the s-maxage TTL. Keep the cache key minimal, version static URLs, purge by tag, prefer soft purge. Watch for cache poisoning and cache deception."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Why use s-maxage?",
+          "a": "To cache longer at the CDN, which you can purge, than in browsers, which you cannot.",
+          "hint": "Shared max-age"
+        },
+        {
+          "q": "CDN hit ratio fell from 90 to 20 percent after a release. What do you check?",
+          "a": "New cookies or Set-Cookie, new query params in the key, Vary changes, missing Cache-Control, or a policy change.",
+          "hint": "Cache key"
+        },
+        {
+          "q": "What is web cache poisoning?",
+          "a": "An unkeyed header the origin reflects gets cached and served to everyone. Strip unknown headers and keep unkeyed inputs out of responses.",
+          "hint": "Unkeyed input"
+        }
+      ]
+    }
+  ]
+}

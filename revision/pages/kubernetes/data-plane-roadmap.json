@@ -1,0 +1,38 @@
+{
+  "id": "data-plane-roadmap",
+  "section": "kubernetes",
+  "title": "Data Plane Roadmap",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "The data plane is the worker nodes and their agents that actually run containers and carry traffic. The control plane only decides and records state, so something on every machine has to carry it out."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "The kubelet runs Pods through CRI, networking through CNI and storage through CSI, and runs liveness, readiness and startup probes. kube-proxy routes Service IPs. The kubelet sends heartbeats; if a node stops reporting, the node controller notices after a grace period and Pods are eventually evicted and rescheduled."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "If a node loses contact, are its Pods moved immediately?",
+          "a": "No. The node controller must first notice missed heartbeats after the grace period (about 40 to 50 seconds), then eviction happens later.",
+          "hint": "Grace period"
+        },
+        {
+          "q": "Why do probes exist?",
+          "a": "Because a running process is not the same as a working application. Probes check health and readiness.",
+          "hint": "Running vs working"
+        },
+        {
+          "q": "What is CRI?",
+          "a": "A gRPC API that lets the kubelet talk to any compliant runtime, like containerd or CRI-O.",
+          "hint": "Runtime interface"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "rendering-strategies",
+  "section": "front-end",
+  "title": "Web Rendering Strategies",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A rendering strategy is where and when a page's HTML is built. CSR builds it in the browser, SSR on the server per request, SSG at build time, and ISR regenerates static pages periodically. Pick per page based on SEO, freshness and cost."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "CSR suits interactive apps behind login but has slower first paint and weaker SEO. SSR gives fast first content and good SEO but adds server load and hydration. SSG is fastest and cheapest from a CDN but only as fresh as the last build. Hydration mismatch is the classic SSR bug."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "With SSR, is the page interactive as soon as it is visible?",
+          "a": "No. Buttons do nothing until the JavaScript downloads and hydrates the page.",
+          "hint": "Hydration"
+        },
+        {
+          "q": "What causes a hydration mismatch?",
+          "a": "Server HTML differing from the client render, for example using Date.now() or Math.random() during render.",
+          "hint": "Non-deterministic render"
+        },
+        {
+          "q": "When is CSR a good fit?",
+          "a": "Internal dashboards and authenticated apps where SEO does not matter.",
+          "hint": "Behind login"
+        }
+      ]
+    }
+  ]
+}

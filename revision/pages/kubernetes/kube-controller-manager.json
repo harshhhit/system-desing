@@ -1,0 +1,38 @@
+{
+  "id": "kube-controller-manager",
+  "section": "kubernetes",
+  "title": "kube-controller-manager",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "kube-controller-manager runs the built-in controllers, such as Deployment, ReplicaSet, Node and Job, inside one process. Each controller is a reconciliation loop scoped to one kind of resource that keeps actual state converging on desired state, without human action."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Each controller watches the API server, compares desired state (from etcd) with actual state, and corrects drift. Example: a ReplicaSet wants 3 Pods but 2 run, so the controller creates one. A Deployment owns ReplicaSets, which own Pods. It only talks to the API server, never to kubelets or etcd directly."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does kube-controller-manager talk to kubelets directly?",
+          "a": "No. It only reads and writes through the API server, never directly to a kubelet, worker node or etcd.",
+          "hint": "One door only"
+        },
+        {
+          "q": "What is a controller?",
+          "a": "One watch-and-correct loop for one kind of resource that detects a mismatch between desired and actual state and acts to fix it.",
+          "hint": "A loop"
+        },
+        {
+          "q": "How do Deployments, ReplicaSets and Pods relate?",
+          "a": "A Deployment owns one or more ReplicaSets, and each ReplicaSet owns its Pods. The ReplicaSet controller keeps a fixed replica count running.",
+          "hint": "Ownership chain"
+        }
+      ]
+    }
+  ]
+}

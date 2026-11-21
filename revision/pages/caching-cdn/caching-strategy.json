@@ -1,0 +1,38 @@
+{
+  "id": "caching-strategy",
+  "section": "caching-cdn",
+  "title": "Caching Strategy",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A system's caching strategy decides where copies of data live (browser, CDN, reverse proxy, app memory, Redis, the database buffer pool), how each copy is filled and updated, and how stale it may be. A cache is a smaller, faster copy of data whose source of truth is slower."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Decide layer by layer: static assets at the CDN with long TTLs and versioned URLs, hot read-heavy objects in Redis with cache-aside, a small in-process cache only for almost never written data. For each cache state the eviction policy, a TTL matching allowed staleness, invalidation on write, and stampede protection."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is a higher cache hit ratio always better?",
+          "a": "No. It is only good if misses can be served safely and hits are fresh enough. Longer TTLs raise the ratio but serve staler data.",
+          "hint": "Freshness"
+        },
+        {
+          "q": "What is the hit ratio formula?",
+          "a": "Hits divided by (hits plus misses).",
+          "hint": "Ratio"
+        },
+        {
+          "q": "Where should static assets be cached?",
+          "a": "At the CDN with long TTLs and versioned URLs.",
+          "hint": "Edge"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "system-design-interview",
+  "section": "front-end",
+  "title": "System Design Interview",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A system design interview asks you to design a large system such as a URL shortener or chat app out loud in about 45 minutes. There is no single right answer; you are judged on how you handle an open problem and explain trade-offs."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Structure: clarify functional and non-functional requirements, estimate scale with back-of-the-envelope math, define the API, sketch the high-level design, deep-dive the hardest parts, then discuss bottlenecks, failure modes and trade-offs. State assumptions out loud."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Should you start drawing right after hearing the problem?",
+          "a": "No. Designing before clarifying is the most common way to fail; scope and scale change the design.",
+          "hint": "Clarify first"
+        },
+        {
+          "q": "What comes after requirements?",
+          "a": "Capacity estimation, then API design, then high-level design.",
+          "hint": "Scale next"
+        },
+        {
+          "q": "What is a covering index?",
+          "a": "An index that contains all the columns a query needs.",
+          "hint": "No table lookup"
+        }
+      ]
+    }
+  ]
+}

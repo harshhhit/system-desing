@@ -1,0 +1,38 @@
+{
+  "id": "amazon-sqs",
+  "section": "messaging-queues",
+  "title": "Amazon SQS",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "SQS is AWS's fully managed message queue. Producers send messages, SQS stores them redundantly across Availability Zones, and consumers poll, process and delete them. It decouples services and absorbs spikes because the producer does not wait for the consumer."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "The visibility timeout hides a message while one consumer works on it; if it is not deleted in time it reappears. A dead-letter queue catches messages that failed maxReceiveCount times. Standard is at-least-once; FIFO preserves order per message group and deduplicates within 5 minutes. Consumers must be idempotent."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does SQS guarantee exactly-once?",
+          "a": "No. Standard is at-least-once; FIFO deduplicates within 5 minutes, but end-to-end exactly-once still needs idempotent consumers.",
+          "hint": "Idempotency"
+        },
+        {
+          "q": "Customers get two confirmation emails for one order. Why?",
+          "a": "The consumer sent the email but crashed or timed out before deleting, so the message reappeared. Make sending idempotent and size the visibility timeout.",
+          "hint": "Visibility timeout"
+        },
+        {
+          "q": "Visibility timeout vs retention period?",
+          "a": "Visibility is a short per-receive lock; retention is the message's whole lifetime in the queue.",
+          "hint": "Lock vs lifetime"
+        }
+      ]
+    }
+  ]
+}

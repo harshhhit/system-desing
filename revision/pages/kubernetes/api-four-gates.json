@@ -1,0 +1,38 @@
+{
+  "id": "api-four-gates",
+  "section": "kubernetes",
+  "title": "API Request Four Gates",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Every Kubernetes API request clears four sequential gates: Authentication (who are you), Authorization (are you allowed), Admission Control (does cluster policy accept or mutate it), and finally persistence to etcd. Each gate is a separate security and validation filter."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "The gates run in strict order and are independent: passing one does not guarantee passing the next. A request rejected at any gate never reaches etcd. Admission control can both mutate and reject objects based on cluster policy."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Once a request passes authentication, is it guaranteed to succeed?",
+          "a": "No. Authentication only establishes identity. The request still must pass authorization and admission control before it is saved.",
+          "hint": "Identity is not permission"
+        },
+        {
+          "q": "Name the four gates in order.",
+          "a": "Authentication, Authorization, Admission Control, then persist to etcd.",
+          "hint": "Who, may, policy, save"
+        },
+        {
+          "q": "What can admission control do to a request?",
+          "a": "Evaluate it against cluster policy and either mutate it or reject it.",
+          "hint": "Two actions"
+        }
+      ]
+    }
+  ]
+}

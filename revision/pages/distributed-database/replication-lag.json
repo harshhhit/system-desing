@@ -1,0 +1,38 @@
+{
+  "id": "replication-lag",
+  "section": "distributed-database",
+  "title": "Replication Lag",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Replication lag is the delay between a write committing on the leader and becoming visible on a replica. It exists only with asynchronous or semi-synchronous replication."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "It is rarely the network. Causes: replica disk I/O, heavy read queries starving the replica, and single-threaded apply. Lag breaks read-your-writes, makes data appear to go backwards, and can lose data on failover. MySQL measures Seconds_Behind_Source; PostgreSQL uses pg_stat_replication."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "A user updates their profile, refreshes and sees the old one. Why?",
+          "a": "The refresh read a lagging replica, violating read-your-writes. Route that user's reads to the leader for a while.",
+          "hint": "Read-your-writes"
+        },
+        {
+          "q": "Is network RTT usually the cause of lag?",
+          "a": "No. It is the least common cause; disk I/O, heavy reads and single-threaded apply dominate.",
+          "hint": "Red herring"
+        },
+        {
+          "q": "Why is apply often single-threaded?",
+          "a": "To apply transactions in exactly the leader's order.",
+          "hint": "Ordering"
+        }
+      ]
+    }
+  ]
+}

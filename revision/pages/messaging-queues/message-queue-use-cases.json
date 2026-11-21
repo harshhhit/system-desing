@@ -1,0 +1,38 @@
+{
+  "id": "message-queue-use-cases",
+  "section": "messaging-queues",
+  "title": "Why Use a Message Queue",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A message queue is a buffer between services: a producer writes a message, the queue stores it durably, and consumers process it later at their own pace. AWS SQS, RabbitMQ and Azure Service Bus are examples."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "It decouples services so one being down does not break the other, absorbs traffic spikes as a backlog, keeps messages safe if a consumer crashes, and scales by adding consumers. Use it for work that does not need to finish inside the user's request: emails, video processing, order fulfilment."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is a queued message guaranteed processed exactly once and in order?",
+          "a": "Usually neither unless you design for it. Most queues are at-least-once, so a crash before ack causes redelivery.",
+          "hint": "At-least-once"
+        },
+        {
+          "q": "What does a queue do during a traffic spike?",
+          "a": "Absorbs it as a backlog that consumers work through at their own pace.",
+          "hint": "Buffer"
+        },
+        {
+          "q": "Give work suited to a queue.",
+          "a": "Anything outside the user's request, like emails, video processing or order fulfilment.",
+          "hint": "Async"
+        }
+      ]
+    }
+  ]
+}

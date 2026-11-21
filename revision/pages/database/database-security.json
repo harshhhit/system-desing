@@ -1,0 +1,38 @@
+{
+  "id": "database-security",
+  "section": "database",
+  "title": "Database Security",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Database security ensures only the right people and services read or change the right data, data cannot be read if intercepted or stolen, and sensitive access is traceable. Secure it in layers."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Least-privilege roles per service, row-level security for multi-tenant data, TLS with certificate verification, encryption at rest plus column-level encryption for very sensitive fields, credentials in a secrets manager with rotation, parameterized queries against SQL injection, masking in non-production copies, and auditing."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does encryption at rest protect against SQL injection?",
+          "a": "No. The running database decrypts data transparently, so injected queries read plaintext. Encryption at rest protects disks, snapshots and backups.",
+          "hint": "Files vs queries"
+        },
+        {
+          "q": "Why do parameterized queries stop SQL injection?",
+          "a": "SQL text and values are sent separately, so input can never be read as SQL syntax.",
+          "hint": "Separation"
+        },
+        {
+          "q": "Why mask data in staging?",
+          "a": "Non-production copies on laptops and analytics should not expose real sensitive fields.",
+          "hint": "Copies leak"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "cache-problems",
+  "section": "caching-cdn",
+  "title": "Cache Problems",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A thundering herd happens when a hot key expires and thousands of concurrent requests miss together and all hit the database to rebuild the same value, which can overload it. An avalanche is many keys missing at once."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Prevent the herd with a per-key lock or single-flight so one request rebuilds while others wait or get stale data, refresh hot keys early, and add TTL jitter. Cache penetration is lookups for keys that exist nowhere; use negative caching and Bloom filters. Hot keys need an L1 cache or replication."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "One hour after a deploy the database melts. Why?",
+          "a": "The cache was warmed with identical TTLs and everything expired together, an avalanche. Add jitter.",
+          "hint": "Same TTL"
+        },
+        {
+          "q": "What is cache penetration?",
+          "a": "Requests for keys in neither cache nor DB, so every one hits the database. Fix with negative caching and Bloom filters.",
+          "hint": "Missing keys"
+        },
+        {
+          "q": "Why are big keys dangerous in Redis?",
+          "a": "Commands run on one thread, so a huge value blocks everything. Split values and use UNLINK.",
+          "hint": "Single thread"
+        }
+      ]
+    }
+  ]
+}

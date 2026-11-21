@@ -1,0 +1,38 @@
+{
+  "id": "design-patterns",
+  "section": "dev-principles",
+  "title": "Design Patterns",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A design pattern is a named, reusable solution to a recurring object-oriented design problem: a description of how to arrange classes and objects, not code to copy. The 23 classic patterns come from the 1994 Gang of Four book."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Three groups: creational (Factory, Builder) control object creation; structural (Adapter, Decorator, Facade) control composition; behavioral (Strategy, Observer, Command) control interaction. Their value is proven trade-offs and shared vocabulary. Adapter converts one interface to another clients expect."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is Singleton a good default for a database connection?",
+          "a": "Usually not. It is global mutable state that hides dependencies and makes unit tests hard.",
+          "hint": "Hidden coupling"
+        },
+        {
+          "q": "What do creational patterns control?",
+          "a": "How objects are created.",
+          "hint": "Factory, Builder"
+        },
+        {
+          "q": "What does Adapter do?",
+          "a": "Converts a class's interface into another interface clients expect.",
+          "hint": "Translator"
+        }
+      ]
+    }
+  ]
+}

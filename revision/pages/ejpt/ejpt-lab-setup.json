@@ -1,0 +1,38 @@
+{
+  "id": "ejpt-lab-setup",
+  "section": "ejpt",
+  "title": "Lab Setup",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Build a home lab once and reuse it for every module: one attacker VM (Kali Linux) and three vulnerable targets (Metasploitable 2, a Windows eval VM, and DVWA in Docker) on an isolated host-only network."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Use VirtualBox or VMware as hypervisor; give Kali about 4 GB RAM. Run DVWA with docker run -d -p 8080:80 vulnerables/web-dvwa and check it with curl -I (expect a 302 to /login.php). Confirm Kali can ping the targets and create a notes file with one section per exam domain."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Why use a host-only network?",
+          "a": "To keep vulnerable targets isolated from other networks while the attacker VM can reach them.",
+          "hint": "Isolation"
+        },
+        {
+          "q": "What should curl -I against DVWA return?",
+          "a": "An HTTP 302 redirect to /login.php.",
+          "hint": "Redirect"
+        },
+        {
+          "q": "Name the three vulnerable targets.",
+          "a": "Metasploitable 2, a Windows eval VM, and DVWA in Docker.",
+          "hint": "Linux, Windows, web"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "load-balancing",
+  "section": "traffic-management",
+  "title": "Load Balancing",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A load balancer sits in front of a pool of servers and spreads traffic across them, so you can scale horizontally and survive instance failures. Health checks remove failing instances, which is why it improves availability, not just capacity."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Algorithms: round robin, least connections, or power-of-two-choices at scale. L4 forwards connections by IP and port; L7 understands HTTP and routes by path or header and terminates TLS. Sticky sessions cause uneven load; prefer stateless backends. GSLB picks the region; the local LB picks the instance."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Why can a deep health check cause a total outage?",
+          "a": "If every check tests the database, a DB blip fails all checks and the LB returns 503 for everything. Keep checks instance-local.",
+          "hint": "Shared dependency"
+        },
+        {
+          "q": "Why is a gRPC backend overloaded behind an L4 balancer?",
+          "a": "gRPC multiplexes requests over one long-lived HTTP/2 connection, and L4 balances connections, not requests.",
+          "hint": "Connections"
+        },
+        {
+          "q": "Load balancing vs rate limiting?",
+          "a": "A load balancer decides where a request goes; a rate limiter decides whether it is allowed.",
+          "hint": "Where vs whether"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "rate-limiting",
+  "section": "traffic-management",
+  "title": "Rate Limiting",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Rate limiting caps how many requests a client can make in a time window so one caller cannot overload a shared service or run up costs. Autoscaling alone does not help because it lags and shared dependencies do not scale with it."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "A token bucket allows bursts but enforces an average; enforce at the API gateway per API key with a shared Redis counter updated atomically (for example a Lua script). Rejections get 429 with Retry-After. Fixed windows allow about 2 times the limit at boundaries; sliding windows fix that."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "A customer limited to 100 per minute gets about 400. Why?",
+          "a": "Likely four instances each enforcing 100 with local counters. Use a shared atomic counter.",
+          "hint": "Local counters"
+        },
+        {
+          "q": "Token bucket vs leaky bucket?",
+          "a": "Token bucket for inbound limits, allowing bursts. Leaky bucket for smoothing outbound calls to a fragile downstream.",
+          "hint": "Burst vs smooth"
+        },
+        {
+          "q": "A whole university gets 429s while barely using the API. Why?",
+          "a": "The limit is keyed by IP and thousands share one NAT address. Key on user or API key.",
+          "hint": "NAT"
+        }
+      ]
+    }
+  ]
+}

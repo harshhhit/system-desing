@@ -1,0 +1,38 @@
+{
+  "id": "application-security",
+  "section": "observability-security-ops",
+  "title": "Application Security",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Application security makes sure only the right users and systems reach the right data and actions. Start from the OWASP Top 10 and threat-model with STRIDE before building."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Enforce authorization on the server for every request, use parameterized queries, encrypt in transit with TLS and at rest with managed keys, keep secrets in a secrets manager, patch dependencies, and log and alert on security events. SSRF in the cloud can reach the metadata endpoint; use IMDSv2 and allowlists."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does a session cookie prove authentication or authorization?",
+          "a": "Only authentication. Authorization must be checked per request against the specific resource.",
+          "hint": "Who vs may"
+        },
+        {
+          "q": "Changing /invoices/1001 to 1002 shows another company's invoice. Fix?",
+          "a": "Scope the lookup to the caller's tenant or check permission, return 404 or 403, and add authorization tests.",
+          "hint": "IDOR"
+        },
+        {
+          "q": "An access key was pushed to a public repo. First step?",
+          "a": "Deactivate or rotate the key immediately, then check its usage, purge history and fix the process.",
+          "hint": "Rotate first"
+        }
+      ]
+    }
+  ]
+}

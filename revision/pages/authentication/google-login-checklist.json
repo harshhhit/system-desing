@@ -1,0 +1,38 @@
+{
+  "id": "google-login-checklist",
+  "section": "authentication",
+  "title": "Google Social Login Checklist",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Social login lets users sign in with an existing identity provider account such as Google instead of a new password. Sign in with Google uses OpenID Connect: the app receives a Google-signed ID token, and Google handles passwords and MFA."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Work splits across Google Cloud Console (create OAuth client IDs), the Android app (Credential Manager), the backend (verify the token, issue own tokens) and the database (fields like social_id, social_provider, is_email_verified). The backend verifies signature, issuer, expiry and that aud equals its client ID, then finds or creates the user."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Can the backend trust the email the app sends with the token?",
+          "a": "No. It must trust only claims inside an ID token it has verified itself: Google signature, iss, exp and aud.",
+          "hint": "Verify, don't trust"
+        },
+        {
+          "q": "What does the backend issue after verifying the Google token?",
+          "a": "Its own access and refresh tokens for the rest of the session.",
+          "hint": "Own session"
+        },
+        {
+          "q": "Which protocol powers Sign in with Google?",
+          "a": "OpenID Connect, the identity layer built on OAuth 2.0.",
+          "hint": "OIDC"
+        }
+      ]
+    }
+  ]
+}

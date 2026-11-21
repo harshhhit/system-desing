@@ -1,0 +1,38 @@
+{
+  "id": "query-plans",
+  "section": "database",
+  "title": "Query Plans and Optimization",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A query plan is the strategy the optimizer picks to run a SQL statement: index or full scan, join order and join algorithm, based on table statistics. EXPLAIN shows it; EXPLAIN ANALYZE runs the query and adds real timings and row counts."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Look for sequential scans on big tables, bad row estimates and expensive joins. Fix with the right index, a rewritten query, updated statistics, or removing N+1 queries. Composite index order matters: it serves the leading columns. Always measure before and after."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "You added an index but still see a Seq Scan. Is it broken?",
+          "a": "Usually not. If the condition matches a large share of rows a scan is cheaper, or statistics are stale.",
+          "hint": "Planner choice"
+        },
+        {
+          "q": "What is the N+1 query problem?",
+          "a": "One query per row of an earlier result, like 50 orders then 50 item queries. Fix with a join, WHERE id IN, or eager loading.",
+          "hint": "ORM loops"
+        },
+        {
+          "q": "EXPLAIN vs EXPLAIN ANALYZE?",
+          "a": "EXPLAIN shows estimated plan and cost; EXPLAIN ANALYZE runs it with real timings and row counts.",
+          "hint": "Estimate vs actual"
+        }
+      ]
+    }
+  ]
+}

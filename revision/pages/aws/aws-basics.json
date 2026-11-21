@@ -1,0 +1,38 @@
+{
+  "id": "aws-basics",
+  "section": "aws",
+  "title": "AWS Basics",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "AWS is Amazon's public cloud: it rents servers, storage, databases and networking on demand, billed by usage, so you do not buy and size hardware up front."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "It runs in Regions, each with multiple isolated Availability Zones; spread workloads across AZs for high availability. IAM decides whether every API call is allowed. Security is shared: AWS secures the physical infrastructure, you secure IAM permissions, network rules, data and what runs on EC2."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is your app highly available just because it runs on AWS?",
+          "a": "No. AWS provides building blocks like multiple AZs, load balancers and Multi-AZ databases; you must use them.",
+          "hint": "Building blocks"
+        },
+        {
+          "q": "Region vs Availability Zone?",
+          "a": "A Region is a separate geographic area; an AZ is an isolated location within a Region.",
+          "hint": "Area vs site"
+        },
+        {
+          "q": "What does IAM do?",
+          "a": "Decides whether each AWS API call is allowed.",
+          "hint": "Permissions"
+        }
+      ]
+    }
+  ]
+}

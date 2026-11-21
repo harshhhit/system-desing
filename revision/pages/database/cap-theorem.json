@@ -1,0 +1,38 @@
+{
+  "id": "cap-theorem",
+  "section": "database",
+  "title": "CAP Theorem",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "CAP says that during a network partition, a distributed data store must choose between Consistency (every read sees the latest write or errors) and Availability (every request gets an answer, possibly stale). Partitions cannot be ruled out."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "So the real choice is CP or AP behaviour during a partition, chosen per use case: CP for balances, locks and leader election; AP for feeds, carts and counters. PACELC extends CAP to the latency vs consistency trade-off when there is no partition."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Can you pick a CA distributed database?",
+          "a": "No. CA describes a system that never has partitions, which in practice is a single node.",
+          "hint": "Partitions happen"
+        },
+        {
+          "q": "Which use cases suit CP?",
+          "a": "Balances, locks and leader election.",
+          "hint": "Correctness first"
+        },
+        {
+          "q": "Which use cases suit AP?",
+          "a": "Feeds, carts and counters.",
+          "hint": "Always answer"
+        }
+      ]
+    }
+  ]
+}

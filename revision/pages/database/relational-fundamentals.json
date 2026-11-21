@@ -1,0 +1,38 @@
+{
+  "id": "relational-fundamentals",
+  "section": "database",
+  "title": "SQL and Relational Basics",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A relational database stores data in tables of rows and typed columns, identifies each row with a primary key, links tables with foreign keys, and is queried with SQL. PostgreSQL, MySQL, SQL Server and Oracle are examples."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Data is normalized so each fact is stored once, preventing update anomalies: 1NF atomic values, 2NF depend on the whole key, 3NF no transitive dependencies. SQL joins tables (INNER, LEFT, RIGHT, FULL OUTER), aggregates with GROUP BY and HAVING, and uses window functions and subqueries."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Should a schema always be fully normalized?",
+          "a": "No. Normalization is the right default, but hot read paths may denormalize to avoid many joins, accepting the cost of keeping copies in sync.",
+          "hint": "Read paths"
+        },
+        {
+          "q": "What does a LEFT JOIN return?",
+          "a": "All rows from the left table, with matched columns or NULL from the right.",
+          "hint": "Left side kept"
+        },
+        {
+          "q": "HAVING vs WHERE?",
+          "a": "WHERE filters raw rows; HAVING filters groups after GROUP BY.",
+          "hint": "Before vs after grouping"
+        }
+      ]
+    }
+  ]
+}

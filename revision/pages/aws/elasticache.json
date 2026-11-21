@@ -1,0 +1,38 @@
+{
+  "id": "elasticache",
+  "section": "aws",
+  "title": "Amazon ElastiCache",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Amazon ElastiCache is AWS's fully managed in-memory cache running Valkey, Redis OSS or Memcached. Put it in front of RDS, Aurora or DynamoDB for microsecond reads, typically with lazy loading and TTLs."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Serverless needs no sizing, scales automatically and bills per GB and ECPU; node-based clusters let you choose node types, shards and replicas. For HA use Valkey or Redis OSS with Multi-AZ and automatic failover. Choose Memcached for the simplest multi-threaded model; Valkey or Redis for rich types and replication."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "If ElastiCache fails over to a replica, can data be lost?",
+          "a": "Yes, with standard replication. It is asynchronous, so acknowledged writes not yet copied are lost.",
+          "hint": "Async replication"
+        },
+        {
+          "q": "Serverless vs node-based?",
+          "a": "Serverless scales automatically with no sizing; node-based gives control of node types, shards and replicas.",
+          "hint": "Control"
+        },
+        {
+          "q": "What is a shard in Valkey or Redis OSS?",
+          "a": "One primary node plus up to five read replicas holding the same data.",
+          "hint": "Node group"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "cicd-deployment",
+  "section": "observability-security-ops",
+  "title": "CI/CD and Deployments",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "CI builds and tests every change on push. Continuous delivery keeps every passing change packaged and releasable with a human approving production; continuous deployment ships it automatically."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Build one immutable artifact, test and scan it, deploy with rolling, blue-green or canary, and verify with monitoring. Rolling deploys run old and new versions together, so APIs and schemas must be compatible. Feature flags separate deploy from release. Use expand and contract for schema changes."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Error rate doubles 3 minutes after a deploy. First step?",
+          "a": "Roll back or flip the flag immediately, then investigate. Restore first, debug second.",
+          "hint": "Restore"
+        },
+        {
+          "q": "Blue-green vs canary?",
+          "a": "Blue-green for instant cutover and rollback with double capacity; canary to limit blast radius when risk is unknown.",
+          "hint": "All at once vs gradual"
+        },
+        {
+          "q": "Why build one immutable artifact?",
+          "a": "So what was tested is exactly what is deployed, and rollback redeploys a known artifact.",
+          "hint": "Same bits"
+        }
+      ]
+    }
+  ]
+}

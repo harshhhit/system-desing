@@ -1,0 +1,38 @@
+{
+  "id": "consensus-raft-paxos",
+  "section": "distributed-systems",
+  "title": "Consensus: Raft and Paxos",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A consensus algorithm lets a group of nodes agree on one value, or one ordered log, such as who the leader is or whether a write committed, even when some nodes crash or messages are lost. Paxos and Raft are the two main ones."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Both use majority quorums: a write commits once a majority (floor of N/2 plus 1) accepts it, and any two majorities overlap, so committed values are never lost. Raft elects a leader per term with randomized timeouts and replicates its log. Quorum also prevents split-brain. etcd and ZooKeeper use this."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is a 4-node cluster more fault-tolerant than 3?",
+          "a": "No. It needs a majority of 3 and still tolerates only 1 failure, while adding a machine that must acknowledge writes.",
+          "hint": "Majority math"
+        },
+        {
+          "q": "How does quorum prevent split-brain?",
+          "a": "Only the side of a partition with a majority can commit writes, so two sides cannot diverge.",
+          "hint": "One majority"
+        },
+        {
+          "q": "Why was Raft designed?",
+          "a": "To be understandable, giving Multi-Paxos guarantees split into leader election, log replication and safety.",
+          "hint": "Understandability"
+        }
+      ]
+    }
+  ]
+}

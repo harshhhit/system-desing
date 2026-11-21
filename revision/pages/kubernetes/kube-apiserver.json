@@ -1,0 +1,38 @@
+{
+  "id": "kube-apiserver",
+  "section": "kubernetes",
+  "title": "kube-apiserver",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "kube-apiserver is the front door of Kubernetes. Every request from kubectl, Helm, controllers, the scheduler and kubelets goes through it, and nothing except the API server talks directly to etcd. A central API avoids a mesh of point-to-point integrations, each with its own security and validation."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Each request passes a pipeline: accept over HTTPS, authenticate, authorize, admission control, validate, then persist to etcd. The API server holds no state of its own; etcd is the source of truth, which is why several API server replicas can run behind a load balancer for high availability."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Which component is the only one allowed to talk to etcd directly?",
+          "a": "kube-apiserver. All other components read and write cluster state through it.",
+          "hint": "The front door"
+        },
+        {
+          "q": "List the request pipeline stages in order.",
+          "a": "Accept the request, authentication, authorization, admission control, validation, then persist to etcd.",
+          "hint": "Who, may they, should it, is it valid, save"
+        },
+        {
+          "q": "Why can kube-apiserver run active-active behind a load balancer?",
+          "a": "It is stateless. All state lives in etcd, so any replica can serve any request.",
+          "hint": "Where does state live?"
+        }
+      ]
+    }
+  ]
+}

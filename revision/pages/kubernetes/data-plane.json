@@ -1,0 +1,38 @@
+{
+  "id": "data-plane",
+  "section": "kubernetes",
+  "title": "Data Plane",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "The data plane is the worker-node layer that executes what the control plane decides. It is the kubelet, the container runtime reached through CRI, the CNI plugin for Pod networking, the CSI driver for storage, and kube-proxy for Service traffic."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "All of these run per node, not per cluster, and make no cluster-wide decisions. The kubelet watches the API server for Pods assigned to its node and manages their lifecycle. CRI, CNI and CSI are standard interfaces so runtimes, network plugins and storage vendors can be swapped without changing Kubernetes core."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is kube-proxy part of the control plane?",
+          "a": "No. It runs on every worker node and belongs to the data plane.",
+          "hint": "Where does it run?"
+        },
+        {
+          "q": "What does CSI solve?",
+          "a": "Storage drivers used to be in-tree. CSI lets vendors like AWS EBS ship drivers independently of Kubernetes releases.",
+          "hint": "In-tree problem"
+        },
+        {
+          "q": "What is the kubelet's main job?",
+          "a": "Pod lifecycle management: making sure the Pods assigned to its node are running as specified.",
+          "hint": "Node captain"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "database-observability",
+  "section": "database",
+  "title": "Database Observability",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Database observability is measuring signals that show whether a database is healthy and where it is heading: p95 and p99 query latency, connection and pool usage, replication lag, lock waits and deadlocks, disk and IOPS, and the slow query log."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Alert well before hard limits. Track growth trends for capacity planning and know your levers: bigger instance, replicas, pooling, partitioning. Load-test before big events. Schedule maintenance like vacuum and analyze, and plan upgrades with a tested rollback path."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Average latency is 20 ms. Is the database fine?",
+          "a": "Not necessarily. Averages hide the tail; 2 percent of queries at 800 ms hurt pages that run many queries.",
+          "hint": "Percentiles"
+        },
+        {
+          "q": "Why schedule vacuum and analyze?",
+          "a": "Deferring maintenance silently degrades query plans over time.",
+          "hint": "Statistics"
+        },
+        {
+          "q": "When should you load-test?",
+          "a": "Before a known traffic event, not after it causes an incident.",
+          "hint": "Timing"
+        }
+      ]
+    }
+  ]
+}

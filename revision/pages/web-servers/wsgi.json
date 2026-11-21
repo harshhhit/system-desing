@@ -1,0 +1,38 @@
+{
+  "id": "wsgi",
+  "section": "web-servers",
+  "title": "WSGI",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "WSGI (PEP 3333) is the Python standard interface between a web server and a Python web app. A WSGI server like Gunicorn calls the app's application(environ, start_response) callable, so any WSGI server runs any WSGI framework such as Django or Flask."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "In production Nginx sits in front for TLS, static files and buffering slow clients. WSGI is synchronous, one request per worker; ASGI (async app(scope, receive, send)) interleaves many requests and supports WebSockets. Gunicorn is the usual default over uWSGI."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Why put Nginx in front of Gunicorn?",
+          "a": "Nginx buffers slow clients, terminates TLS, serves static files, enforces limits and keeps Gunicorn off the internet.",
+          "hint": "Protect workers"
+        },
+        {
+          "q": "WSGI vs ASGI?",
+          "a": "WSGI blocks a worker per request; ASGI lets one event loop handle many requests and supports WebSockets.",
+          "hint": "Sync vs async"
+        },
+        {
+          "q": "Scaling to 8 instances causes DB connection errors. Why?",
+          "a": "Total connections = instances x workers x pool size, now over the DB limit. Add PgBouncer or shrink pools.",
+          "hint": "Multiply"
+        }
+      ]
+    }
+  ]
+}

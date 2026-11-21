@@ -1,0 +1,38 @@
+{
+  "id": "auth-schemes",
+  "section": "authentication",
+  "title": "Authentication Schemes",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "An authentication scheme is how a client proves its identity to a server on a request: what credential it presents and how the server checks it. Credentials can be a shared secret like an API key or password, a token issued earlier, or a certificate."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Browser users: session cookies or OAuth 2.0 with OpenID Connect. APIs: bearer tokens such as short-lived JWTs. Simple machine access: API keys. High-security service-to-service: mTLS or HMAC signing. Trade-offs are statefulness, scalability and how easily a credential can be revoked. Basic auth is only Base64, so it needs HTTPS."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is OAuth 2.0 an authentication protocol?",
+          "a": "No. It is an authorization framework that grants an access token to call an API. OpenID Connect adds the identity layer on top.",
+          "hint": "Access vs identity"
+        },
+        {
+          "q": "Is Basic authentication encrypted?",
+          "a": "No. username:password is only Base64-encoded, so it must be used over HTTPS.",
+          "hint": "Encoding"
+        },
+        {
+          "q": "What is a downside of JWTs?",
+          "a": "They are stateless, so they are hard to revoke before they expire.",
+          "hint": "Revocation"
+        }
+      ]
+    }
+  ]
+}

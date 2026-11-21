@@ -1,0 +1,38 @@
+{
+  "id": "dns-os-hardware-caching",
+  "section": "caching-cdn",
+  "title": "DNS, OS and Hardware Caching",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "DNS answers are cached at every step (browser, OS, runtime such as the JVM, recursive resolver) for the record's TTL, so lookups are fast and authoritative servers are not overloaded. Below that, the OS page cache and CPU caches speed up disk and memory access."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "DNS changes propagate only as caches expire, so lower the TTL to about 60 seconds a day before a migration, and do not rely on DNS alone for instant failover. Low free memory usually means page cache; watch available. Arrays beat linked lists due to cache lines."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "You move a site to a new IP tomorrow and TTL is 86400. Plan it.",
+          "a": "Lower TTL to 60 to 300 seconds today, change the record after 24 hours, keep the old server up for the old TTL, then raise TTL.",
+          "hint": "Lower first"
+        },
+        {
+          "q": "Why does free show almost no free memory on a healthy server?",
+          "a": "The kernel uses idle RAM as page cache and reclaims it on demand.",
+          "hint": "Page cache"
+        },
+        {
+          "q": "Why is Kafka fast without a big internal cache?",
+          "a": "It relies on the OS page cache and zero-copy sendfile.",
+          "hint": "OS does it"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "amqp-protocols",
+  "section": "messaging-queues",
+  "title": "AMQP and Messaging Protocols",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "AMQP (Advanced Message Queuing Protocol) is an open, binary, wire-level protocol defining how apps send to and receive from a message broker, including routing, queueing, acknowledgment and redelivery. RabbitMQ, Azure Service Bus, Qpid and ActiveMQ use it."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Producers publish to an exchange, which routes to queues by routing key (fanout, topic, direct, headers). Consumers ACK after processing so the broker can redeliver on failure or send to a dead-letter queue. Pick AMQP for reliable work queues, MQTT for lightweight IoT pub/sub, Kafka for replayable streams, webhooks for simple callbacks."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is a WebSocket or gRPC connection a replacement for a queue?",
+          "a": "No. They are transports to a service online right now, with no durable storage, retries or dead-letter queues.",
+          "hint": "Durability"
+        },
+        {
+          "q": "What does an exchange do?",
+          "a": "Decides which queues a message goes to based on its routing key and exchange type.",
+          "hint": "Router"
+        },
+        {
+          "q": "Why do consumers ACK messages?",
+          "a": "So the broker knows processing finished and can redeliver or dead-letter on failure.",
+          "hint": "Not lost"
+        }
+      ]
+    }
+  ]
+}

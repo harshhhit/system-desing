@@ -1,0 +1,38 @@
+{
+  "id": "connection-pooling",
+  "section": "database",
+  "title": "Connection Pooling",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Connection pooling keeps a set of open database connections that an application reuses across requests, instead of opening one per request. Opening connections is slow (TCP, auth, TLS, session setup) and each costs database memory, so there is a hard limit."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Keep pools small and sized from measurements, for example starting near 2 times CPU cores, and keep the sum across all instances under max_connections. With many instances or serverless functions, add a proxy like PgBouncer, ProxySQL or RDS Proxy to multiplex clients onto fewer real connections."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Requests wait for a connection. Should you raise pool size?",
+          "a": "Usually not first. It often means connections are held too long or leaked, not too few.",
+          "hint": "Leaks"
+        },
+        {
+          "q": "What causes 'too many connections' errors?",
+          "a": "The sum of all pools across all service instances exceeding max_connections.",
+          "hint": "Add it up"
+        },
+        {
+          "q": "What does PgBouncer do?",
+          "a": "Multiplexes many client connections onto far fewer real database connections.",
+          "hint": "Proxy"
+        }
+      ]
+    }
+  ]
+}

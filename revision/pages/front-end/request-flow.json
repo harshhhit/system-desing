@@ -1,0 +1,38 @@
+{
+  "id": "request-flow",
+  "section": "front-end",
+  "title": "Request Flow (URL to Page)",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "When you type a URL and press Enter, the request passes a chain of systems, each with one job, before anything renders: DNS, TCP and TLS, the HTTP request, CDN, load balancer, security gate, API gateway, auth, cache and database, queue, response, render."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "A CDN edge serves cached assets and ends the journey early; only cache misses reach the origin. Behind it: load balancer, rate limiting and WAF, API gateway, then the service checks session or JWT, reads cache then database, pushes slow work to a queue, and returns the response for the browser to render."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does every page load go through all these steps?",
+          "a": "No. DNS is cached, keep-alive and HTTP/2 reuse connections, and CDN hits skip the origin. Skipping steps is where performance comes from.",
+          "hint": "Caching"
+        },
+        {
+          "q": "What are the three TCP handshake messages?",
+          "a": "SYN, SYN-ACK, ACK.",
+          "hint": "Can we talk?"
+        },
+        {
+          "q": "Where does slow work go?",
+          "a": "Onto a queue for async workers, so the response returns quickly.",
+          "hint": "Async"
+        }
+      ]
+    }
+  ]
+}

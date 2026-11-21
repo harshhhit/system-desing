@@ -1,0 +1,38 @@
+{
+  "id": "ejpt-foundations",
+  "section": "ejpt",
+  "title": "Foundations",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Module 1 teaches you to read a packet, a subnet and a Linux or Windows box like an attacker: ports and services, CIDR math, HTTP, and drills reused later in privilege escalation."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Know ports by heart: 21 FTP, 22 SSH, 23 Telnet, 25 SMTP, 53 DNS, 80/443 HTTP(S), 110/143 POP3/IMAP, 139/445 SMB, 3306 MySQL, 3389 RDP, 5985 WinRM. Drills: ss -tulpn for listening ports, find / -perm -4000 for SUID binaries, curl -v for raw HTTP."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Which ports do SMB and RDP use?",
+          "a": "SMB uses 139 and 445; RDP uses 3389.",
+          "hint": "Windows services"
+        },
+        {
+          "q": "What does find / -perm -4000 list?",
+          "a": "SUID binaries, reused later for privilege escalation.",
+          "hint": "Set user ID"
+        },
+        {
+          "q": "What does ss -tulpn show?",
+          "a": "What is listening locally and which process owns it.",
+          "hint": "Sockets"
+        }
+      ]
+    }
+  ]
+}

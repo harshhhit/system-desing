@@ -1,0 +1,38 @@
+{
+  "id": "ejpt-overview",
+  "section": "ejpt",
+  "title": "eJPT Exam Overview",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "The eJPT is INE's 48-hour, open-book, fully hands-on exam: 45 questions answered by attacking a lab network, 70 percent to pass. INE rebuilt it on 31 March 2026, moving from 35 to 45 questions with more web app and recon content."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Domains: Host and Network Penetration Testing 35 percent, Assessment Methodologies 25 percent, Host and Network Auditing 25 percent, Web Application Penetration Testing 15 percent. The course runs Modules 0 to 6 over a 10-week plan at 1.5 to 2 hours a day, using free videos and TryHackMe."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "How many questions and what pass mark?",
+          "a": "45 questions, 70 percent to pass, over 48 hours.",
+          "hint": "March 2026 rebuild"
+        },
+        {
+          "q": "Which domain carries the most weight?",
+          "a": "Host and Network Penetration Testing at 35 percent.",
+          "hint": "Biggest"
+        },
+        {
+          "q": "Is the exam open-book?",
+          "a": "Yes. It is open-book and fully hands-on.",
+          "hint": "Notes matter"
+        }
+      ]
+    }
+  ]
+}

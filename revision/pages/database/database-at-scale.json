@@ -1,0 +1,38 @@
+{
+  "id": "database-at-scale",
+  "section": "database",
+  "title": "Databases at Scale",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A database stores data durably and lets many clients read and write it concurrently and correctly. A single node, such as one PostgreSQL or MySQL server, gives tables, indexes, SQL and ACID transactions."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "At scale one node is not enough. Replication adds availability and read scaling but brings replication lag and consistency trade-offs. Partitioning or sharding adds write throughput and size but makes cross-partition queries and transactions harder. Each step removes one limit and creates the next problem."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "When a single database struggles, should you shard right away?",
+          "a": "No. Sharding is the last lever because it permanently adds cross-shard joins, rebalancing and a hard-to-change partition key. Optimize, scale up and add replicas first.",
+          "hint": "Last lever"
+        },
+        {
+          "q": "What does replication add, and what does it cost?",
+          "a": "Availability and read scaling, at the cost of replication lag and consistency trade-offs.",
+          "hint": "Copies"
+        },
+        {
+          "q": "What does sharding add, and what does it cost?",
+          "a": "Write throughput and data size, at the cost of harder cross-partition queries and transactions.",
+          "hint": "Splits"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "graphql-vs-rest",
+  "section": "front-end",
+  "title": "GraphQL vs REST",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "REST gives each resource its own endpoint and the server fixes the response shape. GraphQL has one endpoint and a typed schema, and the client asks for exactly the fields it needs in one query, cutting round trips, which matters on mobile."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "REST screens needing related data often make many requests and over- or under-fetch; in the example, 20 images needed 42 requests. GraphQL's cost is server complexity: batching to avoid N+1 database queries, query cost limits, and harder HTTP caching."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does GraphQL solve the N+1 problem?",
+          "a": "Only on the network. A naive server still runs 1 + N database queries; the server must batch database access.",
+          "hint": "Network vs server"
+        },
+        {
+          "q": "What is overfetching?",
+          "a": "The client receives more data than it needs.",
+          "hint": "Too much"
+        },
+        {
+          "q": "What is underfetching?",
+          "a": "The client must make extra requests to get missing data.",
+          "hint": "Too little"
+        }
+      ]
+    }
+  ]
+}

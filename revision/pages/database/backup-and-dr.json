@@ -1,0 +1,38 @@
+{
+  "id": "backup-and-dr",
+  "section": "database",
+  "title": "Backup and Disaster Recovery",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A backup is a copy of the database stored separately so data can be restored after loss or corruption. With WAL archiving you get point-in-time recovery (PITR) to just before a mistake."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Design to RPO (how much data you can lose, sets backup frequency) and RTO (how long you can be down, sets restore speed and automation). Replication handles node failure but copies mistakes within seconds, so it is not a backup. Backup types: full, incremental, logical. Rehearse the DR runbook."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Backups succeeded every night for a year. Are you covered?",
+          "a": "Not until a restore has been tested. A successful job only proves something was written.",
+          "hint": "Test restores"
+        },
+        {
+          "q": "Is replication a backup?",
+          "a": "No. A mistaken DELETE replicates to every replica in seconds.",
+          "hint": "Copies mistakes"
+        },
+        {
+          "q": "RPO vs RTO?",
+          "a": "RPO is how much data you can lose; RTO is how long you can be down.",
+          "hint": "Data vs time"
+        }
+      ]
+    }
+  ]
+}

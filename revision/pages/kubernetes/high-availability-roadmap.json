@@ -1,0 +1,38 @@
+{
+  "id": "high-availability-roadmap",
+  "section": "kubernetes",
+  "title": "Control Plane HA",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Control plane high availability means running multiple copies of each component, usually on three control-plane nodes, so the cluster can still accept changes and heal itself when one fails. Running Pods survive control-plane loss, but changes and self-healing stop."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "API servers are stateless, so they run active-active behind a load balancer. etcd runs as a Raft cluster needing a majority quorum; three members survive one failure. The scheduler and controller manager use Lease-based leader election so only one is active and a standby takes over when the Lease expires."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does going from 3 to 4 etcd members improve availability?",
+          "a": "No. 4 members need a quorum of 3 and still tolerate only one failure, like 3 members.",
+          "hint": "Majority math"
+        },
+        {
+          "q": "Why is the API server the easy part of HA?",
+          "a": "It is stateless, so replicas can serve requests at the same time without conflicting.",
+          "hint": "State is in etcd"
+        },
+        {
+          "q": "How many failures do 3 etcd members tolerate?",
+          "a": "One, since quorum is 2 of 3.",
+          "hint": "Majority"
+        }
+      ]
+    }
+  ]
+}

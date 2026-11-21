@@ -1,0 +1,38 @@
+{
+  "id": "observability",
+  "section": "observability-security-ops",
+  "title": "Observability",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Observability is being able to explain what a system is doing from the signals it emits: metrics, logs and traces. Metrics say something is wrong and when, traces show which hop was slow, and structured logs tied by a correlation ID show why."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Define reliability as SLIs and SLOs with an error budget (100 percent minus SLO). Alert on user-facing symptoms like error rate or latency, not every cause. Use percentiles, not averages. Avoid high-cardinality labels like user_id. Traces connect across services through context propagation (traceparent)."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "SLI vs SLO vs SLA?",
+          "a": "SLI is the measurement, SLO the internal target, SLA the external promise, usually looser than the SLO.",
+          "hint": "Measure, target, promise"
+        },
+        {
+          "q": "Why is a user_id metric label dangerous?",
+          "a": "Each value creates a new time series, exhausting memory. Put user detail in logs and traces.",
+          "hint": "Cardinality"
+        },
+        {
+          "q": "Why alert on symptoms rather than causes?",
+          "a": "Symptoms map to user pain and catch unexpected causes; cause alerts multiply and cause alert fatigue.",
+          "hint": "User pain"
+        }
+      ]
+    }
+  ]
+}

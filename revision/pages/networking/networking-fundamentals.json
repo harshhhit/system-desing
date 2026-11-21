@@ -1,0 +1,38 @@
+{
+  "id": "networking-fundamentals",
+  "section": "networking",
+  "title": "Networking Fundamentals",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Before an HTTPS request is answered, the client resolves the hostname with DNS, opens a TCP connection with a three-way handshake, negotiates encryption with a TLS handshake, then sends the HTTP request. Each step costs round trips."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Systems reuse connections, cache DNS, resume TLS sessions and use CDNs to cut latency. TCP is reliable and ordered; UDP trades that for speed. HTTP/2 multiplexes over one TCP connection but suffers head-of-line blocking on packet loss; HTTP/3 over QUIC orders each stream independently."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "How many round trips for a cold HTTPS request?",
+          "a": "DNS (0 if cached) plus 1 for TCP, 1 for TLS 1.3 (2 for TLS 1.2), and 1 for the HTTP request.",
+          "hint": "Add them up"
+        },
+        {
+          "q": "What causes 'cannot assign requested address' under load?",
+          "a": "Ephemeral port exhaustion from a new TCP connection per request leaving TIME_WAIT sockets. Use keep-alive and pooling.",
+          "hint": "Ports"
+        },
+        {
+          "q": "TLS vs HTTPS?",
+          "a": "TLS is the encryption and identity layer; HTTPS is HTTP sent over TLS.",
+          "hint": "Layer"
+        }
+      ]
+    }
+  ]
+}

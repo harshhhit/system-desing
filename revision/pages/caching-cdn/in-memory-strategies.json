@@ -1,0 +1,38 @@
+{
+  "id": "in-memory-strategies",
+  "section": "caching-cdn",
+  "title": "In-Memory Caching Strategies",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A caching strategy defines who fills the cache and how writes keep it in sync. The default is cache-aside: read the cache; on a miss read the DB and store with a TTL; on write update the DB then delete the key."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Read-through lets the cache library load misses. Write-through writes cache and DB together: always current, slower writes. Write-behind writes the cache and flushes asynchronously: fast but can lose data. Write-around skips the cache for rarely read data. CDC fixes the dual-write problem."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Why update the DB first, then delete the cache?",
+          "a": "Deleting first lets a concurrent reader reload and cache the old row before the DB write lands.",
+          "hint": "Order matters"
+        },
+        {
+          "q": "When is write-behind acceptable?",
+          "a": "High write rates where a small loss window is fine, like counters, or with a durable log behind the cache.",
+          "hint": "Loss window"
+        },
+        {
+          "q": "Why is cache-aside resilient to a cache outage?",
+          "a": "Reads fall back to the database; the cache is optional on the read path.",
+          "hint": "Fallback"
+        }
+      ]
+    }
+  ]
+}

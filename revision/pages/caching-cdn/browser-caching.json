@@ -1,0 +1,38 @@
+{
+  "id": "browser-caching",
+  "section": "caching-cdn",
+  "title": "Browser Caching",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Browser caching lets the browser reuse responses it already downloaded, controlled by the server's Cache-Control and validator headers. A fresh response within max-age is used with no request at all."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "A stale response is revalidated with If-None-Match; the server answers 304 Not Modified with no body if unchanged. You cannot purge users' browsers, so give static assets content-hashed filenames with a one-year immutable TTL and serve HTML as no-cache. Prefer filenames over ?v= query strings."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Why can't you purge a bad file from users' browsers?",
+          "a": "The cache lives on millions of devices you don't control. You can only change URLs or wait for expiry.",
+          "hint": "Fingerprinting"
+        },
+        {
+          "q": "What does immutable add to max-age?",
+          "a": "It tells the browser not to revalidate even on reload, saving 304 round trips.",
+          "hint": "No revalidation"
+        },
+        {
+          "q": "After a release, some users see a blank page. Why?",
+          "a": "Cached HTML references asset files the deploy removed, so JS returns 404. Make HTML no-cache and keep old assets a while.",
+          "hint": "Stale HTML"
+        }
+      ]
+    }
+  ]
+}

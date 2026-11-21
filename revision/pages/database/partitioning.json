@@ -1,0 +1,38 @@
+{
+  "id": "partitioning",
+  "section": "database",
+  "title": "Partitioning vs Sharding",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Partitioning divides a large table into smaller pieces, by rows (horizontal) or by columns (vertical), so queries can skip irrelevant data and old data is easy to drop."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Sharding is horizontal partitioning across servers, scaling storage and writes beyond one machine but making cross-shard joins, transactions and rebalancing harder. The key decision is the partition key: it must match the main access pattern and spread load. Range partitioning suits ordered data like dates."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "If you shard by hash of user ID, is load guaranteed even?",
+          "a": "No. Data spreads evenly, but one very active key like a celebrity or big tenant can still create a hot shard.",
+          "hint": "Hot keys"
+        },
+        {
+          "q": "When is range partitioning useful?",
+          "a": "For ordered data like dates or numeric ranges, such as sales by month.",
+          "hint": "Ordered keys"
+        },
+        {
+          "q": "What is vertical partitioning?",
+          "a": "Splitting a table by columns, each partition holding a subset of columns.",
+          "hint": "Columns"
+        }
+      ]
+    }
+  ]
+}

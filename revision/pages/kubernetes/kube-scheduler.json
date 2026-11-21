@@ -1,0 +1,38 @@
+{
+  "id": "kube-scheduler",
+  "section": "kubernetes",
+  "title": "kube-scheduler",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "kube-scheduler is the control-plane component that decides which node an unscheduled Pod should run on. It considers node selection, resource requests, capacity, affinity and anti-affinity, taints and tolerations, and topology."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "It runs two phases: filtering removes nodes that cannot fit the Pod (a hard yes or no), and scoring ranks the rest (a soft preference). It writes the winning node back to the API server as a binding. It never starts the Pod; the kubelet on the chosen node does that."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does the scheduler start the Pod on the chosen node?",
+          "a": "No. It only writes a binding through the API server. The kubelet on that node sees the Pod and pulls the image and starts containers.",
+          "hint": "Decision vs execution"
+        },
+        {
+          "q": "What is the difference between filtering and scoring?",
+          "a": "Filtering is a hard yes or no that removes nodes that cannot run the Pod. Scoring ranks the remaining nodes and the highest score wins.",
+          "hint": "Two phases"
+        },
+        {
+          "q": "How does nodeSelector differ from node affinity?",
+          "a": "nodeSelector is a simple exact label match with no OR logic. Affinity supports richer expressions and both required and preferred rules.",
+          "hint": "Simple filter vs expressions"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "distributed-systems-basics",
+  "section": "distributed-systems",
+  "title": "What Is a Distributed System",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A distributed system is a set of independent machines that communicate over a network and coordinate so that, to users, they behave like one system. We build them to scale beyond one machine, stay available when a machine fails, and be closer to users."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Key traits are resource sharing, scalability, fault tolerance and concurrency. The cost is that the network is unreliable: messages can be delayed or lost and nodes fail independently, so you need replication, consensus and careful handling of consistency and partitions."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "If one node fails, does the system keep working automatically?",
+          "a": "Not automatically. Fault tolerance must be designed in with replication, health checks and failover.",
+          "hint": "Design it in"
+        },
+        {
+          "q": "Why build distributed systems?",
+          "a": "To scale beyond one machine, stay available through failures, and be closer to users.",
+          "hint": "Three reasons"
+        },
+        {
+          "q": "What is the core difficulty?",
+          "a": "The network is unreliable and nodes fail independently.",
+          "hint": "Partial failure"
+        }
+      ]
+    }
+  ]
+}

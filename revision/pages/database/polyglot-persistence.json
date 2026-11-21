@@ -1,0 +1,38 @@
+{
+  "id": "polyglot-persistence",
+  "section": "database",
+  "title": "Polyglot Persistence",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Polyglot persistence is using more than one type of database in the same system, each for the workload it handles best: for example PostgreSQL for orders, Redis for caching, Elasticsearch for search and a warehouse for analytics."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Keep strongly consistent transactional data in a relational source of truth and move other workloads to specialized stores synced with change data capture or events. The cost is operational complexity and eventual consistency between stores."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Can one transaction span PostgreSQL, Redis and Elasticsearch?",
+          "a": "Generally no. Use one source of truth and sync the others asynchronously via CDC or events.",
+          "hint": "No shared transaction"
+        },
+        {
+          "q": "What usually stays in the relational database?",
+          "a": "Strongly consistent transactional data like orders and payments.",
+          "hint": "Source of truth"
+        },
+        {
+          "q": "What is the main cost of polyglot persistence?",
+          "a": "More operational complexity and eventual consistency between stores.",
+          "hint": "Trade-off"
+        }
+      ]
+    }
+  ]
+}

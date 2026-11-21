@@ -1,0 +1,38 @@
+{
+  "id": "wal-vs-binlog",
+  "section": "distributed-database",
+  "title": "WAL vs Binlog",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "The WAL is the storage engine's physical redo log: every change to data pages is written there first, so after a crash committed transactions can be replayed. The binlog is MySQL's server-level logical log of row changes or statements, used for replication and point-in-time recovery."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "WAL is physical (page offsets), compact and fast; binlog is logical, written at commit. In MySQL they are kept consistent by an internal two-phase commit: InnoDB writes a prepare to the redo log, then the binlog, then commits. PostgreSQL has no separate binlog; its WAL does both jobs."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "MySQL crashes after the WAL write but before the binlog. Is the transaction committed?",
+          "a": "No. Internal two-phase commit rolls it back because it was only prepared.",
+          "hint": "2PC"
+        },
+        {
+          "q": "Which log is for crash recovery?",
+          "a": "The WAL (InnoDB redo log).",
+          "hint": "Durability"
+        },
+        {
+          "q": "Which log does MySQL use for replication?",
+          "a": "The binlog.",
+          "hint": "Sharing data"
+        }
+      ]
+    }
+  ]
+}

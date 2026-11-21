@@ -1,0 +1,38 @@
+{
+  "id": "transactions-concurrency",
+  "section": "database",
+  "title": "Transactions and Concurrency",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A transaction groups reads and writes into one unit that commits fully or not at all, with ACID guarantees: atomicity, consistency, isolation and durability."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Isolation levels trade correctness for concurrency: Read Committed, Repeatable Read, Serializable. PostgreSQL uses MVCC so readers do not block writers. For read-modify-write like inventory, use an atomic UPDATE, SELECT FOR UPDATE (pessimistic) or a version check (optimistic, retry on conflict)."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is an inventory update in a transaction safe by default?",
+          "a": "No. Under Read Committed two transactions can both read 10, both write 9, and one update is lost.",
+          "hint": "Lost update"
+        },
+        {
+          "q": "What does Read Committed prevent and allow?",
+          "a": "Prevents dirty reads; still allows non-repeatable reads and phantoms.",
+          "hint": "Default level"
+        },
+        {
+          "q": "Optimistic vs pessimistic concurrency?",
+          "a": "Pessimistic locks before reading. Optimistic reads without a lock and checks a version on write, retrying on conflict.",
+          "hint": "Lock first vs check later"
+        }
+      ]
+    }
+  ]
+}

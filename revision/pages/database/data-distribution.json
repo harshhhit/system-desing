@@ -1,0 +1,38 @@
+{
+  "id": "data-distribution",
+  "section": "database",
+  "title": "Data Distribution",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Data distribution is how a database spreads data across storage units or machines. It uses two independent techniques: partitioning (split the data) and replication (copy the data)."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Partitioning splits by rows (horizontal) or columns (vertical); sharding is horizontal partitioning across servers, scaling storage and writes. Replication copies data to more servers for availability and read scaling. Strategies: range, list, hash or composite, chosen from access patterns; each shard is usually replicated."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does replication help a database handle more writes?",
+          "a": "Not with a single leader. Every replica applies every write, so replicas add reads and fault tolerance, not write capacity.",
+          "hint": "Leader does all writes"
+        },
+        {
+          "q": "What is sharding?",
+          "a": "Horizontal partitioning across different servers.",
+          "hint": "Rows across machines"
+        },
+        {
+          "q": "What is a clustered index?",
+          "a": "An index where table data is stored in the index order.",
+          "hint": "Physical order"
+        }
+      ]
+    }
+  ]
+}

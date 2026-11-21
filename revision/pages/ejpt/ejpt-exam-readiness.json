@@ -1,0 +1,38 @@
+{
+  "id": "ejpt-exam-readiness",
+  "section": "ejpt",
+  "title": "Exam Readiness",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Module 6 puts it together under time pressure: timed practice on TryHackMe and VulnHub, a 6-hour self-made mock with a pivot, a one-screen exam-day cheat sheet, then booking the voucher."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Exam day: map the whole network first (nmap -sn, all ports, then services and versions), enumerate every service before exploiting. Your notes file is your biggest asset since it is open-book and unproctored. You get two attempts; a retake must be used within 14 days."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "What should you do first on exam day?",
+          "a": "Map the whole network: live hosts, all ports, then services and versions.",
+          "hint": "Recon first"
+        },
+        {
+          "q": "How long is the retake window?",
+          "a": "A failed attempt's retake must be used within 14 days.",
+          "hint": "Two attempts"
+        },
+        {
+          "q": "What is your biggest asset in the exam?",
+          "a": "Your notes file, since it is open-book and unproctored.",
+          "hint": "Notes"
+        }
+      ]
+    }
+  ]
+}

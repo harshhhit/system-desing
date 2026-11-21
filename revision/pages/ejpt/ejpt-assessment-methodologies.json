@@ -1,0 +1,38 @@
+{
+  "id": "ejpt-assessment-methodologies",
+  "section": "ejpt",
+  "title": "Assessment Methodologies",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Assessment Methodologies is 25 percent of the exam: passive and active recon, Nmap host and port scanning, service enumeration and vulnerability assessment. Most exam questions start with which host runs X or what version is Y."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Discover hosts with nmap -sn, run a full TCP scan with nmap -p- --min-rate 3000, then deep-scan open ports with -sC -sV -O. Enumerate SMB, FTP, SSH, HTTP and MySQL, record versions, and check them with searchsploit. Compare manual findings with a Nessus Essentials scan."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "What does nmap -sn do?",
+          "a": "Host discovery without a port scan.",
+          "hint": "Ping sweep"
+        },
+        {
+          "q": "Why do a full port scan before a deep scan?",
+          "a": "To find all open ports first, then run slow scripts and version detection only on those.",
+          "hint": "Efficiency"
+        },
+        {
+          "q": "Which tool maps versions to public exploits?",
+          "a": "searchsploit.",
+          "hint": "Exploit-DB"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "control-plane-overview",
+  "section": "kubernetes",
+  "title": "Control Plane Overview",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "The control plane is the brain of the cluster: kube-apiserver, etcd, kube-scheduler and kube-controller-manager. Together they accept requests, store desired state, make scheduling decisions and keep the cluster running the way users declared it."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "The core idea is reconciliation: controllers keep comparing desired state with actual state and fix any difference. Worker nodes form a separate data plane that only talks to the control plane through kube-apiserver, so running Pods keep working if the control plane is briefly down."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Name the four core control-plane components.",
+          "a": "kube-apiserver, etcd, kube-scheduler and kube-controller-manager.",
+          "hint": "API, store, placement, loops"
+        },
+        {
+          "q": "If the control plane goes down, do running apps stop?",
+          "a": "No. Already-running Pods keep running because kubelet, kube-proxy and the container runtime on each node do not need the control plane every second. You just cannot make changes or self-heal until it returns.",
+          "hint": "Think data plane"
+        },
+        {
+          "q": "What does reconciliation mean in Kubernetes?",
+          "a": "Controllers continuously compare the desired state stored in etcd with the actual cluster state and take action until they match.",
+          "hint": "Desired vs actual"
+        }
+      ]
+    }
+  ]
+}

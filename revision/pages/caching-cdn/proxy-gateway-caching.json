@@ -1,0 +1,38 @@
+{
+  "id": "proxy-gateway-caching",
+  "section": "caching-cdn",
+  "title": "Reverse Proxy Caching",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A reverse-proxy cache like Nginx or Varnish sits in front of app servers and stores full HTTP responses, so repeated requests are answered without running application code. It saves work for all traffic reaching your datacenter, including CDN misses."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Micro-caching a dynamic page for 1 to 5 seconds collapses spikes into one backend call per TTL. proxy_cache_lock plus use_stale updating gives stampede protection with no waiting. Nginx will not cache Set-Cookie or private responses by default. An AWS ALB does not cache."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "After enabling proxy caching, users see the wrong cart. Why?",
+          "a": "Cart pages were cached without bypassing on the session cookie. Purge, bypass on the cookie, mark responses private.",
+          "hint": "Personalized pages"
+        },
+        {
+          "q": "Why does adding proxy instances lower the hit ratio?",
+          "a": "Each instance caches independently. Route URLs by consistent hash or use one shared tier.",
+          "hint": "Split caches"
+        },
+        {
+          "q": "The app was down 40 minutes but nobody was paged. How?",
+          "a": "proxy_cache_use_stale kept serving stale pages. Alert on upstream errors and the stale share.",
+          "hint": "Hidden outage"
+        }
+      ]
+    }
+  ]
+}

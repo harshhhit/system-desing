@@ -1,0 +1,38 @@
+{
+  "id": "ssr-vs-csr",
+  "section": "front-end",
+  "title": "SSR vs CSR",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "With CSR the browser gets an empty HTML shell and a JavaScript bundle, runs it, calls the API and renders the page. With SSR a server renders full HTML on each request. The difference is where code executes."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "CSR can be hosted as static files on S3 and a CDN with no frontend server, but first paint and SEO are weaker. SSR gives content and SEO immediately but needs servers or serverless compute and costs CPU per request. Use SSR or static generation for public SEO pages, CSR for logged-in apps."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does a CSR app on S3 and CloudFront need no backend?",
+          "a": "It needs no rendering server, but still needs a backend API for data.",
+          "hint": "Data vs rendering"
+        },
+        {
+          "q": "Is S3 a server that can run code?",
+          "a": "No. It is storage that serves static files only.",
+          "hint": "Just storage"
+        },
+        {
+          "q": "Is Nginx required for SSR?",
+          "a": "Optional but recommended, in front of the Node.js rendering server.",
+          "hint": "Reverse proxy"
+        }
+      ]
+    }
+  ]
+}

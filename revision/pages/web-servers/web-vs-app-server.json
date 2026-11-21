@@ -1,0 +1,38 @@
+{
+  "id": "web-vs-app-server",
+  "section": "web-servers",
+  "title": "Web Server vs App Server",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "A web server like Nginx handles HTTP itself: connections, TLS, static files, reverse proxying and load balancing. An application server runs application code. Node, Go, .NET and Rust include a production HTTP server; Python, Ruby and PHP need Gunicorn, Puma or PHP-FPM."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Put Nginx or a load balancer in front so app workers only see complete, ready requests. Nginx's event loop holds thousands of connections; a sync Gunicorn worker handles one request at a time. 502 means upstream broken or unreachable; 504 means too slow. Set Host, X-Forwarded-For and X-Forwarded-Proto."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Requests taking about 40 seconds return 502, not 504. Why?",
+          "a": "Gunicorn's 30 second worker timeout kills the worker before Nginx's 60 second proxy_read_timeout. Inner timeouts should be shorter or equal.",
+          "hint": "Timeout order"
+        },
+        {
+          "q": "Uploads over 1 MB fail and app logs are empty. Why?",
+          "a": "Nginx client_max_body_size defaults to 1 MB and returns 413 before the app sees it.",
+          "hint": "Nginx limit"
+        },
+        {
+          "q": "Force HTTPS causes a redirect loop. Why?",
+          "a": "TLS ends at Nginx so the app sees HTTP. Send X-Forwarded-Proto and make the app trust it.",
+          "hint": "Proxy header"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "schema-design-migrations",
+  "section": "database",
+  "title": "Schema Design and Migrations",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Schema design is deciding tables, columns, data types, keys, constraints and indexes. A schema migration is a versioned, repeatable script that changes the schema. Design from access patterns, the hot reads and writes, not from entities that feel natural."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Normalize by default; denormalize only for measured read-heavy paths. Keep migrations backward compatible with expand and contract: add the new structure, backfill in batches off the request path, switch the code, then drop the old structure in a later release."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Why not rename a column in one migration?",
+          "a": "During a rolling deploy old instances still query the old name and fail. Use expand and contract instead.",
+          "hint": "Rolling deploys"
+        },
+        {
+          "q": "What are the expand and contract steps?",
+          "a": "Expand (add new), backfill in batches, switch code over, then contract (drop old) later.",
+          "hint": "Four steps"
+        },
+        {
+          "q": "When should you denormalize?",
+          "a": "For read-heavy, latency-sensitive paths where a join is too costly, accepting duplicated data you must keep in sync.",
+          "hint": "Measured need"
+        }
+      ]
+    }
+  ]
+}

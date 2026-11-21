@@ -1,0 +1,38 @@
+{
+  "id": "networking-roadmap",
+  "section": "kubernetes",
+  "title": "Kubernetes Networking",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Kubernetes networking gives every Pod its own IP and lets every Pod reach every other Pod without NAT. A CNI plugin implements this model. Because Pods are short-lived and get new IPs, the networking layer gives stable ways to reach them."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "A Service gives a group of Pods a stable virtual IP and DNS name. kube-proxy on each node programs rules that forward Service traffic to ready Pods. CoreDNS resolves names like service.namespace.svc.cluster.local. Ingress brings external HTTP in. NetworkPolicy is only enforced if the CNI plugin supports it."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does creating a NetworkPolicy always block traffic?",
+          "a": "No. Kubernetes stores it but the CNI plugin enforces it. A plugin without NetworkPolicy support ignores it.",
+          "hint": "Who enforces?"
+        },
+        {
+          "q": "Why do Services exist?",
+          "a": "Pod IPs change when Pods are recreated, so a Service gives a stable virtual IP and DNS name for a set of Pods.",
+          "hint": "Unstable Pod IPs"
+        },
+        {
+          "q": "What makes a Service virtual IP actually route traffic?",
+          "a": "kube-proxy on every node watches Services and EndpointSlices and programs packet-forwarding rules.",
+          "hint": "Nothing listens on it"
+        }
+      ]
+    }
+  ]
+}

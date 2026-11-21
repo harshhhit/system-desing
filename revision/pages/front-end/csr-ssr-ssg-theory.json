@@ -1,0 +1,38 @@
+{
+  "id": "csr-ssr-ssg-theory",
+  "section": "front-end",
+  "title": "CSR, SSR and SSG Theory",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "CSR, SSR and SSG are three contracts for dividing work between server and client. CSR renders in the browser, SSR on the server per request, and SSG at build time. Database queries and secrets must always stay on the server."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "CSR is cheap to host but slow to first content. SSR gives fast visible content and SEO but costs server time and needs hydration. SSG is cheapest and fastest but not personalized or real-time. Islands, resumability and React Server Components try to keep SSR's fast first paint with less JavaScript."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is SSR always faster than CSR?",
+          "a": "No. It improves first paint, but the server must fetch all data before sending, so a slow API delays the whole page.",
+          "hint": "Total time"
+        },
+        {
+          "q": "Why can't SSG show personalized content?",
+          "a": "Pages are built once at deploy time, the same for every user.",
+          "hint": "Build time"
+        },
+        {
+          "q": "Name tasks that must run only on the server.",
+          "a": "Database queries, business logic with secrets, file system operations and environment variables.",
+          "hint": "Secure context"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "acid-vs-base",
+  "section": "database",
+  "title": "ACID vs BASE",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "ACID and BASE are two philosophies for database guarantees. ACID (atomic, consistent, isolated, durable) is the relational model, ideal for money and inventory. BASE (basically available, soft state, eventually consistent) is the model of many distributed NoSQL stores."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "BASE systems stay available and fast but let replicas be briefly out of date. It is a spectrum, not a switch: many NoSQL databases let you tune consistency per request with quorums or read and write concerns."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does eventually consistent mean data may be wrong forever?",
+          "a": "No. If writes stop, all replicas converge. It does not say how long or which value wins on conflict.",
+          "hint": "Converge"
+        },
+        {
+          "q": "Which model fits payments?",
+          "a": "ACID, because money needs atomic, isolated, durable transactions.",
+          "hint": "Money"
+        },
+        {
+          "q": "Is ACID vs BASE a fixed switch?",
+          "a": "No. Many NoSQL stores tune consistency per request using quorums or read and write concerns.",
+          "hint": "Spectrum"
+        }
+      ]
+    }
+  ]
+}

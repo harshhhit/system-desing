@@ -1,0 +1,38 @@
+{
+  "id": "cors",
+  "section": "front-end",
+  "title": "CORS",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "CORS (Cross-Origin Resource Sharing) is how a server relaxes the browser's Same Origin Policy. It lets a server say through response headers which other origins may read its responses from JavaScript. An origin is scheme plus host plus port."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "The browser sends an Origin header and the server replies with Access-Control-Allow-Origin. Non-simple requests, like JSON bodies, PUT, DELETE or custom headers such as Authorization, trigger an OPTIONS preflight first. CORS is enforced by the browser, not the server, so it protects users, not your API."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "If you get a CORS error, did the request reach the server?",
+          "a": "Often yes. For a simple request the server runs it; the browser only blocks JavaScript from reading the response.",
+          "hint": "Simple requests"
+        },
+        {
+          "q": "What makes a request preflighted?",
+          "a": "Methods like PUT, DELETE or PATCH, Content-Type application/json, or custom headers like Authorization.",
+          "hint": "Not form-like"
+        },
+        {
+          "q": "What defines an origin?",
+          "a": "Scheme, host and port. Path, query and fragment are ignored.",
+          "hint": "Three parts"
+        }
+      ]
+    }
+  ]
+}

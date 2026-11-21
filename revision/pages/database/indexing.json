@@ -1,0 +1,38 @@
+{
+  "id": "indexing",
+  "section": "database",
+  "title": "Indexing",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "An index is a separate sorted structure, usually a B-tree, that lets the database find rows by a column value without scanning the whole table, turning a linear scan into a logarithmic lookup. Like a book's index."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Index columns used in WHERE, JOIN and ORDER BY on hot queries; build composite indexes in the order queries filter. Every index costs storage and slows every insert and update. Denormalization and in-memory caches like Redis are the other levers for latency and throughput."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Why not index every column?",
+          "a": "Each index must be updated on every write, slowing inserts and updates and using disk and memory.",
+          "hint": "Write cost"
+        },
+        {
+          "q": "Which columns should be indexed?",
+          "a": "Those used in WHERE, JOIN and ORDER BY on hot queries.",
+          "hint": "Query-driven"
+        },
+        {
+          "q": "What is denormalization?",
+          "a": "Duplicating data strategically to reduce joins and speed up reads.",
+          "hint": "Sticky notes"
+        }
+      ]
+    }
+  ]
+}

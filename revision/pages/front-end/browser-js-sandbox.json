@@ -1,0 +1,38 @@
+{
+  "id": "browser-js-sandbox",
+  "section": "front-end",
+  "title": "Browser JavaScript Sandbox",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "What JavaScript can do depends on where it runs. In the browser it is sandboxed: it can change the DOM, handle events, make network requests, set cookies and use localStorage, but cannot read arbitrary files, run programs or access the OS."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Devices like the camera need explicit user permission. The Same Origin Policy stops a script from reading another site's pages or responses, and CORS headers let a server explicitly allow that. Web Workers, Service Workers, WebAssembly, extensions and Node.js, Deno or Bun each have different capabilities."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does the Same Origin Policy stop a page sending a request to another domain?",
+          "a": "No. It mainly restricts reading cross-origin responses, not sending requests.",
+          "hint": "Read vs send"
+        },
+        {
+          "q": "Can browser JavaScript turn on the camera silently?",
+          "a": "No. Camera and microphone require the user's explicit permission.",
+          "hint": "Permission"
+        },
+        {
+          "q": "Where do a script's abilities come from?",
+          "a": "From the environment's APIs, such as the DOM and fetch; the language itself has none built in.",
+          "hint": "Environment"
+        }
+      ]
+    }
+  ]
+}

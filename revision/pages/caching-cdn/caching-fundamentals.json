@@ -1,0 +1,38 @@
+{
+  "id": "caching-fundamentals",
+  "section": "caching-cdn",
+  "title": "Caching Fundamentals",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Caching stores a copy of frequently read data in a faster layer so most reads skip the database or origin. It works because reads vastly outnumber writes and access is skewed: a few keys get most reads. Every cache trades some staleness for speed."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "The common pattern is cache-aside: check the cache; on a miss read the database and fill the cache; on a write update the database and delete the key. Delete instead of update because concurrent writers can leave a permanently wrong value. Eviction frees memory; invalidation removes changed data."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "no-cache vs no-store?",
+          "a": "no-cache may be stored but must be revalidated before use; no-store must never be stored.",
+          "hint": "Revalidate vs never"
+        },
+        {
+          "q": "After a Redis restart the database hits 100 percent CPU. Why?",
+          "a": "It was sized for cache-hit traffic; a cold cache sends every read to it. Use stampede protection, warm-up and headroom.",
+          "hint": "Cold cache"
+        },
+        {
+          "q": "A user saw another user's account page. What happened?",
+          "a": "A shared cache stored a personalized response, missing private or no-store, or the key lacked the user. Purge and fix headers.",
+          "hint": "Shared cache"
+        }
+      ]
+    }
+  ]
+}

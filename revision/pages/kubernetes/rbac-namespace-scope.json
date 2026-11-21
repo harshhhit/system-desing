@@ -1,0 +1,38 @@
+{
+  "id": "rbac-namespace-scope",
+  "section": "kubernetes",
+  "title": "RBAC Namespace Scoping",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "RBAC namespace scoping means the Role and RoleBinding both live in one namespace, so the permissions only apply inside that namespace. It is how you give a user access to, for example, only the frontend namespace and not the whole cluster."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "The RBAC authorizer only checks RoleBindings in the namespace the request targets. For cluster-wide access or cluster-scoped resources like Nodes, use ClusterRole and ClusterRoleBinding. RBAC cannot restrict specific nodes, and SSH access to nodes is outside RBAC entirely; that needs OS, cloud IAM and network controls."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does a Role in default grant access in other namespaces?",
+          "a": "No. A Role and RoleBinding only apply in the namespace they are created in.",
+          "hint": "Scope"
+        },
+        {
+          "q": "When do you need a ClusterRole?",
+          "a": "When you need the same permissions in every namespace or access to cluster-scoped resources such as Nodes.",
+          "hint": "Cluster-scoped objects"
+        },
+        {
+          "q": "Can Kubernetes RBAC control SSH access to nodes?",
+          "a": "No. SSH is outside Kubernetes. You need Linux users, SSH config, sudo policy, cloud IAM, bastions and firewalls.",
+          "hint": "OS layer"
+        }
+      ]
+    }
+  ]
+}

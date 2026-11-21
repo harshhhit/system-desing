@@ -1,0 +1,38 @@
+{
+  "id": "replication-four-dimensions",
+  "section": "distributed-database",
+  "title": "Replication: 4 Dimensions",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Database replication keeps copies of data on multiple nodes by shipping each change from one node to the others. Any setup can be described as Topology (who), Timing (when), Payload (what) and Delivery (how)."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Single-leader avoids write conflicts. Multi-leader accepts writes on several nodes and needs conflict resolution. Leaderless writes to W and reads from R replicas with R + W > N so they overlap. Synchronous waits for the replica before acking; asynchronous does not. Payload can be statements, rows, logical records or physical WAL."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "If the database is replicated, do you still need backups?",
+          "a": "Yes. Replicas apply mistakes like DELETE without WHERE within milliseconds.",
+          "hint": "Copies damage"
+        },
+        {
+          "q": "Why must R + W > N in leaderless replication?",
+          "a": "So every read quorum overlaps at least one node with the latest write.",
+          "hint": "Overlap"
+        },
+        {
+          "q": "What is the main challenge of multi-leader?",
+          "a": "Write conflicts when two leaders change the same data at once.",
+          "hint": "Conflicts"
+        }
+      ]
+    }
+  ]
+}

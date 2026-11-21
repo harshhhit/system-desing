@@ -1,0 +1,38 @@
+{
+  "id": "frontend-roadmap",
+  "section": "front-end",
+  "title": "Front-End Development",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Front-end development is building what runs in the user's browser: HTML for structure and meaning, CSS for presentation, and JavaScript for interactivity and talking to APIs."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Core skills: how the browser loads and renders a page (DNS, TCP, TLS, HTTP), the DOM and semantic HTML, the cascade and box model, the event-driven model and async JavaScript, accessible and responsive UIs, components with clear state, where rendering happens, and shipping fast tested code through a build pipeline and CDN."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "If the app works in your browser, is the front end finished?",
+          "a": "No. Your laptop is fast. It may be slow on a mid-range phone on a mobile network or unusable with a keyboard or screen reader.",
+          "hint": "Not your device"
+        },
+        {
+          "q": "What is the DOM?",
+          "a": "The tree of nodes the browser builds from HTML, which JavaScript reads and changes.",
+          "hint": "Tree"
+        },
+        {
+          "q": "Why use semantic HTML instead of divs?",
+          "a": "Elements like header, nav and article carry meaning that browsers, assistive tech and search engines can use.",
+          "hint": "Meaning"
+        }
+      ]
+    }
+  ]
+}

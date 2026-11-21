@@ -1,0 +1,38 @@
+{
+  "id": "event-sourcing-cqrs",
+  "section": "messaging-queues",
+  "title": "Event Sourcing and CQRS",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Event sourcing stores every change as an immutable event (OrderPlaced, PaymentReceived) in an append-only log and rebuilds state by replaying them, giving a full audit trail and time travel. CQRS splits the write model from read models so each is optimized separately."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Combined: a command is validated and appends an event; projections update read views; queries read the views, so reads are eventually consistent. Snapshots keep replay fast. The two ideas are independent. Worth it for audit-heavy domains, diverging read and write patterns, or naturally event-shaped domains."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "After a command, can the user immediately read their change?",
+          "a": "Not necessarily. The read model is updated afterward by a projection, so reads are briefly stale.",
+          "hint": "Eventual consistency"
+        },
+        {
+          "q": "Does CQRS require event sourcing?",
+          "a": "No. They are commonly combined but are independent decisions.",
+          "hint": "Separate ideas"
+        },
+        {
+          "q": "Why use snapshots?",
+          "a": "To avoid replaying the entire event history to rebuild current state.",
+          "hint": "Fast replay"
+        }
+      ]
+    }
+  ]
+}

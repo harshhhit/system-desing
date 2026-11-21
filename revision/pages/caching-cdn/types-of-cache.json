@@ -1,0 +1,38 @@
+{
+  "id": "types-of-cache",
+  "section": "caching-cdn",
+  "title": "Types of Cache",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Caches exist at every layer: browser and mobile app per user; DNS and CDN at the edge; reverse proxy or API gateway in front of the app; in-process memory or Redis in the app tier; and the database buffer pool."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "The closer a cache is to the user, the more a hit saves but the harder it is to invalidate. A private cache serves one user; a shared cache serves many and must never store private responses under shared keys. A near cache combines in-process L1 with shared Redis."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is a read replica a cache?",
+          "a": "Not exactly. It holds all data and answers any query via replication; a cache holds a subset for key lookups. Both can be stale.",
+          "hint": "Subset vs all"
+        },
+        {
+          "q": "What is a negative cache?",
+          "a": "Caching not-found results briefly so repeated lookups for missing keys do not reach the database.",
+          "hint": "Cache penetration"
+        },
+        {
+          "q": "Why did MySQL remove its query cache?",
+          "a": "Any table write invalidated all its cached queries and a global lock serialized access.",
+          "hint": "Write-heavy cost"
+        }
+      ]
+    }
+  ]
+}

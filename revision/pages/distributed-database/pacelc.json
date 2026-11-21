@@ -1,0 +1,38 @@
+{
+  "id": "pacelc",
+  "section": "distributed-database",
+  "title": "PACELC",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "PACELC extends CAP. If there is a Partition, choose Availability or Consistency; Else, in normal operation, choose Latency or Consistency. CAP only covers partitions, but most of the time the system is not partitioned."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "The Else part matters daily: strong consistency means waiting for replicas on every write, costing latency. Cassandra and DynamoDB default to PA/EL; HBase and ZooKeeper are PC/EC. You can choose per operation: fast async writes, strongly consistent reads where needed."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is PACELC a fixed label per database?",
+          "a": "No. Labels describe defaults; Cassandra with ONE is EL, with QUORUM it behaves EC.",
+          "hint": "Per request"
+        },
+        {
+          "q": "Why does the Else case matter more day to day?",
+          "a": "Systems are rarely partitioned, but every write pays the latency of consistency.",
+          "hint": "Normal operation"
+        },
+        {
+          "q": "Give a PA/EL database.",
+          "a": "Cassandra or DynamoDB by default.",
+          "hint": "Availability and latency"
+        }
+      ]
+    }
+  ]
+}

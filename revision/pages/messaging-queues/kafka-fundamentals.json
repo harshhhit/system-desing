@@ -1,0 +1,38 @@
+{
+  "id": "kafka-fundamentals",
+  "section": "messaging-queues",
+  "title": "Kafka Fundamentals",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Kafka is a distributed, durable, append-only log. Unlike a queue, consuming a message does not remove it: each consumer tracks its own offset, so many consumer groups can read and replay the same stream independently."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Topics split into partitions across brokers. Ordering is guaranteed per partition only, so use a key like order ID. Each partition goes to one consumer per group; extra consumers sit idle. Retention is time or size based. Partitions replicate with a leader and ISR; use acks=all with idempotent producers."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does Kafka guarantee ordering?",
+          "a": "Only within one partition. Use the same key for an entity so its events land in one partition.",
+          "hint": "Per partition"
+        },
+        {
+          "q": "What happens with more consumers than partitions in a group?",
+          "a": "The extra consumers sit idle; each partition goes to exactly one consumer in the group.",
+          "hint": "Parallelism cap"
+        },
+        {
+          "q": "What is the ISR?",
+          "a": "The in-sync replicas: followers caught up closely enough to take over if the leader fails.",
+          "hint": "Eligible leaders"
+        }
+      ]
+    }
+  ]
+}

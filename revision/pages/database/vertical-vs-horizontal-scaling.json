@@ -1,0 +1,38 @@
+{
+  "id": "vertical-vs-horizontal-scaling",
+  "section": "database",
+  "title": "Vertical vs Horizontal Scaling",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Vertical scaling (scale-up) gives one server more CPU, memory and faster disks. Horizontal scaling (scale-out) adds servers: read replicas for reads and sharding for writes and data size."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "Vertical is simple, needs no code changes and keeps transactions easy, but has a hard ceiling, rising cost and stays a single point of failure. Horizontal removes the ceiling and adds fault tolerance but brings replication lag, cross-shard queries, rebalancing and operational complexity. Usually optimize and scale up first."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Do read replicas scale every workload horizontally?",
+          "a": "Only reads. Every replica still applies every write and the primary accepts all of them.",
+          "hint": "Reads only"
+        },
+        {
+          "q": "Name two frictions of vertical scaling.",
+          "a": "Hard hardware ceiling and an exponential cost curve; it is also a single point of failure.",
+          "hint": "Limits"
+        },
+        {
+          "q": "What is a common horizontal scaling risk?",
+          "a": "Bad shard keys causing hotspots, and painful resharding at scale.",
+          "hint": "Shard keys"
+        }
+      ]
+    }
+  ]
+}

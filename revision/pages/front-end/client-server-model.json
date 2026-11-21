@@ -1,0 +1,38 @@
+{
+  "id": "client-server-model",
+  "section": "front-end",
+  "title": "Client-Server Model",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "In the client-server model, clients such as browsers and mobile apps send requests and servers process them and send responses. The server centralizes data and business logic so everyone shares the same trusted state."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "A web request goes through DNS, a TCP and TLS connection, then an HTTP request. The server authenticates, runs logic, uses the database and responds. HTTP is stateless, so cookies, sessions or tokens identify the user. HTTP/1.1 has head-of-line blocking; HTTP/2 multiplexes; HTTP/3 runs over QUIC."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "If the client validates a form, does the server still need to?",
+          "a": "Yes, always. Client validation is only for UX; anyone can bypass it, so the server must not trust client input.",
+          "hint": "Trust boundary"
+        },
+        {
+          "q": "Why do cookies and tokens exist?",
+          "a": "HTTP is stateless, so they let the server recognize the same user across requests.",
+          "hint": "Stateless"
+        },
+        {
+          "q": "What problem does HTTP/2 fix over HTTP/1.1?",
+          "a": "Head-of-line blocking per connection; HTTP/2 multiplexes many requests on one connection.",
+          "hint": "Multiplexing"
+        }
+      ]
+    }
+  ]
+}

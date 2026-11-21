@@ -1,0 +1,38 @@
+{
+  "id": "cookies-sessions-jwt",
+  "section": "front-end",
+  "title": "Cookies, Sessions and JWT",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "HTTP is stateless, so apps need a way to remember the logged-in user. Cookies are the transport: the browser stores them and sends them automatically. Sessions and JWTs are two ways to hold the identity behind that cookie or header."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "With server-side sessions the cookie holds a random ID and data lives in Redis or a database, so revocation is instant. With JWTs the signed token carries identity, so any server verifies it without lookup, but revoking before expiry is hard. Practice: short-lived access token plus refresh token. Use HttpOnly, Secure, SameSite."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Is a JWT encrypted?",
+          "a": "No. A standard JWT is signed, not encrypted. Header and payload are Base64URL and anyone can read them; the signature only prevents tampering.",
+          "hint": "Signed vs encrypted"
+        },
+        {
+          "q": "What does HttpOnly protect against?",
+          "a": "JavaScript reading the cookie, so XSS cannot steal it.",
+          "hint": "XSS"
+        },
+        {
+          "q": "Why are sessions easier to revoke than JWTs?",
+          "a": "Session data lives on the server, so deleting it ends the session at once.",
+          "hint": "Server holds truth"
+        }
+      ]
+    }
+  ]
+}

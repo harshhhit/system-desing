@@ -1,0 +1,38 @@
+{
+  "id": "api-request-flow",
+  "section": "kubernetes",
+  "title": "API Request Flow",
+  "cards": [
+    {
+      "type": "summary",
+      "title": "Core idea",
+      "body": "Every request to the Kubernetes API server goes through the same pipeline: authentication finds out who you are, authorization (usually RBAC) checks if you may do it, admission control can modify or reject the request, and validation checks the object against the schema."
+    },
+    {
+      "type": "summary",
+      "title": "How it works",
+      "body": "For a write, the object is then persisted to etcd and controllers react. For a read, the API server just returns data. Authentication and authorization apply to every request; admission only runs on writes. Controllers stay in sync with List plus Watch instead of polling."
+    },
+    {
+      "type": "quiz",
+      "title": "Check yourself",
+      "questions": [
+        {
+          "q": "Does a read like kubectl get pods go through admission control?",
+          "a": "No. Authentication and authorization apply to every request, but admission control only runs on writes.",
+          "hint": "Reads vs writes"
+        },
+        {
+          "q": "How do controllers stay in sync without polling?",
+          "a": "List plus Watch: list the current objects once with a resourceVersion, then open a long-lived watch that streams changes.",
+          "hint": "resourceVersion"
+        },
+        {
+          "q": "What usually performs authorization?",
+          "a": "RBAC, which checks whether the identity may perform the verb on the resource in that namespace.",
+          "hint": "Roles and bindings"
+        }
+      ]
+    }
+  ]
+}
