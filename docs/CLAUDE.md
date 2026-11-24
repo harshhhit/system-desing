@@ -195,27 +195,33 @@ off on the homepage marks it covered on the real page too, and vice versa. If yo
 change `pickWeek()`/`renderWeeklyTarget()` here, mirror the edit in root's `index.html`
 copy — they're independent code, not a shared file.
 
-## Inline notes — a "🗒️+" marker on every paragraph and list item
+## Section notes — one "🗒️+" note per `<h3>`
 
-`site-header.js` also injects a small **"🗒️+" marker** next to every `<p>` inside the
+`site-header.js` injects one **"🗒️+ Note on this section"** marker per `<h3>` inside the
 content container (`.sd-study-main` / `main` / `.layout` / `article`, the same container
-read-aloud uses), and next to any `<li>` substantial enough to be its own sentence — a
-paragraph is the base unit, not every line, so short one-word/one-phrase list items (e.g.
-`Pods`, `kubectl`) are skipped (`LI_MIN_LEN` in `renderNotes()`, currently 40 chars).
+read-aloud uses), placed after that sub-heading's paragraphs — just before the next
+heading. An `<h2>` section that has no `<h3>` of its own gets one marker too, so every
+part of a page can be annotated. Headings inside `.sd-learn`, `.sd-next` and
+`.sd-interview` are skipped (the question bank moves into the study panel).
 Clicking a marker opens a textarea; saving pins an amber note card (with Edit/Delete)
-right after that block — **anywhere on the page, not just the bottom.**
+in the same spot.
 State lives in `localStorage` (`sdnotes_notes_<siteId>`), per-viewer only — there is no
-server, so a note exists only in the browser it was written in. A note is keyed by the
-page's href plus a hash of its block's own text (`hashStr`), with a `#2`, `#3`… suffix
-when identical text repeats on the page — **not** the block's position — so it stays
-attached to the right block even as content is added or removed elsewhere on the page.
-Notes saved under the older `<index>|<hash>` key are migrated automatically the first
-time their page is opened. Editing the exact wording of that specific block will orphan
-its note (rare, and not destructive — the old entry just stops rendering).
+server, so a note exists only in the browser it was written in (use 💾 Backup to keep a
+copy). A note is keyed by the page's href plus `s:` + a hash of its **heading's** text
+(`hashStr`), with a `#2`, `#3`… suffix when the same heading repeats — so editing the
+paragraphs of a section never detaches its note; only renaming the heading does (rare,
+and not destructive — the old entry just stops rendering).
+
+**Migration from per-paragraph notes:** notes saved by the older version (one per `<p>` /
+long `<li>`, keyed by a hash of the paragraph text, or the even older `<index>|<hash>`)
+are merged — in reading order, separated by a blank line — into the note of the section
+that holds their paragraph the first time the page is opened. A note whose paragraph no
+longer exists on the page is left in storage untouched.
 
 **It is fully automatic — no per-page markup**, exactly like the coverage tracker and
-read-aloud bar. `renderNotes()` runs after `renderReadAloud()` specifically so its
-markers/cards are never picked up as text for the "Listen" feature to speak.
+read-aloud bar. Give a section an `<h3>` if you want it to have its own note.
+`renderNotes()` runs after `renderReadAloud()` specifically so its markers/cards are
+never picked up as text for the "Listen" feature to speak.
 
 ## Sticky header strip + mobile menu — automatic, never hand-add
 

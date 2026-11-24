@@ -114,9 +114,10 @@ html { scroll-padding-top: calc(var(--sd-sticky-h, 0px) + 12px); }
   box-shadow: -3px 0 0 var(--sd-c3, #06b6d4); border-radius: 3px;
 }
 
-/* ---- inline notes (injected by site-header.js next to every <p>/<li> in the
-   content area). A "🗒️+" marker opens a small form; a saved note renders as
-   an amber card right after its block. Per-viewer, localStorage only. ---- */
+/* ---- section notes (injected by site-header.js: one per <h3>, or per <h2>
+   section without an <h3>, placed after that section's content). A "🗒️+ Note
+   on this section" marker opens a small form; a saved note renders as an amber
+   card in the same spot. Per-viewer, localStorage only. ---- */
 .sd-note-marker {
   display: inline-block; margin-left: 0.35em; padding: 0 0.3em; border: none; background: none;
   color: var(--muted, #5b6472); opacity: 0.35; cursor: pointer; font-size: 0.85em; line-height: 1;
@@ -126,6 +127,11 @@ html { scroll-padding-top: calc(var(--sd-sticky-h, 0px) + 12px); }
   opacity: 1; background: color-mix(in srgb, var(--sd-c8, #eab308) 16%, transparent);
 }
 li > .sd-note-marker, li > .sd-note-form, li > .sd-note-card { display: block; margin-left: 0; margin-top: 0.3em; }
+.sd-note-marker.sd-note-section {
+  display: block; margin: 0.2rem 0 1rem; padding: 0.15rem 0.55rem; opacity: 0.55;
+  border: 1px dashed var(--border, #e4e7ec); border-radius: 999px; font-size: 0.78rem;
+}
+@media print { .sd-note-marker, .sd-note-form { display: none; } }
 .sd-note-card {
   margin: 0.4rem 0 0.9rem; padding: 0.6rem 0.85rem; border-left: 3px solid var(--sd-c8, #eab308);
   border-radius: var(--radius-sm); background: color-mix(in srgb, var(--sd-c8, #eab308) 8%, transparent);

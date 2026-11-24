@@ -741,20 +741,18 @@
     syncStickyHeight();
   }
 
-  /* ---- inline notes: a "🗒️+" marker next to every <p> in the content
-     container, and next to any <li> substantial enough to be its own sentence
-     (short one-line items like "Pods" or "kubectl" don't get one — the
-     paragraph is the base unit, not every line). Click it to write a note;
-     it's pinned right after that block until edited or deleted. Notes are
-     keyed by page href + a hash of the block's own text (plus "#2", "#3"…
-     when the same text appears more than once on the page), so a note stays
-     attached to the right block even as other content is added or removed
-     elsewhere on the page. Older notes were keyed "<index>|<hash>" — which
-     broke whenever a block was inserted above them — and are migrated to
-     the new key the first time their page is opened. Purely per-viewer, localStorage only — there is
-     no server, so notes live only in the browser they were written in.
-     Runs after renderReadAloud() so its markers/cards are never picked up as
-     text to speak. ---- */
+  /* ---- section notes: one "🗒️+ Note on this section" marker per <h3>, placed
+     after that sub-heading's paragraphs (an <h2> section with no <h3> gets one
+     too). Click it to write a note; it's pinned there until edited or deleted.
+     Notes are keyed by page href + "s:" + a hash of the heading text (plus
+     "#2", "#3"… when a heading repeats), so a note stays attached even as the
+     section's paragraphs are edited. Older per-paragraph notes (keyed by a hash
+     of the paragraph's text, or the even older "<index>|<hash>") are merged
+     into the note of the section that holds them the first time their page is
+     opened; a note whose paragraph no longer exists is left in storage as-is.
+     Purely per-viewer, localStorage only — there is no server, so notes live
+     only in the browser they were written in. Runs after renderReadAloud() so
+     its markers/cards are never picked up as text to speak. ---- */
   var NOTES_KEY = "sdnotes_notes_" + map.siteId;
   function readNotes() {
     try { return JSON.parse(localStorage.getItem(NOTES_KEY) || "{}") || {}; }
@@ -777,26 +775,62 @@
     if (!container) return;
     var pageKey = entry ? entry.href : window.location.pathname;
 
-    var LI_MIN_LEN = 40; // short one-line list items ("Pods", "kubectl") don't get their own marker
+    // ---- note units: one note per <h3>, placed after that sub-heading's content.
+    // An <h2> section that has no <h3> of its own gets one note of its own, so
+    // every part of the page can still be annotated. ----
+    var SKIP_SEL = "[data-sd-ui],.sd-note-card,.sd-note-form,.sd-learn,.sd-next,.sd-interview,[data-breadcrumb]";
+    var heads = Array.prototype.filter.call(container.querySelectorAll("h2,h3"), function (h) {
+      return !h.closest(SKIP_SEL);
+    });
+    var units = [];
+    heads.forEach(function (h, i) {
+      if (h.tagName === "H3") { units.push(h); return; }
+      var next = heads[i + 1];
+      if (!next || next.tagName !== "H3") units.push(h);     // h2 with no h3 under it
+    });
+    function sectionEnd(h) {
+      // walk the heading's siblings until the next heading (or a block that holds one)
+      var last = h, n = h.nextElementSibling;
+      while (n && !/^H[1-3]$/.test(n.tagName) && !n.querySelector("h1,h2,h3")) {
+        if (!n.hasAttribute("data-sd-ui")) last = n;
+        n = n.nextElementSibling;
+      }
+      return last;
+    }
+    function headText(h) {
+      var c = h.cloneNode(true);
+      Array.prototype.forEach.call(c.querySelectorAll("[data-sd-ui]"), function (x) { x.remove(); });
+      return (c.textContent || "").replace(/\s+/g, " ").trim();
+    }
 
+    // ---- the older per-paragraph notes (keyed by a hash of the block's text),
+    // collected exactly as before so they can be merged into their section ----
+    var LI_MIN_LEN = 40;
     var blocks = [];
     Array.prototype.forEach.call(container.querySelectorAll("p,li"), function (el) {
       if (el.closest("[data-breadcrumb]") || el.closest("[data-page-subtitle]")) return;
       if (el.closest("[data-sd-ui]")) return;
       if (el.closest(".sd-note-card") || el.closest(".sd-note-form")) return;
-      if (el.closest(".sd-learn") || el.closest(".sd-next")) return;      // lesson nav blocks, not content
-      if (el.closest(".sd-interview .sd-qa")) return;                     // moves into the study panel
+      if (el.closest(".sd-learn") || el.closest(".sd-next")) return;
+      if (el.closest(".sd-interview .sd-qa")) return;
       if (el.classList.contains("sd-callout-title")) return;
       var text = (el.textContent || "").replace(/\s+/g, " ").trim();
       if (text.length < 2) return;
-      if (el.tagName === "LI" && text.length < LI_MIN_LEN) return; // paragraphs are the base unit
+      if (el.tagName === "LI" && text.length < LI_MIN_LEN) return;
       blocks.push({ el: el, text: text });
     });
-
-    function place(el, node) {
-      if (el.tagName === "LI") el.appendChild(node);
-      else el.insertAdjacentElement("afterend", node);
+    function unitFor(el) {
+      // nearest heading before the block; an h2 that has h3s hands over to its first h3
+      var prev = -1;
+      heads.forEach(function (h, i) {
+        if (h.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) prev = i;
+      });
+      for (var i = Math.max(prev, 0); i < heads.length; i++) {
+        if (units.indexOf(heads[i]) !== -1) return heads[i];
+      }
+      return units[units.length - 1] || null;
     }
+
     function saveNote(pageNotes, id, text) {
       var store = readNotes();
       var pn = store[pageKey] || {};
@@ -808,9 +842,9 @@
     function buildMarker(el, id, pageNotes) {
       var btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "sd-note-marker";
-      btn.setAttribute("aria-label", "Add a note here");
-      btn.textContent = "🗒️+";
+      btn.className = "sd-note-marker sd-note-section";
+      btn.setAttribute("aria-label", "Add a note on this section");
+      btn.textContent = "🗒️+ Note on this section";
       btn.addEventListener("click", function () { btn.replaceWith(buildForm(el, id, pageNotes, "")); });
       return btn;
     }
@@ -869,32 +903,54 @@
     var store = readNotes();
     var pageNotes = store[pageKey] || {};
     var LEGACY_ID = /^\d+\|/;
+    var SECTION_ID = /^s:/;
+
+    // ids for the sections: "s:" + hash of the heading text (#2, #3… when repeated)
+    var seenU = {};
+    var unitIds = units.map(function (h) {
+      var k = hashStr(headText(h));
+      seenU[k] = (seenU[k] || 0) + 1;
+      return "s:" + (seenU[k] === 1 ? k : k + "#" + seenU[k]);
+    });
+
+    // one-time move of paragraph notes into the note of the section that holds them.
+    // A note whose paragraph no longer exists is left in storage untouched.
     var seen = {};
-    var migrated = false;
-    function legacyFor(i, h) {
-      if (pageNotes[i + "|" + h]) return i + "|" + h;           // block hasn't moved
-      var suffix = "|" + h, found = null;
-      Object.keys(pageNotes).forEach(function (k) {            // block moved: same text, other index
-        if (!found && LEGACY_ID.test(k) && k.slice(-suffix.length) === suffix) found = k;
-      });
-      return found;
-    }
     var ids = blocks.map(function (block) {
       var h = hashStr(block.text);
       seen[h] = (seen[h] || 0) + 1;
       return seen[h] === 1 ? h : h + "#" + seen[h];
     });
-    blocks.forEach(function (block, i) {
-      var id = ids[i];
-      if (pageNotes[id]) return;
-      var old = legacyFor(i, hashStr(block.text));
-      if (old) { pageNotes[id] = pageNotes[old]; delete pageNotes[old]; migrated = true; }
-    });
+    function legacyFor(i, h) {
+      if (pageNotes[i + "|" + h]) return i + "|" + h;
+      var suffix = "|" + h, found = null;
+      Object.keys(pageNotes).forEach(function (k) {
+        if (!found && LEGACY_ID.test(k) && k.slice(-suffix.length) === suffix) found = k;
+      });
+      return found;
+    }
+    var migrated = false;
+    if (units.length && Object.keys(pageNotes).some(function (k) { return !SECTION_ID.test(k); })) {
+      blocks.forEach(function (block, i) {
+        var key = pageNotes[ids[i]] ? ids[i] : legacyFor(i, hashStr(block.text));
+        if (!key || SECTION_ID.test(key)) return;
+        var unit = unitFor(block.el);
+        if (!unit) return;
+        var uid = unitIds[units.indexOf(unit)];
+        var old = pageNotes[key], cur = pageNotes[uid];
+        pageNotes[uid] = cur
+          ? { text: cur.text + "\n\n" + old.text, ts: Math.max(cur.ts || 0, old.ts || 0) }
+          : { text: old.text, ts: old.ts || Date.now() };
+        delete pageNotes[key];
+        migrated = true;
+      });
+    }
     if (migrated) { store[pageKey] = pageNotes; writeNotes(store); }
-    blocks.forEach(function (block, i) {
-      var id = ids[i];
-      var node = pageNotes[id] ? buildCard(block.el, id, pageNotes) : buildMarker(block.el, id, pageNotes);
-      place(block.el, node);
+
+    units.forEach(function (h, i) {
+      var id = unitIds[i];
+      var node = pageNotes[id] ? buildCard(h, id, pageNotes) : buildMarker(h, id, pageNotes);
+      sectionEnd(h).insertAdjacentElement("afterend", node);
     });
   }
 
@@ -1549,7 +1605,7 @@
       inlineBox.replaceChildren();
       var cards = container.querySelectorAll(".sd-note-card");
       if (!cards.length) {
-        inlineBox.appendChild(el("p", "sd-panel-hint", "Tip: the 🗒️+ next to any paragraph pins a note right there."));
+        inlineBox.appendChild(el("p", "sd-panel-hint", "Tip: the 🗒️+ under each sub-heading pins a note for that section."));
         return;
       }
       inlineBox.appendChild(el("h4", null, "Notes pinned on this page (" + cards.length + ")"));

@@ -771,6 +771,22 @@ window.REVISION_CARDS = [
   "text": "Timed practice on TryHackMe and VulnHub, a 6-hour self-made mock with a pivot, the one-screen exam-day cheat sheet, and the exam tips — then book the voucher."
  },
  {
+  "href": "ejpt/01a-network-reconnaissance.html",
+  "title": "Network Reconnaissance During Penetration Testing",
+  "section": "Penetration Testing (eJPT)",
+  "icon": "⚔️",
+  "source": "interview",
+  "text": "Network reconnaissance is mapping the network before testing it. I check my interfaces and subnets with ip addr, where my traffic goes with ip route, whether hosts answer with ping, how names resolve with getent hosts, and whether ports complete a TCP handshake with nc -vz — then move on to Nmap service enumeration."
+ },
+ {
+  "href": "ejpt/01b-recon-command-list.html",
+  "title": "Network Reconnaissance Command List",
+  "section": "Penetration Testing (eJPT)",
+  "icon": "⚔️",
+  "source": "interview",
+  "text": "I go from local to remote, cheapest first: ip addr and ip route to know my networks and path, ping and ARP for reachability, getent and dig for DNS, nc for a single port, then Nmap for hosts, ports and service versions. If results look wrong, I check ss, traceroute and tcpdump to see what actually happened on the wire."
+ },
+ {
   "href": "web-servers/server.html",
   "title": "Web Servers",
   "section": "Web Servers",

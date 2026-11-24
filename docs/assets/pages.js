@@ -637,6 +637,18 @@ window.SITE_PAGES = {
     title: "Module 1 — Foundations",
     subtitle: "Read a packet, a subnet and a Linux/Windows box like an attacker: ports and services, CIDR math, HTTP, and the SUID / listening-port drills you reuse later."
   },
+  "ejpt-network-recon": {
+    href: "ejpt/01a-network-reconnaissance.html",
+    section: "Penetration Testing (eJPT)",
+    title: "Network Reconnaissance During Penetration Testing",
+    subtitle: "Map the network before you test it: ip addr, ip route, ping, getent hosts and nc -vz — what each tells you, what a failure does not prove, and why ARP stops at Docker bridges."
+  },
+  "ejpt-recon-commands": {
+    href: "ejpt/01b-recon-command-list.html",
+    section: "Penetration Testing (eJPT)",
+    title: "Network Reconnaissance Command List",
+    subtitle: "Every recon command by purpose — addressing, routing, reachability, DNS, TCP ports, Nmap, listeners, path, packets and Docker — plus the 15-step execution sequence and a self-check."
+  },
   "ejpt-assessment-methodologies": {
     href: "ejpt/02-assessment-methodologies.html",
     section: "Penetration Testing (eJPT)",

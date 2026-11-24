@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ACCESS GATE — soft client-side barrier; edit only in /login.html -->
+<meta name="robots" content="noindex, nofollow">
+<script>(function(){try{if(sessionStorage.getItem("unlocked")==="1"||localStorage.getItem("unlocked")==="1")return;sessionStorage.setItem("returnTo",location.pathname+location.search+location.hash)}catch(e){}location.replace("../../login.html")})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=../../login.html"></noscript>
+<!-- /ACCESS GATE -->
+<script>window.PAGE_CONFIG = { id: "ejpt-recon-commands" };</script>
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Reconnaissance Command List · Infra Owl</title>
+<link rel="stylesheet" href="../assets/site.css?v=12">
+<style>
+  .sd-study-main h3 { margin-top: 1.6rem; }
+</style>
+</head>
+<body>
+
+<div id="site-header-root"></div>
+
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/pages.js"></script>
+<script src="../assets/site-header.js?v=11" data-root="../"></script>
+
+<div class="sd-study-layout">
+
+  <aside class="sidebar sd-study-sidebar"><nav><h3>☸️ Kubernetes</h3><details class="sd-nav-group"><summary>Control Plane Components</summary><ul><li><a href="../kubernetes/13-control-plane-roadmap.html">13. Control Plane Roadmap</a></li><li><a href="../kubernetes/00-index.html">00. Control Plane Overview</a></li><li><a href="../kubernetes/01-kube-apiserver.html">01. kube-apiserver</a></li><li><a href="../kubernetes/02-etcd.html">02. etcd</a></li><li><a href="../kubernetes/03-kube-scheduler.html">03. kube-scheduler</a></li><li><a href="../kubernetes/04-kube-controller-manager.html">04. kube-controller-manager</a></li></ul></details><details class="sd-nav-group"><summary>Request &amp; Access Flow</summary><ul><li><a href="../kubernetes/14-request-access-roadmap.html">14. Request &amp; Access Flow Roadmap</a></li><li><a href="../kubernetes/05-api-request-flow.html">05. API Request Flow</a></li><li><a href="../kubernetes/06-rbac-namespace-scope.html">06. RBAC: Namespace Scoping</a></li><li><a href="../kubernetes/10-api-request-lifecycle.html">10. API Request Lifecycle: The Four Gates</a></li></ul></details><details class="sd-nav-group"><summary>Workload Config &amp; Storage</summary><ul><li><a href="../kubernetes/15-workload-storage-roadmap.html">15. Workload Config &amp; Storage Roadmap</a></li><li><a href="../kubernetes/07-persistent-storage.html">07. Persistent Storage &amp; Distributed DBs</a></li><li><a href="../kubernetes/08-configmap-secret.html">08. ConfigMap &amp; Secret</a></li></ul></details><details class="sd-nav-group"><summary>Data Plane</summary><ul><li><a href="../kubernetes/17-data-plane-roadmap.html">17. Data Plane Roadmap</a></li><li><a href="../kubernetes/09-data-plane.html">09. Data Plane Deep Dive</a></li></ul></details><details class="sd-nav-group"><summary>High Availability</summary><ul><li><a href="../kubernetes/16-high-availability-roadmap.html">16. High Availability Roadmap</a></li><li><a href="../kubernetes/11-leader-election.html">11. Leader Election: HA for Controller Manager &amp; Scheduler</a></li></ul></details><details class="sd-nav-group"><summary>Networking</summary><ul><li><a href="../kubernetes/12-networking-roadmap.html">12. Networking Roadmap</a></li></ul></details><h3>🔐 Authentication</h3><details class="sd-nav-group"><summary>Login &amp; Sessions</summary><ul><li><a href="../authentication/00-login-steps.html">Secure Login Implementation Steps</a></li><li><a href="../authentication/01-authentication/01-introduction.html">Authentication Schemes: An Introduction</a></li></ul></details><details class="sd-nav-group"><summary>Password Security</summary><ul><li><a href="../authentication/01-authentication/03-hashing-process.html">Secure Password Hashing Process</a></li></ul></details><details class="sd-nav-group"><summary>Social Login (OAuth)</summary><ul><li><a href="../authentication/02-social-login/google-key-task.html">Google Social Login Checklist</a></li><li><a href="../authentication/02-social-login/google-login.html">Google Sign-In with Credential Manager</a></li></ul></details><h3>🖥️ Front-End</h3><details class="sd-nav-group"><summary>Fundamentals</summary><ul><li><a href="../01-front-end/frontend-roadmap.html">00. Front-End Roadmap</a></li><li><a href="../01-front-end/graphql/http/04-client-server-model.html">01. Client-Server Model, End to End</a></li><li><a href="../01-front-end/graphql/http/04.2-request-flow-interactive.html">01a. Interactive Request Flow</a></li><li><a href="../01-front-end/graphql/http/04.1-cookies-sessions-jwt.html">01b. Cookies, Sessions &amp; JWT</a></li><li><a href="../01-front-end/browser-javascript-capabilities.html">01c. Browser JavaScript: Can &amp; Can't</a></li><li><a href="../01-front-end/cors.html">01d. CORS</a></li></ul></details><details class="sd-nav-group"><summary>Rendering &amp; Architecture</summary><ul><li><a href="../01-front-end/graphql/http/01.02-rendering-types.html">02. Web Rendering &amp; Architecture</a></li><li><a href="../01-front-end/graphql/http/02.1-ssr-vs-csr.html">02a. SSR vs CSR</a></li><li><a href="../01-front-end/graphql/http/02.1ssr-vs-csr-v.html">02b. SSR vs CSR (v2)</a></li></ul></details><details class="sd-nav-group"><summary>APIs &amp; System Design</summary><ul><li><a href="../01-front-end/graphql/http/03.1graphql-vs-rest.html">03. GraphQL vs REST</a></li><li><a href="../01-front-end/system-design-roadmap.html">04. System Design Roadmap</a></li></ul></details><h3>🗄️ Database</h3><details class="sd-nav-group"><summary>Foundations</summary><ul><li><a href="../05-database/00-learning-path/00-index.html">00. Database Learning Path</a></li><li><a href="../05-database/01-foundations/mislanious-terms.html">01. Database Foundations</a></li><li><a href="../05-database/01a-sql-and-relational-fundamentals/index.html">01a. SQL and Relational Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Modeling &amp; Schema Design</summary><ul><li><a href="../05-database/02-data-modeling-and-selection/how-to-choose-the-database.html">02. How to Choose the Database</a></li><li><a href="../05-database/02-data-modeling-and-selection/factors.html">02. Database Performance Factors</a></li><li><a href="../05-database/02-data-modeling-and-selection/scratch-note-polyglot-persistence.html">02. Polyglot Persistence</a></li><li><a href="../05-database/02a-schema-design-and-migrations/index.html">02a. Schema Design and Migrations</a></li></ul></details><details class="sd-nav-group"><summary>Querying &amp; Transactions</summary><ul><li><a href="../05-database/03-querying-and-performance/01A-Database-basic.html">03. PostgreSQL Views</a></li><li><a href="../05-database/03-querying-and-performance/08-indxing.html">03. Indexing</a></li><li><a href="../05-database/03a-transactions-and-concurrency/index.html">03a. Transactions and Concurrency</a></li><li><a href="../05-database/03b-query-plans-and-optimization/index.html">03b. Query Plans and Optimization</a></li></ul></details><details class="sd-nav-group"><summary>Distributed Databases</summary><ul><li><a href="../05-database/04-distributed-database-fundamentals/lecture-2.html">04. Distributed Database Fundamentals</a></li><li><a href="../05-database/04-distributed-database-fundamentals/04-cap-theorem-questions.html">04. CAP Theorem Questions</a></li></ul></details><details class="sd-nav-group"><summary>Scaling &amp; Connection Management</summary><ul><li><a href="../05-database/05-scaling-and-partitioning/01-Database-Basic.html">05. Data Distribution</a></li><li><a href="../05-database/05-scaling-and-partitioning/02-partiontion.html">05. Partitioning</a></li><li><a href="../05-database/05-scaling-and-partitioning/03-horizintal-scaling.html">05. Horizontal Scaling</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/index.html">05a. Connection Management and Database Proxies</a></li><li><a href="../05-database/05a-connection-management-and-database-proxies/postgresql-connection-troubleshooting.html">05a. PostgreSQL Connection Troubleshooting</a></li></ul></details><details class="sd-nav-group"><summary>Security, Backup &amp; Operations</summary><ul><li><a href="../05-database/04a-database-security-and-access-control/index.html">04a. Database Security and Access Control</a></li><li><a href="../05-database/06a-backup-recovery-and-disaster-recovery/index.html">06a. Backup, Recovery, and Disaster Recovery</a></li><li><a href="../05-database/07-observability-capacity-and-operations/index.html">07. Observability, Capacity, and Operations</a></li></ul></details><ul><li><a class="resource" href="../05-database/06-replication/system-desing.pdf" target="_blank" rel="noopener">📎 Replication Slides</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-3.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 3</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-4.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 4</a></li><li><a class="resource" href="../05-database/06-replication/system-desing-5.pdf" target="_blank" rel="noopener">📎 Replication Slides Pt. 5</a></li><li><a class="resource" href="../05-database/06-replication/replication-1.pdf" target="_blank" rel="noopener">📎 Replication Deep-Dive</a></li></ul><h3>🌐 Distributed Systems</h3><ul><li><a href="../distributed-system/distributed-systems.html">Distributed Systems</a></li><li><a href="../distributed-system/01-consensus-algorithms.html">Consensus Algorithms: Raft &amp; Paxos</a></li><li><a href="../distributed-system/02-consistent-hashing.html">Consistent Hashing</a></li></ul><h3>🧬 Distributed Database</h3><details class="sd-nav-group"><summary>Replication Fundamentals</summary><ul><li><a href="../distributed-database/index.html">Replication &amp; Distributed Data Roadmap (Part 1)</a></li><li><a href="../distributed-database/02-replication-mechanism.html">Replication Mechanism — The 4 Dimensions (Part 2)</a></li></ul></details><details class="sd-nav-group"><summary>Consistency Models</summary><ul><li><a href="../distributed-database/03-pacelc-interview-masterclass.html">PACELC — Senior Interview Masterclass</a></li></ul></details><details class="sd-nav-group"><summary>Replication Internals</summary><ul><li><a href="../distributed-database/04-wal-vs-binlog.html">WAL vs Binlog</a></li><li><a href="../distributed-database/05-replication-lag.html">Replication Lag — Causes, Measurement, Mitigation</a></li></ul></details><h3>📨 Messaging &amp; Queues</h3><details class="sd-nav-group"><summary>Queue Fundamentals</summary><ul><li><a href="../sqs/01-sqs.html">SQS Overview</a></li><li><a href="../sqs/02-queus-methord.html">Queue Methods</a></li><li><a href="../sqs/use-case.html">SQS Use Cases</a></li></ul></details><details class="sd-nav-group"><summary>Streaming &amp; Event-Driven Patterns</summary><ul><li><a href="../sqs/03-kafka-fundamentals.html">Kafka Fundamentals</a></li><li><a href="../sqs/04-event-sourcing-and-cqrs.html">Event Sourcing &amp; CQRS</a></li></ul></details><details class="sd-nav-group"><summary>Resilience &amp; Practice</summary><ul><li><a href="../sqs/05-microservice-resilience-patterns.html">Microservice Resilience Patterns</a></li><li><a href="../sqs/project/project.html">Multiprotocol Messaging Starter: Project Guide</a></li></ul></details><ul><li><a class="resource" href="../sqs/message-retries-and-dead-lettering.pdf" target="_blank" rel="noopener">📎 Retries &amp; Dead-Lettering</a></li><li><a class="resource" href="../sqs/project/multiprotocol-messaging-starter.zip" target="_blank" rel="noopener">📎 Starter Project (.zip)</a></li></ul><h3>💾 Storage</h3><ul><li><a href="../storage/storage-type.html">Storage Types</a></li></ul><h3>🧊 Caching &amp; CDN</h3><details class="sd-nav-group"><summary>Start Here</summary><ul><li><a href="../caching/caching-roadmap.html">Caching Roadmap</a></li><li><a href="../caching/00-caching-and-cdn-fundamentals.html">00. Caching &amp; CDN Fundamentals</a></li></ul></details><details class="sd-nav-group"><summary>Types of Cache</summary><ul><li><a href="../caching/01-types-of-cache.html">01. Types of Cache (Overview)</a></li><li><a href="../caching/01a-browser-caching.html">01a. Browser Caching</a></li><li><a href="../caching/01b-cdn-caching.html">01b. CDN Caching</a></li><li><a href="../caching/01c-proxy-and-gateway-caching.html">01c. Reverse Proxy &amp; API Gateway Caching</a></li><li><a href="../caching/01d-database-caching.html">01d. Database Caching</a></li><li><a href="../caching/01e-dns-os-hardware-caching.html">01e. DNS, OS &amp; Hardware Caching</a></li></ul></details><details class="sd-nav-group"><summary>In-Memory Caching</summary><ul><li><a href="../caching/02-in-memory-caching-strategies.html">02. In-Memory: Caching Strategies</a></li><li><a href="../caching/03-in-memory-eviction-policies.html">03. In-Memory: Eviction Policies</a></li><li><a href="../caching/04-in-memory-cache-problems.html">04. In-Memory: Cache Problems</a></li></ul></details><h3>🚦 Traffic Management</h3><ul><li><a href="../traffic/00-load-balancing.html">00. Load Balancing</a></li><li><a href="../traffic/01-rate-limiting-and-throttling.html">01. Rate Limiting &amp; Throttling</a></li></ul><h3>🔌 Networking</h3><ul><li><a href="../networking/00-networking-fundamentals.html">00. Networking Fundamentals</a></li></ul><h3>🛡️ Observability, Security &amp; Ops</h3><ul><li><a href="../observability-security/00-observability-fundamentals.html">00. Observability Fundamentals</a></li><li><a href="../observability-security/01-application-security-fundamentals.html">01. Application Security Fundamentals</a></li><li><a href="../observability-security/02-cicd-and-deployment-strategies.html">02. CI/CD &amp; Deployment Strategies</a></li></ul><h3>⚔️ Penetration Testing (eJPT)</h3><details class="sd-nav-group"><summary>Section 1 — eJPT Course</summary><ul><li><a href="../ejpt/index.html">eJPT Course Overview</a></li><li><a href="../ejpt/00-lab-setup.html">Module 0 — Lab Setup</a></li><li><a href="../ejpt/01-foundations.html">Module 1 — Foundations</a></li><li><a href="../ejpt/02-assessment-methodologies.html">Module 2 — Assessment Methodologies</a></li><li><a href="../ejpt/03-host-network-pentest.html">Module 3 — Host &amp; Network Pentest</a></li><li><a href="../ejpt/04-post-exploitation.html">Module 4 — Post-Exploitation &amp; Pivoting</a></li><li><a href="../ejpt/05-web-app-pentest.html">Module 5 — Web App Pentest</a></li><li><a href="../ejpt/06-exam-readiness.html">Module 6 — Exam Readiness</a></li></ul></details><details class="sd-nav-group" open><summary>Section 2 — Network Reconnaissance</summary><ul><li><a href="../ejpt/01a-network-reconnaissance.html">Network Reconnaissance — Concepts</a></li><li><a class="active" href="../ejpt/01b-recon-command-list.html">Recon Command List</a></li></ul></details><h3>🖧 Web Servers</h3><ul><li><a href="../web-servers/server.html">Web Servers</a></li><li><a href="../web-servers/wsgi.html">WSGI Explained</a></li></ul><h3>☁️ AWS Learning</h3><ul><li><a href="../aws/00-aws-learning-path.html">00. AWS Learning Path</a></li><li><a href="../aws/01-elasticache.html">01. Amazon ElastiCache</a></li></ul><h3>🧭 Dev Principles</h3><ul><li><a href="../software-development-principles/01-sdp.html">Software Development Principles</a></li></ul><h3>🗺️ Planning &amp; Roadmap</h3><details class="sd-nav-group"><summary>Requirements &amp; Planning</summary><ul><li><a href="../path/01-requirements-and-planning.html">Requirements &amp; Planning</a></li><li><a href="../path/01-b-MVP.html">MVP Planning</a></li></ul></details><details class="sd-nav-group"><summary>Architecture &amp; APIs</summary><ul><li><a href="../path/00-system-desing.html">System Design: EC2 Hosting Checklist</a></li><li><a href="../path/02-apis.html">API Planning</a></li></ul></details><details class="sd-nav-group"><summary>Review</summary><ul><li><a href="../path/03-coverage-gap-analysis.html">03. Coverage Gap Analysis &amp; Prompts</a></li></ul></details><h3>🏗️ Project Walkthroughs</h3><ul><li><a href="../project-explaintion/image-share-system/200-images.html">Image Share System (200 Images)</a></li><li><a href="../project-explaintion/instagram/major-tools.html">Instagram: Major Tools</a></li><li><a href="../project-explaintion/chat-system/chat-architecture-review.html">Chat Architecture Review (Postgres + PubNub)</a></li></ul><h3>🧩 Miscellaneous</h3><ul><li><a href="../mislanious/01-pubsub-and-pubnub.html">Pub/Sub and PubNub</a></li><li><a href="../mislanious/Memory-Profiling.html">Memory Profiling</a></li><li><a href="../mislanious/query-string.html">Query Strings</a></li></ul><h3>📚 Books</h3><details class="sd-nav-group"><summary>Bookshelf</summary><ul><li><a href="../books/index.html">Bookshelf</a></li></ul></details><details class="sd-nav-group"><summary>Domain-Driven Design (Eric Evans)</summary><ul><li><a href="../books/domain-driven-design/index.html">Domain-Driven Design — Chapters</a></li><li><a href="../books/domain-driven-design/01-crunching-knowledge.html">Ch 1. Crunching Knowledge</a></li><li><a href="../books/domain-driven-design/02-communication-and-language.html">Ch 2. Communication and the Use of Language</a></li></ul></details></nav></aside>
+
+  <div class="sd-study-content">
+    <main class="sd-study-main sd-lesson" data-reminders="Replace TARGET_IP / TARGET / PORT / SUBNET with authorized lab values only|Run the 15-step sequence in order — cheapest, least intrusive checks first|Explain every item in the self-check list without notes before moving on">
+
+      <p class="sd-study-breadcrumb" data-breadcrumb><a href="../index.html">Home</a> / Penetration Testing (eJPT) / Network Reconnaissance Command List</p>
+      <h1 data-page-title>Network Reconnaissance Command List</h1>
+      <p class="sd-study-prompt" data-page-subtitle>Every recon command by purpose — addressing, routing, reachability, DNS, TCP ports, Nmap, listeners, path, packets and Docker — plus the 15-step execution sequence and a self-check.</p>
+
+      <!-- 01 OVERVIEW -->
+      <section class="sd-learn">
+        <h2 id="what-youll-learn">What you'll learn</h2>
+        <p>By the end of this page you will be able to:</p>
+        <ul>
+          <li>Pick the right command for each recon question: addressing, routing, reachability, DNS, ports, services, path and packets</li>
+          <li>Run the full 15-step recon sequence in a sensible order</li>
+          <li>Say what the important flags on each command do</li>
+          <li>Explain the 15 core concepts behind these commands without notes</li>
+        </ul>
+      </section>
+
+      <h2 id="overview" data-stage="Overview">Pentesting Lab — Network Reconnaissance Command List</h2>
+      <p>This is the consolidated list of commands covered in this lesson, organized by purpose and execution order.</p>
+      <p>It is the quick-reference companion to <a href="01a-network-reconnaissance.html">Network Reconnaissance During Penetration Testing</a>, which explains the theory behind each command — what an IP address, a route, ICMP, DNS, a TCP handshake and ARP are. This page does not repeat those explanations; it gives you the commands grouped by the question they answer, then the order to run them in.</p>
+
+      <aside class="sd-callout important">
+        <p class="sd-callout-title">💡 Important</p>
+        <p>Replace <code>TARGET_IP</code>, <code>TARGET</code>, <code>PORT</code> and <code>SUBNET</code> with your authorized lab values. Every command here assumes a lab or an engagement you are permitted to test.</p>
+      </aside>
+
+      <!-- 04 HOW IT WORKS -->
+      <h2 id="execution-sequence" data-stage="How It Works">Complete Practical Execution Sequence</h2>
+      <p>This is the recommended sequence whenever you start network reconnaissance in your authorized pentesting lab. It moves from what you can learn about your own machine (no traffic to the target), to light single-packet checks, to scanning — so each step explains the result of the next.</p>
+      <table>
+        <tr><th>Step</th><th>Command</th><th>Objective</th></tr>
+        <tr><td>1</td><td><code>ip -br addr</code></td><td>Identify IP addresses</td></tr>
+        <tr><td>2</td><td><code>ip route</code></td><td>Identify gateway and routes</td></tr>
+        <tr><td>3</td><td><code>ip route get TARGET_IP</code></td><td>Understand traffic path</td></tr>
+        <tr><td>4</td><td><code>ping -c 4 TARGET_IP</code></td><td>Test ICMP connectivity</td></tr>
+        <tr><td>5</td><td><code>ip neigh</code></td><td>Check neighbour table</td></tr>
+        <tr><td>6</td><td><code>netdiscover -r SUBNET</code></td><td>Discover local hosts</td></tr>
+        <tr><td>7</td><td><code>getent hosts TARGET</code></td><td>Resolve hostname</td></tr>
+        <tr><td>8</td><td><code>dig TARGET</code></td><td>Investigate DNS</td></tr>
+        <tr><td>9</td><td><code>nc -vz TARGET_IP PORT</code></td><td>Test TCP connectivity</td></tr>
+        <tr><td>10</td><td><code>nmap -sn SUBNET</code></td><td>Discover responsive hosts</td></tr>
+        <tr><td>11</td><td><code>nmap -sT TARGET_IP</code></td><td>Identify TCP port states</td></tr>
+        <tr><td>12</td><td><code>nmap -sV TARGET_IP</code></td><td>Identify services and versions</td></tr>
+        <tr><td>13</td><td><code>ss -tulnp</code></td><td>Check local listening services</td></tr>
+        <tr><td>14</td><td><code>traceroute TARGET_IP</code></td><td>Investigate network path</td></tr>
+        <tr><td>15</td><td><code>tcpdump -i any</code></td><td>Analyze network packets</td></tr>
+      </table>
+      <p><em>Replace <code>TARGET_IP</code>, <code>TARGET</code>, <code>PORT</code> and <code>SUBNET</code> with your authorized lab values.</em></p>
+      <p>The same sequence grouped into phases:</p>
+      <ol class="sd-steps">
+        <li><strong>Know yourself (steps 1–3):</strong> <code>ip -br addr</code>, <code>ip route</code>, <code>ip route get TARGET_IP</code> — which networks you are on and which way traffic to the target will leave. Nothing is sent to the target yet.</li>
+        <li><strong>Is it there? (steps 4–6):</strong> <code>ping</code>, <code>ip neigh</code>, <code>netdiscover</code> — ICMP reachability and Layer 2 neighbours on your own segment.</li>
+        <li><strong>What is it called? (steps 7–8):</strong> <code>getent hosts</code> resolves the name the way applications on your box do; <code>dig</code> asks DNS directly.</li>
+        <li><strong>What is open? (steps 9–12):</strong> <code>nc -vz</code> for one port, then <code>nmap -sn</code>, <code>nmap -sT</code> and <code>nmap -sV</code> for hosts, port states and service versions.</li>
+        <li><strong>Explain anything odd (steps 13–15):</strong> <code>ss -tulnp</code> for your own listeners, <code>traceroute</code> for where the path stops, <code>tcpdump</code> for what actually went over the wire.</li>
+      </ol>
+
+      <aside class="sd-callout think">
+        <p class="sd-callout-title">🧠 Think about it</p>
+        <p>Why does step 3 (<code>ip route get</code>) come before step 4 (<code>ping</code>)? If the route sends traffic out the wrong interface — say, not through the VPN — a failed ping tells you nothing about the target.</p>
+      </aside>
+
+      <!-- 05 IMPLEMENTATION -->
+      <h2 id="commands" data-stage="Implementation">Commands by Purpose</h2>
+      <p>Ten groups, each answering one recon question. Each block is followed by what its important flags do.</p>
+
+      <h3 id="ip-addressing">1. IP Addressing &amp; Network Interfaces</h3>
+      <p>Understand your machine's IP addresses, interfaces and subnets.</p>
+      <pre><code>ip addr
+ip a
+ip -br addr
+ip -4 addr
+ip -6 addr</code></pre>
+      <ul>
+        <li><code>ip a</code> — short form of <code>ip addr</code>; same output.</li>
+        <li><code>ip -br addr</code> — brief mode: one line per interface (name, state, addresses).</li>
+        <li><code>ip -4 addr</code> / <code>ip -6 addr</code> — show only IPv4 or only IPv6 addresses.</li>
+      </ul>
+      <p>Theory: <a href="01a-network-reconnaissance.html#ip-addr">IP addressing and CIDR</a>.</p>
+
+      <h3 id="routing">2. Routing &amp; Gateway</h3>
+      <p>Understand how network traffic reaches its destination.</p>
+      <pre><code>ip route
+ip route show
+ip route get 8.8.8.8
+ip route get TARGET_IP</code></pre>
+      <ul>
+        <li><code>ip route show</code> — the explicit form of <code>ip route</code>; prints the routing table.</li>
+        <li><code>ip route get TARGET_IP</code> — which gateway, interface and source IP Linux would use for that one destination.</li>
+      </ul>
+      <p>Theory: <a href="01a-network-reconnaissance.html#ip-route">routing and the default gateway</a>.</p>
+
+      <h3 id="host-discovery">3. Host Discovery &amp; Connectivity</h3>
+      <p>Check whether other machines respond to network requests.</p>
+      <pre><code>ping TARGET_IP
+ping -c 4 TARGET_IP
+ping -i 2 TARGET_IP
+ping -W 2 -c 4 TARGET_IP</code></pre>
+      <ul>
+        <li><code>-c 4</code> — send four Echo Requests, then stop and print a summary.</li>
+        <li><code>-i 2</code> — wait two seconds between packets.</li>
+        <li><code>-W 2</code> — wait at most two seconds for each reply.</li>
+      </ul>
+      <p>Check local network neighbours:</p>
+      <pre><code>ip neigh</code></pre>
+      <p>Discover devices using ARP:</p>
+      <pre><code>netdiscover -r 192.168.1.0/24</code></pre>
+      <ul>
+        <li><code>ip neigh</code> — the cached IP-to-MAC (ARP) table: hosts your machine has recently talked to on its segment.</li>
+        <li><code>netdiscover -r</code> — actively ARP-scan the given range; only works within your own Layer 2 segment.</li>
+      </ul>
+      <p>Theory: <a href="01a-network-reconnaissance.html#icmp-ping">ICMP and ping</a>, <a href="01a-network-reconnaissance.html#arp-netdiscover">ARP and Netdiscover</a>.</p>
+
+      <h3 id="dns">4. DNS Resolution &amp; Investigation</h3>
+      <p>Understand how hostnames resolve to IP addresses.</p>
+      <pre><code>getent hosts google.com
+getent hosts TARGET</code></pre>
+      <p>Inspect DNS configuration:</p>
+      <pre><code>cat /etc/hosts
+cat /etc/resolv.conf
+cat /etc/nsswitch.conf</code></pre>
+      <p>DNS queries:</p>
+      <pre><code>dig google.com
+dig A google.com
+dig AAAA google.com</code></pre>
+      <ul>
+        <li><code>/etc/hosts</code> — static name-to-IP mappings, checked before DNS when NSS says <code>hosts: files dns</code>.</li>
+        <li><code>/etc/resolv.conf</code> — which DNS servers this machine queries.</li>
+        <li><code>/etc/nsswitch.conf</code> — the order of name sources (files, DNS, …) that <code>getent</code> follows.</li>
+        <li><code>dig A</code> / <code>dig AAAA</code> — ask DNS only for IPv4 or IPv6 records; <code>dig</code> ignores <code>/etc/hosts</code>.</li>
+      </ul>
+      <p>Theory: <a href="01a-network-reconnaissance.html#dns-getent">DNS and getent vs. nslookup</a>.</p>
+
+      <h3 id="tcp-ports">5. TCP Port Connectivity</h3>
+      <p>Check whether specific TCP ports are accessible.</p>
+      <pre><code>nc -vz TARGET_IP 22
+nc -vz TARGET_IP 80
+nc -vz TARGET_IP 443
+nc -vz TARGET_IP 3306
+nc -vz TARGET_IP 5432
+nc -vz TARGET_IP 6379</code></pre>
+      <p>Check multiple ports:</p>
+      <pre><code>nc -vz TARGET_IP 22 80 443 3306 5432</code></pre>
+      <p>Set connection timeout:</p>
+      <pre><code>nc -vz -w 3 TARGET_IP 443</code></pre>
+      <ul>
+        <li><code>-v</code> — verbose: print succeeded / refused / timed out.</li>
+        <li><code>-z</code> — zero-I/O: complete the handshake, send no application data.</li>
+        <li><code>-w 3</code> — give up after three seconds, so a filtered port doesn't hang.</li>
+        <li>Ports: 22 SSH, 80 HTTP, 443 HTTPS, 3306 MySQL, 5432 PostgreSQL, 6379 Redis.</li>
+      </ul>
+      <p>Theory: <a href="01a-network-reconnaissance.html#tcp-nc">TCP, Netcat and the three result types</a>.</p>
+
+      <h3 id="nmap">6. Nmap — Host &amp; Port Scanning</h3>
+      <p>Discover open ports and identify services.</p>
+      <pre><code>nmap TARGET_IP</code></pre>
+      <p>TCP connect scan:</p>
+      <pre><code>nmap -sT TARGET_IP</code></pre>
+      <p>Scan specific ports:</p>
+      <pre><code>nmap -p 22,80,443,5432 TARGET_IP</code></pre>
+      <p>Service and version detection:</p>
+      <pre><code>nmap -sV TARGET_IP</code></pre>
+      <p>Host discovery:</p>
+      <pre><code>nmap -sn 192.168.1.0/24</code></pre>
+      <ul>
+        <li><code>nmap TARGET_IP</code> — scans the 1,000 most common TCP ports; as root it uses a SYN scan, as a normal user a connect scan.</li>
+        <li><code>-sT</code> — TCP connect scan: completes the full three-way handshake on each port, like <code>nc -vz</code> at scale; needs no root.</li>
+        <li><code>-p 22,80,443,5432</code> — scan only these ports.</li>
+        <li><code>-sV</code> — probe open ports to identify the service and its version.</li>
+        <li><code>-sn</code> — host discovery only (which hosts respond), no port scan.</li>
+      </ul>
+
+      <aside class="sd-callout mistake">
+        <p class="sd-callout-title">⚠️ Common mistake</p>
+        <p><strong>Netdiscover vs. Nmap</strong> — the difference is reach. Netdiscover only sends ARP, so it sees hosts on your own Layer 2 segment and nothing beyond a router or Docker bridge. Nmap works across routed networks and also scans ports and services. An empty Netdiscover result on a different segment proves nothing.</p>
+      </aside>
+
+      <h3 id="listening">7. Local Listening Ports &amp; Services</h3>
+      <p>Identify services listening on your own machine.</p>
+      <pre><code>ss -tulnp</code></pre>
+      <ul>
+        <li><code>-t</code> TCP · <code>-u</code> UDP · <code>-l</code> listening sockets only · <code>-n</code> numeric addresses and ports · <code>-p</code> owning process.</li>
+      </ul>
+
+      <h3 id="path">8. Network Path Analysis</h3>
+      <p>Understand the path packets take to reach a destination.</p>
+      <pre><code>traceroute 8.8.8.8</code></pre>
+      <p>Alternative:</p>
+      <pre><code>tracepath 8.8.8.8</code></pre>
+      <ul>
+        <li>Both list the routers (hops) between you and the destination, so you can see where responses stop.</li>
+        <li><code>tracepath</code> needs no root and also reports the path MTU.</li>
+      </ul>
+
+      <h3 id="tcpdump">9. Packet Capture &amp; Traffic Analysis</h3>
+      <p>Observe actual network communication.</p>
+      <p>Capture all traffic:</p>
+      <pre><code>tcpdump -i any</code></pre>
+      <p>Capture ICMP:</p>
+      <pre><code>tcpdump -i any icmp</code></pre>
+      <p>Capture HTTPS traffic:</p>
+      <pre><code>tcpdump -i any port 443</code></pre>
+      <p>Capture traffic from a specific host:</p>
+      <pre><code>tcpdump -i any host TARGET_IP</code></pre>
+      <p>Stop capture:</p>
+      <pre><code>Ctrl + C</code></pre>
+      <ul>
+        <li><code>-i any</code> — capture on every interface.</li>
+        <li><code>icmp</code>, <code>port 443</code>, <code>host TARGET_IP</code> — capture filters: only matching packets are shown.</li>
+      </ul>
+
+      <aside class="sd-callout production">
+        <p class="sd-callout-title">🔥 Production insight</p>
+        <p>When a scan result looks wrong, run <code>tcpdump -i any host TARGET_IP</code> in a second terminal while you repeat it. Outgoing SYNs with no reply point at a drop on the path; no SYNs leaving at all point at your own routing.</p>
+      </aside>
+
+      <h3 id="docker">10. Docker Network Investigation</h3>
+      <p>Understand container networking and network isolation.</p>
+      <p>List Docker networks:</p>
+      <pre><code>docker network ls</code></pre>
+      <p>Inspect Docker bridge:</p>
+      <pre><code>docker network inspect bridge</code></pre>
+      <p>List running containers:</p>
+      <pre><code>docker ps</code></pre>
+      <p>Inspect a container:</p>
+      <pre><code>docker inspect CONTAINER_NAME</code></pre>
+      <p>Check networking inside a container:</p>
+      <pre><code>docker exec -it CONTAINER_NAME ip addr
+docker exec -it CONTAINER_NAME ip route</code></pre>
+      <ul>
+        <li><code>docker network inspect bridge</code> — the bridge's subnet, gateway and which containers are attached with which IPs.</li>
+        <li><code>docker exec … ip addr</code> / <code>ip route</code> — the container's own network namespace, which differs from the host's.</li>
+      </ul>
+      <p>Theory: <a href="01a-network-reconnaissance.html#arp-docker">why ARP discovery stops at Docker bridges</a>.</p>
+
+      <!-- 10 BEST PRACTICES -->
+      <h2 id="best-practices" data-stage="Best Practices">Best Practices</h2>
+      <h3>Do</h3>
+      <ul>
+        <li><strong>Follow the sequence order</strong> — cheap, local checks first, so a scan result is never misread because of a routing or DNS problem.</li>
+        <li><strong>Always set timeouts (<code>nc -w</code>, <code>ping -W</code>)</strong> — filtered ports and silent hosts otherwise stall the workflow.</li>
+        <li><strong>Compare <code>getent hosts</code> with <code>dig</code></strong> — a difference means <code>/etc/hosts</code> is overriding DNS.</li>
+      </ul>
+      <h3>Avoid</h3>
+      <ul>
+        <li><strong>Using placeholder values outside your lab</strong> — every <code>TARGET_IP</code> / <code>SUBNET</code> must be in your authorized scope.</li>
+        <li><strong>Treating a failed ping or an empty Netdiscover as "no host"</strong> — confirm with a TCP check or <code>nmap -sn</code>.</li>
+      </ul>
+
+      <!-- 11 INTERVIEW PREPARATION -->
+      <h2 id="interview-answer" data-stage="Interview Preparation">Interview Answer — What Is the Network Reconnaissance Command Workflow?</h2>
+      <p>The network reconnaissance command workflow is the ordered set of Linux tools a tester runs to map a network before assessing it. It starts on the tester's own machine — <code>ip addr</code> for interfaces and subnets, <code>ip route</code> and <code>ip route get</code> for the path traffic will take — because every later result depends on knowing which network you are on and how packets leave.</p>
+      <p>It then moves outward in increasing cost and visibility: <code>ping</code> and <code>ip neigh</code> / <code>netdiscover</code> for reachability and Layer 2 neighbours, <code>getent hosts</code> and <code>dig</code> for name resolution, <code>nc -vz</code> for single-port TCP checks, and Nmap for host discovery (<code>-sn</code>), port states (<code>-sT</code>) and service versions (<code>-sV</code>). Finally <code>ss</code>, <code>traceroute</code> and <code>tcpdump</code> explain anything that doesn't add up. See the <a href="#execution-sequence">15-step sequence</a>.</p>
+      <div class="sd-study-note"><span class="sd-note-title">Simple interview version</span>
+        <p>"I go from local to remote, cheapest first: ip addr and ip route to know my networks and path, ping and ARP for reachability, getent and dig for DNS, nc for a single port, then Nmap for hosts, ports and service versions. If results look wrong, I check ss, traceroute and tcpdump to see what actually happened on the wire."</p>
+      </div>
+      <h3>One important interview follow-up</h3>
+      <p><strong>Q: Why not just start with <code>nmap</code>?</strong></p>
+      <p><strong>A:</strong> Because Nmap's output only makes sense once you know your own addressing and routing. If traffic is leaving the wrong interface, if DNS resolves the name to a stale IP, or if the target is on a different Layer 2 segment, Nmap will report hosts as down or ports as filtered and you will misread a local problem as a property of the target. The local checks take seconds and make every scan result interpretable.</p>
+
+      <h3 id="self-check">What You Should Be Able to Explain</h3>
+      <p>Before moving to the next pentesting chapter, make sure you can explain these concepts without looking at notes:</p>
+      <ul>
+        <li>What is an IP address?</li>
+        <li>What is CIDR and subnetting?</li>
+        <li>What is a default gateway?</li>
+        <li>What is routing?</li>
+        <li>What is ARP?</li>
+        <li>What is ICMP?</li>
+        <li>What is DNS resolution?</li>
+        <li>What is TCP three-way handshake?</li>
+        <li>What is the difference between TCP and UDP?</li>
+        <li>What is a port?</li>
+        <li>What is the difference between open, closed and filtered ports?</li>
+        <li>What is the difference between Netdiscover and Nmap?</li>
+        <li>Why can ping fail even when a service is accessible?</li>
+        <li>Why does Docker networking affect host discovery?</li>
+        <li>How does tcpdump help troubleshoot network communication?</li>
+      </ul>
+      <p>Each one is a practice card below, with its answer.</p>
+
+      <section class="sd-interview" aria-label="Interview questions">
+        <h3 id="interview-questions">Practice questions</h3>
+        <details class="sd-qa" data-level="basic"><summary>What is an IP address?</summary>
+          <p>A logical address assigned to a network interface that identifies where that interface sits in an IP network. One machine can have several (for example <code>eth0</code>, <code>docker0</code>, <code>tun0</code>), one per interface.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What is CIDR and subnetting?</summary>
+          <p>CIDR notation (<code>/24</code>) says how many leading bits of an address are the network portion; the rest are host bits. A <code>/24</code> has 8 host bits: 256 addresses, 254 traditionally usable. Subnetting is splitting a network into smaller ranges by using a longer prefix.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What is a default gateway?</summary>
+          <p>The next hop that receives traffic for any destination not matched by a more specific route — usually the local router. In <code>ip route</code> it is the <code>default via …</code> line.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What is routing?</summary>
+          <p>The decision of which interface and next-hop gateway a packet uses to reach its destination, made from the routing table. Same-subnet destinations go out directly; others go to a gateway.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What is ARP?</summary>
+          <p>Address Resolution Protocol: on an IPv4 local network it finds the MAC address for an IP address by broadcasting "Who has X?" and receiving "X is at MAC". It works only inside one Layer 2 segment.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What is ICMP?</summary>
+          <p>Internet Control Message Protocol: a network-layer protocol for errors and diagnostics, with no port numbers. <code>ping</code> sends ICMP Echo Requests and waits for Echo Replies.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What is DNS resolution?</summary>
+          <p>Translating a hostname into an IP address. On Linux the order of sources comes from NSS (<code>/etc/nsswitch.conf</code>), typically <code>/etc/hosts</code> first, then the DNS servers listed in <code>/etc/resolv.conf</code>.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What is the TCP three-way handshake?</summary>
+          <p>How TCP opens a connection: the client sends SYN, the server answers SYN-ACK, the client replies ACK. A successful <code>nc -vz</code> or <code>nmap -sT</code> result means this handshake completed.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>What is the difference between TCP and UDP?</summary>
+          <p>TCP is connection-oriented: a handshake first, then reliable, ordered delivery. UDP is connectionless: no handshake and no delivery guarantee. That is why UDP ports are harder to scan — silence can mean open or filtered.</p></details>
+        <details class="sd-qa" data-level="basic"><summary>What is a port?</summary>
+          <p>A number (0–65535) that identifies a service endpoint on a host. The IP picks the machine; the port picks the service on it — e.g. 22 for SSH, 443 for HTTPS, 5432 for PostgreSQL.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>What is the difference between open, closed and filtered ports?</summary>
+          <p>Open: an application accepts connections (the handshake completes). Closed: the host is reachable but answers with a rejection — nothing is listening. Filtered: no usable answer, usually because a firewall drops the probes, so the scanner cannot tell open from closed.</p></details>
+        <details class="sd-qa" data-level="intermediate"><summary>What is the difference between Netdiscover and Nmap?</summary>
+          <p>Netdiscover only uses ARP, so it finds hosts (IP and MAC) on your own Layer 2 segment. Nmap works across routed networks, discovers hosts with several probe types and also scans ports, services and versions.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary>Ping to a lab host shows 100% packet loss, but you suspect SSH is running. Why can ping fail even when a service is accessible?</summary>
+          <p>The host, a firewall, a network ACL or a security group can block ICMP while still allowing TCP to port 22. Confirm with <code>nc -vz -w 3 TARGET_IP 22</code> instead of concluding the host is down.</p></details>
+        <details class="sd-qa" data-level="advanced"><summary>Why does Docker networking affect host discovery?</summary>
+          <p>Each container has its own network namespace, and each Docker bridge is its own Layer 2 segment. ARP broadcasts don't cross bridges or routers, so ARP tools like Netdiscover can't see containers on another bridge — use IP-based discovery and check the networks with <code>docker network inspect</code>.</p></details>
+        <details class="sd-qa" data-level="scenario"><summary><code>nc</code> to a port keeps timing out. How does tcpdump help troubleshoot network communication?</summary>
+          <p>It shows the packets that actually go over the wire instead of a tool's summary. With <code>tcpdump -i any host TARGET_IP</code> running, retry the check: SYNs leaving with no reply means something on the path drops them; a reset coming back means the port is closed; no SYNs at all means your own routing sends them elsewhere.</p></details>
+      </section>
+
+      <!-- 12 SUMMARY -->
+      <h2 id="key-takeaways" data-stage="Summary">What Should I Remember?</h2>
+      <ol class="sd-takeaways">
+        <li>Ten command groups, one recon question each: addressing, routing, reachability, DNS, TCP ports, Nmap, local listeners, path, packets, Docker.</li>
+        <li>Run them local-first and cheapest-first — the 15-step sequence.</li>
+        <li><code>ip route get TARGET_IP</code> before anything that sends traffic.</li>
+        <li><code>getent</code> follows NSS (<code>/etc/hosts</code> then DNS); <code>dig</code> asks DNS only.</li>
+        <li><code>nmap -sn</code> finds hosts, <code>-sT</code> finds port states, <code>-sV</code> finds service versions.</li>
+        <li>Netdiscover stops at your Layer 2 segment; Nmap doesn't.</li>
+        <li><code>tcpdump</code> settles any disagreement between tools.</li>
+      </ol>
+      <h3 id="quick-commands">Quick commands</h3>
+      <ul class="sd-commands">
+        <li><code>ip -br addr</code> — interfaces and addresses</li>
+        <li><code>ip route get TARGET_IP</code> — path to one destination</li>
+        <li><code>ping -W 2 -c 4 TARGET_IP</code> — ICMP check with a timeout</li>
+        <li><code>getent hosts TARGET</code> — resolve like an application</li>
+        <li><code>nc -vz -w 3 TARGET_IP PORT</code> — one TCP port</li>
+        <li><code>nmap -sn SUBNET</code> — responsive hosts</li>
+        <li><code>nmap -sV TARGET_IP</code> — services and versions</li>
+        <li><code>ss -tulnp</code> — local listeners</li>
+        <li><code>tcpdump -i any host TARGET_IP</code> — what is on the wire</li>
+      </ul>
+
+      <h2 id="read-next" data-stage="Summary">What to Read Next</h2>
+      <p><strong>Your next learning milestone:</strong> Nmap in depth — SYN scan, TCP connect scan, UDP scan, service detection, OS detection, port states, timing templates and NSE scripts.</p>
+      <div class="sd-next">
+        <a href="01a-network-reconnaissance.html"><strong>Network Reconnaissance — Concepts</strong><span>The theory behind every command on this page.</span></a>
+        <a href="02-assessment-methodologies.html"><strong>Module 2 — Assessment Methodologies</strong><span>Nmap scanning and service enumeration, the next milestone.</span></a>
+      </div>
+
+    </main>
+  </div>
+</div>
+</body>
+</html>

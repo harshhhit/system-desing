@@ -680,7 +680,31 @@ window.SITE_MAP = {
         { "href": "ejpt/03-host-network-pentest.html", "title": "Module 3 — Host & Network Pentest" },
         { "href": "ejpt/04-post-exploitation.html", "title": "Module 4 — Post-Exploitation & Pivoting" },
         { "href": "ejpt/05-web-app-pentest.html", "title": "Module 5 — Web App Pentest" },
-        { "href": "ejpt/06-exam-readiness.html", "title": "Module 6 — Exam Readiness" }
+        { "href": "ejpt/06-exam-readiness.html", "title": "Module 6 — Exam Readiness" },
+        { "href": "ejpt/01a-network-reconnaissance.html", "title": "Network Reconnaissance — Concepts" },
+        { "href": "ejpt/01b-recon-command-list.html", "title": "Recon Command List" }
+      ],
+      "groups": [
+        {
+          "name": "Section 1 — eJPT Course",
+          "hrefs": [
+            "ejpt/index.html",
+            "ejpt/00-lab-setup.html",
+            "ejpt/01-foundations.html",
+            "ejpt/02-assessment-methodologies.html",
+            "ejpt/03-host-network-pentest.html",
+            "ejpt/04-post-exploitation.html",
+            "ejpt/05-web-app-pentest.html",
+            "ejpt/06-exam-readiness.html"
+          ]
+        },
+        {
+          "name": "Section 2 — Network Reconnaissance",
+          "hrefs": [
+            "ejpt/01a-network-reconnaissance.html",
+            "ejpt/01b-recon-command-list.html"
+          ]
+        }
       ]
     },
     {

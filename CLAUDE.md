@@ -120,7 +120,7 @@ tiny redirect stubs remain at the old sub-site homepage paths (`docs/index.html`
   column on desktop (≥ 1280px), below the content on narrower screens, with tabs **Interview**
   (the page's `.sd-qa` bank by level; on pages without one, questions harvested from the
   Interview Answer block, its follow-up, "Quick check" items, 🎯 callouts and "…?" headings),
-  **Notes** (per-page scratchpad + the pinned 🗒️ notes, downloadable as .md), **Reminders**
+  **Notes** (per-page scratchpad + the pinned 🗒️ section notes — one per `<h3>`, see `docs/CLAUDE.md` — downloadable as .md), **Reminders**
   (per-page checklist: optional `data-reminders="a|b|c"` on `<main>` + generic suggestions +
   your own), **Review** (anything flagged with the "＋ Review" button on each `<h2>` or question,
   listed site-wide), and **Commands** (CLI lines and short diagnostic SQL found in `<pre>` blocks,
